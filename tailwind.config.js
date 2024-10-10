@@ -1,13 +1,16 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/app/**/*.{js,ts,jsx,tsx}",
-    "./src/pages/**/*.{js,ts,jsx,tsx}",
-    "./src/components/**/*.{js,ts,jsx,tsx}"
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+
+    "./src/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
     extend: {
       fontFamily: {
-        pretendard: ["Pretendard", "sans-serif"]
+        Pretendard: ["Pretendard"]
       },
       screens: {
         sm: "500px",
@@ -59,5 +62,6 @@ module.exports = {
         buttonHover: "buttonHover 0.3s ease forwards"
       }
     }
-  }
+  },
+  plugins: []
 };
