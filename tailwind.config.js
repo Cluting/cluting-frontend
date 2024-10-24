@@ -32,6 +32,9 @@ module.exports = {
           900: "#121212",
           950: "#050505"
         },
+        white: {
+          100: "#FFFFFF"
+        },
         gray: {
           100: "#DEDEDE",
           200: "#C4C4C4",
@@ -54,8 +57,7 @@ module.exports = {
           100: "#FF6577"
         },
         bg: {
-          100: "#F5F7FA",
-          200: "#AFBACD"
+          100: "#E2E3E5"
         }
       },
       animation: {

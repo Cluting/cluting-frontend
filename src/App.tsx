@@ -1,12 +1,14 @@
 import React from "react";
 import "./App.css";
+import Header from "./components/Header";
 
-function App() {
+export default function App() {
   return (
     <div className="App">
-      <p className="">메인 페이지</p>
+      <div className="bg-bg-100 h-screen w-full">
+        <Header />
+        <p className="">메인 페이지</p>
+      </div>
     </div>
   );
 }
-
-export default App;

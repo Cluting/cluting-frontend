@@ -23,12 +23,7 @@ module.exports = {
 
     indent: ["error", 2], // 들여쓰기 스타일 설정 (2칸 들여쓰기)
 
-    "no-unused-vars": "off", // 사용하지 않는 변수 경고 끄기
-
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { vars: "all", args: "after-used", ignoreRestSiblings: false }
-    ], // TypeScript에서 사용하지 않는 변수를 검출합니다.
+    "no-unused-vars": "on", // 사용하지 않는 변수 경고 끄기
 
     "@typescript-eslint/explicit-function-return-type": "warn",
     // 함수의 반환 타입이 추론 가능할 때도 명시적으로 타입을 선언하도록 경고합니다.
