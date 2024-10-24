@@ -41,3 +41,7 @@
 .flex-center {
   @apply flex justify-center items-center;
 }
+
+.dropdown-list {
+  @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center;
+}
