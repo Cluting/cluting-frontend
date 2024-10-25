@@ -23,7 +23,7 @@ export default function Input({
         onClick={(event: React.MouseEvent<HTMLInputElement>) => {
           if (onClick) onClick(event);
         }}
-        className="w-[404px] h-[56px] rounded-[8px] bg-white-100 border border-gray-200 text-gray-500 text-body pl-[14px] focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100"
+        className="w-[404px] h-[56px] my-4 rounded-[8px] bg-white-100 border border-gray-200 text-gray-500 text-body pl-[14px] focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100"
       />
     </>
   );

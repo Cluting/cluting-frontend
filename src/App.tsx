@@ -12,7 +12,6 @@ export default function App() {
     <div className="App">
       <Header />
       <div className="bg-bg-100 h-screen w-full pt-[55px]">
-        <Input type="text" />
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />

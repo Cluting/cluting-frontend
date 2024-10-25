@@ -20,7 +20,8 @@ module.exports = {
         // => @media (min-width: 1280px) { ... }
       },
       fontSize: {
-        body: ["17px", { lineHeight: "22px", fontWeight: "600" }],
+        body: ["17px", { lineHeight: "24px", fontWeight: "500" }],
+        title: ["20px", { lineHeight: "22px", fontWeight: "600" }],
         caption: ["13px", { lineHeight: "22px", fontWeight: "500" }]
       },
       colors: {
@@ -42,8 +43,11 @@ module.exports = {
         gray: {
           100: "#F2F2F7", //gray01
           200: "#E5E5EA", //gray02
+          400: "#C7C7CC", //gray02
           500: "#AEAEB2", //gray05
           600: "#8E8E93", //gray06
+          700: "#8E8E93", //gray07
+          800: "#636366", //gray08
           900: "#3A3A3C" //gray09
         },
         blue: {
