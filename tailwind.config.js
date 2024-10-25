@@ -42,6 +42,7 @@ module.exports = {
         gray: {
           100: "#F2F2F7", //gray01
           200: "#E5E5EA", //gray02
+          500: "#AEAEB2", //gray05
           600: "#8E8E93", //gray06
           900: "#3A3A3C" //gray09
         },
@@ -58,7 +59,7 @@ module.exports = {
           950: "#1A212D"
         },
         red: {
-          100: "#FF6577"
+          100: "#FF5252"
         },
         bg: {
           100: "#E2E3E5"
