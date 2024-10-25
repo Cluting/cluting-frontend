@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+/* 자주 사용하는 스타일을 재사용하기 위해 컴포넌트화*/
+.flex-center {
+  @apply flex justify-center items-center;
+}
+
+.dropdown-list {
+  @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center;
+}
