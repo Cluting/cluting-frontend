@@ -1,0 +1,23 @@
+.TodoTemplate{
+    width: 585px; 
+    height: 340.88px; 
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6rem;
+    border-radius: 12px; 
+    overflow: hidden;
+    position: relative;
+}
+
+.content{
+    background: #F2F2F7;
+    height: 100%;
+    display: flex;
+
+    .incompleteTodos{
+        width: 50%;
+    }
+    .completedTodos{
+        width: 50%;
+    }
+}

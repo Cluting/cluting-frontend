@@ -1,12 +1,13 @@
 import React from "react";
 import "./App.css";
+import TodoTemplate from "./components/TodoTemplate";
 
-function App() {
+const App = (): JSX.Element => {
   return (
-    <div className="App">
-      <p className="">메인 페이지</p>
+    <div className="app">
+      <TodoTemplate />
     </div>
   );
-}
+};
 
 export default App;

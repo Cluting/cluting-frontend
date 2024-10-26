@@ -1,0 +1,31 @@
+.TodoListItem{
+    padding: 10px 7px 12px 10px;
+    display: flex;
+    align-items: center; //세로 중앙 정렬
+}
+
+.checkbox{
+    cursor: pointer;
+    flex: 1; //차지할 수 있는 영역 모두 차지
+    display: flex;
+    align-items: center;
+    svg{
+        //아이콘
+        font-size: 1.5rem;
+    }
+    .text{
+        margin-left: 0.5rem;
+        flex: 1;
+    }
+    //체크되었을 때 보여줄 스타일
+    &.checked{
+        svg{
+            color: #3A3A3C;
+        }
+        .text{
+            color: #adb5bd;
+            text-decoration: line-through; //취소선
+        }
+    }
+}
+
