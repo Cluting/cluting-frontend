@@ -33,7 +33,7 @@ export default function Input({
         onClick={(event: React.MouseEvent<HTMLInputElement>) => {
           if (onClick) onClick(event);
         }}
-        className={`${required ? "pl-7" : ""} ${
+        className={`${required ? "pl-[28px]" : ""} ${
           isDropdownSelected ? "placeholder:text-black-200" : ""
         }
         ${inputValue ? "text-black-200" : "text-gray-500"}

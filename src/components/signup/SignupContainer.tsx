@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Input from "../common/Input";
 import SignupDropdown from "./SignupDropdown";
+import TermsAgreement from "./TermsAgreement";
 
 export default function SignupContainer() {
   const [studentStatus, setStudentStatus] = useState(false); //휴학 여부 드롭다운
@@ -77,8 +78,9 @@ export default function SignupContainer() {
 
       <hr className="w-[400px] py- border border-gray-200 my-8" />
 
-      <section className="flex flex-col text-left">
-        <p>이용약관</p>
+      <section className="flex flex-col text-left my-10">
+        <p className="text-title3 text-gray-900">이용약관</p>
+        <TermsAgreement />
       </section>
 
       <button className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
