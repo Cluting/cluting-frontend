@@ -2,7 +2,7 @@ import LoginContainer from "../components/login/LoginContainer";
 
 export default function Login() {
   return (
-    <div className="text-[30px] w-full h-full flex-center">
+    <div className="text-[30px] w-full h-screen flex-center">
       <div className="flex flex-col items-center">
         <LoginContainer />
         <div className="flex gap-3 mt-[18px] text-[14px] text-gray-500">

@@ -1,4 +1,5 @@
-import Input from "./Input";
+import { Link } from "react-router-dom";
+import Input from "../common/Input";
 
 export default function LoginContainer() {
   return (
@@ -6,7 +7,7 @@ export default function LoginContainer() {
       <div className="w-[150px] h-[50px] flex-center text-body bg-bg-100 rounded-[8px]">
         로고
       </div>
-      <p className="text-title mt-[27px]">동아리 리크루팅의 솔루션, 클루팅</p>
+      <p className="text-title3 mt-[27px]">동아리 리크루팅의 솔루션, 클루팅</p>
       <div className=" mt-[37px]">
         <Input type="text" placeholder="이메일을 입력해 주세요" />
         <Input type="password" placeholder="비밀번호를 입력해 주세요" />
@@ -14,9 +15,11 @@ export default function LoginContainer() {
       <button className="bg-gray-800 hover:bg-gray-900 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100">
         로그인
       </button>
-      <button className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[56px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
-        회원가입
-      </button>
+      <Link to="/signup">
+        <button className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[56px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
+          회원가입
+        </button>
+      </Link>
     </div>
   );
 }

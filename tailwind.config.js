@@ -21,7 +21,8 @@ module.exports = {
       },
       fontSize: {
         body: ["17px", { lineHeight: "24px", fontWeight: "500" }],
-        title: ["20px", { lineHeight: "22px", fontWeight: "600" }],
+        title1: ["28px", { lineHeight: "34px", fontWeight: "600" }],
+        title3: ["20px", { lineHeight: "22px", fontWeight: "600" }],
         caption: ["13px", { lineHeight: "22px", fontWeight: "500" }]
       },
       colors: {
@@ -67,6 +68,9 @@ module.exports = {
         },
         bg: {
           100: "#E2E3E5"
+        },
+        main: {
+          100: "#8457FF"
         }
       },
       animation: {

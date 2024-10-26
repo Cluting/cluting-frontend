@@ -45,3 +45,7 @@
 .dropdown-list {
   @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center;
 }
+
+.signup-dropdown-list {
+  @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
+}
