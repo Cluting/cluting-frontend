@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Footer from "./components/Footer";
+import FloatingButton from "./components/FloatingButton";
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
+        <FloatingButton />
+        <Footer />
       </div>
     </div>
   );
