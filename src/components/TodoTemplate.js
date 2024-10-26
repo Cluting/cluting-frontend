@@ -30,7 +30,14 @@ const TodoTemplate = () => {
 
   return (
     <div className="TodoTemplate">
-      <div className="content">
+      <div className="incompleteTodos">
+        <TodoList todos={incompleteTodos} onToggle={onToggle} />
+        <TodoInsert onInsert={onInsert} />
+      </div>
+      <div className="completedTodos">
+        <TodoList todos={completedTodos} onToggle={onToggle} />
+      </div>
+      {/* <div className="content">
         <div className="incompleteTodos">
           <TodoList todos={incompleteTodos} onToggle={onToggle} />
           <TodoInsert onInsert={onInsert} />
@@ -38,7 +45,7 @@ const TodoTemplate = () => {
         <div className="completedTodos">
           <TodoList todos={completedTodos} onToggle={onToggle} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -2,6 +2,7 @@
     display: flex;
     background: #E5E5EA; //피그마
     height: 30px;
+    
     input{
         //기본 스타일 초기화
         background: none;
@@ -13,7 +14,5 @@
         &::placeholder{
             color: #8E8E93; //피그마
         }
-        //버튼을 제외한 영역을 모두 차지하기
-        flex: 1;
     }
 }
