@@ -1,11 +1,10 @@
 import { useState, useRef, useCallback } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoList from "./TodoList";
-import "./TodoTemplate.scss";
 
 const TodoTemplate = () => {
   const [todos, setTodos] = useState([]);
-  const nextId = useRef(2501);
+  const nextId = useRef(0);
 
   const onInsert = useCallback((text) => {
     const todo = {
@@ -29,23 +28,18 @@ const TodoTemplate = () => {
   const completedTodos = todos.filter((todo) => todo.checked);
 
   return (
-    <div className="TodoTemplate">
-      <div className="incompleteTodos">
-        <TodoList todos={incompleteTodos} onToggle={onToggle} />
+    <div className="w-[585px] h-[340.88] bg-[#F2F2F7] px-[9px] py-[13px] pb-[20.88px] mx-auto mt-24 rounded-xl overflow-hidden relative flex">
+      <div className="w-1/2 flex flex-col justify-between ">
+        <div className="h-[265px] overflow-auto">
+          <TodoList todos={incompleteTodos} onToggle={onToggle} />
+        </div>
         <TodoInsert onInsert={onInsert} />
       </div>
-      <div className="completedTodos">
-        <TodoList todos={completedTodos} onToggle={onToggle} />
-      </div>
-      {/* <div className="content">
-        <div className="incompleteTodos">
-          <TodoList todos={incompleteTodos} onToggle={onToggle} />
-          <TodoInsert onInsert={onInsert} />
-        </div>
-        <div className="completedTodos">
+      <div className="w-1/2">
+        <div className="h-[307px] overflow-auto">
           <TodoList todos={completedTodos} onToggle={onToggle} />
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
