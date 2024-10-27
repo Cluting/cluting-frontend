@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { Path, UseFormRegister, FieldValues } from "react-hook-form";
 
-interface InputProps {
+interface InputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
   type: React.HTMLInputTypeAttribute;
   placeholder?: string;
   required?: boolean;
@@ -10,7 +13,9 @@ interface InputProps {
   onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
 }
 
-export default function Input({
+export default function Input<T extends FieldValues>({
+  name,
+  register,
   type,
   placeholder,
   required,
@@ -18,12 +23,13 @@ export default function Input({
   isDropdownSelected,
   maxLength,
   onClick
-}: InputProps) {
+}: InputProps<T>) {
   const [inputValue, setInputValue] = useState("");
 
   return (
     <div className="relative">
       <input
+        {...register(name, { required })}
         type={type}
         placeholder={placeholder}
         maxLength={maxLength}
