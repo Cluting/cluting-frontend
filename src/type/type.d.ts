@@ -13,3 +13,11 @@ declare interface LoginFormValue {
   email: string;
   password: string;
 }
+
+declare interface RegisterClubFormValue {
+  clubName: string;
+  clubType: string;
+  clubCategory: string;
+  keywords: string[];
+  clubDescription: string;
+}
