@@ -18,7 +18,7 @@ const TodoInsert = ({ onInsert }) => {
 
   return (
     <form
-      className="pt-[10px] pr-[7px] pb-[12px] pl-[10px] flex bg-[#E5E5EA] h-[30px] items-center"
+      className="pt-[10px] pr-[7px] pb-[12px] pl-[10px] flex bg-[#E5E5EA] w-[270px] h-[30px] items-center"
       onSubmit={onSubmit}
     >
       <img src="/assets/ic-uncheckbox.svg" alt="체크박스" className="w-6 h-6" />
