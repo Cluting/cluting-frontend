@@ -18,10 +18,9 @@ export default function RegisterClub() {
     handleSubmit((data) => console.log(data))(e);
   };
 
+  //드롭다운
   const [clubType, setClubType] = useState(false);
   const [clubCategory, setClubCategory] = useState(false);
-
-  //드롭다운
   const [selectedClubType, setSelectedClubType] = useState(""); // 선택한 교내/연합
   const [selectedClubCategory, setSelectedClubCategory] = useState(""); // 선택한 동아리 분야
 
@@ -79,6 +78,7 @@ export default function RegisterClub() {
           <Input
             name="clubType"
             register={register}
+            value={selectedClubType}
             type="text"
             onClick={() => {
               setClubType(!clubType);
@@ -94,9 +94,11 @@ export default function RegisterClub() {
           <Input
             name="clubCategory"
             register={register}
+            value={selectedClubCategory}
             type="text"
             onClick={() => {
               setClubCategory(!clubCategory);
+              console.log(selectedClubCategory);
             }}
             placeholder={selectedClubCategory || "분야"}
             required

@@ -5,6 +5,7 @@ interface InputProps<T extends FieldValues> {
   name: Path<T>;
   register: UseFormRegister<T>;
   type: React.HTMLInputTypeAttribute;
+  value?: string | number;
   placeholder?: string;
   required?: boolean;
   isDropdown?: boolean;
@@ -17,6 +18,7 @@ export default function Input<T extends FieldValues>({
   name,
   register,
   type,
+  value,
   placeholder,
   required,
   isDropdown,
@@ -34,7 +36,8 @@ export default function Input<T extends FieldValues>({
         placeholder={placeholder}
         maxLength={maxLength}
         required={required}
-        value={inputValue}
+        readOnly={isDropdown}
+        value={isDropdown ? value : inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onClick={(event: React.MouseEvent<HTMLInputElement>) => {
           if (onClick) onClick(event);
