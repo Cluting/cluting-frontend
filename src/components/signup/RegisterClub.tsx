@@ -3,6 +3,7 @@ import Input from "../common/Input";
 import SignupDropdown from "./SignupDropdown";
 import { useForm } from "react-hook-form";
 import UploadProfile from "./UploadProfile";
+import Textarea from "../common/Textarea";
 
 export default function RegisterClub() {
   const {
@@ -16,6 +17,7 @@ export default function RegisterClub() {
   const [clubType, setClubType] = useState(false);
   const [clubCategory, setClubCategory] = useState(false);
 
+  //드롭다운
   const [selectedClubType, setSelectedClubType] = useState(""); // 선택한 교내/연합
   const [selectedClubCategory, setSelectedClubCategory] = useState(""); // 선택한 동아리 분야
 
@@ -29,6 +31,21 @@ export default function RegisterClub() {
     setClubCategory(false);
   };
 
+  //키워드 추가
+  const [keywordItem, setKeywordItem] = useState("");
+  const [keywords, setKeywords] = useState<string[]>([]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeywordItem(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && keywordItem.trim() !== "") {
+      setKeywords((prevKeywords) => [...prevKeywords, keywordItem]);
+      setKeywordItem(""); // 입력 후 입력 필드를 비움
+    }
+  };
+
   return (
     <form
       onSubmit={onSubmit}
@@ -36,10 +53,10 @@ export default function RegisterClub() {
     >
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
-        <UploadProfile />
+        <UploadProfile name="clubImage" register={register} />
       </section>
 
-      <hr className="w-[400px] py- border border-gray-200 my-8" />
+      <hr className="w-[400px] py- border border-gray-200 mt-4 mb-8" />
 
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">기본 정보</p>
@@ -88,14 +105,43 @@ export default function RegisterClub() {
 
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">키워드</p>
+        <input
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          type="text"
+          placeholder="키워드를 작성해 주세요 ex) 디자인,영상,IT"
+          maxLength={20}
+          value={keywordItem}
+          className={`
+        ${keywordItem ? "text-black-200" : "text-gray-500"}
+           w-[404px] h-[56px] my-4 rounded-[8px] bg-white-100 border border-gray-200 text-body pl-[14px] focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100`}
+        />
+        {keywords.length >= 1 && (
+          <ul className="flex flex-wrap overflow-auto gap-2.5 mt-4 bg-gray-100 w-[404px] h-[98px] p-3 rounded-[8px] focus:outline-none ">
+            {keywords.map((keyword) => (
+              <li className="flex-center w-auto h-min bg-white-100 rounded-[10px] px-[15px] py-[8px] rounded-[15px] mb-1 gap-2.5">
+                {keyword}
+                {/* <button onClick={() => handleDeleteKeyword(keyword)}>
+                  <img
+                    src="assets/ic-keywordDelete.svg"
+                    alt="키워드 삭제"
+                    className="w-[14px] h-[14px] z-10"
+                  />
+                </button> */}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
+
+      <hr className="w-[400px] py- border border-gray-200 my-8" />
 
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">동아리 소개</p>
-        <Input
+        <Textarea
           name="clubDescription"
           register={register}
-          type="text"
+          maxLength={3000}
           placeholder="동아리 소개글을 작성해 주세요."
         />
       </section>

@@ -1,6 +1,14 @@
 import { useRef, useState } from "react";
+import { FieldValues, UseFormRegister, Path } from "react-hook-form";
 
-export default function UploadProfile() {
+interface InputProps<T extends FieldValues> {
+  name: Path<T>;
+  register: UseFormRegister<T>;
+}
+export default function UploadProfile<T extends FieldValues>({
+  name,
+  register
+}: InputProps<T>) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +43,7 @@ export default function UploadProfile() {
         <div>
           {" "}
           <input
+            name={name}
             ref={fileInputRef}
             type="file"
             accept="image/*"
