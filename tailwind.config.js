@@ -19,6 +19,10 @@ module.exports = {
         xl: "1200px"
         // => @media (min-width: 1280px) { ... }
       },
+      fontSize: {
+        body: ["17px", { lineHeight: "22px", fontWeight: "600" }],
+        caption: ["13px", { lineHeight: "22px", fontWeight: "500" }]
+      },
       colors: {
         black: {
           100: "#787878",
@@ -32,11 +36,15 @@ module.exports = {
           900: "#121212",
           950: "#050505"
         },
+        white: {
+          100: "#FFFFFF"
+        },
         gray: {
-          100: "#DEDEDE",
-          200: "#C4C4C4",
-          300: "#ABABAB",
-          400: "#919191"
+          100: "#F2F2F7", //gray01
+          200: "#E5E5EA", //gray02
+          600: "#8E8E93", //gray06
+          850: "#5C6067", //gray8.5
+          900: "#3A3A3C" //gray09
         },
         blue: {
           100: "#FFFFFF",
@@ -54,8 +62,7 @@ module.exports = {
           100: "#FF6577"
         },
         bg: {
-          100: "#F5F7FA",
-          200: "#AFBACD"
+          100: "#E2E3E5"
         }
       },
       animation: {
