@@ -114,7 +114,7 @@ export default function RegisterClub() {
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">키워드</p>
         {isActive && (
-          <p className="text-main-100 text-caption3 mt-[26px]">
+          <p className="text-main-100 text-caption3 mt-[26px] mb-[6px]">
             동아리 키워드는 최대 5개까지 추가할 수 있습니다.
           </p>
         )}
@@ -127,9 +127,10 @@ export default function RegisterClub() {
           placeholder="키워드를 작성해 주세요 ex) 디자인,영상,IT"
           maxLength={20}
           value={keywordItem}
-          className={`
-        ${keywordItem ? "text-black-200" : "text-gray-500"}
-           w-[404px] h-[56px] my-4 rounded-[8px] bg-white-100 border border-gray-200 text-body pl-[14px] focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100`}
+          disabled={keywords.length >= 5} // 키워드가 5개 이상일 경우 비활성화
+          className={`${keywordItem ? "text-black-200" : "text-gray-500"}
+
+           w-[404px] h-[56px] my-4 rounded-[8px] bg-white-100 border border-gray-200 text-body pl-[14px] focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:bg-gray-100`}
         />
         {keywords.length >= 1 && (
           <ul className="flex flex-wrap overflow-auto gap-2.5 mt-4 bg-gray-100 w-[404px] h-[98px] p-3 rounded-[8px] focus:outline-none ">
