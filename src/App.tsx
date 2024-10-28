@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Footer from "./components/Footer";
 import FloatingButton from "./components/FloatingButton";
+import TodoTemplate from "./components/recruting/home/TodoTemplate";
 
 export default function App() {
   return (
