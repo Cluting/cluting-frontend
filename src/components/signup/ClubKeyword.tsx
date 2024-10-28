@@ -1,13 +1,21 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {
+  UseFormRegister,
+  UseFormWatch,
+  UseFormSetValue
+} from "react-hook-form";
 
-export default function ClubKeyword() {
-  const {
-    watch,
-    register,
-    formState: { errors }
-  } = useForm<RegisterClubFormValue>({ mode: "onChange" });
+type ClubKeywordProps = {
+  register: UseFormRegister<RegisterClubFormValue>;
+  watch: UseFormWatch<RegisterClubFormValue>;
+  setValue: UseFormSetValue<RegisterClubFormValue>;
+};
 
+export default function ClubKeyword({
+  register,
+  watch,
+  setValue
+}: ClubKeywordProps) {
   //키워드 추가
   const [keywordItem, setKeywordItem] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -24,8 +32,10 @@ export default function ClubKeyword() {
       e.preventDefault();
       // 키워드 수가 5개 미만일 경우만 추가
       if (keywords.length < 5) {
-        setKeywords((prevKeywords) => [...prevKeywords, keywordItem]);
-        setKeywordItem(""); // 입력 후 입력 필드를 비움
+        const newKeywords = [...keywords, keywordItem];
+        setKeywords(newKeywords);
+        setKeywordItem(""); // 입력 후 입력 필드를 비웁니다
+        setValue("keywords", newKeywords); // register된 필드 업데이트
       }
     }
   };
@@ -61,7 +71,10 @@ export default function ClubKeyword() {
       {keywords.length >= 1 && (
         <ul className="flex flex-wrap overflow-auto gap-2.5 mt-4 bg-gray-100 w-[404px] h-[98px] p-3 rounded-[8px] focus:outline-none ">
           {keywords.map((keyword) => (
-            <li className="flex-center w-auto h-min bg-white-100 rounded-[10px] px-[15px] py-[8px] rounded-[15px] mb-1 gap-2.5">
+            <li
+              key={keyword}
+              className="flex-center w-auto h-min bg-white-100 rounded-[10px] px-[15px] py-[8px] rounded-[15px] mb-1 gap-2.5"
+            >
               {keyword}
               <button onClick={() => handleDeleteKeyword(keyword)}>
                 <img

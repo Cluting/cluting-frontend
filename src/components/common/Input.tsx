@@ -31,7 +31,7 @@ export default function Input<T extends FieldValues>({
   return (
     <div className="relative">
       <input
-        {...register(name, { required })}
+        {...register(name)}
         type={type}
         placeholder={placeholder}
         maxLength={maxLength}

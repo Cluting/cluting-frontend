@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../common/Input";
 import SignupDropdown from "./SignupDropdown";
 import { useForm } from "react-hook-form";
@@ -8,12 +8,13 @@ import ClubKeyword from "./ClubKeyword";
 
 export default function RegisterClub() {
   const {
-    watch,
     register,
+    setValue,
     handleSubmit,
-    formState: { errors },
-    getValues
+    formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
+
+  const methods = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
   const onSubmit = (e: React.FormEvent) => {
     handleSubmit((data) => console.log(data))(e);
@@ -25,21 +26,30 @@ export default function RegisterClub() {
   const [selectedClubType, setSelectedClubType] = useState(""); // 선택한 교내/연합
   const [selectedClubCategory, setSelectedClubCategory] = useState(""); // 선택한 동아리 분야
 
-  const handleTypeSelect = (status: string) => {
-    setSelectedClubType(status);
-    setClubType(false);
+  const handleTypeSelect = (type: string) => {
+    setSelectedClubType(type);
+    setValue("clubType", type); // 폼 상태 업데이트
+    setClubType(!clubType); // 드롭다운을 닫음
   };
 
-  const handleCategorySelect = (semester: string) => {
-    setSelectedClubCategory(semester);
-    setClubCategory(false);
+  const handleCategorySelect = (category: string) => {
+    setSelectedClubCategory(category);
+    setValue("clubCategory", category); // 폼 상태 업데이트
+    setClubCategory(!clubCategory); // 드롭다운을 닫음
   };
 
   return (
-    <form className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center">
+    <form
+      onSubmit={onSubmit}
+      className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
+    >
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
-        <UploadProfile name="clubImage" register={register} />
+        <UploadProfile
+          name="clubImage"
+          register={register}
+          setValue={setValue}
+        />
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 mt-4 mb-8" />
@@ -93,7 +103,11 @@ export default function RegisterClub() {
       <hr className="w-[400px] py- border border-gray-200 my-8" />
 
       <section className="flex flex-col text-left my-10">
-        <ClubKeyword />
+        <ClubKeyword
+          register={methods.register}
+          watch={methods.watch}
+          setValue={methods.setValue}
+        />
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 my-8" />
@@ -110,7 +124,6 @@ export default function RegisterClub() {
 
       <button
         type="submit"
-        onSubmit={(e) => onSubmit(e)}
         className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
       >
         동아리 등록하기

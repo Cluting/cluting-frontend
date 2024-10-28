@@ -15,7 +15,7 @@ declare interface LoginFormValue {
 }
 
 declare interface RegisterClubFormValue {
-  clubImage: string;
+  clubImage: FileList;
   clubName: string;
   clubType: string;
   clubCategory: string;

@@ -1,13 +1,20 @@
 import { useRef, useState } from "react";
-import { FieldValues, UseFormRegister, Path } from "react-hook-form";
+import {
+  FieldValues,
+  UseFormRegister,
+  UseFormSetValue,
+  Path
+} from "react-hook-form";
 
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
   register: UseFormRegister<T>;
+  setValue: (name: Path<T>, value: FileList) => void; // setValue에 FileList 타입 추가
 }
 export default function UploadProfile<T extends FieldValues>({
   name,
-  register
+  register,
+  setValue
 }: InputProps<T>) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -17,16 +24,18 @@ export default function UploadProfile<T extends FieldValues>({
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
+    const fileList = event.target.files;
+    if (fileList) {
+      const file = fileList[0];
+      setValue(name, fileList); // clubImage 필드에 파일 목록 설정
       const reader = new FileReader();
-
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
+
   return (
     <button
       type="button"
@@ -43,7 +52,7 @@ export default function UploadProfile<T extends FieldValues>({
         <div>
           {" "}
           <input
-            name={name}
+            {...register(name)}
             ref={fileInputRef}
             type="file"
             accept="image/*"
