@@ -7,13 +7,17 @@ import Textarea from "../common/Textarea";
 
 export default function RegisterClub() {
   const {
+    watch,
     register,
     handleSubmit,
     formState: { errors },
     getValues
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = (e: React.FormEvent) => {
+    handleSubmit((data) => console.log(data))(e);
+  };
+
   const [clubType, setClubType] = useState(false);
   const [clubCategory, setClubCategory] = useState(false);
 
@@ -34,23 +38,27 @@ export default function RegisterClub() {
   //키워드 추가
   const [keywordItem, setKeywordItem] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
-
+  const [isActive, setIsActive] = useState(false);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeywordItem(e.target.value);
+    e.target.value && watch("keywords")
+      ? setIsActive(false)
+      : setIsActive(true);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && keywordItem.trim() !== "") {
-      setKeywords((prevKeywords) => [...prevKeywords, keywordItem]);
-      setKeywordItem(""); // 입력 후 입력 필드를 비움
+      e.preventDefault();
+      // 키워드 수가 5개 미만일 경우만 추가
+      if (keywords.length < 5) {
+        setKeywords((prevKeywords) => [...prevKeywords, keywordItem]);
+        setKeywordItem(""); // 입력 후 입력 필드를 비움
+      }
     }
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
-    >
+    <form className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center">
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
         <UploadProfile name="clubImage" register={register} />
@@ -105,7 +113,14 @@ export default function RegisterClub() {
 
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">키워드</p>
+        {isActive && (
+          <p className="text-main-100 text-caption3 mt-[26px]">
+            동아리 키워드는 최대 5개까지 추가할 수 있습니다.
+          </p>
+        )}
+
         <input
+          {...register("keywords")}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           type="text"
@@ -146,7 +161,11 @@ export default function RegisterClub() {
         />
       </section>
 
-      <button className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
+      <button
+        type="submit"
+        onSubmit={(e) => onSubmit(e)}
+        className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
+      >
         동아리 등록하기
       </button>
     </form>
