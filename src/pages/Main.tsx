@@ -1,10 +1,3 @@
-import Sidemenu from "../components/recruting/home/Sidemenu";
-
 export default function Main() {
-  return (
-    <div className="text-[30px] ">
-      {" "}
-      <Sidemenu />
-    </div>
-  );
+  return <div className="text-[30px] ">기본 홈 dp-ho-01</div>;
 }

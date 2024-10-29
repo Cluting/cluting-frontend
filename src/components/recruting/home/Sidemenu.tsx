@@ -100,7 +100,7 @@ export default function Sidemenu() {
                 <p className="ml-3">
                   {
                     [
-                      "최종합격자 및 활동 안내",
+                      "계획하기",
                       "모집 준비하기",
                       "서류 평가하기",
                       "서류 합격자 및 면접 안내",
