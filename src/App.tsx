@@ -22,22 +22,23 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="recruting">
-              <Route path="/home" element={<RecrutingHome />} />
-              <Route path="/01_plan" element={<RecrutingPlan />} />
-              <Route path="/02_prepare" element={<RecrutingPrepare />} />
+              <Route path="home" element={<RecrutingHome />} />{" "}
+              {/* 수정된 경로 */}
+              <Route path="01_plan" element={<RecrutingPlan />} />
+              <Route path="02_prepare" element={<RecrutingPrepare />} />
               <Route
-                path="/03_document_evaluation"
+                path="03_document_evaluation"
                 element={<DocumentEvaluation />}
               />
               <Route
-                path="/04_interview_notification"
+                path="04_interview_notification"
                 element={<InterviewNotification />}
               />
               <Route
-                path="/05_interview_evaluation"
+                path="05_interview_evaluation"
                 element={<InterviewNotification />}
               />
-              <Route path="/06_final_selection" element={<FinalSelection />} />
+              <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>
           </Routes>
         </div>

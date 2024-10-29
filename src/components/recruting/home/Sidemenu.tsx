@@ -14,6 +14,8 @@ export default function Sidemenu() {
   const getDropdownContent = (index: number) => {
     switch (index) {
       case 0:
+        return [];
+      case 1:
         return [
           "합격 인원 설정하기",
           "인재상 구축하기",
@@ -21,26 +23,25 @@ export default function Sidemenu() {
           "운영진 면접 조율하기",
           "지원서 폼 제작하기"
         ];
-      case 1:
-        return ["서류 평가 준비하기", "서류 평가하기"];
       case 2:
+        return ["서류 평가 준비하기", "서류 평가하기"];
+      case 3:
         return [
           "지원자 합/불 결과",
           "서류 합격자 면접 일정 조율하기",
           "합/불 및 면접 일정 안내 문자 작성하기"
         ];
-      case 3:
-        return ["면접 평가 준비하기", "면접 평가하기"];
+
       case 4:
-        return ["지원자 합/불 결과", "합/불 및 활동 안내 문자 작성"];
+        return ["면접 평가 준비하기", "면접 평가하기"];
       default:
-        return [];
+        return ["지원자 합/불 결과", "합/불 및 활동 안내 문자 작성"];
     }
   };
 
   return (
     <div
-      className={`relative m-[30px] bg-white-100 ${
+      className={`relative bg-white-100 ${
         sidemenuClose ? "w-[80px] px-2" : "w-[300px] px-5"
       } h-[916px] rounded-[28px]  py-[26px] transition-all`}
     >
@@ -50,7 +51,7 @@ export default function Sidemenu() {
         } rounded-[14px] transition-all`}
       >
         <img
-          src="assets/ic-profile.svg"
+          src="/assets/ic-profile.svg"
           alt="동아리 프로필"
           onClick={() => setSidemenuClose(!sidemenuClose)}
           className="w-[50px] h-[50px] border border-white-100 rounded-full"
@@ -111,7 +112,7 @@ export default function Sidemenu() {
                 </p>
               )}
               <img
-                src="assets/ic-sidemenuDropdown.svg"
+                src="/assets/ic-sidemenuDropdown.svg"
                 alt="메뉴 드롭다운"
                 className={`w-[10px] h-[10px] absolute right-3 ${sidemenuClose && "hidden"}`}
               />
