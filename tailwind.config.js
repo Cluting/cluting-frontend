@@ -21,7 +21,10 @@ module.exports = {
       },
       fontSize: {
         body: ["17px", { lineHeight: "22px", fontWeight: "600" }],
-        caption: ["13px", { lineHeight: "22px", fontWeight: "500" }]
+        subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
+        callout: ["16px", { lineHeight: "21px", fontWeight: "600" }],
+        caption1: ["13px", { lineHeight: "22px", fontWeight: "500" }],
+        caption3: ["11px", { lineHeight: "13px", fontWeight: "600" }]
       },
       colors: {
         black: {
@@ -42,6 +45,7 @@ module.exports = {
         gray: {
           100: "#F2F2F7", //gray01
           200: "#E5E5EA", //gray02
+          500: "#AEAEB2", //gray05
           600: "#8E8E93", //gray06
           850: "#5C6067", //gray8.5
           900: "#3A3A3C" //gray09
