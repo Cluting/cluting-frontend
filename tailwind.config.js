@@ -20,6 +20,12 @@ module.exports = {
         // => @media (min-width: 1280px) { ... }
       },
       fontSize: {
+        body: ["17px", { lineHeight: "24px", fontWeight: "500" }],
+        headline: ["17px", { lineHeight: "22px", fontWeight: "600" }],
+        title1: ["28px", { lineHeight: "34px", fontWeight: "600" }],
+        title3: ["20px", { lineHeight: "22px", fontWeight: "600" }],
+        caption: ["13px", { lineHeight: "22px", fontWeight: "500" }],
+        caption3: ["13px", { lineHeight: "18px", fontWeight: "500" }]
         body: ["17px", { lineHeight: "22px", fontWeight: "600" }],
         subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
         callout: ["16px", { lineHeight: "21px", fontWeight: "600" }],
@@ -45,9 +51,13 @@ module.exports = {
         gray: {
           100: "#F2F2F7", //gray01
           200: "#E5E5EA", //gray02
+          300: "#D1D1D6", //gray03
+          400: "#C7C7CC", //gray04
+          500: "#AEAEB2", //gray05
           500: "#AEAEB2", //gray05
           600: "#8E8E93", //gray06
-          850: "#5C6067", //gray8.5
+          700: "#8E8E93", //gray07
+          800: "#636366", //gray08
           900: "#3A3A3C" //gray09
         },
         blue: {
@@ -63,10 +73,13 @@ module.exports = {
           950: "#1A212D"
         },
         red: {
-          100: "#FF6577"
+          100: "#FF5252"
         },
         bg: {
           100: "#E2E3E5"
+        },
+        main: {
+          100: "#8457FF"
         }
       },
       animation: {

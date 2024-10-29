@@ -5,7 +5,7 @@ import AdminProfileDropdown from "./AdminProfileDropdown";
 export default function Header() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoginPage, setIsLoginPage] = useState(false); // 로그인/회원가입 페이지 여부
-  const [adminProfile, setAdminProfile] = useState(true); //운영진 프로필 드롭다운
+  const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-white-100 px-[30px] flex justify-between items-center">

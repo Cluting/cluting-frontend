@@ -37,6 +37,27 @@ code {
     monospace;
 }
 
+/* 스크롤바 넓이 지정 */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* 스크롤바 트랙 꾸미기 */
+::-webkit-scrollbar-track {
+  z-index: 100;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #ffffff;
+  border-radius: 5px;
+}
+
+/* 스크롤바 손잡이 꾸미기 */
+::-webkit-scrollbar-thumb {
+  background: #c7c7cc;
+  border-radius: 5px;
+  height: 20%;
+}
+
 @font-face {
   font-family: "Pretendard";
   font-weight: 100;

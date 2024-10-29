@@ -11,6 +11,6 @@
   @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center cursor-pointer;
 }
 
-.hover-animation {
-  @apply hover:scale-105 transform transition-transform duration-200 ease-out;
+.signup-dropdown-list {
+  @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
 }
