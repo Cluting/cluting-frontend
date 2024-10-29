@@ -24,13 +24,10 @@ module.exports = {
         headline: ["17px", { lineHeight: "22px", fontWeight: "600" }],
         title1: ["28px", { lineHeight: "34px", fontWeight: "600" }],
         title3: ["20px", { lineHeight: "22px", fontWeight: "600" }],
-        caption: ["13px", { lineHeight: "22px", fontWeight: "500" }],
-        caption3: ["13px", { lineHeight: "18px", fontWeight: "500" }]
-        body: ["17px", { lineHeight: "22px", fontWeight: "600" }],
-        subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
-        callout: ["16px", { lineHeight: "21px", fontWeight: "600" }],
         caption1: ["13px", { lineHeight: "22px", fontWeight: "500" }],
-        caption3: ["11px", { lineHeight: "13px", fontWeight: "600" }]
+        caption3: ["13px", { lineHeight: "18px", fontWeight: "500" }],
+        subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
+        callout: ["16px", { lineHeight: "21px", fontWeight: "600" }]
       },
       colors: {
         black: {
@@ -53,7 +50,6 @@ module.exports = {
           200: "#E5E5EA", //gray02
           300: "#D1D1D6", //gray03
           400: "#C7C7CC", //gray04
-          500: "#AEAEB2", //gray05
           500: "#AEAEB2", //gray05
           600: "#8E8E93", //gray06
           700: "#8E8E93", //gray07
