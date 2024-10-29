@@ -8,6 +8,7 @@ import ClubKeyword from "./ClubKeyword";
 
 export default function RegisterClub() {
   const {
+    watch,
     register,
     setValue,
     handleSubmit,
@@ -103,11 +104,7 @@ export default function RegisterClub() {
       <hr className="w-[400px] py- border border-gray-200 my-8" />
 
       <section className="flex flex-col text-left my-10">
-        <ClubKeyword
-          register={methods.register}
-          watch={methods.watch}
-          setValue={methods.setValue}
-        />
+        <ClubKeyword register={register} watch={watch} setValue={setValue} />
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 my-8" />

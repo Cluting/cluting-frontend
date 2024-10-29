@@ -1,10 +1,5 @@
 import { useRef, useState } from "react";
-import {
-  FieldValues,
-  UseFormRegister,
-  UseFormSetValue,
-  Path
-} from "react-hook-form";
+import { FieldValues, UseFormRegister, Path } from "react-hook-form";
 
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
