@@ -56,16 +56,15 @@ export default function MainCategory() {
 
       {/*세부 카테고리 바 */}
       <div className="pt-[20px] pb-[48.4px]">
-        <div className="flex-center py-[11px] text-[15px] font-semibold bg-gray-100 rounded-[17px] gap-4">
+        <div className="flex-center whitespace-nowrap py-[11px] px-[16px] text-[15px] font-semibold bg-gray-100 rounded-[17px] gap-4">
           {detailCategories.map((category, index) => (
             <button
               key={index}
               onClick={() => setSelectedDetailCategory(index)}
-              className={`px-[26px] py-[7.87px] rounded-[15.74px] border border-[#D9D9D9] transition-colors ${
-                //요기 패딩 재설정 필요
+              className={`px-[25px] py-[6.87px] rounded-[15.74px] border transition-colors ${
                 selectedDetailCategory === index
-                  ? "bg-gray-800 text-white-100"
-                  : "bg-white-100 text-gray-800"
+                  ? "bg-gray-800 text-white-100 border-gray-800"
+                  : "bg-white-100 text-gray-800 border-[#D9D9D9]"
               }`}
             >
               {category}
