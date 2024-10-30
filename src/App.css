@@ -14,3 +14,7 @@
 .signup-dropdown-list {
   @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
 }
+
+.input-background {
+  @apply bg-white-100 border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+}
