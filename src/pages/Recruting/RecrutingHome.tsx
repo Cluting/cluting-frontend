@@ -1,10 +1,21 @@
 //리크루팅 홈
 
+import { useState } from "react";
 import RecrutingStartModal from "../../components/recruting/home/RecrutingStartModal";
 import Sidemenu from "../../components/recruting/home/Sidemenu";
 import TodoTemplate from "../../components/recruting/home/TodoTemplate";
 
 export default function RecrutingHome() {
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 가시성 상태
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
   return (
     <div className="flex-center text-[30px] ">
       {" "}
@@ -20,11 +31,16 @@ export default function RecrutingHome() {
           <p className="mt-7 text-headline text-gray-800 mb-[30px] text-left">
             아직 리크루팅을 시작하지 않았어요. 리크루팅을 시작해 주세요!
           </p>
-          <button className="py-[13px] px-[25px] bg-gray-900 text-gray-400 hover:text-white-100 rounded-[10px]">
+          <button
+            onClick={handleOpenModal}
+            className="py-[13px] px-[25px] bg-gray-900 text-gray-400 hover:text-white-100 rounded-[10px]"
+          >
             리크루팅 시작하기
           </button>
         </section>
-        <RecrutingStartModal />
+        {isModalOpen && (
+          <RecrutingStartModal onClose={handleCloseModal} /> // 모달을 여는 조건
+        )}
       </div>
     </div>
   );
