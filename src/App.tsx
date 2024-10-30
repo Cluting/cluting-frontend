@@ -12,7 +12,7 @@ export default function App() {
   return (
     <div className="App">
       <Header />
-      <div className="relative bg-gray-100 h-screen w-full pt-[55px]">
+      <div className="relative bg-white-100 h-screen w-full pt-[55px]">
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />

@@ -1,5 +1,6 @@
 import ClubCardList from "../components/recruting/home/ClubCardList";
 import MainCategory from "../components/recruting/home/MainCategory";
+import PopularClub from "../components/recruting/home/PopularClub";
 
 export default function Main() {
   return (
@@ -8,8 +9,13 @@ export default function Main() {
         <p className="absolute top-[162.01px] left-[180.53px] text-[34px] font-semibold text-left ">
           지금 가장 인기 있는<br></br>동아리 리스트
         </p>
-        <div></div>
+
+        <div className="absolute top-[85.5px] left-[551.72]">
+          {/*인기 동아리 리스트 컴포넌트 자리. absolute top-[85.5px] left-[551.72] 여기부터 컴포넌트 쫘라락 */}
+          <PopularClub />
+        </div>
       </div>
+
       <div className="container max-w-[1077px] mx-auto">
         <p className="text-[28px] font-semibold text-left pt-[45px]">
           예은님을 기다리는 동아리들 🙌🏻
