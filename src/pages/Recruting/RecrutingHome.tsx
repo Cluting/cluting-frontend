@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import RecrutingStartModal from "../../components/recruting/home/RecrutingStartModal";
-import Sidemenu from "../../components/recruting/home/Sidemenu";
+import Sidemenu from "../../components/recruting/Sidemenu";
 import TodoTemplate from "../../components/recruting/home/TodoTemplate";
 
 export default function RecrutingHome() {

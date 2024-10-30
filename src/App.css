@@ -18,3 +18,7 @@
 .input-background {
   @apply bg-white-100 border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
 }
+
+.text-state-error {
+  @apply text-caption3 text-red-100 text-left mt-[5px];
+}
