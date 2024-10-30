@@ -22,3 +22,8 @@ declare interface RegisterClubFormValue {
   keywords: string[];
   clubDescription: string;
 }
+
+declare interface RecrutingStartFormValue {
+  sessionNumber: string;
+  interviewType: string;
+}

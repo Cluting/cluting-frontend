@@ -25,6 +25,7 @@ module.exports = {
         title1: ["28px", { lineHeight: "34px", fontWeight: "600" }],
         title3: ["20px", { lineHeight: "22px", fontWeight: "600" }],
         caption1: ["13px", { lineHeight: "22px", fontWeight: "500" }],
+        caption2: ["12px", { lineHeight: "16px", fontWeight: "500" }],
         caption3: ["13px", { lineHeight: "18px", fontWeight: "500" }],
         subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
         callout: ["16px", { lineHeight: "21px", fontWeight: "600" }]
