@@ -32,22 +32,22 @@ export default function RecruitmentStep() {
       <section className="flex items-center ml-10">
         {steps.map((step, index) => (
           <div key={index} className="flex items-center">
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
               <div
                 className={`w-[70px] h-[70px] rounded-full ${
-                  currentStep >= index ? "bg-green-400" : "bg-gray-400"
+                  currentStep >= index ? "bg-gray-800" : "bg-gray-400"
                 }`}
                 onClick={() => setCurrentStep(index)} // 단계 클릭 시 상태 변경
               ></div>
-              <p className="text-caption2 text-gray-700 mt-2">{step}</p>
-              {index < steps.length - 1 && ( // 마지막 단계가 아닐 때만 아이콘 표시
-                <img
-                  src="/assets/ic-progress.svg"
-                  alt="진행 단계"
-                  className="w-[46px] h-[6px] mx-4 mb-5"
-                />
-              )}
+              <p className="w-max text-caption2 text-gray-700 mt-2">{step}</p>
             </div>
+            {index < steps.length - 1 && ( // 마지막 단계가 아닐 때만 아이콘 표시
+              <img
+                src="/assets/ic-progress.svg"
+                alt="진행 단계"
+                className="w-[46px] h-[6px] mx-4 mb-5"
+              />
+            )}
           </div>
         ))}
       </section>
