@@ -56,7 +56,7 @@ export default function MainCategory() {
 
       {/*세부 카테고리 바 */}
       <div className="pt-[20px] pb-[48.4px]">
-        <div className="flex-center py-[11px] text-[15px] font-semibold bg-gray-500 rounded-[17px] gap-4">
+        <div className="flex-center py-[11px] text-[15px] font-semibold bg-gray-100 rounded-[17px] gap-4">
           {detailCategories.map((category, index) => (
             <button
               key={index}
