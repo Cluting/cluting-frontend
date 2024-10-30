@@ -1,6 +1,19 @@
 //리크루팅 단계
 
+import { useStore } from "../../store/useStore";
+
+const steps = [
+  "계획 세우기",
+  "모집 준비하기",
+  "서류 평가하기",
+  "서류 합격자 및 면접 안내",
+  "면접 평가하기",
+  "최종 합격자 및 활동 안내"
+];
+
 export default function RecruitmentStep() {
+  const { currentStep, setCurrentStep } = useStore(); // 상태와 상태 변경 함수 가져오기
+
   return (
     <div className="flex">
       <div className="flex flex-col items-center">
@@ -12,69 +25,31 @@ export default function RecruitmentStep() {
         </section>
 
         <section className="mt-5 mb-[25px]">
-          <p className="text-subheadline">{"리크루팅을 시작해 주세요."}</p>
+          <p className="text-subheadline">{steps[currentStep]}</p>
         </section>
       </div>
 
       <section className="flex items-center ml-10">
-        <div>
-          <div className="w-[70px] h-[70px] rounded-full bg-gray-400"></div>
-          <p className="text-caption2 text-gray-700 mt-2">계획 세우기</p>
-        </div>
-        <img
-          src="/assets/ic-progress.svg"
-          alt="진행 단계"
-          className=" w-[46px] h-[6px] mx-4 mb-5"
-        />
-
-        <div>
-          <div className="w-[70px] h-[70px] rounded-full bg-gray-400"></div>
-          <p className="text-caption2 text-gray-700 mt-2">모집 준비하기</p>
-        </div>
-        <img
-          src="/assets/ic-progress.svg"
-          alt="진행 단계"
-          className=" w-[46px] h-[6px] mx-4 mb-5"
-        />
-
-        <div>
-          <div className="w-[70px] h-[70px] rounded-full bg-gray-400"></div>
-          <p className="text-caption2 text-gray-700 mt-2">서류 평가하기</p>
-        </div>
-        <img
-          src="/assets/ic-progress.svg"
-          alt="진행 단계"
-          className=" w-[46px] h-[6px] mx-4 mb-5"
-        />
-
-        <div>
-          <div className="w-[70px] h-[70px] rounded-full bg-gray-400"></div>
-          <p className="text-caption2 text-gray-700 mt-2">
-            서류 합격자 및 <br /> 면접 안내
-          </p>
-        </div>
-        <img
-          src="/assets/ic-progress.svg"
-          alt="진행 단계"
-          className=" w-[46px] h-[6px] mx-4 mb-5"
-        />
-
-        <div>
-          <div className="w-[70px] h-[70px] rounded-full bg-gray-400"></div>
-          <p className="text-caption2 text-gray-700 mt-2">면접 평가하기</p>
-        </div>
-        <img
-          src="/assets/ic-progress.svg"
-          alt="진행 단계"
-          className=" w-[46px] h-[6px] mx-4 mb-5"
-        />
-
-        <div>
-          <div className="w-[70px] h-[70px] rounded-full bg-gray-400"></div>
-          <p className="text-caption2 text-gray-700 mt-2">
-            최종 합격자 및 <br /> 활동 안내
-          </p>
-        </div>
+        {steps.map((step, index) => (
+          <div key={index} className="flex items-center">
+            <div className="flex flex-col">
+              <div
+                className={`w-[70px] h-[70px] rounded-full ${
+                  currentStep >= index ? "bg-green-400" : "bg-gray-400"
+                }`}
+                onClick={() => setCurrentStep(index)} // 단계 클릭 시 상태 변경
+              ></div>
+              <p className="text-caption2 text-gray-700 mt-2">{step}</p>
+              {index < steps.length - 1 && ( // 마지막 단계가 아닐 때만 아이콘 표시
+                <img
+                  src="/assets/ic-progress.svg"
+                  alt="진행 단계"
+                  className="w-[46px] h-[6px] mx-4 mb-5"
+                />
+              )}
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   );
