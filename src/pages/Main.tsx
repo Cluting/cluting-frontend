@@ -5,13 +5,14 @@ import PopularClub from "../components/recruting/home/PopularClub";
 export default function Main() {
   return (
     <div>
-      <div className="relative w-full h-[378px] bg-[#E2E3E5] ">
-        <p className="absolute top-[162.01px] left-[180.53px] text-[34px] font-semibold text-left ">
+      <div className="relative w-full h-[378px] bg-[#E2E3E5]">
+        <p className="absolute top-[162.01px] left-[180.53px] text-[34px] font-semibold text-left">
           지금 가장 인기 있는<br></br>동아리 리스트
         </p>
 
-        <div className="absolute top-[85.5px] left-[551.72]">
-          {/*인기 동아리 리스트 컴포넌트 자리. absolute top-[85.5px] left-[551.72] 여기부터 컴포넌트 쫘라락 */}
+        <div className="absolute top-[85.5px] left-[551.72px] flex-center gap-[25.36px]">
+          <PopularClub />
+          <PopularClub />
           <PopularClub />
         </div>
       </div>
