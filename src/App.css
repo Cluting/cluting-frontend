@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -47,14 +51,20 @@
 }
 
 /* 자주 사용하는 스타일을 재사용하기 위해 컴포넌트화*/
-.flex-center {
-  @apply flex justify-center items-center;
-}
+@layer components {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
 
-.dropdown-list {
-  @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center;
-}
+  .dropdown-list {
+    @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center;
+  }
 
-.hover-animation {
-  @apply hover:scale-105 transform transition-transform duration-200 ease-out;
+  .hover-animation {
+    @apply hover:scale-105 transform transition-transform duration-200 ease-out;
+  }
+
+  .small-dropdown-list {
+    @apply w-[114px] h-[36px] p-2 rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center;
+  }
 }
