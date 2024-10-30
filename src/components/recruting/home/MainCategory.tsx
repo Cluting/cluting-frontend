@@ -19,10 +19,6 @@ export default function MainCategory() {
   ];
   return (
     <div>
-      <p className="text-[28px] font-semibold text-left pt-[45px]">
-        예은님을 기다리는 동아리들 🙌🏻
-      </p>
-
       {/*전체/연합/교내 + 드롭다운 */}
       <div className="flex justify-between items-end pt-[35px]">
         <div className="flex-center">
