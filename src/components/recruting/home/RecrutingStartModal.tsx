@@ -23,8 +23,8 @@ export default function RecrutingStartModal({
 
   return (
     <ModalPortal>
-      <div className="z-[1000] fixed inset-0 bg-gray-900 bg-opacity-30 flex items-center justify-center z-50">
-        <div className="relative m-[30px] flex flex-col items-center bg-white-100 w-[545px] h-auto rounded-[12px]">
+      <div className="modal-style">
+        <div className="modal-animation relative m-[30px] flex flex-col items-center bg-white-100 w-[545px] h-auto rounded-[12px]">
           <h1 className="text-title3 mt-[28px] mb-[19px]">
             '잇타' 리크루팅 시작하기
           </h1>

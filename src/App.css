@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* 자주 사용하는 스타일을 재사용하기 위해 컴포넌트화*/
 .flex-center {
   @apply flex justify-center items-center;
@@ -21,4 +31,11 @@
 
 .text-state-error {
   @apply text-caption3 text-red-100 text-left mt-[5px];
+}
+
+.modal-style {
+  @apply z-[1000] fixed inset-0 bg-gray-900 bg-opacity-30 flex items-center justify-center;
+}
+.modal-animation {
+  animation: modal-enter 0.3s ease-out forwards; /* 모달 진입 애니메이션 */
 }
