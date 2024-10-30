@@ -56,7 +56,7 @@ export default function Input<T extends FieldValues>({
       {isDropdown && (
         <>
           <img
-            src="assets/ic-dropdown.svg"
+            src="/assets/ic-dropdown.svg"
             alt="드롭다운"
             className="absolute right-5 top-[40px] w-[10px] h-[10px] cursor-pointer"
           />
