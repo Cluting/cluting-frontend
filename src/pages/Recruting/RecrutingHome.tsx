@@ -3,8 +3,9 @@
 import { useState } from "react";
 import RecrutingStartModal from "../../components/recruting/home/RecrutingStartModal";
 import Sidemenu from "../../components/recruting/Sidemenu";
-import TodoTemplate from "../../components/recruting/home/TodoTemplate";
+import TodoTemplate from "../../components/recruting/home/_todo/TodoTemplate";
 import RecruitmentStep from "../../components/recruting/RecruitmentStep";
+import RecrutingCalender from "../../components/recruting/home/_calender/RecrutingCalender";
 
 export default function RecrutingHome() {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 가시성 상태
@@ -24,6 +25,8 @@ export default function RecrutingHome() {
       <div className="flex flex-col">
         <div className="w-[1100px] h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
           <RecruitmentStep />
+
+          <RecrutingCalender />
           <section className="w-min">
             <p className="text-headline mb-[30px] text-left">개인 TODO</p>
             <TodoTemplate />

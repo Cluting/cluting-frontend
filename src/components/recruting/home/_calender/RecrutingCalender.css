@@ -1,0 +1,47 @@
+.react-calendar {
+  width: 600px;
+  max-width: 100%;
+  background: white;
+  font-family: "Pretendard";
+  border-radius: 12px;
+  line-height: 1.5em;
+  border: 1px solid #c7c7cc;
+}
+
+/* 캘린더 내비게이션 (월/연도 이동) */
+.react-calendar__navigation {
+  display: flex; /* 요소를 가로로 나열 */
+  height: 48px; /* 높이 설정 */
+  font-size: 16px;
+  margin: 15px;
+}
+/* 기본 타일 스타일 */
+.react-calendar__tile {
+  max-width: 100%;
+  padding: 10px 10px;
+  text-align: right;
+  font-size: 13px;
+}
+/* 비활성화된 타일 스타일 */
+.react-calendar__tile:disabled {
+  background-color: #f0f0f0; /* 배경색 회색 */
+  color: #ababab; /* 텍스트 회색 */
+}
+
+/* 현재 날짜 타일 스타일 */
+.react-calendar__tile--now {
+  background: #ffff76;
+  color: #121212;
+}
+
+/* 요일 제목 스타일 (예: 월, 화) */
+.react-calendar__month-view__weekdays {
+  text-align: right;
+  text-transform: uppercase; /* 대문자로 변환 */
+  font-size: 13px;
+}
+
+/* 주말 (토, 일) 색상 */
+.react-calendar__month-view__days__day--weekend {
+  background: #e5e5ea; /* 빨간색으로 표시 */
+}
