@@ -15,8 +15,8 @@ export default function App() {
   return (
     <div className="App">
       <Header />
-      <div className="relative bg-bg-100 h-full w-full pt-[55px]">
-        <div className="relative bg-gray-100 h-full w-full pt-[55px]">
+      <div className="relative bg-white-100 h-full w-full">
+        <div className="relative bg-white-100 h-full w-full pt-[55px]">
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />

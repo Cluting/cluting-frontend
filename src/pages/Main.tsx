@@ -1,4 +1,3 @@
-import Pagination from "react-js-pagination";
 import ClubCardList from "../components/recruting/home/ClubCardList";
 import MainBanner from "../components/recruting/home/MainBanner";
 import MainCategory from "../components/recruting/home/MainCategory";
