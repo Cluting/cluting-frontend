@@ -10,7 +10,6 @@
     "classnames": "^2.5.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-js-pagination": "^3.0.3",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
@@ -45,7 +44,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-js-pagination": "^3.0.7",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
