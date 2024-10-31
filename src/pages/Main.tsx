@@ -1,6 +1,8 @@
+import Pagination from "react-js-pagination";
 import ClubCardList from "../components/recruting/home/ClubCardList";
 import MainBanner from "../components/recruting/home/MainBanner";
 import MainCategory from "../components/recruting/home/MainCategory";
+import Paging from "../components/recruting/home/Paging";
 
 export default function Main() {
   return (
@@ -18,6 +20,10 @@ export default function Main() {
 
       <div className="container max-w-[1072px] mx-auto">
         <ClubCardList />
+      </div>
+
+      <div className="pt-[96px] pb-[155px]">
+        <Paging />
       </div>
     </div>
   );
