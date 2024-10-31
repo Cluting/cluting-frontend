@@ -6,50 +6,16 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
+@keyframes modal-enter {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(-40px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
-
-@keyframes scaleUp {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.05);
-  }
-}
-
 /* 자주 사용하는 스타일을 재사용하기 위해 컴포넌트화*/
 @layer components {
   .flex-center {
@@ -57,11 +23,26 @@
   }
 
   .dropdown-list {
-    @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center;
+    @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center cursor-pointer;
   }
 
-  .hover-animation {
-    @apply hover:scale-105 transform transition-transform duration-200 ease-out;
+  .signup-dropdown-list {
+    @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
+  }
+
+  .input-background {
+    @apply bg-white-100 border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+  }
+
+  .text-state-error {
+    @apply text-caption3 text-red-100 text-left mt-[5px];
+  }
+
+  .modal-style {
+    @apply z-[1000] fixed inset-0 bg-gray-900 bg-opacity-30 flex items-center justify-center;
+  }
+  .modal-animation {
+    animation: modal-enter 0.3s ease-out forwards; /* 모달 진입 애니메이션 */
   }
 
   .small-dropdown-list {

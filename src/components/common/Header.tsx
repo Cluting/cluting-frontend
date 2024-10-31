@@ -5,7 +5,7 @@ import AdminProfileDropdown from "./AdminProfileDropdown";
 export default function Header() {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoginPage, setIsLoginPage] = useState(false); // 로그인/회원가입 페이지 여부
-  const [adminProfile, setAdminProfile] = useState(true); //운영진 프로필 드롭다운
+  const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-white-100 px-[30px] flex justify-between items-center">
@@ -13,7 +13,7 @@ export default function Header() {
       {!isLoginPage && (
         <div className="flex items-center">
           <img
-            src="assets/ic-search.svg"
+            src="/assets/ic-search.svg"
             alt="검색"
             className="w-[35px] h-[35px] mx-4"
           />
@@ -22,12 +22,12 @@ export default function Header() {
               {isLogin && (
                 <>
                   <img
-                    src="assets/ic-notice.svg"
+                    src="/assets/ic-notice.svg"
                     alt="알림"
                     className="w-[35px] h-[35px] mx-4"
                   />
                   <img
-                    src="assets/ic-profile.svg"
+                    src="/assets/ic-profile.svg"
                     alt="개인 계정 프로필"
                     className="w-[35px] h-[35px] mx-3"
                   />
@@ -38,12 +38,12 @@ export default function Header() {
                     }}
                   >
                     <img
-                      src="assets/ic-profile.svg"
+                      src="/assets/ic-profile.svg"
                       alt="운영자 계정 프로필"
                       className="w-[35px] h-[35px] mx-3"
                     />
                     <img
-                      src="assets/ic-dropdown.svg"
+                      src="/assets/ic-dropdown.svg"
                       alt="운영자 계정 프로필 드롭다운"
                       className="w-[10px] h-[10px]"
                     />

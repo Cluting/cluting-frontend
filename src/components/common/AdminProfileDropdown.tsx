@@ -4,7 +4,7 @@ export default function AdminProfileDropdown() {
       <ul>
         <li className="dropdown-list">
           <img
-            src="assets/ic-profile.svg"
+            src="/assets/ic-profile.svg"
             alt="프로필"
             className="w-[35px] h-[35px] mx-3"
           />
@@ -17,7 +17,7 @@ export default function AdminProfileDropdown() {
         </li>
         <li className="dropdown-list">
           <img
-            src="assets/ic-profile.svg"
+            src="/assets/ic-profile.svg"
             alt="프로필"
             className="w-[35px] h-[35px] mx-3"
           />
@@ -30,7 +30,7 @@ export default function AdminProfileDropdown() {
         </li>
         <li className="dropdown-list">
           <img
-            src="assets/ic-profile.svg"
+            src="/assets/ic-profile.svg"
             alt="프로필"
             className="w-[35px] h-[35px] mx-3"
           />
@@ -43,7 +43,7 @@ export default function AdminProfileDropdown() {
         </li>
         <li className="dropdown-list">
           <img
-            src="assets/ic-profile.svg"
+            src="/assets/ic-profile.svg"
             alt="프로필"
             className="w-[35px] h-[35px] mx-3"
           />
@@ -56,7 +56,7 @@ export default function AdminProfileDropdown() {
         </li>
         <li className="dropdown-list">
           <img
-            src="assets/ic-add.svg"
+            src="/assets/ic-add.svg"
             alt="운영자 계정 프로필"
             className="w-[35px] h-[35px] mx-3"
           />
