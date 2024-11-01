@@ -75,7 +75,10 @@ export default function AnnouncementDetails() {
         )}
       </button>
 
-      <label className="mt-6">공고 제목</label>
+      <label className="mt-6">
+        {" "}
+        <span className="text-main-100">* </span> 공고 제목
+      </label>
       <input
         type="text"
         aria-label="공고 제목"
@@ -86,25 +89,39 @@ export default function AnnouncementDetails() {
         className="input-background input-style"
       />
 
-      <label className="mt-6">모집 기간</label>
+      <label className="mt-6">
+        {" "}
+        <span className="text-main-100">* </span> 모집 기간
+      </label>
 
       <div className="w-full flex gap-2">
         <input
           type="date"
+          required
           min={new Date().toISOString().split("T")[0]}
           aria-label="모집 시작일"
           className="w-full input-background input-style"
         />
         <input
           type="date"
+          required
           min={new Date().toISOString().split("T")[0]}
           aria-label="모집 종료일"
           className="w-full input-background input-style"
         />
       </div>
 
-      <label className="mt-6">서류 합격자 발표일</label>
-      <input type="date" className="input-background input-style" />
+      <label className="mt-6">
+        {" "}
+        <span className="text-main-100">* </span> 서류 합격자 발표일
+      </label>
+      <input type="date" required className="input-background input-style" />
+
+      <label className="mt-6">
+        {" "}
+        <span className="text-main-100">* </span> 최종 합격자 발표일
+      </label>
+      <input type="date" required className="input-background input-style" />
 
       <label className="mt-6">모집 인원</label>
       <input
