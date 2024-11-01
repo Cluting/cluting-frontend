@@ -10,7 +10,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 export default function RecrutingCalender() {
   const [value, onChange] = useState<Value>(new Date());
   return (
-    <div className="mt-[30px] mx-10 bg-white-100 w-full rounded-[12px]">
+    <div className="mt-[30px] mx-10 bg-white-100 ">
       <div className="flex gap-10 text-left">
         <section className="w-[260px] text-caption3 flex flex-col ">
           <div className="text-headline mb-5">리크루팅 일정</div>
@@ -27,7 +27,12 @@ export default function RecrutingCalender() {
             최종 합격 리스트 보기
           </div>
         </section>
-        <Calendar onChange={onChange} value={value} />
+        <Calendar
+          locale="ko"
+          selectRange={true}
+          onChange={onChange}
+          value={value}
+        />
       </div>
     </div>
   );

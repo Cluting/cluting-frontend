@@ -7,6 +7,7 @@ import TodoTemplate from "../../components/recruting/home/_todo/TodoTemplate";
 import RecruitmentStep from "../../components/recruting/RecruitmentStep";
 import AddAdmin from "../../components/recruting/home/AddAdmin";
 import AddAdminModal from "../../components/recruting/home/AddAdminModal";
+import RecrutingCalender from "../../components/recruting/home/_calender/RecrutingCalender";
 
 export default function RecrutingHome() {
   //운영진 추가 모달
@@ -32,8 +33,9 @@ export default function RecrutingHome() {
       {" "}
       <Sidemenu />
       <div className="flex flex-col">
-        <div className="w-[1100px] h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
+        <div className="w-[1100px]  h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
           <RecruitmentStep />
+          <RecrutingCalender />
           <div className="px-10 py-[30px]">
             <div className="flex gap-11">
               <section className="w-min">
@@ -66,7 +68,7 @@ export default function RecrutingHome() {
           </div>
         </div>
 
-        <section className="w-[1100px] bg-gray-400 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px]">
+        <section className="w-[1100px] mb-10 bg-gray-400 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px]">
           <p className="mt-7 text-headline text-gray-800 mb-[30px] text-left">
             아직 리크루팅을 시작하지 않았어요. 리크루팅을 시작해 주세요!
           </p>

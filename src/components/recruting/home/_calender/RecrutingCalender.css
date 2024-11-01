@@ -11,7 +11,7 @@
 /* 캘린더 내비게이션 (월/연도 이동) */
 .react-calendar__navigation {
   display: flex; /* 요소를 가로로 나열 */
-  height: 48px; /* 높이 설정 */
+  height: 30px; /* 높이 설정 */
   font-size: 16px;
   margin: 15px;
 }

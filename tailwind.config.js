@@ -76,7 +76,8 @@ module.exports = {
           100: "#E2E3E5"
         },
         main: {
-          100: "#8457FF"
+          100: "#8457FF",
+          200: "#3A3A3C" //다크모드 색상
         }
       },
       animation: {
