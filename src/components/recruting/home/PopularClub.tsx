@@ -11,6 +11,9 @@ export default function PopularClub() {
         alt="인기 동아리(임시: 잇타)"
         className="absolute w-full h-full object-cover"
       />
+      <div className="absolute z-50 top-[18px] left-[192px] w-[40px] h-[20px] bg-white-100 border border-[#E2E3E5] rounded-[26.13px] text-[10.26px] flex-center">
+        연합
+      </div>
       <div className="absolute inset-0 flex flex-col justify-end pb-[17.48px]">
         <p className="px-[23px] text-white-100 text-[22px] font-semibold text-left leading-[30px]">
           IT 서비스<br></br>동아리 잇타
