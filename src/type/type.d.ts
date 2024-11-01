@@ -33,6 +33,7 @@ interface AnnouncementForm {
   recruitmentStart: Date;
   recruitmentEnd: Date;
   announcementDate: Date;
+  finalResultAnnouncementDate: Date;
   recruitsCount: number;
   activityStart: Date;
   activityEnd: Date;

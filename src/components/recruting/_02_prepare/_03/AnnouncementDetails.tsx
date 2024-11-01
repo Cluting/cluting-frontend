@@ -1,6 +1,7 @@
 //2-3 공고 작성
 
 import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function AnnouncementDetails() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -32,21 +33,19 @@ export default function AnnouncementDetails() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Validate all fields
-    // Create FormData object
-    // Submit to API
-    try {
-      // API call
-    } catch (error) {
-      // Error handling
-    }
-  };
+  //Form 제출
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues
+  } = useForm<AnnouncementForm>({ mode: "onChange" });
+
+  const onSubmit = handleSubmit((data) => console.log(data));
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       className="flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
     >
       <label className="mt-6">포스터 업로드</label>
@@ -64,6 +63,7 @@ export default function AnnouncementDetails() {
         ) : (
           <div>
             <input
+              {...register("posterImage")}
               ref={fileInputRef}
               type="file"
               accept="image/*"
@@ -80,6 +80,7 @@ export default function AnnouncementDetails() {
         <span className="text-main-100">* </span> 공고 제목
       </label>
       <input
+        {...register("title")}
         type="text"
         aria-label="공고 제목"
         required
@@ -96,6 +97,7 @@ export default function AnnouncementDetails() {
 
       <div className="w-full flex gap-2">
         <input
+          {...register("recruitmentStart")}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
@@ -103,6 +105,7 @@ export default function AnnouncementDetails() {
           className="w-full input-background input-style"
         />
         <input
+          {...register("recruitmentEnd")}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
@@ -115,16 +118,27 @@ export default function AnnouncementDetails() {
         {" "}
         <span className="text-main-100">* </span> 서류 합격자 발표일
       </label>
-      <input type="date" required className="input-background input-style" />
+      <input
+        {...register("announcementDate")}
+        type="date"
+        required
+        className="input-background input-style"
+      />
 
       <label className="mt-6">
         {" "}
         <span className="text-main-100">* </span> 최종 합격자 발표일
       </label>
-      <input type="date" required className="input-background input-style" />
+      <input
+        {...register("finalResultAnnouncementDate")}
+        type="date"
+        required
+        className="input-background input-style"
+      />
 
       <label className="mt-6">모집 인원</label>
       <input
+        {...register("recruitsCount")}
         type="number"
         min="1"
         max="1000"
@@ -135,26 +149,41 @@ export default function AnnouncementDetails() {
 
       <label className="mt-6">활동 기간</label>
       <div className="w-full flex gap-2">
-        <input type="date" className="w-full input-background input-style" />
-        <input type="date" className="w-full input-background input-style" />
+        <input
+          {...register("activityStart")}
+          type="date"
+          className="w-full input-background input-style"
+        />
+        <input
+          {...register("activityEnd")}
+          type="date"
+          className="w-full input-background input-style"
+        />
       </div>
 
       <label className="mt-6">활동 요일 및 시간</label>
       <div className="w-full flex gap-2">
         <input
+          {...register("activityDay")}
           type="text"
           placeholder="활동 요일을 입력해 주세요."
           className="w-full input-background input-style"
         />
-        <input type="time" className="w-full input-background input-style" />
+        <input
+          {...register("activityTime")}
+          type="time"
+          className="w-full input-background input-style"
+        />
       </div>
 
       <label className="mt-6">동아리 회비</label>
       <input
+        {...register("clubFee")}
         type="text"
         placeholder="동아리 회비를 입력해 주세요."
         className="input-background input-style mb-12"
       />
+      <button type="submit">제출 테스트</button>
     </form>
   );
 }
