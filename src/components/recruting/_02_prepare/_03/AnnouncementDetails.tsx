@@ -2,35 +2,14 @@
 
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import useImageUpload from "../../../../hooks/useImageUpload";
 
 export default function AnnouncementDetails() {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const { previewUrl, errorMessage, handleImageChange } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
     fileInputRef.current?.click(); // 클릭 시 파일 선택 창 열기
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = event.target.files;
-    if (fileList) {
-      const file = fileList[0];
-      // File type validation
-      if (!file.type.startsWith("image/")) {
-        alert("Please upload an image file");
-        return;
-      }
-      // File size validation (e.g., 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size should be less than 5MB");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   //Form 제출
@@ -151,11 +130,13 @@ export default function AnnouncementDetails() {
       <div className="w-full flex gap-2">
         <input
           {...register("activityStart")}
+          aria-label="활동 시작일"
           type="date"
           className="w-full input-background input-style"
         />
         <input
           {...register("activityEnd")}
+          aria-label="활동 종료일"
           type="date"
           className="w-full input-background input-style"
         />
@@ -180,6 +161,8 @@ export default function AnnouncementDetails() {
       <input
         {...register("clubFee")}
         type="text"
+        pattern="[0-9,]+"
+        aria-label="동아리 회비"
         placeholder="동아리 회비를 입력해 주세요."
         className="input-background input-style mb-12"
       />
