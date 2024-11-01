@@ -48,4 +48,9 @@
   .small-dropdown-list {
     @apply w-[114px] h-[36px] p-2 rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center;
   }
+
+  /*2-3 공용 스타일 정의*/
+  .input-style {
+    @apply rounded-[8px] py-[11px] px-[20px] mt-2;
+  }
 }

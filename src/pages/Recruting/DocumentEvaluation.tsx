@@ -3,7 +3,7 @@
 import Sidemenu from "../../components/recruting/Sidemenu";
 export default function DocumentEvaluation() {
   return (
-    <div className="text-[30px] ">
+    <div className="flex bg-gray-100 px-16 py-9">
       {" "}
       <Sidemenu />
     </div>
