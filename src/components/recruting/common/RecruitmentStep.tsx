@@ -1,6 +1,6 @@
 //리크루팅 단계
 
-import { useStore } from "../../store/useStore";
+import { useStore } from "../../../store/useStore";
 
 const steps = [
   "계획 세우기",

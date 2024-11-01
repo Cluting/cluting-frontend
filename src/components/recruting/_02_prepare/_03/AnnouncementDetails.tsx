@@ -51,25 +51,51 @@ export default function AnnouncementDetails() {
       </button>
 
       <label className="mt-6">공고 제목</label>
-      <input type="text" className="input-background input-style" />
+      <input
+        type="text"
+        placeholder="ex) 환경 동아리 OO 7기 동아리원 모집"
+        className="input-background input-style"
+      />
 
       <label className="mt-6">모집 기간</label>
-      <input type="date" className="input-background input-style" />
+
+      <div className="w-full flex gap-2">
+        <input type="date" className="w-full input-background input-style" />
+        <input type="date" className="w-full input-background input-style" />
+      </div>
 
       <label className="mt-6">서류 합격자 발표일</label>
       <input type="date" className="input-background input-style" />
 
       <label className="mt-6">모집 인원</label>
-      <input type="number" className="input-background input-style" />
+      <input
+        type="number"
+        placeholder="모집 인원을 작성해 주세요."
+        className="input-background input-style"
+      />
 
       <label className="mt-6">활동 기간</label>
-      <input type="date" className="input-background input-style" />
+      <div className="w-full flex gap-2">
+        <input type="date" className="w-full input-background input-style" />
+        <input type="date" className="w-full input-background input-style" />
+      </div>
 
       <label className="mt-6">활동 요일 및 시간</label>
-      <input type="date" className="input-background input-style" />
+      <div className="w-full flex gap-2">
+        <input
+          type="text"
+          placeholder="활동 요일을 입력해 주세요."
+          className="w-full input-background input-style"
+        />
+        <input type="time" className="w-full input-background input-style" />
+      </div>
 
       <label className="mt-6">동아리 회비</label>
-      <input type="text" className="input-background input-style mb-12" />
+      <input
+        type="text"
+        placeholder="동아리 회비를 입력해 주세요."
+        className="input-background input-style mb-12"
+      />
     </form>
   );
 }
