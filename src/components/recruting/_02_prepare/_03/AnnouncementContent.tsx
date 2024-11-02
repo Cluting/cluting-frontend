@@ -1,4 +1,5 @@
 import React, { useRef, FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
 const MAX_CHARS = 2000;
 
 const AnnouncementContent: React.FC = () => {
@@ -14,15 +15,18 @@ const AnnouncementContent: React.FC = () => {
     }
   };
   //FIX: onInput 리렌더링 문제 고민해보기, 디바운싱 고민해서 적용
+
+  //TODO: Form 연결 후 공고 글자수 에러 처리 추가
   return (
-    <div className="relative">
+    <div className="relative ">
       <textarea
         ref={textareaRef}
         aria-label="공고 상세 내용"
         placeholder="상세 본문 내용을 작성해 주세요"
         maxLength={2000}
         onInput={handleInput}
-        className="input-background w-full min-h-[290px] mx-8 px-[26px] py-[22px] rounded-[12px] mb-[50px] overflow-hidden"
+        className={`bg-white-100 custom-shadow cursor-pointer border border-gray-200 focus:outline-none disabled:border-red-100
+         w-full min-h-[290px] mx-8 px-[26px] py-[22px] rounded-[12px] mb-[50px] overflow-hidden ${errors.finalResultAnnouncementDate ? "border-red-100" : ""}`}
         style={{ resize: "none" }} // 수동 크기 조절 비활성화
       />
 

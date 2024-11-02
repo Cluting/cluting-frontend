@@ -18,14 +18,14 @@ export default function AnnouncementDetails() {
     handleSubmit,
     formState: { errors },
     getValues
-  } = useForm<AnnouncementForm>({ mode: "onChange" });
+  } = useForm<AnnouncementForm>({ mode: "onBlur" });
 
   const onSubmit = handleSubmit((data) => console.log(data));
 
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
+      className="custom-shadow flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
     >
       <label className="mt-6">포스터 업로드</label>
       <button
@@ -59,17 +59,17 @@ export default function AnnouncementDetails() {
         <span className="text-main-100">* </span> 공고 제목
       </label>
       <input
-        {...register("title", { required: true })}
+        {...register("title", { required: "필수 입력 사항입니다." })}
         type="text"
         aria-label="공고 제목"
         required
         minLength={5}
         maxLength={100}
         placeholder="ex) 환경 동아리 OO 7기 동아리원 모집"
-        className="input-background input-style"
+        className={`input-background input-style ${errors.title ? "border-red-100" : ""}`}
       />
-      {errors?.title?.type === "required" && (
-        <p className="text-state-error">필수 입력 사항입니다.</p>
+      {errors.title && (
+        <p className="text-state-error">{errors.title.message}</p>
       )}
 
       <label className="mt-6">
@@ -79,39 +79,41 @@ export default function AnnouncementDetails() {
 
       <div className="w-full flex gap-2">
         <input
-          {...register("recruitmentStart", { required: true })}
+          {...register("recruitmentStart", {
+            required: "필수 선택 사항입니다."
+          })}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
           aria-label="모집 시작일"
-          className="w-full input-background input-style"
+          className={`w-full input-background input-style ${errors.recruitmentStart ? "border-red-100" : ""}`}
         />
         <input
-          {...register("recruitmentEnd", { required: true })}
+          {...register("recruitmentEnd", { required: "필수 선택 사항입니다." })}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
           aria-label="모집 종료일"
-          className="w-full input-background input-style"
+          className={`w-full input-background input-style ${errors.recruitmentEnd ? "border-red-100" : ""}`}
         />
       </div>
-      {errors?.recruitmentStart?.type === "required" ||
-        (errors?.recruitmentEnd?.type === "required" && (
-          <p className="text-state-error">필수 입력 사항입니다.</p>
-        ))}
+      {(errors.recruitmentStart || errors.recruitmentEnd) && (
+        <p className="text-state-error">필수 선택 사항입니다.</p>
+      )}
 
       <label className="mt-6">
         {" "}
         <span className="text-main-100">* </span> 서류 합격자 발표일
       </label>
       <input
-        {...register("announcementDate", { required: true })}
+        {...register("announcementDate", { required: "필수 선택 사항입니다." })}
         type="date"
+        aria-label="서류 합격자 발표일"
         required
-        className="input-background input-style"
+        className={`input-background input-style ${errors.announcementDate ? "border-red-100" : ""}`}
       />
-      {errors?.announcementDate?.type === "required" && (
-        <p className="text-state-error">필수 입력 사항입니다.</p>
+      {errors.announcementDate && (
+        <p className="text-state-error">{errors.announcementDate.message}</p>
       )}
 
       <label className="mt-6">
@@ -119,15 +121,19 @@ export default function AnnouncementDetails() {
         <span className="text-main-100">* </span> 최종 합격자 발표일
       </label>
       <input
-        {...register("finalResultAnnouncementDate")}
+        {...register("finalResultAnnouncementDate", {
+          required: "필수 선택 사항입니다."
+        })}
         type="date"
+        aria-label="최종 합격자 발표일"
         required
-        className="input-background input-style"
+        className={`input-background input-style ${errors.finalResultAnnouncementDate ? "border-red-100" : ""}`}
       />
-      {errors?.finalResultAnnouncementDate?.type === "required" && (
-        <p className="text-state-error">필수 입력 사항입니다.</p>
+      {errors.finalResultAnnouncementDate && (
+        <p className="text-state-error">
+          {errors.finalResultAnnouncementDate.message}
+        </p>
       )}
-
       <label className="mt-6">모집 인원</label>
       <input
         {...register("recruitsCount")}
@@ -160,11 +166,13 @@ export default function AnnouncementDetails() {
         <input
           {...register("activityDay")}
           type="text"
+          aria-label="활동 요일"
           placeholder="활동 요일을 입력해 주세요."
           className="w-full input-background input-style"
         />
         <input
           {...register("activityTime")}
+          aria-label="활동 시간"
           type="time"
           className="w-full input-background input-style"
         />

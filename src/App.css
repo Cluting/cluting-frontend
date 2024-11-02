@@ -21,6 +21,9 @@
   .flex-center {
     @apply flex justify-center items-center;
   }
+  .custom-shadow {
+    @apply shadow-[0px_4px_21.6px_rgba(0,0,0,0.05)];
+  }
 
   .dropdown-list {
     @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center cursor-pointer;

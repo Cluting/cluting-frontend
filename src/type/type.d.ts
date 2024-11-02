@@ -41,4 +41,5 @@ interface AnnouncementForm {
   activityTime: string;
   clubFee: string;
   posterImage?: File;
+  content: string;
 }
