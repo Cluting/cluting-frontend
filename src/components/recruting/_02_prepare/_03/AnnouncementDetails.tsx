@@ -59,7 +59,7 @@ export default function AnnouncementDetails() {
         <span className="text-main-100">* </span> 공고 제목
       </label>
       <input
-        {...register("title")}
+        {...register("title", { required: true })}
         type="text"
         aria-label="공고 제목"
         required
@@ -68,6 +68,9 @@ export default function AnnouncementDetails() {
         placeholder="ex) 환경 동아리 OO 7기 동아리원 모집"
         className="input-background input-style"
       />
+      {errors?.title?.type === "required" && (
+        <p className="text-state-error">필수 입력 사항입니다.</p>
+      )}
 
       <label className="mt-6">
         {" "}
@@ -76,7 +79,7 @@ export default function AnnouncementDetails() {
 
       <div className="w-full flex gap-2">
         <input
-          {...register("recruitmentStart")}
+          {...register("recruitmentStart", { required: true })}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
@@ -84,7 +87,7 @@ export default function AnnouncementDetails() {
           className="w-full input-background input-style"
         />
         <input
-          {...register("recruitmentEnd")}
+          {...register("recruitmentEnd", { required: true })}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
@@ -92,17 +95,24 @@ export default function AnnouncementDetails() {
           className="w-full input-background input-style"
         />
       </div>
+      {errors?.recruitmentStart?.type === "required" ||
+        (errors?.recruitmentEnd?.type === "required" && (
+          <p className="text-state-error">필수 입력 사항입니다.</p>
+        ))}
 
       <label className="mt-6">
         {" "}
         <span className="text-main-100">* </span> 서류 합격자 발표일
       </label>
       <input
-        {...register("announcementDate")}
+        {...register("announcementDate", { required: true })}
         type="date"
         required
         className="input-background input-style"
       />
+      {errors?.announcementDate?.type === "required" && (
+        <p className="text-state-error">필수 입력 사항입니다.</p>
+      )}
 
       <label className="mt-6">
         {" "}
@@ -114,6 +124,9 @@ export default function AnnouncementDetails() {
         required
         className="input-background input-style"
       />
+      {errors?.finalResultAnnouncementDate?.type === "required" && (
+        <p className="text-state-error">필수 입력 사항입니다.</p>
+      )}
 
       <label className="mt-6">모집 인원</label>
       <input
