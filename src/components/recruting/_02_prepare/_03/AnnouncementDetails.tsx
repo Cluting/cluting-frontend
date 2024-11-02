@@ -19,7 +19,6 @@ export default function AnnouncementDetails() {
     formState: { errors },
     getValues
   } = useForm<AnnouncementForm>({ mode: "onBlur" });
-
   const onSubmit = handleSubmit((data) => console.log(data));
 
   return (
@@ -88,8 +87,21 @@ export default function AnnouncementDetails() {
           aria-label="모집 시작일"
           className={`w-full input-background input-style ${errors.recruitmentStart ? "border-red-100" : ""}`}
         />
+        {errors.recruitmentStart && (
+          <p className="text-state-error">{errors.recruitmentStart.message}</p>
+        )}
         <input
-          {...register("recruitmentEnd", { required: "필수 선택 사항입니다." })}
+          {...register("recruitmentEnd", {
+            required: "필수 선택 사항입니다.",
+            validate: (value) => {
+              const recruitmentStart = getValues("recruitmentStart");
+              return (
+                !recruitmentStart ||
+                new Date(value) >= new Date(recruitmentStart) ||
+                "종료일은 시작일 이후여야 합니다."
+              );
+            }
+          })}
           type="date"
           required
           min={new Date().toISOString().split("T")[0]}
@@ -97,8 +109,8 @@ export default function AnnouncementDetails() {
           className={`w-full input-background input-style ${errors.recruitmentEnd ? "border-red-100" : ""}`}
         />
       </div>
-      {(errors.recruitmentStart || errors.recruitmentEnd) && (
-        <p className="text-state-error">필수 선택 사항입니다.</p>
+      {errors.recruitmentEnd && (
+        <p className="text-state-error">{errors.recruitmentEnd.message}</p>
       )}
 
       <label className="mt-6">
@@ -154,12 +166,24 @@ export default function AnnouncementDetails() {
           className="w-full input-background input-style"
         />
         <input
-          {...register("activityEnd")}
+          {...register("activityEnd", {
+            validate: (value) => {
+              const activityStart = getValues("activityStart");
+              return (
+                !activityStart ||
+                new Date(value) >= new Date(activityStart) ||
+                "종료일은 시작일 이후여야 합니다."
+              );
+            }
+          })}
           aria-label="활동 종료일"
           type="date"
           className="w-full input-background input-style"
         />
       </div>
+      {errors.activityEnd && (
+        <p className="text-state-error">{errors.activityEnd.message}</p>
+      )}
 
       <label className="mt-6">활동 요일 및 시간</label>
       <div className="w-full flex gap-2">

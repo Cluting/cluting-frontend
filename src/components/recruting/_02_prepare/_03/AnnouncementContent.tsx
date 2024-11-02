@@ -25,8 +25,8 @@ const AnnouncementContent: React.FC = () => {
         placeholder="상세 본문 내용을 작성해 주세요"
         maxLength={2000}
         onInput={handleInput}
-        className={`bg-white-100 custom-shadow cursor-pointer border border-gray-200 focus:outline-none disabled:border-red-100
-         w-full min-h-[290px] mx-8 px-[26px] py-[22px] rounded-[12px] mb-[50px] overflow-hidden ${errors.finalResultAnnouncementDate ? "border-red-100" : ""}`}
+        className="bg-white-100 custom-shadow cursor-pointer border border-gray-200 focus:outline-none disabled:border-red-100
+         w-full min-h-[290px] mx-8 px-[26px] py-[22px] rounded-[12px] mb-[50px] overflow-hidden "
         style={{ resize: "none" }} // 수동 크기 조절 비활성화
       />
 
