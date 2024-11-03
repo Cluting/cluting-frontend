@@ -1,6 +1,6 @@
 //리크루팅 단계
 
-import { useStore } from "../../store/useStore";
+import { useRecruitmentStepStore } from "../../../store/useStore";
 
 const steps = [
   "계획 세우기",
@@ -12,7 +12,7 @@ const steps = [
 ];
 
 export default function RecruitmentStep() {
-  const { currentStep, setCurrentStep } = useStore(); // 상태와 상태 변경 함수 가져오기
+  const { currentStep, setCurrentStep } = useRecruitmentStepStore(); // 상태와 상태 변경 함수 가져오기
 
   return (
     <div className="flex">

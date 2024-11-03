@@ -8,8 +8,19 @@ export default function Header() {
   const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
 
   return (
-    <nav className="fixed z-[999] w-full h-[54px] bg-white-100 px-[30px] flex justify-between items-center">
-      <div className="w-[197px] bg-bg-100">로고</div>
+    <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
+      <div className="flex items-center gap-2">
+        <img
+          src="/assets/ic-logoIcon.svg"
+          alt="로고 아이콘"
+          className="w-[20px] h-[23px] "
+        />
+        <img
+          src="/assets/ic-logoTitle.svg"
+          alt="로고 타이틀"
+          className="w-[80px] h-[33px]"
+        />
+      </div>
       {!isLoginPage && (
         <div className="flex items-center">
           <img
