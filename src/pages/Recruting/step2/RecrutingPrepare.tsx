@@ -24,7 +24,7 @@ export default function RecrutingPrepare() {
   return (
     <div className="flex bg-gray-100 px-16 py-9">
       <Sidemenu />
-      <div>
+      <div className="w-[1100px]">
         <TopSection />
         <CurrentStepComponent />
       </div>
