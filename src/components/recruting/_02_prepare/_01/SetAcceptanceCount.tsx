@@ -1,10 +1,8 @@
-//리크루팅 - 03 모집 준비하기 단계 페이지
-
 import { useForm } from "react-hook-form";
-import Sidemenu from "../../components/recruting/Sidemenu";
-import GroupPassCount from "../../components/recruting/_02_prepare/_01/GroupPassCount";
-import NumberSpinner from "../../components/recruting/_02_prepare/_01/NumberSpinner";
-import CompleteButton from "../../components/recruting/CompleteButton";
+import Sidemenu from "../../Sidemenu";
+import GroupPassCount from "./GroupPassCount";
+import NumberSpinner from "./NumberSpinner";
+import CompleteButton from "../../CompleteButton";
 
 interface FormData {
   documentPassTotal: number;
@@ -15,7 +13,7 @@ interface FormData {
   }[];
 }
 
-export default function RecrutingPrepare() {
+export default function SetAcceptanceCount() {
   const {
     control,
     handleSubmit,

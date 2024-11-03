@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RecrutingPlan from "./pages/Recruting/RecrutingPlan";
-import RecrutingPrepare from "./pages/Recruting/RecrutingPrepare";
+import RecrutingPrepare from "./pages/Recruting/step2/RecrutingPrepare";
 import DocumentEvaluation from "./pages/Recruting/DocumentEvaluation";
 import InterviewNotification from "./pages/Recruting/InterviewNotification";
 import FinalSelection from "./pages/Recruting/FinalSelection";
