@@ -7,10 +7,6 @@ interface CompleteButtonProps {
 export default function CompleteButton({ isSubmitting }: CompleteButtonProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleClick = () => {
-    setIsSubmitted(true);
-  };
-
   const BUTTON_TEXT = {
     EDIT: "수정하기",
     COMPLETE: "완료하기"
@@ -20,7 +16,6 @@ export default function CompleteButton({ isSubmitting }: CompleteButtonProps) {
     <>
       <button
         type="submit"
-        onClick={handleClick}
         disabled={isSubmitting}
         aria-label={isSubmitted ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
         aria-busy={isSubmitting}
