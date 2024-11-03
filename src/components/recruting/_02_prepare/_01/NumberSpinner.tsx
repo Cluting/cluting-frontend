@@ -1,14 +1,23 @@
+//input+button 컴포넌트
 import { useState } from "react";
 
 export default function NumberSpinner() {
   const [count, setCount] = useState(0);
 
   const increment = () => setCount((prev) => prev + 1);
-  const decrement = () => setCount((prev) => prev - 1);
+  const decrement = () =>
+    setCount((prev) => {
+      if (prev <= 0) return 0;
+      return prev - 1;
+    });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value === "" ? 0 : parseInt(e.target.value);
-    setCount(value);
+    if (isNaN(value) || value < 0) {
+      setCount(0);
+    } else {
+      setCount(value);
+    }
   };
 
   return (

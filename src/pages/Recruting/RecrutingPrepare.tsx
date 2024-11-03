@@ -3,19 +3,20 @@
 import Sidemenu from "../../components/recruting/Sidemenu";
 import GroupPassCount from "../../components/recruting/_02_prepare/_01/GroupPassCount";
 import NumberSpinner from "../../components/recruting/_02_prepare/_01/NumberSpinner";
+import CompleteButton from "../../components/recruting/CompleteButton";
 
 export default function RecrutingPrepare() {
   return (
-    <div className="flex-center text-[30px] ">
+    <div className="flex justify-center text-[30px] ">
       {" "}
       <Sidemenu />
-      <div className="w-[1015px] pl-[30.99px]">
+      <div className="pl-[30.99px]">
         {" "}
         {/*서류 합격 인원 */}
         <div>
           <div className="flex">
             <p className="text-[17px] font-bold pr-[21px] flex items-center">
-              * 서류 합격 인원
+              <span className="mr-[0.25em]">*</span> 서류 합격 인원
             </p>
             <div className="w-[224.73px] h-[34px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center">
               우리 동아리의 인재상을 작성해 주세요..
@@ -36,7 +37,7 @@ export default function RecrutingPrepare() {
         <div className="pt-[34px]">
           <div className="flex">
             <p className="text-[17px] font-bold pr-[21px] flex items-center">
-              * 전체 최종 합격 인원
+              <span className="mr-[0.25em]">*</span> 전체 최종 합격 인원
             </p>
             <div className="w-[224.73px] h-[34px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center">
               우리 동아리의 인재상을 작성해 주세요..
@@ -56,6 +57,9 @@ export default function RecrutingPrepare() {
         {/*그룹별 합격 인원 */}
         <div>
           <GroupPassCount />
+        </div>
+        <div className="flex-center pt-[50px] pb-[40px]">
+          <CompleteButton />
         </div>
       </div>
     </div>
