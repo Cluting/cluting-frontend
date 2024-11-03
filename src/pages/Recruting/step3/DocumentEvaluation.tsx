@@ -1,6 +1,7 @@
-//리크루팅 - 04 서류 평가하기 단계 페이지
+//3 - 리크루팅 : 서류 평가하기 단계 (페이지)
 
-import Sidemenu from "../../components/recruting/common/Sidemenu";
+import Sidemenu from "../../../components/recruting/common/Sidemenu";
+
 export default function DocumentEvaluation() {
   return (
     <div className="flex bg-gray-100 px-16 py-9">

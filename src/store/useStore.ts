@@ -9,3 +9,8 @@ export const useStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계
   setCurrentStep: (step: number) => set({ currentStep: step }) // 단계 변경
 }));
+
+export const useTopSectionStore = create<Store>()((set) => ({
+  currentStep: 0, // 초기 단계
+  setCurrentStep: (step: number) => set({ currentStep: step }) // 단계 변경
+}));
