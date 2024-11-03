@@ -108,15 +108,15 @@ export default function SetAcceptanceCount() {
                       validate: validateForm.documentPassCheck
                     }}
                   />
-                  {/*에러처리 */}
-                  {errors.documentPassTotal && (
-                    <p className="absolute top-[42px] left-0 text-red-100 font-medium text-[11px]">
-                      {errors.documentPassTotal.message}
-                    </p>
-                  )}
                 </div>
                 <p className="text-[17px] font-bold pl-[11px]">명</p>
               </div>
+              {/*에러처리 */}
+              {errors.documentPassTotal && (
+                <p className="absolute top-[70px] left-[32px] text-red-100 font-medium text-[11px]">
+                  {errors.documentPassTotal.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
