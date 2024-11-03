@@ -1,11 +1,18 @@
+import { Control } from "react-hook-form";
 import GroupPassCard from "./GroupPassCard";
 
-export default function GroupPassCount() {
+interface GroupPassCountProps {
+  control: Control<any>;
+}
+
+//FIX: 나중에 연동하면 수정...
+export default function GroupPassCount({ control }: GroupPassCountProps) {
+  const groups = [{ name: "기획" }, { name: "개발" }, { name: "디자인" }];
+
   return (
     <div>
       <div className="pt-[34px]">
         <div className="flex">
-          {" "}
           <p className="text-[17px] font-bold pr-[21px] flex items-center">
             <span className="mr-[0.25em]">*</span> 그룹별 합격 인원
           </p>
@@ -14,18 +21,16 @@ export default function GroupPassCount() {
           </div>
         </div>
         <div className="pt-[16px]">
-          {/**큰 박스 */}
           <div className="w-[1015px] h-[405px] rounded-[12px] shadow-01">
             <div className="flex pl-[33.38px] pt-[31px] gap-[27px]">
-              <div>
-                <GroupPassCard />
-              </div>
-              <div>
-                <GroupPassCard />
-              </div>
-              <div>
-                <GroupPassCard />
-              </div>
+              {groups.map((group, index) => (
+                <GroupPassCard
+                  key={group.name}
+                  control={control}
+                  groupIndex={index}
+                  groupName={group.name}
+                />
+              ))}
             </div>
           </div>
         </div>
