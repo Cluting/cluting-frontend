@@ -39,8 +39,6 @@ export default function NumberSpinner({
             }
           };
 
-          // const hasError = fieldError || error;
-
           return (
             <div className="flex-center">
               <input
@@ -67,11 +65,6 @@ export default function NumberSpinner({
                   </button>
                 </div>
               </div>
-              {/* {hasError && (
-                <p className="absolute top-[38px] left-0 text-red-100 font-medium text-[11px]">
-                  {fieldError?.message || error}
-                </p>
-              )} */}
             </div>
           );
         }}

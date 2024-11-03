@@ -4,7 +4,6 @@ import SetAcceptanceCount from "../../../components/recruting/_02_prepare/_01/Se
 export default function RecrutingPrepare() {
   return (
     <div className="text-[30px] ">
-      {" "}
       <SetAcceptanceCount />
     </div>
   );
