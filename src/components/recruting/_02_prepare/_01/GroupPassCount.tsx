@@ -1,12 +1,17 @@
-import { Control } from "react-hook-form";
+import { Control, RegisterOptions } from "react-hook-form";
 import GroupPassCard from "./GroupPassCard";
 
 interface GroupPassCountProps {
   control: Control<any>;
+  errors?: any;
+  rules?: RegisterOptions;
 }
 
-//FIX: 나중에 연동하면 수정...
-export default function GroupPassCount({ control }: GroupPassCountProps) {
+export default function GroupPassCount({
+  control,
+  errors,
+  rules
+}: GroupPassCountProps) {
   const groups = [{ name: "기획" }, { name: "개발" }, { name: "디자인" }];
 
   return (
@@ -29,6 +34,8 @@ export default function GroupPassCount({ control }: GroupPassCountProps) {
                   control={control}
                   groupIndex={index}
                   groupName={group.name}
+                  errors={errors}
+                  rules={rules}
                 />
               ))}
             </div>
