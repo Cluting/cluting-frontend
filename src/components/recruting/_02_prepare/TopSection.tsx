@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { STEP2_ITEMS, STEP2_PATH } from "../../../constants/recruting";
+import { STEP2_ITEMS } from "../../../constants/recruting";
 import { useTopSectionStore } from "../../../store/useStore";
-import { useNavigate } from "react-router-dom";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep } = useTopSectionStore();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const navigate = useNavigate();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -18,7 +16,6 @@ export default function TopSection() {
 
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
-    navigate(`/recruting/${STEP2_PATH[index]}`);
   };
 
   return (

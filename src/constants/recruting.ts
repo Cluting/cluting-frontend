@@ -1,11 +1,3 @@
-export const STEP2_PATH = [
-  "01_plan",
-  "02_prepare",
-  "03_document_evaluation",
-  "04_interview_notification",
-  "05_interview_evaluation"
-];
-
 export const STEP2_ITEMS = [
   "합격 인원 설정하기",
   "인재상 구축하기",
