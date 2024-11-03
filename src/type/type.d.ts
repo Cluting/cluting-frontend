@@ -28,7 +28,13 @@ declare interface RecrutingStartFormValue {
   interviewType: string;
 }
 
-interface AnnouncementForm {
+declare interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+declare interface AnnouncementForm {
   title: string;
   recruitmentStart: Date;
   recruitmentEnd: Date;

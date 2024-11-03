@@ -1,5 +1,4 @@
 import React, { useRef, FormEvent, useState } from "react";
-import { useForm } from "react-hook-form";
 const MAX_CHARS = 2000;
 
 const AnnouncementContent: React.FC = () => {

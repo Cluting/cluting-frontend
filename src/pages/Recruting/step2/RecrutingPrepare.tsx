@@ -10,7 +10,9 @@ import TopSection from "../../../components/recruting/_02_prepare/TopSection";
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import { useTopSectionStore } from "../../../store/useStore";
 
-const stepComponents = [
+type StepComponent = React.FC;
+
+const stepComponents: StepComponent[] = [
   SetAcceptanceCountContainer,
   DefineIdealCandidateContainer,
   AnnouncementContainer,

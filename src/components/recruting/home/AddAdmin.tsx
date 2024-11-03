@@ -4,14 +4,22 @@ interface AddAdminProps {
   isDropdown?: boolean;
 }
 
+const dummyAdmins: AdminUser[] = [
+  { id: "1", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "2", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "3", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "4", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "5", name: "홍준서", email: "12345678@gmail.com" }
+];
+
 export default function AddAdmin({ isDropdown }: AddAdminProps) {
   return (
     <ul
       className={` ${isDropdown ? "absolute right-0 top-10 bg-white-100 h-auto custom-shadow" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px]`}
     >
-      {Array.from({ length: 5 }).map((_, index) => (
+      {dummyAdmins.map((admin) => (
         <li
-          key={index}
+          key={admin.id}
           className={` ${isDropdown ? "dropdown-list " : ""} flex w-full mb-4`}
         >
           <img

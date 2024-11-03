@@ -6,7 +6,7 @@ type Store = {
 };
 
 // 리크쿠팅 전체 단계
-export const useStore = create<Store>()((set) => ({
+export const useRecruitmentStepStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계
   setCurrentStep: (step: number) => set({ currentStep: step }) // 단계 변경
 }));
