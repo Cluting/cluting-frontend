@@ -27,3 +27,19 @@ declare interface RecrutingStartFormValue {
   sessionNumber: string;
   interviewType: string;
 }
+
+interface AnnouncementForm {
+  title: string;
+  recruitmentStart: Date;
+  recruitmentEnd: Date;
+  announcementDate: Date;
+  finalResultAnnouncementDate: Date;
+  recruitsCount: number;
+  activityStart: Date;
+  activityEnd: Date;
+  activityDay: string;
+  activityTime: string;
+  clubFee: string;
+  posterImage?: File;
+  content: string;
+}
