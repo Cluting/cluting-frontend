@@ -1,9 +1,19 @@
 //리크루팅 운영진 추가
-export default function AddAdmin() {
+
+interface AddAdminProps {
+  isDropdown?: boolean;
+}
+
+export default function AddAdmin({ isDropdown }: AddAdminProps) {
   return (
-    <ul className="w-[300px] h-[340.88px] px-[17px] py-[18px] bg-gray-100 rounded-[12px]">
+    <ul
+      className={` ${isDropdown ? "absolute right-0 top-10 bg-white-100 h-auto custom-shadow" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px]`}
+    >
       {Array.from({ length: 5 }).map((_, index) => (
-        <li key={index} className="flex w-full mb-4">
+        <li
+          key={index}
+          className={` ${isDropdown ? "dropdown-list " : ""} flex w-full mb-4`}
+        >
           <img
             src="/assets/ic-profile.svg"
             alt="프로필"
