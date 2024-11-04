@@ -25,7 +25,7 @@ export default function GroupPassCount({
           <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
         </div>
         <div className="pt-[16px]">
-          <div className="h-[405px] rounded-[12px] bg-white-100 shadow-01">
+          <div className="h-[405px] rounded-[12px] bg-white-100 custom-shadow">
             <div className="flex pl-[33.38px] pt-[31px] gap-[27px]">
               {groups.map((group, index) => (
                 <GroupPassCard

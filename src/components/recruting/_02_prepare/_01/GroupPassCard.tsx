@@ -17,7 +17,7 @@ export default function GroupPassCard({
   rules
 }: GroupPassCardProps) {
   return (
-    <div className="w-[259px] h-[333px] rounded-[12px] bg-[#F2F2F7] shadow-01">
+    <div className="w-[259px] h-[333px] rounded-[12px] bg-[#F2F2F7] custom-shadow">
       <div className="pt-[13px] flex-center">
         <div className="flex-center w-[229px] h-[50px] bg-gray-200 rounded-[11px] border border-gray-400 text-[16px] text-gray-850 font-semibold">
           {groupName}

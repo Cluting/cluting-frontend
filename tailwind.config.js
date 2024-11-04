@@ -82,10 +82,6 @@ module.exports = {
       },
       animation: {
         buttonHover: "buttonHover 0.3s ease forwards"
-      },
-      boxShadow: {
-        //shadow-01이라고만 쓰면 적용 됨
-        "01": "0 4px 21.6px rgba(0,0,0,0.05)" // dropshadow01
       }
     }
   },
