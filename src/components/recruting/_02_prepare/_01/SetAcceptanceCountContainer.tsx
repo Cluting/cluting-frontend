@@ -80,7 +80,10 @@ export default function SetAcceptanceCountContainer() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="ml-[30.99px] w-full ">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="ml-[30.99px] mt-[27px] w-full "
+    >
       <div>
         {/*서류 합격 인원 */}
         <div className="flex">
