@@ -33,8 +33,14 @@
     @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
   }
 
+  /*input 공용 스타일 정의*/
+
   .input-background {
     @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+  }
+
+  .input-style {
+    @apply rounded-[8px] py-[11px] px-[20px] mt-2;
   }
 
   .text-state-error {
@@ -58,9 +64,5 @@
   }
   .section-background {
     @apply custom-shadow flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left;
-  }
-  /*2-3 공용 스타일 정의*/
-  .input-style {
-    @apply rounded-[8px] py-[11px] px-[20px] mt-2;
   }
 }
