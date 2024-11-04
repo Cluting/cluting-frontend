@@ -19,12 +19,16 @@ export default function NumberSpinner({
         control={control}
         name={name}
         rules={rules}
-        render={({ field: { value, onChange } }) => {
-          const increment = () => onChange((value || 0) + 1);
+        render={({ field: { value, onChange, onBlur } }) => {
+          const increment = () => {
+            onChange((value || 0) + 1);
+            onBlur();
+          };
           const decrement = () => {
             const currentValue = value || 0;
             if (currentValue <= 0) return;
             onChange(currentValue - 1);
+            onBlur();
           };
 
           const handleInputChange = (
@@ -45,6 +49,7 @@ export default function NumberSpinner({
                 type="text"
                 value={value ?? 0}
                 onChange={handleInputChange}
+                onBlur={onBlur}
                 className="w-[120px] text-right pr-[23px] text-[17px] font-bold border-none focus:outline-none"
               />
               <div className="flex flex-col">

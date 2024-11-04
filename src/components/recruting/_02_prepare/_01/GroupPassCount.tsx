@@ -19,7 +19,8 @@ export default function GroupPassCount({
       <div className="pt-[34px]">
         <div className="flex">
           <p className="text-[17px] font-bold pr-[21px] flex items-center">
-            <span className="mr-[0.25em]">*</span> 그룹별 합격 인원
+            <span className="mr-[0.25em] text-main-100">*</span> 그룹별 합격
+            인원
           </p>
           <div className="w-[224.73px] h-[34px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center">
             우리 동아리의 인재상을 작성해 주세요..
