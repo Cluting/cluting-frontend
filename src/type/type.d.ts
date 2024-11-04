@@ -49,3 +49,12 @@ declare interface AnnouncementForm {
   posterImage?: File;
   content: string;
 }
+
+declare interface SetAcceptanceCountFormData {
+  documentPassTotal: number;
+  finalPassTotal: number;
+  groups: {
+    documentPass: number;
+    finalPass: number;
+  }[];
+}

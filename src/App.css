@@ -52,6 +52,13 @@
     @apply w-[114px] h-[36px] p-2 rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center;
   }
 
+  .section-title {
+    @apply text-[17px] font-bold pr-[21px] flex items-center;
+  }
+  .tooltip {
+    @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center;
+  }
+
   /*2-3 공용 스타일 정의*/
   .input-style {
     @apply rounded-[8px] py-[11px] px-[20px] mt-2;
