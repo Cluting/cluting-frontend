@@ -95,11 +95,11 @@ export default function SetAcceptanceCountContainer() {
         <div>
           {/*서류 합격 인원 */}
           <div className="flex">
-            <p className="text-[17px] font-bold pr-[21px] flex items-center">
+            <p className="section-title">
               <span className="mr-[0.25em] text-main-100">*</span> 서류 합격
               인원
             </p>
-            <div className="w-[224.73px] h-[34px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center">
+            <div className="tooltip">
               우리 동아리의 인재상을 작성해 주세요..
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function SetAcceptanceCountContainer() {
                     }}
                   />
                 </div>
-                <p className="text-[17px] font-bold pl-[11px]">명</p>
+                <p className="section-title pl-[11px]">명</p>
               </div>
               {/*에러처리 */}
               {errors.documentPassTotal && (
@@ -136,14 +136,14 @@ export default function SetAcceptanceCountContainer() {
           </div>
         </div>
 
-        <div className="pt-[34px]">
+        <div className="mt-[34px]">
           {/*전체 최종 합격 인원 */}
           <div className="flex">
-            <p className="text-[17px] font-bold pr-[21px] flex items-center">
-              <span className="mr-[0.25em] text-main-100">*</span> 전체 최종
-              합격 인원
+            <p className="section-title">
+              <span className="mr-[0.25em] text-main-100">*</span>
+              전체 최종 합격 인원
             </p>
-            <div className="w-[224.73px] h-[34px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center">
+            <div className="tooltip">
               우리 동아리의 인재상을 작성해 주세요..
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function SetAcceptanceCountContainer() {
                     </p>
                   )}
                 </div>
-                <p className="text-[17px] font-bold pl-[11px]">명</p>
+                <p className="section-title pl-[11px]">명</p>
               </div>
             </div>
           </div>
