@@ -80,109 +80,102 @@ export default function SetAcceptanceCountContainer() {
   };
 
   return (
-    <div className="">
-      <form onSubmit={handleSubmit(onSubmit)} className="ml-[30.99px] w-full ">
-        <div>
-          {/*서류 합격 인원 */}
-          <div className="flex">
-            <p className="section-title">
-              <span className="mr-[0.25em] text-main-100">*</span> 서류 합격
-              인원
-            </p>
-            <div className="tooltip">
-              우리 동아리의 인재상을 작성해 주세요..
-            </div>
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="ml-[30.99px] w-full ">
+      <div>
+        {/*서류 합격 인원 */}
+        <div className="flex">
+          <p className="section-title">
+            <span className="mr-[0.25em] text-main-100">*</span> 서류 합격 인원
+          </p>
+          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+        </div>
 
-          <div className="pt-[16px]">
-            {/* 서류 합격 인원 input box*/}
-            <div className="relative h-[105px] bg-white-100 rounded-[12px] custom-shadow ">
-              <div className="flex-center absolute left-[32px] top-[27px]">
-                <div
-                  className={`flex-center relative w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
-                    errors.documentPassTotal
-                      ? "border-red-100"
-                      : "border-gray-400"
-                  }`}
-                >
-                  <NumberSpinner
-                    control={control}
-                    name="documentPassTotal"
-                    error={errors.documentPassTotal?.message}
-                    rules={{
-                      validate: validateForm.documentPassCheck
-                    }}
-                  />
-                </div>
-                <p className="section-title pl-[11px]">명</p>
+        <div className="pt-[16px]">
+          {/* 서류 합격 인원 input box*/}
+          <div className="relative h-[105px] bg-white-100 rounded-[12px] custom-shadow ">
+            <div className="flex-center absolute left-[32px] top-[27px]">
+              <div
+                className={`flex-center relative w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
+                  errors.documentPassTotal
+                    ? "border-red-100"
+                    : "border-gray-400"
+                }`}
+              >
+                <NumberSpinner
+                  control={control}
+                  name="documentPassTotal"
+                  error={errors.documentPassTotal?.message}
+                  rules={{
+                    validate: validateForm.documentPassCheck
+                  }}
+                />
               </div>
-              {/*에러처리 */}
-              {errors.documentPassTotal && (
-                <p className="absolute top-[70px] left-[32px] text-red-100 font-medium text-[11px]">
-                  {errors.documentPassTotal.message}
-                </p>
-              )}
+              <p className="section-title pl-[11px]">명</p>
             </div>
+            {/*에러처리 */}
+            {errors.documentPassTotal && (
+              <p className="absolute top-[70px] left-[32px] text-red-100 font-medium text-[11px]">
+                {errors.documentPassTotal.message}
+              </p>
+            )}
           </div>
         </div>
+      </div>
 
-        <div className="mt-[34px]">
-          {/*전체 최종 합격 인원 */}
-          <div className="flex">
-            <p className="section-title">
-              <span className="mr-[0.25em] text-main-100">*</span>
-              전체 최종 합격 인원
-            </p>
-            <div className="tooltip">
-              우리 동아리의 인재상을 작성해 주세요..
-            </div>
-          </div>
-          <div className="pt-[16px]">
-            <div className="relative h-[105px] bg-white-100 rounded-[12px] custom-shadow">
-              <div className="flex-center absolute left-[32px] top-[27px]">
-                <div
-                  className={`flex-center w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
-                    errors.finalPassTotal ? "border-red-100" : "border-gray-400"
-                  }`}
-                >
-                  <NumberSpinner
-                    control={control}
-                    name="finalPassTotal"
-                    error={errors.finalPassTotal?.message}
-                    rules={{
-                      validate: (value: number) => {
-                        if (!touchedFields.finalPassTotal) return true; // 터치되지 않았으면 검증 스킵
-                        if (!value || value <= 0) return "필수 입력 사항입니다";
-                        return true;
-                      }
-                    }}
-                  />
-                  {/*에러처리 */}
-                  {errors.finalPassTotal && (
-                    <p className="absolute top-[42px] left-0 text-red-100 font-medium text-[11px]">
-                      {errors.finalPassTotal.message}
-                    </p>
-                  )}
-                </div>
-                <p className="section-title pl-[11px]">명</p>
+      <div className="mt-[34px]">
+        {/*전체 최종 합격 인원 */}
+        <div className="flex">
+          <p className="section-title">
+            <span className="mr-[0.25em] text-main-100">*</span>
+            전체 최종 합격 인원
+          </p>
+          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+        </div>
+        <div className="pt-[16px]">
+          <div className="relative h-[105px] bg-white-100 rounded-[12px] custom-shadow">
+            <div className="flex-center absolute left-[32px] top-[27px]">
+              <div
+                className={`flex-center w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
+                  errors.finalPassTotal ? "border-red-100" : "border-gray-400"
+                }`}
+              >
+                <NumberSpinner
+                  control={control}
+                  name="finalPassTotal"
+                  error={errors.finalPassTotal?.message}
+                  rules={{
+                    validate: (value: number) => {
+                      if (!touchedFields.finalPassTotal) return true; // 터치되지 않았으면 검증 스킵
+                      if (!value || value <= 0) return "필수 입력 사항입니다";
+                      return true;
+                    }
+                  }}
+                />
+                {/*에러처리 */}
+                {errors.finalPassTotal && (
+                  <p className="absolute top-[42px] left-0 text-red-100 font-medium text-[11px]">
+                    {errors.finalPassTotal.message}
+                  </p>
+                )}
               </div>
+              <p className="section-title pl-[11px]">명</p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/*그룹별 합격 인원 */}
-        <GroupPassCount
-          control={control}
-          errors={errors}
-          rules={{
-            validate: validateForm.groupFinalPassCheck
-          }}
-        />
+      {/*그룹별 합격 인원 */}
+      <GroupPassCount
+        control={control}
+        errors={errors}
+        rules={{
+          validate: validateForm.groupFinalPassCheck
+        }}
+      />
 
-        <div className="flex-center pt-[50px] pb-[40px]">
-          <CompleteButton isSubmitting={isSubmitting} />
-        </div>
-      </form>
-    </div>
+      <div className="flex-center pt-[50px] pb-[40px]">
+        <CompleteButton isSubmitting={isSubmitting} />
+      </div>
+    </form>
   );
 }
