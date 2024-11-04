@@ -4,12 +4,13 @@ import { Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import RecrutingHome from "./pages/Recruting/RecrutingHome";
-import RecrutingPlan from "./pages/Recruting/RecrutingPlan";
+import FinalSelection from "./pages/Recruting/step6/FinalSelection";
+import DocumentEvaluation from "./pages/Recruting/step3/DocumentEvaluation";
+import InterviewNotification from "./pages/Recruting/step4/InterviewNotification";
+import InterviewEvaluation from "./pages/Recruting/step5/InterviewEvaluation";
 import RecrutingPrepare from "./pages/Recruting/step2/RecrutingPrepare";
-import DocumentEvaluation from "./pages/Recruting/DocumentEvaluation";
-import InterviewNotification from "./pages/Recruting/InterviewNotification";
-import FinalSelection from "./pages/Recruting/FinalSelection";
+import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
+import RecrutingHome from "./pages/Recruting/RecrutingHome";
 
 export default function App() {
   return (
@@ -36,7 +37,7 @@ export default function App() {
               />
               <Route
                 path="05_interview_evaluation"
-                element={<InterviewNotification />}
+                element={<InterviewEvaluation />}
               />
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>

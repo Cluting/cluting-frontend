@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import RecrutingStartModal from "../../components/recruting/home/RecrutingStartModal";
-import Sidemenu from "../../components/recruting/Sidemenu";
+import Sidemenu from "../../components/recruting/common/Sidemenu";
 import TodoTemplate from "../../components/recruting/home/TodoTemplate";
-import RecruitmentStep from "../../components/recruting/RecruitmentStep";
 import AddAdmin from "../../components/recruting/home/AddAdmin";
 import AddAdminModal from "../../components/recruting/home/AddAdminModal";
+import RecruitmentStep from "../../components/recruting/common/RecruitmentStep";
 
 export default function RecrutingHome() {
   //운영진 추가 모달
@@ -28,7 +28,7 @@ export default function RecrutingHome() {
   };
 
   return (
-    <div className="flex-center text-[30px] ">
+    <div className="flex-center ">
       {" "}
       <Sidemenu />
       <div className="flex flex-col">

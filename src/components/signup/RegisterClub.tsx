@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "../common/Input";
 import SignupDropdown from "./SignupDropdown";
 import { useForm } from "react-hook-form";

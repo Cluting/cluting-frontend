@@ -1,9 +1,27 @@
 //리크루팅 운영진 추가
-export default function AddAdmin() {
+
+interface AddAdminProps {
+  isDropdown?: boolean;
+}
+
+const dummyAdmins: AdminUser[] = [
+  { id: "1", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "2", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "3", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "4", name: "홍준서", email: "12345678@gmail.com" },
+  { id: "5", name: "홍준서", email: "12345678@gmail.com" }
+];
+
+export default function AddAdmin({ isDropdown }: AddAdminProps) {
   return (
-    <ul className="w-[300px] h-[340.88px] px-[17px] py-[18px] bg-gray-100 rounded-[12px]">
-      {Array.from({ length: 5 }).map((_, index) => (
-        <li key={index} className="flex w-full mb-4">
+    <ul
+      className={` ${isDropdown ? "absolute right-0 top-10 bg-white-100 h-auto custom-shadow" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px]`}
+    >
+      {dummyAdmins.map((admin) => (
+        <li
+          key={admin.id}
+          className={` ${isDropdown ? "dropdown-list " : ""} flex w-full mb-4`}
+        >
           <img
             src="/assets/ic-profile.svg"
             alt="프로필"

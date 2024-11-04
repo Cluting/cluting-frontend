@@ -27,7 +27,7 @@ export default function GroupPassCount({
           </div>
         </div>
         <div className="pt-[16px]">
-          <div className="w-[1015px] h-[405px] rounded-[12px] shadow-01">
+          <div className="h-[405px] rounded-[12px] bg-white-100 shadow-01">
             <div className="flex pl-[33.38px] pt-[31px] gap-[27px]">
               {groups.map((group, index) => (
                 <GroupPassCard
