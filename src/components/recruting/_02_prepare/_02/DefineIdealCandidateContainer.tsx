@@ -1,8 +1,10 @@
 //2-2 인재상 구축하기 (컨테이너)
 
+import CommonIdealList from "./CommonIdealList";
+
 export default function DefineIdealCandidateContainer() {
   return (
-    <div className="ml-[27.38px] w-full mt-[25px]">
+    <div className="ml-8 w-full mt-[25px]">
       {/*공통 인재상 */}
       <div className="common-ideal">
         <div className="flex">
@@ -14,9 +16,10 @@ export default function DefineIdealCandidateContainer() {
           </div>
         </div>
         <div className="pt-[16px]">
-          <div className="relative h-[154px] bg-white-100 rounded-[12px] shadow-01 "></div>
+          <CommonIdealList />
         </div>
       </div>
+
       {/*그룹별 인재상 */}
       <div className="mt-[34px]">
         <div className="flex">
@@ -28,7 +31,7 @@ export default function DefineIdealCandidateContainer() {
           </div>
         </div>
         <div className="pt-[16px]">
-          <div className="relative h-[154px] bg-white-100 rounded-[12px] shadow-01 "></div>
+          <div className="relative h-[154px] bg-white-100 rounded-[12px] custom-shadow"></div>
         </div>
       </div>
     </div>
