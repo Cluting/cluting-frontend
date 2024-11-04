@@ -15,10 +15,19 @@ export default function LoginContainer() {
   return (
     <form
       onSubmit={onSubmit}
-      className="w-[680px] h-[635px] py-12 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
+      className="custom-shadow w-[680px] h-[635px] py-12 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
     >
-      <div className="w-[150px] h-[50px] flex-center text-body bg-bg-100 rounded-[8px]">
-        로고
+      <div className="flex items-center gap-2">
+        <img
+          src="/assets/ic-logoIcon-black.svg"
+          alt="로고 아이콘"
+          className="w-6 h-6 "
+        />
+        <img
+          src="/assets/ic-logoTitle-black.svg"
+          alt="로고 타이틀"
+          className="w-[100px] h-[44px]"
+        />
       </div>
       <p className="text-title3 mt-[27px]">동아리 리크루팅의 솔루션, 클루팅</p>
       <div className=" mt-[37px]">
@@ -35,11 +44,11 @@ export default function LoginContainer() {
           placeholder="비밀번호를 입력해 주세요"
         />
       </div>
-      <button className="bg-gray-800 hover:bg-gray-900 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100">
+      <button className="bg-main-100 text-white-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100">
         로그인
       </button>
       <Link to="/signup">
-        <button className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[56px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
+        <button className="bg-main-200 text-main-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[15px] border border-main-100 ">
           회원가입
         </button>
       </Link>

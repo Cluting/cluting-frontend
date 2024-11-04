@@ -132,7 +132,7 @@ export default function SignupContainer() {
         <TermsAgreement />
       </section>
 
-      <button className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
+      <button className="bg-main-100 text-white-100 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 ">
         회원가입
       </button>
     </form>
