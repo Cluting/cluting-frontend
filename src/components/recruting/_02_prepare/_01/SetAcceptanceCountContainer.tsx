@@ -1,20 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import Sidemenu from "../../common/Sidemenu";
 import GroupPassCount from "./GroupPassCount";
 import NumberSpinner from "./NumberSpinner";
 import CompleteButton from "../../CompleteButton";
 
 //TODO: 폼 유효성 검사-> 그룹별 최종 합격 인원 총합과 전체 최종 합격 인원 일치하는지도..
-
-interface FormData {
-  documentPassTotal: number;
-  finalPassTotal: number;
-  groups: {
-    documentPass: number;
-    finalPass: number;
-  }[];
-}
 
 //2-1 합격 인원 설정 (컨테이너)
 export default function SetAcceptanceCountContainer() {
@@ -24,7 +14,7 @@ export default function SetAcceptanceCountContainer() {
     watch,
     trigger,
     formState: { errors, isSubmitting, touchedFields }
-  } = useForm<FormData>({
+  } = useForm<SetAcceptanceCountFormData>({
     defaultValues: {
       documentPassTotal: 0,
       finalPassTotal: 0,
@@ -81,7 +71,7 @@ export default function SetAcceptanceCountContainer() {
     }
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
       console.log("제출된 데이터:", data);
     } catch (error) {
