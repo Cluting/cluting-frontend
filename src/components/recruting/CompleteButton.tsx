@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BUTTON_TEXT } from "../../constants/recruting";
 
 interface CompleteButtonProps {
   isSubmitting?: boolean;
@@ -6,11 +7,6 @@ interface CompleteButtonProps {
 
 export default function CompleteButton({ isSubmitting }: CompleteButtonProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const BUTTON_TEXT = {
-    EDIT: "수정하기",
-    COMPLETE: "완료하기"
-  } as const;
 
   return (
     <>

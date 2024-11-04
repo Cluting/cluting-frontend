@@ -5,3 +5,8 @@ export const STEP2_ITEMS = [
   "운영진 면접 일정 조정하기",
   "지원서 폼 제작 및 공고 올리기"
 ];
+
+export const BUTTON_TEXT = {
+  EDIT: "수정하기",
+  COMPLETE: "완료하기"
+} as const;
