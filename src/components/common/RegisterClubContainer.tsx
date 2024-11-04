@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Input from "../common/Input";
-import SignupDropdown from "./SignupDropdown";
 import { useForm } from "react-hook-form";
-import UploadProfile from "./UploadProfile";
-import Textarea from "../common/Textarea";
-import ClubKeyword from "./ClubKeyword";
+import UploadProfile from "../signup/UploadProfile";
+import Input from "./Input";
+import SignupDropdown from "../signup/SignupDropdown";
+import ClubKeyword from "../signup/ClubKeyword";
+import Textarea from "./Textarea";
 
-export default function RegisterClub() {
+export default function RegisterClubContainer() {
   const {
     watch,
     register,

@@ -33,7 +33,7 @@ export default function SignupContainer() {
   return (
     <form
       onSubmit={onSubmit}
-      className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
+      className="custom-shadow w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
     >
       <section className="flex flex-col text-left mb-10">
         <p className="text-title3 text-gray-900">인적사항</p>
