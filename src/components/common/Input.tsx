@@ -42,10 +42,9 @@ export default function Input<T extends FieldValues>({
         onClick={(event: React.MouseEvent<HTMLInputElement>) => {
           if (onClick) onClick(event);
         }}
-        className={`${required ? "pl-[28px]" : ""} ${
-          isDropdownSelected ? "placeholder:text-black-200" : ""
-        }
-        ${inputValue ? "text-black-200" : "text-gray-500"}
+        className={`${required ? "pl-[28px]" : ""} 
+        ${isDropdownSelected ? "text-black-200" : ""}
+        ${inputValue ? "text-black-200" : ""}
            w-[404px] h-[56px] my-4 rounded-[8px] bg-white-100 border border-gray-200 text-body pl-[14px] focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100`}
       />
       {required && (
