@@ -34,7 +34,7 @@
   }
 
   .input-background {
-    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
   }
 
   .text-state-error {

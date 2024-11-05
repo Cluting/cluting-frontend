@@ -9,8 +9,8 @@ export default function SignupContainer() {
     register,
     handleSubmit,
     formState: { errors },
-    getValues
-  } = useForm<SignupFormValue>({ mode: "onChange" });
+    setValue
+  } = useForm<SignupFormValue>({ mode: "onBlur" });
 
   const onSubmit = handleSubmit((data) => console.log(data));
   const [studentStatus, setStudentStatus] = useState(false); //휴학 여부 드롭다운
@@ -22,11 +22,13 @@ export default function SignupContainer() {
   // 드롭다운에서 선택된 값을 설정
   const handleStatusSelect = (status: string) => {
     setSelectedStatus(status);
+    setValue("studentStatus", status);
     setStudentStatus(false); // 드롭다운 닫기
   };
 
   const handleSemesterSelect = (semester: string) => {
     setSelectedSemester(semester);
+    setValue("semester", semester);
     setSemester(false); // 드롭다운 닫기
   };
 
@@ -37,7 +39,7 @@ export default function SignupContainer() {
     >
       <section className="flex flex-col text-left mb-10">
         <p className="text-title3 text-gray-900">인적사항</p>
-        <p className="text-caption text-gray-700 mt-[7px]">
+        <p className="text-caption1 text-gray-700 mt-[7px]">
           인적사항을 작성해 주세요
         </p>
         <Input
@@ -52,12 +54,14 @@ export default function SignupContainer() {
           register={register}
           type="email"
           placeholder="이메일"
+          required
         />
         <Input
           name="address"
           register={register}
           type="text"
           placeholder="거주지"
+          required
         />
       </section>
 
@@ -65,7 +69,7 @@ export default function SignupContainer() {
 
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">학력사항</p>
-        <p className="text-caption text-gray-700 mt-[7px]">
+        <p className="text-caption1 text-gray-700 mt-[7px]">
           현재 다니고 있는 학교와 전공을 입력해 주세요 이후 인증 절차가
           필요합니다.
         </p>
@@ -80,6 +84,7 @@ export default function SignupContainer() {
           <Input
             name="studentStatus"
             register={register}
+            value={selectedStatus}
             type="text"
             onClick={() => {
               setStudentStatus(!studentStatus);
@@ -97,6 +102,7 @@ export default function SignupContainer() {
           <Input
             name="semester"
             register={register}
+            value={selectedSemester}
             type="text"
             onClick={() => {
               setSemester(!semester);
