@@ -29,7 +29,7 @@ export default function RecruitmentStep() {
         </section>
       </div>
 
-      <section className="flex items-start w-full pt-[33px] pl-10 border-b border-gray-200 bg-gray-100 rounded-[7px]">
+      <section className="flex items-start w-full pt-[33px] pl-10 border-b border-gray-200 bg-gray-100">
         {steps.map((step, index) => (
           <div key={index} className="flex items-center">
             <div className="flex flex-col">
