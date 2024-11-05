@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -13,29 +17,50 @@
   }
 }
 /* 자주 사용하는 스타일을 재사용하기 위해 컴포넌트화*/
-.flex-center {
-  @apply flex justify-center items-center;
-}
+@layer components {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+  .custom-shadow {
+    @apply shadow-[0px_4px_21.6px_rgba(0,0,0,0.05)];
+  }
 
-.dropdown-list {
-  @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center cursor-pointer;
-}
+  .dropdown-list {
+    @apply p-2 rounded-[8px] hover:bg-gray-100 flex items-center cursor-pointer;
+  }
 
-.signup-dropdown-list {
-  @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
-}
+  .signup-dropdown-list {
+    @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
+  }
 
-.input-background {
-  @apply bg-white-100 border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
-}
+  .input-background {
+    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+  }
 
-.text-state-error {
-  @apply text-caption3 text-red-100 text-left mt-[5px];
-}
+  .text-state-error {
+    @apply text-caption3 text-red-100 text-left mt-[5px];
+  }
 
-.modal-style {
-  @apply z-[1000] fixed inset-0 bg-gray-900 bg-opacity-30 flex items-center justify-center;
-}
-.modal-animation {
-  animation: modal-enter 0.3s ease-out forwards; /* 모달 진입 애니메이션 */
+  .modal-style {
+    @apply z-[1000] fixed inset-0 bg-gray-900 bg-opacity-30 flex items-center justify-center;
+  }
+  .modal-animation {
+    animation: modal-enter 0.3s ease-out forwards; /* 모달 진입 애니메이션 */
+  }
+
+  .small-dropdown-list {
+    @apply w-[114px] h-[36px] p-2 rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center;
+  }
+
+  .section-title {
+    @apply text-[17px] font-bold pr-[21px] flex items-center;
+  }
+  .tooltip {
+    @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center;
+  }
+
+  /*2-3 공용 스타일 정의*/
+  .input-style {
+    @apply rounded-[8px] py-[11px] px-[20px] mt-2;
+  }
 }

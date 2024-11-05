@@ -41,7 +41,7 @@ export default function Sidemenu() {
 
   return (
     <div
-      className={`relative bg-white-100 ${
+      className={`relative bg-white-100 custom-shadow ${
         sidemenuClose ? "w-[80px] px-2" : "w-[300px] px-5"
       } h-[916px] rounded-[28px]  py-[26px] transition-all`}
     >

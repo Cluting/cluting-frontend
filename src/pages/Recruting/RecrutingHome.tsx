@@ -29,7 +29,7 @@ export default function RecrutingHome() {
   };
 
   return (
-    <div className="flex-center text-[30px] ">
+    <div className="flex-center ">
       {" "}
       <Sidemenu />
       <div className="flex flex-col">

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { FieldValues, UseFormRegister, Path } from "react-hook-form";
+import useImageUpload from "../../hooks/useImageUpload";
 
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
@@ -11,25 +12,26 @@ export default function UploadProfile<T extends FieldValues>({
   register,
   setValue
 }: InputProps<T>) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  //FIX: hook으로 변경했는데 form value 등록 가능하게 수정해야 함 , setValue
+  const { previewUrl, errorMessage, handleImageChange } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
     fileInputRef.current?.click(); // 클릭 시 파일 선택 창 열기
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = event.target.files;
-    if (fileList) {
-      const file = fileList[0];
-      setValue(name, fileList); // clubImage 필드에 파일 목록 설정
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const fileList = event.target.files;
+  //   if (fileList) {
+  //     const file = fileList[0];
+  //     setValue(name, fileList); // clubImage 필드에 파일 목록 설정
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setPreviewUrl(reader.result as string);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   return (
     <button
