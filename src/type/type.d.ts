@@ -7,6 +7,9 @@ declare interface SignupFormValue {
   semester: string;
   major: string;
   minors?: string;
+  termsOfService: boolean; // 클루팅 이용약관 동의
+  privacyPolicy: boolean; // 개인정보 수집 및 이용 동의
+  marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
 }
 
 declare interface LoginFormValue {
@@ -48,4 +51,12 @@ declare interface AnnouncementForm {
   clubFee: string;
   posterImage?: File;
   content: string;
+}
+
+declare interface Term {
+  id: number;
+  key: string;
+  title: string;
+  contents: string;
+  status: string;
 }
