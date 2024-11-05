@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../common/Input";
 import SignupDropdown from "./SignupDropdown";
 import TermsAgreement from "./TermsAgreement";
@@ -9,7 +9,8 @@ export default function SignupContainer() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    watch
   } = useForm<SignupFormValue>({ mode: "onBlur" });
 
   const onSubmit = handleSubmit((data) => console.log(data));
@@ -29,9 +30,19 @@ export default function SignupContainer() {
   const handleSemesterSelect = (semester: string) => {
     setSelectedSemester(semester);
     setValue("semester", semester);
+    setSemesterExplain(""); // 학기 선택 시 설명 텍스트 숨기기
     setSemester(false); // 드롭다운 닫기
   };
 
+  //재학 여부에 따른 안내
+  const [semesterExplain, setSemesterExplain] = useState("");
+  useEffect(() => {
+    if (watch("studentStatus") === "재학") {
+      setSemesterExplain("이제 곧 시작할 학기를 선택해 주세요");
+    } else {
+      setSemesterExplain("휴학 이전에 수료한 마지막 학기를 선택해 주세요");
+    }
+  }, [watch("studentStatus")]);
   return (
     <form
       onSubmit={onSubmit}
@@ -115,6 +126,11 @@ export default function SignupContainer() {
           )}
         </div>
         <div className="relative">
+          {selectedStatus && semesterExplain && (
+            <p className="text-caption1 text-main-100 mt-4">
+              {semesterExplain}
+            </p>
+          )}
           <Input
             name="semester"
             register={register}
