@@ -1,26 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-interface GroupIdeal {
-  id: number;
-  text: string;
-}
-
-interface GroupIdeals {
-  [groupName: string]: {
-    ideals: GroupIdeal[];
-    showInput: boolean;
-    value: string;
-    nextId: number;
-  };
-}
-
-interface DefineGroupIdealForm {
-  groupIdeals: {
-    [groupName: string]: string;
-  };
-}
-
 export default function GroupIdeal() {
   const [groupIdeals, setGroupIdeals] = useState<GroupIdeals>(() => {
     const groups = ["기획", "개발", "디자인"];
