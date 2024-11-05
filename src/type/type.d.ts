@@ -58,3 +58,23 @@ declare interface SetAcceptanceCountFormData {
     finalPass: number;
   }[];
 }
+
+declare interface CommonIdealInsertProps {
+  onInsert: (text: string) => void;
+}
+
+declare interface CommonIdealItemProps {
+  text: string;
+  id: number;
+  onRemove: (id: number) => void;
+}
+
+declare interface CommonIdealListProps {
+  ideals: Ideal[];
+  onRemove: (id: number) => void;
+}
+
+declare interface Ideal {
+  id: number;
+  text: string;
+}
