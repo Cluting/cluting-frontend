@@ -44,7 +44,7 @@ export default function RecrutingHome() {
                     <p className="text-headline  text-left">운영진</p>
                     <button
                       onClick={handleAddAdminOpenModal}
-                      className="flex-center h-min py-[9px] px-[18px] text-caption2 bg-gray-500 hover:bg-gray-600 text-white-100 rounded-[10px]"
+                      className="button-main-light flex-center h-min py-[9px] px-[18px] text-caption2 rounded-[10px]"
                     >
                       <img
                         src="/assets/ic-addWhite.svg"
@@ -74,7 +74,7 @@ export default function RecrutingHome() {
           </p>
           <button
             onClick={handleRecrutingOpenModal}
-            className="py-[13px] px-[25px] bg-main-100 text-white-100 rounded-[10px]"
+            className="button-main-bg py-[13px] px-[25px] rounded-[10px]"
           >
             리크루팅 시작하기
           </button>

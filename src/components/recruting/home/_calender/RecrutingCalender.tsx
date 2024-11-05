@@ -1,9 +1,8 @@
 //리크루팅 일정 캘린더
-import React, { useState } from "react";
+import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./RecrutingCalender.css";
-import { ko } from "date-fns/locale";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
