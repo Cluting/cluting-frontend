@@ -30,7 +30,7 @@
   }
 
   .signup-dropdown-list {
-    @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
+    @apply p-4 rounded-[8px] hover:bg-gray-200 flex items-center;
   }
 
   .input-background {
