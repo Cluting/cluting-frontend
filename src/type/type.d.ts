@@ -59,6 +59,7 @@ declare interface SetAcceptanceCountFormData {
   }[];
 }
 
+//공통 인재상
 declare interface DefineCommonIdealForm {
   commonIdeal: string;
   commonIdeals: CommonIdeal[];
@@ -69,9 +70,11 @@ declare interface CommonIdeal {
   text: string;
 }
 
-interface GroupIdeal {
-  id: number;
-  text: string;
+//그룹별 인재상
+interface DefineGroupIdealForm {
+  groupIdeals: {
+    [groupName: string]: string;
+  };
 }
 
 interface GroupIdeals {
@@ -81,4 +84,9 @@ interface GroupIdeals {
     value: string;
     nextId: number;
   };
+}
+
+interface GroupIdeal {
+  id: number;
+  text: string;
 }
