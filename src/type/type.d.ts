@@ -59,12 +59,26 @@ declare interface SetAcceptanceCountFormData {
   }[];
 }
 
-declare interface DefineIdealForm {
+declare interface DefineCommonIdealForm {
   commonIdeal: string;
-  ideals: Ideal[];
+  commonIdeals: CommonIdeal[];
 }
 
-declare interface Ideal {
+declare interface CommonIdeal {
   id: number;
   text: string;
+}
+
+interface GroupIdeal {
+  id: number;
+  text: string;
+}
+
+interface GroupIdeals {
+  [groupName: string]: {
+    ideals: GroupIdeal[];
+    showInput: boolean;
+    value: string;
+    nextId: number;
+  };
 }

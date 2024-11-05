@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import CompleteButton from "../../CompleteButton";
+// import CompleteButton from "../../CompleteButton";
 
 export default function CommonIdeal() {
-  const [ideals, setIdeals] = useState<Ideal[]>([]);
+  const [commonIdeals, setCommonIdeals] = useState<CommonIdeal[]>([]);
   const [value, setValue] = useState<string>("");
   const [showInput, setShowInput] = useState<boolean>(true);
   const nextId = useRef<number>(1);
@@ -11,8 +11,8 @@ export default function CommonIdeal() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm<DefineIdealForm>({
+    formState: { errors } //isSubmitting
+  } = useForm<DefineCommonIdealForm>({
     mode: "onBlur"
   });
 
@@ -23,7 +23,7 @@ export default function CommonIdeal() {
         id: nextId.current,
         text: value
       };
-      setIdeals([...ideals, ideal]);
+      setCommonIdeals([...commonIdeals, ideal]);
       setValue("");
       setShowInput(false);
       nextId.current += 1;
@@ -31,13 +31,13 @@ export default function CommonIdeal() {
   };
 
   const onRemove = (id: number) => {
-    setIdeals(ideals.filter((ideal) => ideal.id !== id));
+    setCommonIdeals(commonIdeals.filter((ideal) => ideal.id !== id));
   };
 
   const onSubmit = handleSubmit((data) => {
     const formData = {
       ...data,
-      ideals
+      commonIdeals
     };
     console.log(formData);
   });
@@ -54,7 +54,7 @@ export default function CommonIdeal() {
       <div className="mt-[16px] pt-[14px] pb-[28px] relative h-auto bg-white-100 rounded-[12px] custom-shadow">
         {/* 인재상 목록 */}
         <div className="px-[30px]">
-          {ideals.map((ideal) => (
+          {commonIdeals.map((ideal) => (
             <div
               key={ideal.id}
               className="mt-[14px] py-[11px] pl-[21px] pr-[53px] bg-white-100 rounded-[8px] border border-gray-500 text-[15px] font-medium flex justify-between items-center"
@@ -75,9 +75,13 @@ export default function CommonIdeal() {
         <div className="px-[30px]">
           {showInput && (
             <input
-              {...register("ideals", { required: "필수 입력 사항입니다." })}
+              {...register("commonIdeals", {
+                required: "필수 입력 사항입니다."
+              })}
               className={`w-full mt-[14px] py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
-                errors.ideals ? "border-red-100" : "border-gray-500"
+                errors.commonIdeals && commonIdeals.length === 0
+                  ? "border-red-100"
+                  : "border-gray-500"
               }`}
               type="text"
               value={value}
@@ -89,12 +93,11 @@ export default function CommonIdeal() {
                 }
               }}
               placeholder="인재상을 작성해 주세요."
-              autoFocus
             />
           )}
 
-          {errors.ideals && ideals.length === 0 && (
-            <p className="text-state-error">{errors.ideals.message}</p>
+          {errors.commonIdeals && commonIdeals.length === 0 && (
+            <p className="text-state-error">{errors.commonIdeals.message}</p>
           )}
 
           <button
@@ -106,10 +109,9 @@ export default function CommonIdeal() {
           </button>
         </div>
       </div>
-
-      <div className="flex-center mt-[50px]">
+      {/* <div className="flex-center mt-[50px]">
         <CompleteButton isSubmitting={isSubmitting} />
-      </div>
+      </div> */}
     </form>
   );
 }
