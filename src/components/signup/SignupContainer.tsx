@@ -48,21 +48,33 @@ export default function SignupContainer() {
           type="text"
           placeholder="이름"
           required
+          error={errors.name}
         />
+        {errors.name && (
+          <p className="text-state-error">필수 입력 사항입니다.</p>
+        )}
         <Input
           name="email"
           register={register}
           type="email"
           placeholder="이메일"
           required
+          error={errors.email}
         />
+        {errors.email && (
+          <p className="text-state-error">필수 입력 사항입니다.</p>
+        )}
         <Input
           name="address"
           register={register}
           type="text"
           placeholder="거주지"
           required
+          error={errors.address}
         />
+        {errors.address && (
+          <p className="text-state-error">필수 입력 사항입니다.</p>
+        )}
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 my-8" />
@@ -79,7 +91,11 @@ export default function SignupContainer() {
           type="text"
           placeholder="학교"
           required
+          error={errors.school}
         />
+        {errors.school && (
+          <p className="text-state-error">필수 입력 사항입니다.</p>
+        )}
         <div className="relative">
           <Input
             name="studentStatus"
@@ -122,7 +138,11 @@ export default function SignupContainer() {
           type="text"
           placeholder="전공"
           required
+          error={errors.major}
         />
+        {errors.major && (
+          <p className="text-state-error">필수 입력 사항입니다.</p>
+        )}
         <Input
           name="minors"
           register={register}
