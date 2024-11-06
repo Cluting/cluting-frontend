@@ -37,7 +37,7 @@ export default function GroupCreate() {
   };
 
   return (
-    <div className="custom-shadow w-full h-auto bg-white-100 py-6 mx-8 mt-[34px] px-[13px] rounded-[12px]">
+    <div className="custom-shadow w-full h-auto bg-white-100 pt-6 pb-[60px] mx-8 mt-[34px] px-[13px] rounded-[12px]">
       <div className="flex items-center mx-8 my-4">
         <h1 className="text-callout">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">
@@ -45,10 +45,10 @@ export default function GroupCreate() {
           주세요
         </div>
       </div>
-      <div className="flex items-start h-[50px] mb-[62px]">
+      <div className="flex items-start overflow-scroll oveflow-x-hidden flex-wrap w-[1000px] ">
         <button
           onClick={handleShowInput}
-          className="button-main-light flex-center ml-8 mr-4 py-[14px] px-[38px] text-callout rounded-[10px]"
+          className=" button-main-light flex-center ml-8 mr-4 py-[14px] px-[38px] text-callout rounded-[10px]"
         >
           <img
             src="/assets/ic-addMain.svg"
@@ -62,7 +62,7 @@ export default function GroupCreate() {
           {groupList.map((group, index) => (
             <li
               key={index}
-              className="relative flex-center w-[158px] h-full rounded-[8px]  py-[11px]  text-center border border-gray-400 "
+              className="h-[50px] relative flex-center w-[158px] rounded-[8px]  py-[11px]  text-center border border-gray-400 "
             >
               {group}
               <img
@@ -81,7 +81,7 @@ export default function GroupCreate() {
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             placeholder="그룹명"
-            className="w-[158px] h-full rounded-[8px] ml-[16px] py-[11px] px-[20px] text-center input-background"
+            className="w-[158px] h-[50px] rounded-[8px] ml-[16px] py-[11px] px-[20px] text-center input-background"
           />
         )}
       </div>
