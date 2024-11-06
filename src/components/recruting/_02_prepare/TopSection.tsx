@@ -26,7 +26,7 @@ export default function TopSection() {
       <div className="relative flex justify-between items-center pl-8 mb-[9px] text-left">
         <div className="flex items-center">
           <div className="flex-center mr-3 w-[33px] h-[30px] bg-white-100 border border-gray-500 rounded-[8px]">
-            {currentStep + 1}
+            2
           </div>
           <h1 className="text-title1 mr-3">모집 준비하기</h1>
           <p className="text-headline">

@@ -21,6 +21,14 @@
   .flex-center {
     @apply flex justify-center items-center;
   }
+
+  .button-main-bg {
+    @apply bg-main-100 text-white-100;
+  }
+  .button-main-light {
+    @apply bg-main-300 text-main-100 border border-main-400;
+  }
+
   .custom-shadow {
     @apply shadow-[0px_4px_21.6px_rgba(0,0,0,0.05)];
   }
