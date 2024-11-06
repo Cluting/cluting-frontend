@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGroupStore } from "../../../store/useStore";
 
 // 1 - 계획하기 : 지원자 그룹 짓기
 export default function GroupCreate() {
   const [inputValue, setInputValue] = useState("");
   const [showInput, setShowInput] = useState(false); // input 표시 상태
+  //useGroupStore 전역 상태 가져오기
   const addGroup = useGroupStore((state) => state.addGroup);
   const groupList = useGroupStore((state) => state.group);
+  const removeGroup = useGroupStore((state) => state.removeGroup);
 
+  //테스트
+  const { group } = useGroupStore();
+  useEffect(() => {
+    console.log(group);
+  }, [group]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
@@ -26,7 +33,7 @@ export default function GroupCreate() {
   };
 
   const handleShowInput = () => {
-    setShowInput(true); // input 표시
+    setShowInput(true); //그룹 추가 클릭 후 input 표시
   };
 
   return (
@@ -41,7 +48,7 @@ export default function GroupCreate() {
       <div className="flex items-start h-[50px] mb-[62px]">
         <button
           onClick={handleShowInput}
-          className="button-main-light flex-center ml-8  py-[14px] px-[38px] text-callout rounded-[10px]"
+          className="button-main-light flex-center ml-8 mr-4 py-[14px] px-[38px] text-callout rounded-[10px]"
         >
           <img
             src="/assets/ic-addMain.svg"
@@ -55,13 +62,14 @@ export default function GroupCreate() {
           {groupList.map((group, index) => (
             <li
               key={index}
-              className="flex-center w-[158px] h-full rounded-[8px]  py-[11px]  text-center border border-gray-400 "
+              className="relative flex-center w-[158px] h-full rounded-[8px]  py-[11px]  text-center border border-gray-400 "
             >
               {group}
               <img
+                onClick={() => removeGroup(group)}
                 src="/assets/ic-minusCircle.svg"
                 alt="그룹 삭제"
-                className="w-[16px] h-[16px] ml-[33px] "
+                className="absolute w-[16px] h-[16px] right-4"
               />
             </li>
           ))}
