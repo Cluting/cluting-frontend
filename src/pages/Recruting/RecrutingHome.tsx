@@ -47,7 +47,7 @@ export default function RecrutingHome() {
                       className="button-main-light flex-center h-min py-[9px] px-[18px] text-caption2 rounded-[10px]"
                     >
                       <img
-                        src="/assets/ic-addWhite.svg"
+                        src="/assets/ic-addMain.svg"
                         alt="운영진 추가"
                         className="w-[10px] h-[10px] mr-2"
                       />
