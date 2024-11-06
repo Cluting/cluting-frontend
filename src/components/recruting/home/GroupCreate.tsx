@@ -1,5 +1,34 @@
+import { useState } from "react";
+import { useGroupStore } from "../../../store/useStore";
+
 // 1 - 계획하기 : 지원자 그룹 짓기
 export default function GroupCreate() {
+  const [inputValue, setInputValue] = useState("");
+  const [showInput, setShowInput] = useState(false); // input 표시 상태
+  const addGroup = useGroupStore((state) => state.addGroup);
+  const groupList = useGroupStore((state) => state.group);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleAddGroup = () => {
+    if (inputValue.trim() !== "") {
+      addGroup(inputValue.trim());
+      setInputValue(""); // 입력창 초기화
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleAddGroup();
+    }
+  };
+
+  const handleShowInput = () => {
+    setShowInput(true); // input 표시
+  };
+
   return (
     <div className="custom-shadow w-full h-auto bg-white-100 py-6 mx-8 mt-[34px] px-[13px] rounded-[12px]">
       <div className="flex items-center mx-8 my-4">
@@ -9,19 +38,44 @@ export default function GroupCreate() {
           주세요
         </div>
       </div>
-      <div className="flex items-start gap-4 h-[50px] mb-[62px]">
-        <button className="button-main-light flex-center ml-8  py-[14px] px-[38px] text-callout rounded-[10px]">
+      <div className="flex items-start h-[50px] mb-[62px]">
+        <button
+          onClick={handleShowInput}
+          className="button-main-light flex-center ml-8  py-[14px] px-[38px] text-callout rounded-[10px]"
+        >
           <img
-            src="/assets/ic-addWhite.svg"
+            src="/assets/ic-addMain.svg"
             alt="그룹 추가"
             className="w-[10px] h-[10px] mr-2 "
           />
           그룹 추가
         </button>
-        <input
-          placeholder="그룹명"
-          className="w-[158px] h-full rounded-[8px] py-[11px] px-[20px]  text-center input-background"
-        />
+
+        <ul className="h-full flex gap-[16px] text-callout text-gray-900">
+          {groupList.map((group, index) => (
+            <li
+              key={index}
+              className="flex-center w-[158px] h-full rounded-[8px]  py-[11px]  text-center border border-gray-400 "
+            >
+              {group}
+              <img
+                src="/assets/ic-minusCircle.svg"
+                alt="그룹 삭제"
+                className="w-[16px] h-[16px] ml-[33px] "
+              />
+            </li>
+          ))}
+        </ul>
+
+        {showInput && (
+          <input
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyPress}
+            placeholder="그룹명"
+            className="w-[158px] h-full rounded-[8px] ml-[16px] py-[11px] px-[20px] text-center input-background"
+          />
+        )}
       </div>
     </div>
   );
