@@ -1,22 +1,5 @@
 import { create } from "zustand";
 
-type RecruitmentStore = {
-  currentRecruitmentStep: number; // 현재 단계의 인덱스
-  setCurrentRecruitmentStep: (step: number) => void; // 단계 변경 함수
-};
-
-type Store = {
-  currentStep: number; // 현재 단계의 인덱스
-  setCurrentStep: (step: number) => void; // 단계 변경 함수
-};
-
-interface GroupStore {
-  group: string[];
-  setGroup: (group: string[]) => void;
-  addGroup: (newGroup: string) => void;
-  removeGroup: (groupToRemove: string) => void;
-}
-
 // 리크쿠팅 전체 단계
 export const useRecruitmentStepStore = create<RecruitmentStore>()((set) => ({
   currentRecruitmentStep: 0, // 초기 단계

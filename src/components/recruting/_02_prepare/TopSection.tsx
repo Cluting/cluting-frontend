@@ -28,15 +28,15 @@ export default function TopSection() {
 
   return (
     <div>
-      {" "}
       <div className="relative flex justify-between items-center pl-8 mb-[9px] text-left">
         <div className="flex items-center">
           <div className="flex-center mr-3 w-[33px] h-[30px] bg-white-100 border border-gray-500 rounded-[8px]">
             2
           </div>
-          <h1 className="text-title1 mr-3">{currentRecruitmentStep}</h1>
+          <h1 className="text-title1 mr-3">
+            {currentRecruitmentStep || "리크루팅 준비하기"}
+          </h1>
           <p className="text-headline">
-            {" "}
             {`> (${currentStep + 1}) ${STEP2_ITEMS[currentStep]}`}
           </p>
         </div>

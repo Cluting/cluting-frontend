@@ -1,3 +1,4 @@
+//Form Type
 declare interface SignupFormValue {
   name: string;
   email?: string;
@@ -28,12 +29,6 @@ declare interface RecrutingStartFormValue {
   interviewType: string;
 }
 
-declare interface AdminUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
 declare interface AnnouncementForm {
   title: string;
   recruitmentStart: Date;
@@ -57,4 +52,31 @@ declare interface SetAcceptanceCountFormData {
     documentPass: number;
     finalPass: number;
   }[];
+}
+
+// 운영자 Type
+declare interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+//zustand 단계 Type
+
+declare interface Store {
+  currentStep: number; // 현재 단계의 인덱스
+  setCurrentStep: (step: number) => void; // 단계 변경 함수
+}
+
+declare interface RecruitmentStore {
+  //전체 step
+  currentRecruitmentStep: number; // 현재 단계의 인덱스
+  setCurrentRecruitmentStep: (step: number) => void; // 단계 변경 함수
+}
+
+declare interface GroupStore {
+  group: string[];
+  setGroup: (group: string[]) => void;
+  addGroup: (newGroup: string) => void;
+  removeGroup: (groupToRemove: string) => void;
 }
