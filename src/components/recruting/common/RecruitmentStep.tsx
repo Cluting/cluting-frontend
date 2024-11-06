@@ -20,7 +20,9 @@ export default function RecruitmentStep() {
         <section>
           <div className="h-[67px] bg-gray-100 px-[19px] py-[8px] rounded-[7px] text-left">
             <p className="text-caption1 text-gray-700">Today</p>
-            <p className="text-gray-900 text-title3">10월 13일 화요일</p>
+            <p className="text-gray-900 text-title3" aria-label="현재 날짜">
+              10월 13일 화요일
+            </p>
           </div>
         </section>
 
@@ -38,6 +40,7 @@ export default function RecruitmentStep() {
                   currentStep >= index ? "bg-gray-800" : "bg-gray-400"
                 }`}
                 onClick={() => setCurrentStep(index)} // 단계 클릭 시 상태 변경
+                aria-label={`${step} 단계로 이동`}
               ></div>
               <p className="w-[70px] text-caption2 text-gray-700 mt-2">
                 {step}
