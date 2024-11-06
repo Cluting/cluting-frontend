@@ -1,18 +1,11 @@
 //리크루팅 단계
 
+import { RECRUIT_STEP_ITEMS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 
-const steps = [
-  "계획 세우기",
-  "모집 준비하기",
-  "서류 평가하기",
-  "서류 합격자 및 면접 안내",
-  "면접 평가하기",
-  "최종 합격자 및 활동 안내"
-];
-
 export default function RecruitmentStep() {
-  const { currentStep, setCurrentStep } = useRecruitmentStepStore(); // 상태와 상태 변경 함수 가져오기
+  const { currentRecruitmentStep, setCurrentRecruitmentStep } =
+    useRecruitmentStepStore(); // 상태와 상태 변경 함수 가져오기
 
   return (
     <div className="flex h-[157px]">
@@ -27,26 +20,30 @@ export default function RecruitmentStep() {
         </section>
 
         <section className="mt-5 mb-[25px]">
-          <p className="text-subheadline">{steps[currentStep]}</p>
+          <p className="text-subheadline">
+            {RECRUIT_STEP_ITEMS[currentRecruitmentStep]}
+          </p>
         </section>
       </div>
 
       <section className="flex items-start w-full pt-[33px] pl-10 border-b border-gray-200 bg-gray-100">
-        {steps.map((step, index) => (
+        {RECRUIT_STEP_ITEMS.map((step, index) => (
           <div key={index} className="flex items-center">
             <div className="flex flex-col">
               <div
                 className={`w-[70px] h-[70px] rounded-full ${
-                  currentStep >= index ? "bg-gray-800" : "bg-gray-400"
+                  currentRecruitmentStep >= index
+                    ? "bg-gray-800"
+                    : "bg-gray-400"
                 }`}
-                onClick={() => setCurrentStep(index)} // 단계 클릭 시 상태 변경
+                onClick={() => setCurrentRecruitmentStep(index)} // 단계 클릭 시 상태 변경
                 aria-label={`${step} 단계로 이동`}
               ></div>
               <p className="w-[70px] text-caption2 text-gray-700 mt-2">
                 {step}
               </p>
             </div>
-            {index < steps.length - 1 && ( // 마지막 단계가 아닐 때만 아이콘 표시
+            {index < RECRUIT_STEP_ITEMS.length - 1 && ( // 마지막 단계가 아닐 때만 아이콘 표시
               <img
                 src="/assets/ic-progress.svg"
                 alt="진행 단계"

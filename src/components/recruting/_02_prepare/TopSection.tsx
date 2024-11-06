@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { STEP2_ITEMS } from "../../../constants/recruting";
-import { useTopSectionStore } from "../../../store/useStore";
+import {
+  useRecruitmentStepStore,
+  useTopSectionStore
+} from "../../../store/useStore";
 import AddAdmin from "../home/AddAdmin";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep } = useTopSectionStore();
+  const { currentRecruitmentStep, setCurrentRecruitmentStep } =
+    useRecruitmentStepStore(); //전체 스텝
+  //TODO: 이 섹션에서 전체 스텝 2로 설정하기
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAdmin, setShowAdmin] = useState(false); //권한자 보기 드롭다운
 
@@ -28,7 +34,7 @@ export default function TopSection() {
           <div className="flex-center mr-3 w-[33px] h-[30px] bg-white-100 border border-gray-500 rounded-[8px]">
             2
           </div>
-          <h1 className="text-title1 mr-3">모집 준비하기</h1>
+          <h1 className="text-title1 mr-3">{currentRecruitmentStep}</h1>
           <p className="text-headline">
             {" "}
             {`> (${currentStep + 1}) ${STEP2_ITEMS[currentStep]}`}
