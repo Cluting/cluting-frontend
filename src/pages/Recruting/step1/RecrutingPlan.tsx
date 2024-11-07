@@ -1,7 +1,7 @@
 // 1- 리크루팅 :  계획하기 단계 (페이지)
 
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
-import RecrutingCalender from "../../../components/recruting/home/_calender/RecrutingCalender";
+import RecrutingCalenderPicker from "../../../components/recruting/home/_calender/RecruitingCalenderPicker";
 import GroupCreate from "../../../components/recruting/home/GroupCreate";
 
 export default function RecrutingPlan() {
@@ -15,7 +15,8 @@ export default function RecrutingPlan() {
           </div>
           <h1 className="text-title1 mr-3">계획하기</h1>
         </div>
-        <div className="custom-shadow w-full h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
+
+        <section className="custom-shadow w-full h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
           <div className="flex items-center mx-8 my-4">
             <h1 className="text-callout">
               <span className="text-main-100 text-left">* </span> 리크루팅 일정
@@ -29,8 +30,8 @@ export default function RecrutingPlan() {
               일정 선택 후, 달력에서 기간을 선택해 주세요.
             </div>
           </div>
-          <RecrutingCalender />
-        </div>
+          <RecrutingCalenderPicker />
+        </section>
         <GroupCreate />
       </div>
     </div>
