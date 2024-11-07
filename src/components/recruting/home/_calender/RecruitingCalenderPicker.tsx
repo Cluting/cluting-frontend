@@ -1,4 +1,3 @@
-import "react-datepicker/dist/react-datepicker.css";
 import "./calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
