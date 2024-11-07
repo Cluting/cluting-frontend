@@ -7,7 +7,15 @@ export default function AddAdminDropdown({
   onSelect,
   currentAdmins
 }: AddAdminDropdownProps) {
-  const allAdmins = ["최예은", "박시현", "김동현"];
+  const allAdmins = [
+    "최예은",
+    "박시현",
+    "김동현",
+    "윤다인",
+    "곽서연",
+    "양성원",
+    "이은재"
+  ];
 
   return (
     <div className="absolute top-[53.5px] bg-white-100 w-[139px] rounded-[12px]">
