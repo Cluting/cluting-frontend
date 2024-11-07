@@ -125,8 +125,7 @@ export default function RecrutingCalenderPicker() {
               center: "title",
               right: "next"
             }}
-            eventBackgroundColor="#ff0000"
-            eventBorderColor="#0000ff"
+            eventBackgroundColor="#8B8FA4"
             timeZone="UTC"
             // 날짜 범위 선택 시 선택된 범위를 업데이트
             datesSet={(dateInfo) => {

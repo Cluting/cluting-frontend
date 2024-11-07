@@ -3,7 +3,10 @@
   background: white;
   font-family: "Pretendard";
   border-radius: 12px;
-  border: 2px solid #3b3d46;
+  border: 1px solid #b9bed3;
+}
+.fc-media-screen:hover {
+  border: 2px solid #5e2be8;
 }
 /* 헤더 높이와 여백 조정 */
 .fc-toolbar.fc-header-toolbar {
@@ -58,4 +61,20 @@
 .fc-col-header-cell {
   border-left: none !important;
   border-right: none !important;
+}
+.fc-event,
+.fc-event-draggable,
+.fc-event-resizable,
+.fc-event-start,
+.fc-event-end,
+.fc-event-future,
+.fc-daygrid-event,
+.fc-daygrid-block-event,
+.fc-h-event {
+  border-radius: 50px !important;
+  border: none !important;
+  color: white;
+  font-size: 8px;
+  text-align: left;
+  padding-left: 5px;
 }
