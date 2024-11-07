@@ -157,12 +157,16 @@ export default function PrepareStepRoles() {
             <div>
               <div className="flex ml-[27.35px] mt-[21px] ">
                 {steps.map((step) => (
-                  <div
-                    key={step.id}
-                    className="w-[139px] min-h-[329px] mr-[25px]"
-                  >
-                    <div className="w-[139px] h-[66px] px-[21px] bg-gray-200 rounded-[12px] flex-center text-caption1">
-                      {step.name}
+                  <div key={step.id} className="w-full min-h-[329px]">
+                    <div className="flex-center">
+                      <div className="w-[139px] h-[66px] px-[21px] bg-gray-200 rounded-[12px] flex-center text-caption1">
+                        {step.name}
+                      </div>
+                      <img
+                        src="/assets/ic-next.svg"
+                        alt="화살표"
+                        className="w-[7px] h-[14px] mx-[10px]"
+                      />
                     </div>
                     <div className="mt-[29px]">
                       {/* 운영진 목록 */}
@@ -176,7 +180,7 @@ export default function PrepareStepRoles() {
                             {!step.isFixed && (
                               <img
                                 src="/assets/ic-minusCircle.svg"
-                                alt="운영진 삭제"
+                                alt="운영진 삭제 버튼"
                                 onClick={() => removeAdmin(step.id, admin)}
                                 className="absolute right-[19px] cursor-pointer"
                               />
