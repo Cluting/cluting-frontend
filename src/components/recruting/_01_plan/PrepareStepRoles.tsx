@@ -230,7 +230,7 @@ export default function PrepareStepRoles() {
         )}
       </div>
 
-      {/* 제출 버튼 */}
+      {/* 제출 버튼
       <div className="flex justify-end mt-6 mr-[48px]">
         <button
           type="submit"
@@ -238,7 +238,7 @@ export default function PrepareStepRoles() {
         >
           저장하기
         </button>
-      </div>
+      </div> */}
     </form>
   );
 }
