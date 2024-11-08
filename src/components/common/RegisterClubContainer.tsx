@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Input from "../common/Input";
-import SignupDropdown from "./SignupDropdown";
 import { useForm } from "react-hook-form";
-import UploadProfile from "./UploadProfile";
-import Textarea from "../common/Textarea";
-import ClubKeyword from "./ClubKeyword";
+import UploadProfile from "../signup/UploadProfile";
+import Input from "./Input";
+import SignupDropdown from "../signup/SignupDropdown";
+import ClubKeyword from "../signup/ClubKeyword";
+import Textarea from "./Textarea";
 
-export default function RegisterClub() {
+export default function RegisterClubContainer() {
   const {
     watch,
     register,
@@ -121,7 +121,8 @@ export default function RegisterClub() {
 
       <button
         type="submit"
-        className="bg-gray-400 hover:bg-gray-500 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
+        aria-label="동아리 등록하기"
+        className="bg-main-100 text-white-100 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
       >
         동아리 등록하기
       </button>

@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { ModalPortal } from "../../common/ModalPortal";
+import { ERROR_MESSAGES } from "../../../constants/recruting";
 
 type RecrutingStartModalProps = {
   onClose: () => void;
@@ -53,7 +54,7 @@ export default function RecrutingStartModal({
               className="w-[257px] h-[42px] mt-[17px] rounded-[7px] input-background text-center text-gray-600 text-headline"
             />
             {errors?.sessionNumber?.type === "required" && (
-              <p className="text-state-error">필수 입력 사항입니다.</p>
+              <p className="text-state-error">{ERROR_MESSAGES.required}</p>
             )}
 
             <hr className="w-[369px] my-[25px] py- border border-gray-200 " />
@@ -88,7 +89,7 @@ export default function RecrutingStartModal({
               </label>
             </div>
             {errors?.interviewType?.type === "required" && (
-              <p className="text-state-error">필수 입력 사항입니다.</p>
+              <p className="text-state-error">{ERROR_MESSAGES.required}</p>
             )}
 
             <button
