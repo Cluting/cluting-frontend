@@ -10,7 +10,7 @@ export default function AdminsSchedule() {
     trigger
   } = useForm<AdminsScheduleFormData>({
     defaultValues: { scheduleData: {} },
-    mode: "onSubmit"
+    mode: "onBlur"
   });
 
   // 각 시간대별 선택된 면접관을 관리하는 상태
@@ -71,7 +71,7 @@ export default function AdminsSchedule() {
   const validateScheduleData = (value: TimeSlotAdmins) => {
     // 선택된 모든 시간대에서 면접관이 2명인지 확인
     const hasIncompleteSlot = Object.values(value).some(
-      (admins) => admins.length === 2
+      (admins) => admins.length < 2
     );
     return Object.keys(value).length === 0 || hasIncompleteSlot
       ? "필수 선택 사항입니다"
