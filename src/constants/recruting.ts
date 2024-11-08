@@ -7,12 +7,35 @@ export const RECRUIT_STEP_ITEMS = [
   "최종 합격자 및 활동 안내"
 ];
 
+export const PATH = [
+  "/recruting/01_plan",
+  "/recruting/02_prepare",
+  "/recruting/03_document_evaluation",
+  "/recruting/04_interview_notification",
+  "/recruting/05_interview_evaluation",
+  "/recruting/06_final_selection"
+];
+
 export const STEP2_ITEMS = [
   "합격 인원 설정하기",
   "인재상 구축하기",
   "공고 작성하기",
   "운영진 면접 일정 조정하기",
   "지원서 폼 제작 및 공고 올리기"
+];
+
+export const STEP3_ITEMS = ["서류 평가 준비하기", "서류 평가하기"];
+
+export const STEP4_ITEMS = [
+  "지원자 합/불 결과",
+  "서류 합격자 면접 일정 조율하기",
+  "합/불 및 면접 일정 안내 문자 작성하기"
+];
+
+export const STEP5_ITEMS = ["면접 평가 준비하기", "면접 평가하기"];
+export const STEP6_ITEMS = [
+  "지원자 합/불 결과",
+  "합/불 및 활동 안내 문자 작성"
 ];
 
 export const BUTTON_TEXT = {
@@ -82,6 +105,7 @@ export const TermsAgreementdata: Term[] = [
   }
 ];
 
+//하드코딩 임시 데이터
 export const ALL_ADMINS = [
   "최예은",
   "박시현",
