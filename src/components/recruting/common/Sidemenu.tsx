@@ -68,15 +68,19 @@ export default function Sidemenu() {
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
         <button className="flex items-center h-[46px]">
-          <div
-            className={`w-6 h-6 bg-gray-600  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
-          ></div>
+          <img
+            src="/assets/ic-sidemenu-home.svg"
+            alt="리크루팅 홈"
+            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+          />
           {!sidemenuClose && "리크루팅 홈"}
         </button>
         <button className="flex items-center h-[46px]">
-          <div
-            className={`w-6 h-6 bg-gray-600  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
-          ></div>
+          <img
+            src="/assets/ic-sidemenu-setting.svg"
+            alt="리크루팅 홈"
+            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+          />
           {!sidemenuClose && "동아리 설정"}
         </button>
       </section>
@@ -137,9 +141,11 @@ export default function Sidemenu() {
 
       <section className="absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">
         <div className="flex-center h-[46px] ">
-          <div
-            className={`w-6 h-6 bg-gray-600  ${sidemenuClose ? "ml-[15px]" : "mr-[10px]"}`}
-          ></div>
+          <img
+            src="/assets/ic-sidemenu-notice.svg"
+            alt="리크루팅 홈"
+            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+          />
           {!sidemenuClose && (
             <>
               <span>공지 알림 및 소통</span>
