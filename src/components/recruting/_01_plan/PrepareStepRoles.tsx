@@ -116,7 +116,7 @@ export default function PrepareStepRoles() {
         >
           <div className="flex">
             {/* 왼쪽 열 */}
-            <div className="bg-gray-200 border-r border-gray-400 rounded-l-[10px] flex flex-col">
+            <div className="bg-main-300 border-r border-gray-400 rounded-l-[10px] flex flex-col">
               <div className="flex-center w-[63.89px] h-[103.8px] border-b border-gray-400 text-[#3B3D46] text-caption1">
                 <p>
                   준비
