@@ -29,6 +29,10 @@ export default function RecrutingCalenderPicker() {
     null
   ); // 드래그 시작시 표시되는 안내 메시지
   const [completedTitles, setCompletedTitles] = useState<string[]>([]); // 완료된 제목 상태
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
+    null
+  );
+  const [editMode, setEditMode] = useState(false);
 
   // 날짜 선택 시 이벤트 추가 함수
   const handleDateSelect = (selectInfo: DateSelectArg) => {
@@ -66,21 +70,111 @@ export default function RecrutingCalenderPicker() {
     );
   };
 
-  // 이벤트 클릭 시 삭제 함수
   const handleEventClick = (clickInfo: EventClickArg) => {
-    if (confirm(`"${clickInfo.event.title}" 이벤트를 삭제할까요?`)) {
-      clickInfo.event.remove();
+    const { title, start, end } = clickInfo.event;
+    setSelectedEvent({
+      id: clickInfo.event.id,
+      title,
+      start: start ? start.toISOString().split("T")[0] : "",
+      end: end ? end.toISOString().split("T")[0] : "",
+      allDay: clickInfo.event.allDay
+    });
+    setEditMode(false); // 수정 모드 비활성화
+  };
+
+  const handleEditEvent = () => {
+    setEditMode(true);
+  };
+
+  const handleSaveEvent = () => {
+    if (selectedEvent) {
       setEvents((prevEvents) =>
-        prevEvents.filter((event) => event.id !== clickInfo.event.id)
+        prevEvents.map((event) =>
+          event.id === selectedEvent.id
+            ? { ...event, start: selectedEvent.start, end: selectedEvent.end }
+            : event
+        )
       );
-      setCompletedTitles((prevTitles) =>
-        prevTitles.filter((title) => title !== clickInfo.event.title)
-      ); // 취소된 제목은 완료 리스트에서 제거
+      setEditMode(false);
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (selectedEvent) {
+      setSelectedEvent({
+        ...selectedEvent,
+        [e.target.name]: e.target.value
+      });
+    }
+  };
   return (
     <div className="mt-[30px] mx-10 bg-white-100">
+      {selectedEvent && (
+        <section className="absolute top-60 right-40 bg-white-100 border border-gray-400 p-[15px] rounded-[12px] z-10">
+          <h4 className="text-headline text-left">{selectedEvent.title}</h4>
+          <hr className="w-[194px] py- border border-gray-200 mt-4 mb-4" />
+
+          <div className="flex items-center mb-[11px]">
+            <div className="bg-gray-100 border border-gray-400 text-caption3 text-gray-900 py-1 px-2 mr-[10px] rounded-[6px]">
+              시작일
+            </div>
+            {editMode ? (
+              <input
+                type="date"
+                name="start"
+                value={selectedEvent.start}
+                onChange={handleInputChange}
+                className="border rounded-[7px] text-caption3 px-2 py-1"
+              />
+            ) : (
+              <p className="text-caption3 text-gray-900">
+                {selectedEvent.start}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center">
+            <div className="bg-gray-100 border border-gray-400 text-caption3 text-gray-900 py-1 px-2 mr-[10px] rounded-[6px]">
+              종료일
+            </div>
+            {editMode ? (
+              <input
+                type="date"
+                name="end"
+                value={selectedEvent.end}
+                onChange={handleInputChange}
+                className="border rounded-[7px] text-caption3 px-2 py-1"
+              />
+            ) : (
+              <p className="text-caption3 text-gray-900">{selectedEvent.end}</p>
+            )}
+          </div>
+
+          {editMode ? (
+            <button
+              className="text-gray-300 hover:text-gray-500 text-caption1 mt-2 mr-4"
+              onClick={handleSaveEvent}
+            >
+              저장
+            </button>
+          ) : (
+            <button
+              className="text-gray-300 hover:text-gray-500 text-caption1 mt-2 mr-4"
+              onClick={handleEditEvent}
+            >
+              수정
+            </button>
+          )}
+
+          <button
+            className="text-gray-300 hover:text-gray-500 text-caption1 mt-2"
+            onClick={() => setSelectedEvent(null)}
+          >
+            닫기
+          </button>
+        </section>
+      )}
+
       <div className="flex gap-10 text-left">
         <section className="w-[300px] text-caption3 bg-gray-100 p-[15px] border border-gray-400 flex flex-col rounded-[12px]">
           {CALENDAR_ITEMS.map((item, index) => (
