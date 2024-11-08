@@ -1,5 +1,6 @@
 /* eslint-disable indent */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidemenu() {
   const [sidemenuClose, setSidemenuClose] = useState(false);
@@ -9,6 +10,20 @@ export default function Sidemenu() {
 
   const handleDropdownClick = (index: number) => {
     setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
+  // 단계에 따른 경로 설정
+  const navigate = useNavigate(); // useNavigate 초기화
+  const navigateToPage = (index: number) => {
+    const paths = [
+      "/recruting/01_plan",
+      "/recruting/02_prepare",
+      "/recruting/03_document_evaluation",
+      "/recruting/04_interview_notification",
+      "/recruting/05_interview_evaluation",
+      "/recruting/06_final_selection"
+    ];
+    navigate(paths[index]); // 경로로 이동
   };
 
   const getDropdownContent = (index: number) => {
@@ -75,6 +90,7 @@ export default function Sidemenu() {
           />
           {!sidemenuClose && "리크루팅 홈"}
         </button>
+
         <button className="flex items-center h-[46px]">
           <img
             src="/assets/ic-sidemenu-setting.svg"
@@ -97,6 +113,7 @@ export default function Sidemenu() {
               className={`relative dropdown-list flex items-center h-[46px] text-subheadline hover:text-gray-900 ${
                 sidemenuClose ? "justify-center" : ""
               }`}
+              onClick={() => navigateToPage(index)} // 페이지로 이동
             >
               <div className="flex-center w-[33px] h-[30px] bg-gray-100 border border-gray-500 hover:border-gray-900 rounded-[8px]">
                 {index + 1}
