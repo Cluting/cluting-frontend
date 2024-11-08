@@ -4,7 +4,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import { useState } from "react";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
-import { CALENDAR_ITEMS } from "../../../../constants/recruting";
+import {
+  CALENDAR_ITEMS,
+  CALENDAR_COLORS
+} from "../../../../constants/recruting";
 
 interface CalendarEvent {
   id: string;
@@ -12,6 +15,7 @@ interface CalendarEvent {
   start: string;
   end: string;
   allDay: boolean;
+  backgroundColor?: string; // 색상 속성 추가
 }
 
 export default function RecrutingCalenderPicker() {
@@ -30,6 +34,9 @@ export default function RecrutingCalenderPicker() {
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     const title = currrentTitle;
     const calendarApi = selectInfo.view.calendar;
+    const colorIndex = CALENDAR_ITEMS.indexOf(title);
+    const backgroundColor =
+      CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length];
 
     calendarApi.unselect(); // 선택 해제
 
@@ -42,7 +49,8 @@ export default function RecrutingCalenderPicker() {
         title,
         start: selectInfo.startStr,
         end: selectInfo.endStr,
-        allDay: selectInfo.allDay
+        allDay: selectInfo.allDay,
+        backgroundColor: backgroundColor
       };
       setEvents((prevEvents) => [...prevEvents, newEvent]);
       setCompletedTitles((prevTitles) => [...prevTitles, title]); // 완료된 제목에 추가
@@ -75,7 +83,7 @@ export default function RecrutingCalenderPicker() {
     <div className="mt-[30px] mx-10 bg-white-100">
       <div className="flex gap-10 text-left">
         <section className="w-[300px] text-caption3 bg-gray-100 p-[15px] border border-gray-400 flex flex-col rounded-[12px]">
-          {CALENDAR_ITEMS.map((item) => (
+          {CALENDAR_ITEMS.map((item, index) => (
             <button
               key={item}
               className={`${
@@ -87,11 +95,13 @@ export default function RecrutingCalenderPicker() {
               }`}
               onClick={() => setCurrentTitle(item)}
             >
-              <img
-                src="/assets/ic-dateList.svg"
-                alt="리크루팅 일정 리스트"
-                className="w-[17px] h-[20px] mr-2"
-              />
+              <div
+                className="bg-red-100 w-4 h-4 rounded-full mr-4"
+                style={{
+                  backgroundColor:
+                    CALENDAR_COLORS[index % CALENDAR_COLORS.length]
+                }} // 각 순서에 맞는 색상 적용
+              ></div>
               {item}
             </button>
           ))}
@@ -120,7 +130,6 @@ export default function RecrutingCalenderPicker() {
               center: "title",
               right: "next"
             }}
-            eventBackgroundColor="#8B8FA4"
             timeZone="UTC"
             // 날짜 범위 선택 시 선택된 범위를 업데이트
             datesSet={(dateInfo) => {

@@ -29,3 +29,13 @@ export const CALENDAR_ITEMS = [
   "면접 기간",
   "면접 평가 기간"
 ];
+
+export const CALENDAR_COLORS = [
+  "#FF5252",
+  "#FF7F50",
+  "#FFD700",
+  "#ADFF2F",
+  "#00CED1",
+  "#1E90FF",
+  "#8A2BE2"
+];
