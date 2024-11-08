@@ -1,3 +1,4 @@
+//Form Type
 declare interface SignupFormValue {
   name: string;
   email?: string;
@@ -7,6 +8,9 @@ declare interface SignupFormValue {
   semester: string;
   major: string;
   minors?: string;
+  termsOfService: boolean; // 클루팅 이용약관 동의
+  privacyPolicy: boolean; // 개인정보 수집 및 이용 동의
+  marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
 }
 
 declare interface LoginFormValue {
@@ -28,12 +32,6 @@ declare interface RecrutingStartFormValue {
   interviewType: string;
 }
 
-declare interface AdminUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
 declare interface AnnouncementForm {
   title: string;
   recruitmentStart: Date;
@@ -50,6 +48,14 @@ declare interface AnnouncementForm {
   content: string;
 }
 
+declare interface Term {
+  id: number;
+  key: string;
+  title: string;
+  contents: string;
+  status: string;
+}
+
 declare interface SetAcceptanceCountFormData {
   documentPassTotal: number;
   finalPassTotal: number;
@@ -59,8 +65,46 @@ declare interface SetAcceptanceCountFormData {
   }[];
 }
 
+// 운영자 Type
+declare interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
+//zustand 단계 Type
+
+declare interface Store {
+  currentStep: number; // 현재 단계의 인덱스
+  setCurrentStep: (step: number) => void; // 단계 변경 함수
+}
+
+declare interface RecruitmentStore {
+  //전체 step
+  currentRecruitmentStep: number; // 현재 단계의 인덱스
+  setCurrentRecruitmentStep: (step: number) => void; // 단계 변경 함수
+}
+
+declare interface GroupStore {
+  group: string[];
+  setGroup: (group: string[]) => void;
+  addGroup: (newGroup: string) => void;
+  removeGroup: (groupToRemove: string) => void;
+}
+
+interface Step {
+  id: number;
+  name: string;
+  admins: string[];
+  isFixed?: boolean;
+}
+
+interface PrepareStepRolesFormValues {
+  steps: Step[];
+}
+
 //공통 인재상
-declare interface DefineCommonIdealForm {
+declare interface CommonIdealForm {
   commonIdeal: string;
   commonIdeals: CommonIdeal[];
 }
@@ -71,7 +115,7 @@ declare interface CommonIdeal {
 }
 
 //그룹별 인재상
-interface DefineGroupIdealForm {
+interface GroupIdealForm {
   groupIdeals: {
     [groupName: string]: string;
   };
@@ -84,9 +128,4 @@ interface GroupIdeals {
     value: string;
     nextId: number;
   };
-}
-
-interface GroupIdeal {
-  id: number;
-  text: string;
 }

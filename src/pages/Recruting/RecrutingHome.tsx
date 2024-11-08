@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import RecrutingStartModal from "../../components/recruting/home/RecrutingStartModal";
-import Sidemenu from "../../components/recruting/common/Sidemenu";
-import TodoTemplate from "../../components/recruting/home/TodoTemplate";
+import TodoTemplate from "../../components/recruting/home/_todo/TodoTemplate";
 import AddAdmin from "../../components/recruting/home/AddAdmin";
 import AddAdminModal from "../../components/recruting/home/AddAdminModal";
+import RecrutingCalender from "../../components/recruting/home/_calender/RecrutingCalender";
+import Sidemenu from "../../components/recruting/common/Sidemenu";
 import RecruitmentStep from "../../components/recruting/common/RecruitmentStep";
 
 export default function RecrutingHome() {
@@ -28,12 +29,13 @@ export default function RecrutingHome() {
   };
 
   return (
-    <div className="flex-center ">
+    <div className="flex justify-center pt-6 bg-gray-100">
       {" "}
       <Sidemenu />
       <div className="flex flex-col">
-        <div className="w-[1100px] h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
+        <div className="custom-shadow w-[1100px]  h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
           <RecruitmentStep />
+          <RecrutingCalender />
           <div className="px-10 py-[30px]">
             <div className="flex gap-11">
               <section className="w-min">
@@ -42,10 +44,10 @@ export default function RecrutingHome() {
                     <p className="text-headline  text-left">운영진</p>
                     <button
                       onClick={handleAddAdminOpenModal}
-                      className="flex-center h-min py-[9px] px-[18px] text-caption2 bg-gray-500 hover:bg-gray-600 text-white-100 rounded-[10px]"
+                      className="button-main-light flex-center h-min py-[9px] px-[18px] text-caption2 rounded-[10px]"
                     >
                       <img
-                        src="/assets/ic-addWhite.svg"
+                        src="/assets/ic-addMain.svg"
                         alt="운영진 추가"
                         className="w-[10px] h-[10px] mr-2"
                       />
@@ -66,13 +68,13 @@ export default function RecrutingHome() {
           </div>
         </div>
 
-        <section className="w-[1100px] bg-gray-400 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px]">
+        <section className="w-[1100px] mb-10 bg-main-300 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px] border-main-400">
           <p className="mt-7 text-headline text-gray-800 mb-[30px] text-left">
             아직 리크루팅을 시작하지 않았어요. 리크루팅을 시작해 주세요!
           </p>
           <button
             onClick={handleRecrutingOpenModal}
-            className="py-[13px] px-[25px] bg-gray-900 text-gray-400 hover:text-white-100 rounded-[10px]"
+            className="button-main-bg py-[13px] px-[25px] rounded-[10px]"
           >
             리크루팅 시작하기
           </button>

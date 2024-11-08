@@ -24,7 +24,7 @@ export default function GroupIdeal() {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<DefineGroupIdealForm>({
+  } = useForm<GroupIdealForm>({
     mode: "onBlur"
   });
 

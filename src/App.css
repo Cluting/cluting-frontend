@@ -21,6 +21,14 @@
   .flex-center {
     @apply flex justify-center items-center;
   }
+
+  .button-main-bg {
+    @apply bg-main-100 text-white-100;
+  }
+  .button-main-light {
+    @apply bg-main-300 text-main-100 border border-main-400;
+  }
+
   .custom-shadow {
     @apply shadow-[0px_4px_21.6px_rgba(0,0,0,0.05)];
   }
@@ -30,11 +38,11 @@
   }
 
   .signup-dropdown-list {
-    @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
+    @apply p-4 rounded-[8px] hover:bg-gray-200 flex items-center;
   }
 
   .input-background {
-    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
   }
 
   .text-state-error {

@@ -12,7 +12,7 @@ export default function CommonIdeal() {
     register,
     handleSubmit,
     formState: { errors } //isSubmitting
-  } = useForm<DefineCommonIdealForm>({
+  } = useForm<CommonIdealForm>({
     mode: "onBlur"
   });
 
@@ -51,7 +51,7 @@ export default function CommonIdeal() {
         <div className="tooltip">각 그룹별 인재상을 작성해 주세요.</div>
       </div>
 
-      <div className="mt-[16px] pt-[14px] pb-[28px] relative h-auto bg-white-100 rounded-[12px] custom-shadow">
+      <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px] custom-shadow">
         {/* 인재상 목록 */}
         <div className="px-[30px]">
           {commonIdeals.map((ideal) => (
@@ -63,6 +63,7 @@ export default function CommonIdeal() {
               <button
                 type="button"
                 onClick={() => onRemove(ideal.id)}
+                aria-label={`${ideal.text} 삭제하기`}
                 className="flex-center bg-gray-100 rounded-full w-4 h-4 text-gray-500 hover:text-red-500"
               >
                 -

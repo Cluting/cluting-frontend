@@ -8,8 +8,10 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "classnames": "^2.5.1",
+    "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
+    "react-calendar": "^5.1.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",
     "react-router-dom": "^6.27.0",
@@ -46,6 +48,8 @@
     ]
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
+    "@types/react-calendar": "^3.9.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",

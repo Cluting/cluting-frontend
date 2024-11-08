@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Path, UseFormRegister, FieldValues } from "react-hook-form";
+import {
+  Path,
+  UseFormRegister,
+  FieldValues,
+  FieldError
+} from "react-hook-form";
 
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
@@ -12,6 +17,7 @@ interface InputProps<T extends FieldValues> {
   isDropdownSelected?: boolean;
   maxLength?: number;
   onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
+  error?: FieldError;
 }
 
 export default function Input<T extends FieldValues>({
@@ -24,29 +30,31 @@ export default function Input<T extends FieldValues>({
   isDropdown,
   isDropdownSelected,
   maxLength,
-  onClick
+  onClick,
+  error
 }: InputProps<T>) {
   const [inputValue, setInputValue] = useState("");
 
   return (
     <div className="relative">
       <input
-        {...register(name)}
+        {...register(name, {
+          required: required ? "필수 입력 사항입니다." : false
+        })}
         type={type}
         placeholder={placeholder}
         maxLength={maxLength}
-        required={required}
         readOnly={isDropdown}
         value={isDropdown ? value : inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         onClick={(event: React.MouseEvent<HTMLInputElement>) => {
           if (onClick) onClick(event);
         }}
-        className={`${required ? "pl-[28px]" : ""} ${
-          isDropdownSelected ? "placeholder:text-black-200" : ""
-        }
-        ${inputValue ? "text-black-200" : "text-gray-500"}
-           w-[404px] h-[56px] my-4 rounded-[8px] text-body pl-[14px] input-background `}
+        className={`${required ? "pl-[28px]" : ""} 
+        ${isDropdownSelected ? "text-black-200" : ""}
+        ${inputValue ? "text-black-200" : ""}
+         ${error ? "border-red-100" : "border-gray-200"}
+          bg-white-100 w-[404px] h-[56px] mt-4 rounded-[8px]  border  text-body pl-[14px] focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100`}
       />
       {required && (
         <span className="absolute left-3 top-[35px]">
