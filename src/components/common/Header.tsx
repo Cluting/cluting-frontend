@@ -11,12 +11,12 @@ export default function Header() {
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
       <div className="flex items-center gap-2">
         <img
-          src="/assets/ic-logoIcon.svg"
+          src="/assets/logo/ic-logoIcon.svg"
           alt="로고 아이콘"
           className="w-[20px] h-[23px] "
         />
         <img
-          src="/assets/ic-logoTitle.svg"
+          src="/assets/logo/ic-logoTitle.svg"
           alt="로고 타이틀"
           className="w-[80px] h-[33px]"
         />
