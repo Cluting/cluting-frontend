@@ -1,8 +1,62 @@
+import { time } from "console";
 import { useState } from "react";
 
 export default function AdminsSchedule() {
-  const [selectDate, setSelectDate] = useState(false);
-  const [selectAdmin, setSelectAdmin] = useState(false);
+  // const [selectAdmin, setSelectAdmin] = useState(false);
+
+  interface TimeSlotAdmins {
+    [timeSlot: string]: string[];
+  }
+  // 각 시간대별 선택된 면접관을 관리하는 상태
+  const [timeSlotAdmins, setTimeSlotAdmins] = useState<TimeSlotAdmins>({});
+
+  //일단 시간대 임의로 써놨습니다..!
+  const timeSlots = [
+    "9:00AM",
+    "10:00AM",
+    "11:00AM",
+    "2:00PM",
+    "3:00PM",
+    "4:00PM"
+  ];
+
+  //임원진도 임의로 써놨습니다!
+  const admins = ["박시현", "윤다인", "곽서연", "최예은"];
+
+  const handleAdminSelect = (timeSlot: string, admin: string) => {
+    setTimeSlotAdmins((prev) => {
+      const currentAdmins = prev[timeSlot] || [];
+
+      // 이미 선택된 면접관이면 제거
+      if (currentAdmins.includes(admin)) {
+        return {
+          ...prev,
+          [timeSlot]: currentAdmins.filter((a: string) => a !== admin)
+        };
+      }
+
+      // 2명 이상 선택되어 있으면 선택 불가
+      if (currentAdmins.length >= 2) {
+        return prev;
+      }
+
+      // 새로운 면접관 추가
+      return {
+        ...prev,
+        [timeSlot]: [...currentAdmins, admin]
+      };
+    });
+  };
+
+  // 특정 시간대에 면접관이 선택되어 있는지 확인하는 함수
+  const isAdminSelectedForTimeSlot = (timeSlot: string, admin: string) => {
+    return timeSlotAdmins[timeSlot]?.includes(admin) || false;
+  };
+
+  // 특정 시간대에 선택된 면접관 수를 반환하는 함수
+  const getSelectedAdminCount = (timeSlot: string) => {
+    return timeSlotAdmins[timeSlot]?.length || 0;
+  };
 
   return (
     <div>
@@ -38,23 +92,34 @@ export default function AdminsSchedule() {
                   />
                 </div>
                 <div className="pt-2 pb-[10px] pl-[11px]">
-                  {/*이게 한 묶음 */}
-                  <div className="flex items-center">
-                    {/*시간*/}
+                  {timeSlots.map((timeSlot) => (
                     <div
-                      onClick={() => setSelectDate(!selectDate)}
-                      className={`flex-center w-[77.85px] mr-[10.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border ${selectDate ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2 hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]`}
+                      key={timeSlot}
+                      className="flex items-center space-x-[7px] mb-[13px] "
                     >
-                      9:00AM
+                      {/*시간*/}
+                      <div
+                        className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2`}
+                      >
+                        {timeSlot}
+                      </div>
+                      {/*운영진들 */}
+                      {admins.map((admin) => (
+                        <button
+                          key={`${timeSlot}-${admin}`}
+                          onClick={() => handleAdminSelect(timeSlot, admin)}
+                          disabled={
+                            getSelectedAdminCount(timeSlot) >= 2 &&
+                            !isAdminSelectedForTimeSlot(timeSlot, admin)
+                          }
+                          className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]
+                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
+                        >
+                          {admin}
+                        </button>
+                      ))}
                     </div>
-                    {/*운영진들 */}
-                    <div
-                      onClick={() => setSelectAdmin(!selectAdmin)}
-                      className={`flex-center w-[77.85px] h-7 mr-[7px] bg-[#FBFBFF] rounded-[6px] cursor-pointer border ${selectAdmin ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2 hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]`}
-                    >
-                      박시현
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
