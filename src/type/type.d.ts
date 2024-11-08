@@ -91,3 +91,14 @@ declare interface GroupStore {
   addGroup: (newGroup: string) => void;
   removeGroup: (groupToRemove: string) => void;
 }
+
+interface Step {
+  id: number;
+  name: string;
+  admins: string[];
+  isFixed?: boolean;
+}
+
+interface PrepareStepRolesFormValues {
+  steps: Step[];
+}

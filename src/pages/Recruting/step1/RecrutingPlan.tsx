@@ -3,12 +3,15 @@
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import RecrutingCalender from "../../../components/recruting/home/_calender/RecrutingCalender";
 import GroupCreate from "../../../components/recruting/home/GroupCreate";
+import PrepareStepRoles from "../../../components/recruting/_01_plan/PrepareStepRoles";
 
 export default function RecrutingPlan() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="flex flex-col w-[1100px]">
+      <div className="flex flex-col w-[1016px]">
+        {" "}
+        {/*1100px에서 변경*/}
         <div className="flex items-center ml-8 mb-[18px]">
           <div className="flex-center mr-3 w-[33px] h-[30px] bg-white-100 border border-gray-500 rounded-[8px]">
             1
@@ -31,6 +34,7 @@ export default function RecrutingPlan() {
           </div>
           <RecrutingCalender />
         </div>
+        <PrepareStepRoles />
         <GroupCreate />
       </div>
     </div>
