@@ -38,11 +38,11 @@
   }
 
   .signup-dropdown-list {
-    @apply p-4 rounded-[8px] hover:bg-gray-100 flex items-center;
+    @apply p-4 rounded-[8px] hover:bg-gray-200 flex items-center;
   }
 
   .input-background {
-    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-gray-900 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+    @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
   }
 
   .text-state-error {
@@ -65,6 +65,13 @@
   }
   .tooltip {
     @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center;
+  }
+
+  .button-main-bg {
+    @apply bg-main-100 text-white-100;
+  }
+  .button-main-light {
+    @apply bg-main-300 text-main-100 border border-main-400;
   }
 
   /*2-3 공용 스타일 정의*/

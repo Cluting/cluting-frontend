@@ -8,6 +8,9 @@ declare interface SignupFormValue {
   semester: string;
   major: string;
   minors?: string;
+  termsOfService: boolean; // 클루팅 이용약관 동의
+  privacyPolicy: boolean; // 개인정보 수집 및 이용 동의
+  marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
 }
 
 declare interface LoginFormValue {
@@ -45,6 +48,14 @@ declare interface AnnouncementForm {
   content: string;
 }
 
+declare interface Term {
+  id: number;
+  key: string;
+  title: string;
+  contents: string;
+  status: string;
+}
+
 declare interface SetAcceptanceCountFormData {
   documentPassTotal: number;
   finalPassTotal: number;
@@ -79,4 +90,42 @@ declare interface GroupStore {
   setGroup: (group: string[]) => void;
   addGroup: (newGroup: string) => void;
   removeGroup: (groupToRemove: string) => void;
+}
+
+interface Step {
+  id: number;
+  name: string;
+  admins: string[];
+  isFixed?: boolean;
+}
+
+interface PrepareStepRolesFormValues {
+  steps: Step[];
+}
+
+//공통 인재상
+declare interface CommonIdealForm {
+  commonIdeal: string;
+  commonIdeals: CommonIdeal[];
+}
+
+declare interface CommonIdeal {
+  id: number;
+  text: string;
+}
+
+//그룹별 인재상
+interface GroupIdealForm {
+  groupIdeals: {
+    [groupName: string]: string;
+  };
+}
+
+interface GroupIdeals {
+  [groupName: string]: {
+    ideals: GroupIdeal[];
+    showInput: boolean;
+    value: string;
+    nextId: number;
+  };
 }
