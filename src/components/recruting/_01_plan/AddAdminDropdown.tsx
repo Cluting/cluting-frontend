@@ -1,3 +1,5 @@
+import { ALL_ADMINS } from "../../../constants/recruting";
+
 interface AddAdminDropdownProps {
   onSelect: (admin: string) => void; // 운영진 선택시 호출될 함수
   currentAdmins: string[]; // 현재 선택된 운영진 목록
@@ -7,20 +9,10 @@ export default function AddAdminDropdown({
   onSelect,
   currentAdmins
 }: AddAdminDropdownProps) {
-  const allAdmins = [
-    "최예은",
-    "박시현",
-    "김동현",
-    "윤다인",
-    "곽서연",
-    "양성원",
-    "이은재"
-  ];
-
   return (
     <div className="absolute top-[53.5px] bg-white-100 w-[139px] rounded-[12px]">
       <ul className="flex-center flex-col h-full p-2 text-body text-[#3B3D46]">
-        {allAdmins.map((admin) => (
+        {ALL_ADMINS.map((admin: string) => (
           <li
             key={admin}
             onClick={() => onSelect(admin)}

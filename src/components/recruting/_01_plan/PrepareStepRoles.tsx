@@ -1,32 +1,9 @@
 import { useState, useEffect } from "react";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-interface Step {
-  id: number;
-  name: string;
-  admins: string[];
-  isFixed?: boolean;
-}
-
-interface PrepareStepRolesFormValues {
-  steps: Step[];
-}
+import { DEFAULT_STEPS } from "../../../constants/recruting";
 
 export default function PrepareStepRoles() {
-  const DEFAULT_STEPS: Step[] = [
-    { id: 1, name: "합격 인원 설정하기", admins: [] },
-    { id: 2, name: "인재상 구축하기", admins: [] },
-    { id: 3, name: "공고 작성하기", admins: [] },
-    {
-      id: 4,
-      name: "운영진 면접 일정 조율하기",
-      admins: ["모든 운영진"],
-      isFixed: true
-    },
-    { id: 5, name: "지원서 폼 제작", admins: [] }
-  ];
-
   const [dropdown, setDropdown] = useState(false);
   const [steps, setSteps] = useState(DEFAULT_STEPS);
   const [currentStepId, setCurrentStepId] = useState<number>(1);
@@ -133,7 +110,6 @@ export default function PrepareStepRoles() {
           + 단계 추가
         </button>
       </div>
-
       <div className="pl-[47px] pr-[48px]">
         <div
           className={`mt-8 w-full h-auto rounded-[10px] bg-gray-100 border ${errors.steps ? "border-red-100" : "border-gray-300"}`}
@@ -230,11 +206,10 @@ export default function PrepareStepRoles() {
           </div>
         </div>
         {errors.steps && (
-          <p className="mt-2 text-red-100 text-sm">{errors.steps.message}</p>
+          <p className="text-state-error ">{errors.steps.message}</p>
         )}
       </div>
-
-      {/* 제출 버튼
+      제출 버튼
       <div className="flex justify-end mt-6 mr-[48px]">
         <button
           type="submit"
@@ -242,7 +217,7 @@ export default function PrepareStepRoles() {
         >
           저장하기
         </button>
-      </div> */}
+      </div>
     </form>
   );
 }

@@ -6,7 +6,6 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.112",
     "@types/react": "^18.3.11",
-    "@types/react-calendar": "^3.9.0",
     "@types/react-dom": "^18.3.0",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
