@@ -7,7 +7,7 @@ import AddAdmin from "../../components/recruting/home/AddAdmin";
 import AddAdminModal from "../../components/recruting/home/AddAdminModal";
 import Sidemenu from "../../components/recruting/common/Sidemenu";
 import RecruitmentStep from "../../components/recruting/common/RecruitmentStep";
-import RecrutingCalenderPicker from "../../components/recruting/home/_calender/RecruitingCalenderPicker";
+import RecruitingCalender from "../../components/recruting/home/RecruitingCalendar";
 
 export default function RecrutingHome() {
   //운영진 추가 모달
@@ -35,7 +35,9 @@ export default function RecrutingHome() {
       <div className="flex flex-col">
         <div className="custom-shadow w-[1100px]  h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
           <RecruitmentStep />
-          <RecrutingCalenderPicker />
+          <div className="flex">
+            <RecruitingCalender />
+          </div>
           <div className="px-10 py-[30px]">
             <div className="flex gap-11">
               <section className="w-min">

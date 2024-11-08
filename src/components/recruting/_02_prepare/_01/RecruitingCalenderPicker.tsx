@@ -1,4 +1,4 @@
-import "./calendar.css";
+import "../../../../style/calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
@@ -141,7 +141,7 @@ export default function RecrutingCalenderPicker() {
           <div className="flex items-center justify-between">
             <h4 className="text-headline text-left">{selectedEvent.title}</h4>
             <div
-              className={` bg-${selectedEvent.backgroundColor} w-4 h-4 rounded-full mr-4`}
+              className={` bg-[${selectedEvent.backgroundColor}] w-4 h-4 rounded-full mr-4`}
             ></div>
           </div>
           <hr className="w-[194px] py- border border-gray-200 mt-4 mb-4" />

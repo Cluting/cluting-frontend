@@ -1,7 +1,7 @@
 // 1- 리크루팅 :  계획하기 단계 (페이지)
 
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
-import RecrutingCalenderPicker from "../../../components/recruting/home/_calender/RecruitingCalenderPicker";
+import RecrutingCalenderPicker from "../../../components/recruting/_02_prepare/_01/RecruitingCalenderPicker";
 import GroupCreate from "../../../components/recruting/home/GroupCreate";
 
 export default function RecrutingPlan() {
