@@ -1,12 +1,18 @@
-import { time } from "console";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function AdminsSchedule() {
-  // const [selectAdmin, setSelectAdmin] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitted },
+    setValue,
+    trigger
+  } = useForm<AdminsScheduleFormData>({
+    defaultValues: { scheduleData: {} },
+    mode: "onSubmit"
+  });
 
-  interface TimeSlotAdmins {
-    [timeSlot: string]: string[];
-  }
   // 각 시간대별 선택된 면접관을 관리하는 상태
   const [timeSlotAdmins, setTimeSlotAdmins] = useState<TimeSlotAdmins>({});
 
@@ -23,43 +29,57 @@ export default function AdminsSchedule() {
   //임원진도 임의로 써놨습니다!
   const admins = ["박시현", "윤다인", "곽서연", "최예은"];
 
-  const handleAdminSelect = (timeSlot: string, admin: string) => {
-    setTimeSlotAdmins((prev) => {
-      const currentAdmins = prev[timeSlot] || [];
+  const handleAdminSelect = async (timeSlot: string, admin: string) => {
+    const currentAdmins = timeSlotAdmins[timeSlot] || [];
 
-      // 이미 선택된 면접관이면 제거
-      if (currentAdmins.includes(admin)) {
-        return {
-          ...prev,
-          [timeSlot]: currentAdmins.filter((a: string) => a !== admin)
-        };
-      }
-
-      // 2명 이상 선택되어 있으면 선택 불가
-      if (currentAdmins.length >= 2) {
-        return prev;
-      }
-
-      // 새로운 면접관 추가
-      return {
-        ...prev,
-        [timeSlot]: [...currentAdmins, admin]
+    if (currentAdmins.includes(admin)) {
+      const updatedAdmins = {
+        ...timeSlotAdmins,
+        [timeSlot]: currentAdmins.filter((a: string) => a !== admin)
       };
-    });
+      setTimeSlotAdmins(updatedAdmins);
+      setValue("scheduleData", updatedAdmins);
+      await trigger("scheduleData");
+      return;
+    }
+
+    if (currentAdmins.length >= 2) return;
+
+    const updatedAdmins = {
+      ...timeSlotAdmins,
+      [timeSlot]: [...currentAdmins, admin]
+    };
+    setTimeSlotAdmins(updatedAdmins);
+    setValue("scheduleData", updatedAdmins);
+    await trigger("scheduleData");
   };
 
-  // 특정 시간대에 면접관이 선택되어 있는지 확인하는 함수
+  // 특정 시간대에 면접관이 선택되어 있는지 확인
   const isAdminSelectedForTimeSlot = (timeSlot: string, admin: string) => {
     return timeSlotAdmins[timeSlot]?.includes(admin) || false;
   };
 
-  // 특정 시간대에 선택된 면접관 수를 반환하는 함수
+  // 특정 시간대에 선택된 면접관 수를 반환
   const getSelectedAdminCount = (timeSlot: string) => {
     return timeSlotAdmins[timeSlot]?.length || 0;
   };
 
+  const onSubmit = (data: AdminsScheduleFormData) => {
+    console.log(data);
+  };
+
+  const validateScheduleData = (value: TimeSlotAdmins) => {
+    // 선택된 모든 시간대에서 면접관이 2명인지 확인
+    const hasIncompleteSlot = Object.values(value).some(
+      (admins) => admins.length === 2
+    );
+    return Object.keys(value).length === 0 || hasIncompleteSlot
+      ? "필수 선택 사항입니다"
+      : true;
+  };
+
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="ml-8 w-full mt-[34px]">
         <div>
           <div className="flex">
@@ -77,7 +97,10 @@ export default function AdminsSchedule() {
                 면접에 들어갈 2명을 선택해 주세요. 2명이 가능한 시간을 이후에
                 지원자들이 선택할 수 있습니다.
               </p>
-              <div className="mt-3 border border-gray-300 rounded-[12px] bg-[#FBFBFF]">
+              <div
+                className={`mt-3 border  rounded-[12px] bg-[#FBFBFF]
+              ${isSubmitted && errors.scheduleData ? "border-red-100" : "border-gray-300"}`}
+              >
                 <div className="flex-center bg-gray-200 border-b-[#C7C7CC rounded-t-[12px] pt-[15px] pb-[14px] text-headline">
                   <img
                     src="/assets/ic-prevDate.svg"
@@ -92,6 +115,12 @@ export default function AdminsSchedule() {
                   />
                 </div>
                 <div className="pt-2 pb-[10px] pl-[11px]">
+                  <input
+                    type="hidden"
+                    {...register("scheduleData", {
+                      validate: validateScheduleData
+                    })}
+                  />
                   {timeSlots.map((timeSlot) => (
                     <div
                       key={timeSlot}
@@ -99,7 +128,8 @@ export default function AdminsSchedule() {
                     >
                       {/*시간*/}
                       <div
-                        className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2`}
+                        className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
+                          ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2`}
                       >
                         {timeSlot}
                       </div>
@@ -107,6 +137,7 @@ export default function AdminsSchedule() {
                       {admins.map((admin) => (
                         <button
                           key={`${timeSlot}-${admin}`}
+                          type="button"
                           onClick={() => handleAdminSelect(timeSlot, admin)}
                           disabled={
                             getSelectedAdminCount(timeSlot) >= 2 &&
@@ -122,10 +153,16 @@ export default function AdminsSchedule() {
                   ))}
                 </div>
               </div>
+              {isSubmitted && errors.scheduleData?.message && (
+                <p className="text-state-error">
+                  {String(errors.scheduleData.message)}
+                </p>
+              )}
             </div>
+            <button type="submit">임시 제출 버튼</button>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }

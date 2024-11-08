@@ -129,3 +129,11 @@ interface GroupIdeals {
     nextId: number;
   };
 }
+
+interface AdminsScheduleFormData {
+  scheduleData: TimeSlotAdmins;
+}
+
+interface TimeSlotAdmins {
+  [timeSlot: string]: string[];
+}
