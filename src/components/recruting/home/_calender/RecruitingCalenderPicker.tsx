@@ -4,6 +4,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import { useState } from "react";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
+import { CALENDAR_ITEMS } from "../../../../constants/recruting";
 
 interface CalendarEvent {
   id: string;
@@ -12,13 +13,6 @@ interface CalendarEvent {
   end: string;
   allDay: boolean;
 }
-
-const buttonItems = [
-  "지원자 리스트 보기",
-  "면접 일정 바로가기",
-  "서류 합격자 리스트 보기",
-  "최종 합격 리스트 보기"
-];
 
 export default function RecrutingCalenderPicker() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -81,7 +75,7 @@ export default function RecrutingCalenderPicker() {
     <div className="mt-[30px] mx-10 bg-white-100">
       <div className="flex gap-10 text-left">
         <section className="w-[300px] text-caption3 bg-gray-100 p-[15px] border border-gray-400 flex flex-col rounded-[12px]">
-          {buttonItems.map((item) => (
+          {CALENDAR_ITEMS.map((item) => (
             <button
               key={item}
               className={`${

@@ -19,3 +19,13 @@ export const BUTTON_TEXT = {
   EDIT: "수정하기",
   COMPLETE: "완료하기"
 } as const;
+
+export const CALENDAR_ITEMS = [
+  "지원자 준비 기간",
+  "공고 업로드",
+  "모집 기간",
+  "서류 평가 기간",
+  "1차 합격자 발표",
+  "면접 기간",
+  "면접 평가 기간"
+];

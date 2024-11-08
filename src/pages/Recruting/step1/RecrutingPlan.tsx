@@ -27,7 +27,8 @@ export default function RecrutingPlan() {
               className="w-[21px] h-[21px] mx-[6px] "
             />
             <div className="ml-3 tooltip">
-              일정 선택 후, 달력에서 기간을 선택해 주세요.
+              주어진 일정을 클릭 후 달력에 드래그해주세요. 정해진 일정은
+              리크루팅 진행 단계에 적용됩니다
             </div>
           </div>
           <RecrutingCalenderPicker />
