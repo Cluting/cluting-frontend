@@ -31,11 +31,11 @@ export const CALENDAR_ITEMS = [
 ];
 
 export const CALENDAR_COLORS = [
-  "#FF5252",
-  "#FF7F50",
-  "#FFD700",
-  "#ADFF2F",
-  "#00CED1",
-  "#1E90FF",
-  "#8A2BE2"
+  "#FF6347",
+  "#FF9500",
+  "#FFCC00",
+  "#00C7BE",
+  "#34C759",
+  "#5856D6",
+  "#af52de"
 ];
