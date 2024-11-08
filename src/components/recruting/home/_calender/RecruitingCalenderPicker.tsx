@@ -27,7 +27,8 @@ export default function RecrutingCalenderPicker() {
   } | null>(null); // 선택된 날짜 범위 상태
   const [instructionMessage, setInstructionMessage] = useState<string | null>(
     null
-  ); // 드래그 시작시 표시되는 안내 메시지
+  ); // 캘린더 영역 hover시 표시되는 안내 메시지
+  const [listMessage, setListMessage] = useState<string | null>(null); // 리스트 hover시 표시되는 안내 메시지
   const [completedTitles, setCompletedTitles] = useState<string[]>([]); // 완료된 제목 상태
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
     null
@@ -107,11 +108,37 @@ export default function RecrutingCalenderPicker() {
       });
     }
   };
+
+  // 일정 리스트 위로 마우스가 들어올 때 안내 메시지 표시
+  const handleListMouseEnter = () => {
+    setListMessage("일정을 선택해 주세요.");
+  };
+
+  // 일정 리스트  위에서 마우스가 나갈 때 안내 메시지 숨기기
+  const handleListMouseLeave = () => {
+    setListMessage(null);
+  };
+
+  // 캘린더 위로 마우스가 들어올 때 안내 메시지 표시
+  const handleCalendarMouseEnter = () => {
+    setInstructionMessage(
+      "캘린더 위로 해당 일정의 시작 날짜부터 마지막 날짜까지 드래그 해주세요."
+    );
+  };
+
+  // 캘린더 위에서 마우스가 나갈 때 안내 메시지 숨기기
+  const handleCalendarMouseLeave = () => {
+    setInstructionMessage(null);
+  };
+
   return (
     <div className="mt-[30px] mx-10 bg-white-100">
       {selectedEvent && (
-        <section className="absolute top-60 right-40 bg-white-100 border border-gray-400 p-[15px] rounded-[12px] z-10">
-          <h4 className="text-headline text-left">{selectedEvent.title}</h4>
+        <section className="absolute top-[274px] right-[607px] bg-white-100 border border-gray-400 p-[15px] rounded-[12px] z-10">
+          <div className="flex items-center justify-between">
+            <h4 className="text-headline text-left">{selectedEvent.title}</h4>
+            <div className="bg-red-100 w-4 h-4 rounded-full mr-4"></div>
+          </div>
           <hr className="w-[194px] py- border border-gray-200 mt-4 mb-4" />
 
           <div className="flex items-center mb-[11px]">
@@ -174,35 +201,50 @@ export default function RecrutingCalenderPicker() {
       )}
 
       <div className="flex gap-10 text-left">
-        <section className="w-[300px] text-caption3 bg-gray-100 p-[15px] border border-gray-400 flex flex-col rounded-[12px]">
-          {CALENDAR_ITEMS.map((item, index) => (
-            <button
-              key={item}
-              className={`${
-                currrentTitle === item
-                  ? "bg-gray-200 border border-gray-400"
-                  : "bg-white-100 border border-gray-200"
-              } flex items-center py-3 pl-4 my-[6px] rounded-[8px] text-subheadline text-gray-900 ${
-                completedTitles.includes(item) ? "line-through" : ""
-              }`}
-              onClick={() => setCurrentTitle(item)}
-            >
-              <div
-                className="bg-red-100 w-4 h-4 rounded-full mr-4"
-                style={{
-                  backgroundColor:
-                    CALENDAR_COLORS[index % CALENDAR_COLORS.length]
-                }} // 각 순서에 맞는 색상 적용
-              ></div>
-              {item}
-            </button>
-          ))}
-        </section>
+        <div className="relative flex-col">
+          {listMessage && (
+            <div className="absolute top-[-25px] text-main-100 text-caption1 mb-2 rounded">
+              {listMessage}
+            </div>
+          )}
+          <section
+            onMouseEnter={handleListMouseEnter}
+            onMouseLeave={handleListMouseLeave}
+            className="w-[300px] text-caption3 bg-gray-100 p-[15px] border border-gray-400 flex flex-col rounded-[12px]"
+          >
+            {CALENDAR_ITEMS.map((item, index) => (
+              <button
+                key={item}
+                className={`${
+                  currrentTitle === item
+                    ? "bg-gray-200 border border-gray-400"
+                    : "bg-white-100 border border-gray-200"
+                } flex items-center py-3 pl-4 my-[6px] rounded-[8px] text-subheadline text-gray-900 ${
+                  completedTitles.includes(item) ? "line-through" : ""
+                }`}
+                onClick={() => setCurrentTitle(item)}
+              >
+                <div
+                  className="bg-red-100 w-4 h-4 rounded-full mr-4"
+                  style={{
+                    backgroundColor:
+                      CALENDAR_COLORS[index % CALENDAR_COLORS.length]
+                  }} // 각 순서에 맞는 색상 적용
+                ></div>
+                {item}
+              </button>
+            ))}
+          </section>
+        </div>
 
-        <div className="flex flex-col datepicker-container relative">
+        <div
+          onMouseEnter={handleCalendarMouseEnter}
+          onMouseLeave={handleCalendarMouseLeave}
+          className="relative flex flex-col datepicker-container relative"
+        >
           {/* 안내 메시지 표시 */}
           {instructionMessage && (
-            <div className="text-red-100 text-caption1 mb-2 rounded">
+            <div className=" absolute top-[-25px] text-main-100 text-caption1 mb-2 rounded">
               {instructionMessage}
             </div>
           )}
