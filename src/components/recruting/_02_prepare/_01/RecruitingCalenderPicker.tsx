@@ -135,7 +135,7 @@ export default function RecrutingCalenderPicker() {
   };
 
   return (
-    <div className="mt-[30px] mx-10 bg-white-100">
+    <div className="mt-[30px] pl-4 bg-white-100">
       {selectedEvent && (
         <section className="absolute top-[274px] right-[607px] bg-white-100 border border-gray-400 p-[15px] rounded-[12px] z-10">
           <div className="flex items-center justify-between">
