@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Input from "../common/Input";
 import SignupDropdown from "./SignupDropdown";
 import TermsAgreement from "./TermsAgreement";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { ERROR_MESSAGES } from "../../constants/recruting";
 
 export default function SignupContainer() {
   const {
@@ -38,13 +39,19 @@ export default function SignupContainer() {
 
   //재학 여부에 따른 안내
   const [semesterExplain, setSemesterExplain] = useState("");
+
+  const studentStatusText = useWatch({
+    control,
+    name: "studentStatus"
+  });
+
   useEffect(() => {
-    if (watch("studentStatus") === "재학") {
+    if (studentStatusText === "재학") {
       setSemesterExplain("이제 곧 시작할 학기를 선택해 주세요");
     } else {
       setSemesterExplain("휴학 이전에 수료한 마지막 학기를 선택해 주세요");
     }
-  }, [watch("studentStatus")]);
+  }, [studentStatusText]);
   return (
     <>
       <form
@@ -65,7 +72,7 @@ export default function SignupContainer() {
             error={errors.name}
           />
           {errors.name && (
-            <p className="text-state-error">필수 입력 사항입니다.</p>
+            <p className="text-state-error"> {ERROR_MESSAGES.required}</p>
           )}
           <Input
             name="email"
@@ -76,7 +83,7 @@ export default function SignupContainer() {
             error={errors.email}
           />
           {errors.email && (
-            <p className="text-state-error">필수 입력 사항입니다.</p>
+            <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
           <Input
             name="address"
@@ -87,7 +94,7 @@ export default function SignupContainer() {
             error={errors.address}
           />
           {errors.address && (
-            <p className="text-state-error">필수 입력 사항입니다.</p>
+            <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
         </section>
 
@@ -108,7 +115,7 @@ export default function SignupContainer() {
             error={errors.school}
           />
           {errors.school && (
-            <p className="text-state-error">필수 입력 사항입니다.</p>
+            <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
           <div className="relative">
             <Input
@@ -160,7 +167,7 @@ export default function SignupContainer() {
             error={errors.major}
           />
           {errors.major && (
-            <p className="text-state-error">필수 입력 사항입니다.</p>
+            <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
           <Input
             name="minors"

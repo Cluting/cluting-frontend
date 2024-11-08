@@ -54,7 +54,7 @@ export default function Input<T extends FieldValues>({
         ${isDropdownSelected ? "text-black-200" : ""}
         ${inputValue ? "text-black-200" : ""}
          ${error ? "border-red-100" : "border-gray-200"}
-           w-[404px] h-[56px] mt-4 rounded-[8px] bg-white-100 border  text-body pl-[14px] focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100`}
+          bg-white-100 w-[404px] h-[56px] mt-4 rounded-[8px]  border  text-body pl-[14px] focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100`}
       />
       {required && (
         <span className="absolute left-3 top-[35px]">

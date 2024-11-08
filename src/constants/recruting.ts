@@ -20,6 +20,11 @@ export const BUTTON_TEXT = {
   COMPLETE: "완료하기"
 } as const;
 
+export const ERROR_MESSAGES = {
+  required: "필수 입력 사항입니다.",
+  choice: "필수 선택 사항입니다."
+};
+
 export const studentStatusList = [
   { id: 1, description: "재학" },
   { id: 2, description: "휴학" }

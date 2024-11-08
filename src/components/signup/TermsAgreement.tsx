@@ -70,7 +70,6 @@ export default function TermsAgreement<T extends FieldValues>({
             <input
               type="checkbox"
               {...field}
-              {...register("termsOfService" as Path<T>)}
               checked={field.value}
               onChange={(e) => {
                 field.onChange(e.target.checked);
@@ -101,7 +100,6 @@ export default function TermsAgreement<T extends FieldValues>({
             <input
               type="checkbox"
               {...field}
-              {...register("privacyPolicy" as Path<T>)}
               checked={field.value}
               onChange={(e) => {
                 field.onChange(e.target.checked);
@@ -132,7 +130,6 @@ export default function TermsAgreement<T extends FieldValues>({
             <input
               type="checkbox"
               {...field}
-              {...register("marketingConsent" as Path<T>)}
               checked={field.value}
               onChange={(e) => {
                 field.onChange(e.target.checked);

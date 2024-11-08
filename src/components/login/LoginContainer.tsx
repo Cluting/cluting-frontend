@@ -47,11 +47,17 @@ export default function LoginContainer() {
             placeholder="비밀번호를 입력해 주세요"
           />
         </div>
-        <button className="bg-main-100 text-white-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100">
+        <button
+          aria-label="로그인"
+          className="bg-main-100 text-white-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100"
+        >
           로그인
         </button>
         <Link to="/signup">
-          <button className="bg-main-200 text-main-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[15px] border border-main-100 ">
+          <button
+            aria-label="회원가입"
+            className="bg-main-300 text-main-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[15px] border border-main-100 "
+          >
             회원가입
           </button>
         </Link>
