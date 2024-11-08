@@ -28,6 +28,7 @@ export default function RecrutingCalenderPicker() {
   const [instructionMessage, setInstructionMessage] = useState<string | null>(
     null
   ); // 캘린더 영역 hover시 표시되는 안내 메시지
+  const [isListHovered, setIsListHovered] = useState(false);
   const [listMessage, setListMessage] = useState<string | null>(null); // 리스트 hover시 표시되는 안내 메시지
   const [completedTitles, setCompletedTitles] = useState<string[]>([]); // 완료된 제목 상태
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
@@ -112,11 +113,13 @@ export default function RecrutingCalenderPicker() {
   // 일정 리스트 위로 마우스가 들어올 때 안내 메시지 표시
   const handleListMouseEnter = () => {
     setListMessage("일정을 선택해 주세요.");
+    setIsListHovered(true);
   };
 
   // 일정 리스트  위에서 마우스가 나갈 때 안내 메시지 숨기기
   const handleListMouseLeave = () => {
     setListMessage(null);
+    setIsListHovered(false);
   };
 
   // 캘린더 위로 마우스가 들어올 때 안내 메시지 표시
@@ -137,7 +140,9 @@ export default function RecrutingCalenderPicker() {
         <section className="absolute top-[274px] right-[607px] bg-white-100 border border-gray-400 p-[15px] rounded-[12px] z-10">
           <div className="flex items-center justify-between">
             <h4 className="text-headline text-left">{selectedEvent.title}</h4>
-            <div className="bg-red-100 w-4 h-4 rounded-full mr-4"></div>
+            <div
+              className={` bg-${selectedEvent.backgroundColor} w-4 h-4 rounded-full mr-4`}
+            ></div>
           </div>
           <hr className="w-[194px] py- border border-gray-200 mt-4 mb-4" />
 
@@ -210,7 +215,7 @@ export default function RecrutingCalenderPicker() {
           <section
             onMouseEnter={handleListMouseEnter}
             onMouseLeave={handleListMouseLeave}
-            className="w-[300px] text-caption3 bg-gray-100 p-[15px] border border-gray-400 flex flex-col rounded-[12px]"
+            className={`${isListHovered ? "border-main-100 border-[2px]" : "border-gray-400 "} w-[300px] text-caption3 bg-gray-100 p-[15px] border flex flex-col rounded-[12px]`}
           >
             {CALENDAR_ITEMS.map((item, index) => (
               <button
