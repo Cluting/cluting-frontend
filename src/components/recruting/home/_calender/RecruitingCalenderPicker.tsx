@@ -115,9 +115,7 @@ export default function RecrutingCalenderPicker() {
           <hr className="w-[194px] py- border border-gray-200 mt-4 mb-4" />
 
           <div className="flex items-center mb-[11px]">
-            <div className="bg-gray-100 border border-gray-400 text-caption3 text-gray-900 py-1 px-2 mr-[10px] rounded-[6px]">
-              시작일
-            </div>
+            <div className="text-caption3 text-gray-900 mr-2">시작일</div>
             {editMode ? (
               <input
                 type="date"
@@ -127,16 +125,14 @@ export default function RecrutingCalenderPicker() {
                 className="border rounded-[7px] text-caption3 px-2 py-1"
               />
             ) : (
-              <p className="text-caption3 text-gray-900">
+              <p className="text-caption3 text-gray-900 py-[2px] px-2 bg-gray-100">
                 {selectedEvent.start}
               </p>
             )}
           </div>
 
           <div className="flex items-center">
-            <div className="bg-gray-100 border border-gray-400 text-caption3 text-gray-900 py-1 px-2 mr-[10px] rounded-[6px]">
-              종료일
-            </div>
+            <div className="text-caption3 text-gray-900 mr-2">종료일</div>
             {editMode ? (
               <input
                 type="date"
@@ -146,20 +142,22 @@ export default function RecrutingCalenderPicker() {
                 className="border rounded-[7px] text-caption3 px-2 py-1"
               />
             ) : (
-              <p className="text-caption3 text-gray-900">{selectedEvent.end}</p>
+              <p className="text-caption3 text-gray-900 py-[2px] px-2 bg-gray-100">
+                {selectedEvent.end}
+              </p>
             )}
           </div>
 
           {editMode ? (
             <button
-              className="text-gray-300 hover:text-gray-500 text-caption1 mt-2 mr-4"
+              className="bg-main-300 border border-main-400 hover:bg-main-100 hover:text-gray-100 text-caption3 text-gray-900 py-1 px-2 mt-[11px] mr-[10px] rounded-[6px]"
               onClick={handleSaveEvent}
             >
               저장
             </button>
           ) : (
             <button
-              className="text-gray-300 hover:text-gray-500 text-caption1 mt-2 mr-4"
+              className="bg-main-300 border border-main-400 hover:bg-main-100 hover:text-gray-100 text-caption3 text-gray-900 py-1 px-2 mt-[11px] mr-[10px] rounded-[6px]"
               onClick={handleEditEvent}
             >
               수정
@@ -167,7 +165,7 @@ export default function RecrutingCalenderPicker() {
           )}
 
           <button
-            className="text-gray-300 hover:text-gray-500 text-caption1 mt-2"
+            className="bg-gray-100 border border-gray-200 hover:bg-gray-400 hover:text-gray-900 text-caption3 text-gray-900 py-1 px-2 mt-[11px] mr-[10px] rounded-[6px]"
             onClick={() => setSelectedEvent(null)}
           >
             닫기
