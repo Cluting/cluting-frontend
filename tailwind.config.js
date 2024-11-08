@@ -77,8 +77,10 @@ module.exports = {
           100: "#E2E3E5"
         },
         main: {
-          100: "#8457FF", //메인 보라색 색상
-          200: "#E4E3FA" // 메인 연보라 색상
+          100: "#8457FF",
+          200: "#3A3A3C", //다크모드 색상
+          300: "#E4E3FA", //main_light
+          400: "#CAC8FF" //main_light2
         }
       },
       animation: {
