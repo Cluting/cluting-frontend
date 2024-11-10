@@ -12,7 +12,6 @@ export default function SignupContainer() {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
     control // DevTool에서 필요
   } = useForm<SignupFormValue>({ mode: "onBlur" });
 

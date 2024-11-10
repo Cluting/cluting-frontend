@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function AdminProfileDropdown() {
   return (
-    <div className="absolute top-[50px] right-[10px] bg-white-100 z-50 w-[320px] h-auto p-2 rounded-[12px]">
+    <div className=" absolute animate-dropdown top-[50px] right-[10px] bg-white-100 z-50 w-[320px] h-auto p-2 rounded-[12px]">
       <ul>
         <li className="dropdown-list">
           <img
