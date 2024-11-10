@@ -2,7 +2,6 @@
 import { useState, ChangeEvent } from "react";
 import ApplicantProfile from "./ApplicantProfile";
 import QuestionBox from "./QuestionBox";
-import { QuestionType } from "../../../../type/type";
 import { v4 as uuidv4 } from "uuid";
 
 export default function CreateApplicationFormContainer() {

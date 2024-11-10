@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import DescriptiveQuestion from "./DescriptiveQuestion";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
-import { QuestionType } from "../../../../type/type";
 
 interface QuestionBoxProps {
   questionType: QuestionType;

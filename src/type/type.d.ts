@@ -92,14 +92,14 @@ declare interface GroupStore {
   removeGroup: (groupToRemove: string) => void;
 }
 
-interface Step {
+declare interface Step {
   id: number;
   name: string;
   admins: string[];
   isFixed?: boolean;
 }
 
-interface PrepareStepRolesFormValues {
+declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
@@ -115,13 +115,13 @@ declare interface CommonIdeal {
 }
 
 //그룹별 인재상
-interface GroupIdealForm {
+declare interface GroupIdealForm {
   groupIdeals: {
     [groupName: string]: string;
   };
 }
 
-interface GroupIdeals {
+declare interface GroupIdeals {
   [groupName: string]: {
     ideals: GroupIdeal[];
     showInput: boolean;
@@ -131,4 +131,4 @@ interface GroupIdeals {
 }
 
 //2-5 질문타입 드롭다운
-export type QuestionType = "서술형 질문" | "객관형 질문";
+declare type QuestionType = "서술형 질문" | "객관형 질문";
