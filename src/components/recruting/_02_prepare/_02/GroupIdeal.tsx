@@ -136,13 +136,12 @@ export default function GroupIdeal() {
                   placeholder="인재상을 작성해 주세요."
                 />
               )}
-
-              {errors.groupIdeals?.[group.name] &&
+              {/* {errors.groupIdeals?.[group.name] &&
                 groupIdeals[group.name].ideals.length === 0 && (
                   <p className="text-state-error">
                     {errors.groupIdeals?.[group.name]?.message}
                   </p>
-                )}
+                )} */}
 
               <button
                 type="button"
