@@ -30,7 +30,7 @@ export default function AddAdminModal({ onClose }: AddAdminModalProps) {
 
           <hr className="w-full py- border border-gray-200 " />
 
-          <div className="mt-[55px] mb-[30px] text-callout text-center">
+          <div className="mt-[55px] mb-[30px] text-callout text-center leading-7">
             '잇타' 6기 리크루팅을 함께할 <br /> 운영진들에게 링크를 공유하세요.{" "}
             <br />
             <span className="text-red-100">

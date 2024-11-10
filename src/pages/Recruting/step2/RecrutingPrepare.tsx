@@ -24,9 +24,9 @@ export default function RecrutingPrepare() {
   const CurrentStepComponent = stepComponents[currentStep];
 
   return (
-    <div className="flex bg-gray-100 px-16 py-9">
+    <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="w-[1100px]">
+      <div className="w-[1016px]">
         <TopSection />
         <CurrentStepComponent />
       </div>

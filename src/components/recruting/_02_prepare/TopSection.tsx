@@ -55,10 +55,10 @@ export default function TopSection() {
         {STEP2_ITEMS.map((item, index) => (
           <div key={index} className="flex items-center">
             <div
-              className={`w-[180px] h-[64px] flex-center mx-[6px] px-[30px] rounded-[8px] text-subheadline ${
+              className={`w-[174px] h-[64px] flex-center mx-[6px] px-[28px] rounded-[8px] text-subheadline ${
                 currentStep === index
-                  ? "bg-gray-900 text-white-100"
-                  : "bg-gray-300"
+                  ? "bg-main-100 text-white-100"
+                  : "bg-main-300 text-gray-900"
               }`}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}

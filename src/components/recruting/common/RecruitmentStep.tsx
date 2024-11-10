@@ -31,16 +31,22 @@ export default function RecruitmentStep() {
           <div key={index} className="flex items-center">
             <div className="flex flex-col">
               <div
-                className={`w-[70px] h-[70px] rounded-full ${
+                className={`flex-center w-[70px] h-[70px] rounded-full ${
                   currentRecruitmentStep >= index
-                    ? "bg-gray-800"
-                    : "bg-gray-400"
+                    ? "bg-main-100"
+                    : "bg-main-300  border-[2px] border-main-400 border-dotted"
                 }`}
                 onClick={() => setCurrentRecruitmentStep(index)} // 단계 클릭 시 상태 변경
                 aria-label={`${step} 단계로 이동`}
-              ></div>
+              >
+                <img
+                  src={`/assets/ic-step-0${index + 1}.svg`}
+                  alt={`${step} 단계 아이콘`}
+                  className={index === 0 ? "w-[32px] h-[26px]" : "w-6 h-6"}
+                />
+              </div>
               <p className="w-[70px] text-caption2 text-gray-700 mt-2">
-                {step}
+                {index + 1}.{step}
               </p>
             </div>
             {index < RECRUIT_STEP_ITEMS.length - 1 && ( // 마지막 단계가 아닐 때만 아이콘 표시
