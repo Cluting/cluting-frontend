@@ -1,6 +1,7 @@
 //2-5 지원서 폼 제작 및 공고 올리기 (컨테이너)
 import { useState, ChangeEvent } from "react";
 import ApplicantProfile from "./ApplicantProfile";
+import ApplicantGroup from "./ApplicationGroup";
 import QuestionBox from "./QuestionBox";
 import { v4 as uuidv4 } from "uuid";
 
@@ -48,22 +49,7 @@ export default function CreateApplicationFormContainer() {
       </div>
 
       {/*지원 그룹이 있으면 지원 그룹 컴포넌트 들어가야함 */}
-      <div className="ml-8 w-full mt-[34px]">
-        <div className="flex">
-          <p className="section-title">
-            <span className="mr-[0.25em] text-main-100">*</span>그룹별 질문
-          </p>
-          <div className="tooltip">각 그룹별 질문을 작성해 주세요.</div>
-        </div>
-        <div className="mt-[12px] h-auto px-[31px] py-[28px] pr-[42px] bg-white-100 rounded-[12px]">
-          <div>
-            <p className="text-title3 text-[#3B3D46]">지원 그룹</p>
-            {/* {groupList.map((groupList) => (
-              <button className="w-[225px] y-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100"></button>
-            ))} */}
-          </div>
-        </div>
-      </div>
+      <ApplicantGroup />
 
       {/*공통 질문 만들기 */}
       <div className="ml-8 w-full mt-[58px]">
