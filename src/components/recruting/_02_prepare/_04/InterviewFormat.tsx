@@ -1,5 +1,13 @@
+import { useForm } from "react-hook-form";
+
 // 1 - 면접 형식 설정하기
 export default function InterviewFormat() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<SignupFormValue>({ mode: "onBlur" });
+
   return (
     <div className="section-background ">
       <div className="flex items-center">
@@ -9,6 +17,7 @@ export default function InterviewFormat() {
             <input
               type="number"
               min={0}
+              defaultValue={0}
               className="w-20 input-style input-background mr-[11px]"
             />
             <p className="text-headline">명</p>
@@ -21,6 +30,7 @@ export default function InterviewFormat() {
             <input
               type="number"
               min={0}
+              defaultValue={0}
               className="w-20 input-style input-background mr-[11px]"
             />
             <p className="text-headline">명</p>

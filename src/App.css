@@ -79,12 +79,7 @@
   .button-main-light {
     @apply bg-main-300 text-main-100 border border-main-400;
   }
-
-  /*2단계 모집하기 공용 스타일 정의*/
-  .section-explain {
-    @apply ml-3 py-2 px-3 bg-white-100 rounded-[11px] border border-gray-200;
-  }
   .section-background {
-    @apply custom-shadow flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left;
+    @apply flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left;
   }
 }

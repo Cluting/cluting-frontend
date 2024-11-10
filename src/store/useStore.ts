@@ -30,3 +30,20 @@ export const useGroupStore = create<GroupStore>()((set) => ({
       group: state.group.filter((group) => group !== groupToRemove)
     }))
 }));
+
+// 면접 형식 설정
+export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
+  interviewer: 0,
+  interviewee: 0,
+  interviewStartTime: new Date(),
+  interviewEndTime: new Date(),
+  interviewStartDate: new Date(),
+  interviewEndDate: new Date(),
+
+  setInterviewer: (id: number) => set({ interviewer: id }),
+  setInterviewee: (id: number) => set({ interviewee: id }),
+  setInterviewStartTime: (time: Date) => set({ interviewStartTime: time }),
+  setInterviewEndTime: (time: Date) => set({ interviewStartTime: time }),
+  setInterviewStartDate: (date: Date) => set({ interviewStartDate: date }),
+  setInterviewEndDate: (date: Date) => set({ interviewEndDate: date })
+}));
