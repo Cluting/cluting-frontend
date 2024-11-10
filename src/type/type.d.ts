@@ -130,13 +130,31 @@ declare interface GroupIdeals {
   };
 }
 
-//2-5 질문타입 드롭다운
+//2-5 질문 드롭다운 타입
 declare type QuestionType = "서술형 질문" | "객관형 질문";
+
+//2-5 질문들(서술형, 객관형) 정보 정의
+interface Question {
+  id: string;
+  type: QuestionType;
+  question: string;
+  hasWordLimit?: boolean; //서술형 질문의 글자 수 제한 여부
+  wordLimit?: number; //서술형 질문의 글자 수 제한
+  options?: string[]; // 객관식 선택지
+}
 
 //2-5 지원서 폼 제작 Form
 declare interface CreateApplicationForm {
   title: string;
-  commonQuestionCaution: string;
-  wordLimit: number;
-  multipleChoice: string;
+  commonQuestionCaution: string; // 공통 질문 관련 주의 사항
+  questions: {
+    [key: string]: {
+      // 동적 key를 위한 인덱스 시그니처
+      question: string;
+      hasWordLimit?: boolean;
+      wordLimit?: number;
+      options?: string[];
+    };
+  };
+  hasPortfolio: boolean;
 }

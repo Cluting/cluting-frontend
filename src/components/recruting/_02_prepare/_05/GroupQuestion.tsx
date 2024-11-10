@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { useGroupStore } from "../../../../store/useStore";
 
+//todo: form 처리 해야함,!
 export default function GroupQuestion() {
   const { group } = useGroupStore();
   const [selectedGroup, setSelectedGroup] = useState<string>(group[0] || ""); // 첫 번째 그룹을 기본값으로
@@ -76,6 +77,7 @@ export default function GroupQuestion() {
           className="flex items-center text-left w-full h-[42px] pl-[21px] rounded-[8px] border border-gray-500 text-subheadline outline-none hover:border-main-100"
           placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를
             유의해 주세요!"
+          {...register("commonQuestionCaution")}
         />
         <div className="flex-center my-[42px] border border-gray-200 "></div>
         <p className="mb-[15px] text-title3 text-[#3B3D46] text-left">
@@ -92,6 +94,7 @@ export default function GroupQuestion() {
                 type="text"
                 placeholder="질문을 작성해 주세요."
                 className="w-[541px] h-[42px] py-[11px] pl-[19px] rounded-[8px] border border-gray-400 outline-none hover:border-main-100"
+                {...register(`questions.${question.id}.question`)}
               />
               <select
                 className="flex-center w-[247px] h-[42px] pl-[19px] py-[11px] bg-white-100 rounded-[8px] border border-gray-400 outline-none"
@@ -107,6 +110,7 @@ export default function GroupQuestion() {
                 <textarea
                   placeholder="지원자의 답변 작성란 입니다."
                   className="w-full min-h-[91px] mt-[18px] py-[15px] pl-[20px] rounded-[8px] border border-gray-400 outline-none hover:border-main-100"
+                  disabled //미리보기용이니까 disabled
                 />
                 <div className="flex-center justify-end mt-[10px]">
                   <input
@@ -115,7 +119,7 @@ export default function GroupQuestion() {
                         appearance-none
                         checked:bg-main-100 
                         border border-gray-300 rounded"
-                    {...register("commonQuestionCaution")}
+                    {...register(`questions.${question.id}.hasWordLimit`)}
                   />
                   <p>글자 수 제한</p>
 
@@ -123,6 +127,7 @@ export default function GroupQuestion() {
                     type="text"
                     placeholder="500"
                     className="flex-center w-[66px] h-[26px] ml-[7px] px-[9px] py-[5px] rounded-[6px] border border-gray-400 outline-none text-caption2 hover:border-main-100"
+                    {...register(`questions.${question.id}.wordLimit`)}
                   />
                 </div>
               </div>
@@ -132,7 +137,7 @@ export default function GroupQuestion() {
                   type="text"
                   placeholder="선택지 추가"
                   className="flex w-[584px] h-[36px] mt-[18px] pl-[13px] py-[10px] border border-gray-500 rounded-[6px] outline-none hover:border-main-100"
-                  {...register("multipleChoice")}
+                  {...register(`questions.${question.id}.options`)}
                 />
               </div>
             )}

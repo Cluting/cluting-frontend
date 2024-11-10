@@ -1,4 +1,5 @@
 //2-5 지원서 폼 제작 및 공고 올리기 (컨테이너)
+import { ReactElement } from "react";
 import { useState, ChangeEvent } from "react";
 import ApplicantProfile from "./ApplicantProfile";
 import ApplicantGroup from "./ApplicationGroup";
@@ -6,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import GroupQuestion from "./GroupQuestion";
 
-export default function CreateApplicationFormContainer() {
+export default function CreateApplicationFormContainer(): ReactElement {
   const {
     register,
     handleSubmit,
@@ -15,8 +16,15 @@ export default function CreateApplicationFormContainer() {
     mode: "onBlur"
   });
 
-  const [questions, setQuestions] = useState([
-    { id: uuidv4(), type: "서술형 질문" as QuestionType }
+  const [questions, setQuestions] = useState<Question[]>([
+    {
+      id: uuidv4(),
+      type: "서술형 질문",
+      question: "",
+      hasWordLimit: false,
+      wordLimit: 500,
+      options: [] //객관식 선택지
+    }
   ]);
 
   const handleSelectChange =
@@ -30,16 +38,23 @@ export default function CreateApplicationFormContainer() {
     };
 
   const addNewQuestion = () => {
-    const newQuestion = {
+    const newQuestion: Question = {
       id: uuidv4(),
-      type: "서술형 질문" as QuestionType
+      type: "서술형 질문",
+      question: "",
+      hasWordLimit: false,
+      wordLimit: 500,
+      options: []
     };
     setQuestions([...questions, newQuestion]);
-    // console.log(newQuestion.id);
+  };
+
+  const onSubmit = (data: CreateApplicationForm) => {
+    console.log(data);
   };
 
   return (
-    <form className="w-[1016px]">
+    <form className="w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
       {/*지원서 제목*/}
       <div className="ml-8 w-full mt-[26px]">
         <p className="section-title">
@@ -95,6 +110,7 @@ export default function CreateApplicationFormContainer() {
                   type="text"
                   placeholder="질문을 작성해 주세요."
                   className="w-[541px] h-[42px] py-[11px] pl-[19px] rounded-[8px] border border-gray-400 outline-none hover:border-main-100"
+                  {...register(`questions.${question.id}.question`)}
                 />
                 <select
                   className="flex-center w-[247px] h-[42px] pl-[19px] py-[11px] bg-white-100 rounded-[8px] border border-gray-400 outline-none"
@@ -105,11 +121,13 @@ export default function CreateApplicationFormContainer() {
                   <option value="객관형 질문">객관형 질문</option>
                 </select>
               </div>
+
               {question.type === "서술형 질문" ? (
                 <div>
                   <textarea
                     placeholder="지원자의 답변 작성란 입니다."
                     className="w-full min-h-[91px] mt-[18px] py-[15px] pl-[20px] rounded-[8px] border border-gray-400 outline-none hover:border-main-100"
+                    disabled //미리보기용이니까 disabled
                   />
                   <div className="flex-center justify-end mt-[10px]">
                     <input
@@ -118,7 +136,7 @@ export default function CreateApplicationFormContainer() {
                           appearance-none
                           checked:bg-main-100 
                           border border-gray-300 rounded"
-                      {...register("commonQuestionCaution")}
+                      {...register(`questions.${question.id}.hasWordLimit`)}
                     />
                     <p>글자 수 제한</p>
 
@@ -126,6 +144,7 @@ export default function CreateApplicationFormContainer() {
                       type="text"
                       placeholder="500"
                       className="flex-center w-[66px] h-[26px] ml-[7px] px-[9px] py-[5px] rounded-[6px] border border-gray-400 outline-none text-caption2 hover:border-main-100"
+                      {...register(`questions.${question.id}.wordLimit`)}
                     />
                   </div>
                 </div>
@@ -135,7 +154,7 @@ export default function CreateApplicationFormContainer() {
                     type="text"
                     placeholder="선택지 추가"
                     className="flex w-[584px] h-[36px] mt-[18px] pl-[13px] py-[10px] border border-gray-500 rounded-[6px] outline-none hover:border-main-100"
-                    {...register("multipleChoice")}
+                    {...register(`questions.${question.id}.options`)}
                   />
                 </div>
               )}
@@ -171,6 +190,7 @@ export default function CreateApplicationFormContainer() {
                 appearance-none
                 checked:bg-main-100 
                 border border-gray-300 rounded"
+              {...register("hasPortfolio")}
             />
             포트폴리오 받기
           </label>
