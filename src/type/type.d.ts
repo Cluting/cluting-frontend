@@ -102,3 +102,30 @@ interface Step {
 interface PrepareStepRolesFormValues {
   steps: Step[];
 }
+
+//공통 인재상
+declare interface CommonIdealForm {
+  commonIdeal: string;
+  commonIdeals: CommonIdeal[];
+}
+
+declare interface CommonIdeal {
+  id: number;
+  text: string;
+}
+
+//그룹별 인재상
+interface GroupIdealForm {
+  groupIdeals: {
+    [groupName: string]: string;
+  };
+}
+
+interface GroupIdeals {
+  [groupName: string]: {
+    ideals: GroupIdeal[];
+    showInput: boolean;
+    value: string;
+    nextId: number;
+  };
+}

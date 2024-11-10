@@ -73,6 +73,13 @@
     @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center;
   }
 
+  .button-main-bg {
+    @apply bg-main-100 text-white-100;
+  }
+  .button-main-light {
+    @apply bg-main-300 text-main-100 border border-main-400;
+  }
+
   /*2단계 모집하기 공용 스타일 정의*/
   .section-explain {
     @apply ml-3 py-2 px-3 bg-white-100 rounded-[11px] border border-gray-200;

@@ -15,7 +15,7 @@ const dummyAdmins: AdminUser[] = [
 export default function AddAdmin({ isDropdown }: AddAdminProps) {
   return (
     <ul
-      className={` ${isDropdown ? "absolute right-0 top-10 bg-white-100 h-auto custom-shadow" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px]`}
+      className={` ${isDropdown ? "animate-dropdown absolute right-0 top-10 bg-white-100 h-auto custom-shadow" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px]`}
     >
       {dummyAdmins.map((admin) => (
         <li

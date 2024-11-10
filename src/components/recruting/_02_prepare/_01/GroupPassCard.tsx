@@ -60,7 +60,7 @@ export default function GroupPassCard({
         <p className="text-[16px] font-semibold text-gray-850 text-left pl-[15px]">
           최종 합격 인원
         </p>
-        <div className="flex-center pt-[15px] pb[26px]">
+        <div className="flex-center pt-[15px] pb-[26px]">
           <div
             className={`relative flex items-center w-[199px] h-[41px] rounded-[7px] bg-white-100 border ${
               errors?.groups?.[groupIndex]?.finalPass

@@ -1,5 +1,14 @@
 /* eslint-disable indent */
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  PATH,
+  STEP2_ITEMS,
+  STEP3_ITEMS,
+  STEP4_ITEMS,
+  STEP5_ITEMS,
+  STEP6_ITEMS
+} from "../../../constants/recruting";
 
 export default function Sidemenu() {
   const [sidemenuClose, setSidemenuClose] = useState(false);
@@ -11,31 +20,27 @@ export default function Sidemenu() {
     setOpenDropdownIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
+  // 단계에 따른 경로 설정
+  const navigate = useNavigate(); // useNavigate 초기화
+  const navigateToPage = (index: number) => {
+    navigate(PATH[index]); // 경로로 이동
+  };
+
   const getDropdownContent = (index: number) => {
     switch (index) {
       case 0:
         return [];
       case 1:
-        return [
-          "합격 인원 설정하기",
-          "인재상 구축하기",
-          "공고 작성하기",
-          "운영진 면접 조율하기",
-          "지원서 폼 제작하기"
-        ];
+        return STEP2_ITEMS;
       case 2:
-        return ["서류 평가 준비하기", "서류 평가하기"];
+        return STEP3_ITEMS;
       case 3:
-        return [
-          "지원자 합/불 결과",
-          "서류 합격자 면접 일정 조율하기",
-          "합/불 및 면접 일정 안내 문자 작성하기"
-        ];
+        return STEP4_ITEMS;
 
       case 4:
-        return ["면접 평가 준비하기", "면접 평가하기"];
+        return STEP5_ITEMS;
       default:
-        return ["지원자 합/불 결과", "합/불 및 활동 안내 문자 작성"];
+        return STEP6_ITEMS;
     }
   };
 
@@ -68,15 +73,20 @@ export default function Sidemenu() {
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
         <button className="flex items-center h-[46px]">
-          <div
-            className={`w-6 h-6 bg-gray-600  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
-          ></div>
+          <img
+            src="/assets/ic-sidemenu-home.svg"
+            alt="리크루팅 홈"
+            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+          />
           {!sidemenuClose && "리크루팅 홈"}
         </button>
+
         <button className="flex items-center h-[46px]">
-          <div
-            className={`w-6 h-6 bg-gray-600  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
-          ></div>
+          <img
+            src="/assets/ic-sidemenu-setting.svg"
+            alt="리크루팅 홈"
+            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+          />
           {!sidemenuClose && "동아리 설정"}
         </button>
       </section>
@@ -93,6 +103,7 @@ export default function Sidemenu() {
               className={`relative dropdown-list flex items-center h-[46px] text-subheadline hover:text-gray-900 ${
                 sidemenuClose ? "justify-center" : ""
               }`}
+              onClick={() => navigateToPage(index)} // 페이지로 이동
             >
               <div className="flex-center w-[33px] h-[30px] bg-gray-100 border border-gray-500 hover:border-gray-900 rounded-[8px]">
                 {index + 1}
@@ -137,9 +148,11 @@ export default function Sidemenu() {
 
       <section className="absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">
         <div className="flex-center h-[46px] ">
-          <div
-            className={`w-6 h-6 bg-gray-600  ${sidemenuClose ? "ml-[15px]" : "mr-[10px]"}`}
-          ></div>
+          <img
+            src="/assets/ic-sidemenu-notice.svg"
+            alt="리크루팅 홈"
+            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+          />
           {!sidemenuClose && (
             <>
               <span>공지 알림 및 소통</span>

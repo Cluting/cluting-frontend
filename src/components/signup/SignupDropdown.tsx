@@ -21,7 +21,7 @@ export default function SignupDropdown({
   onSelect
 }: DropdownProps) {
   return (
-    <div className="absolute top-20 left-0 w-[404px] h-auto bg-white-100 z-50 p-2 rounded-[12px] border border-gray-100">
+    <div className="animate-dropdown absolute top-20 left-0 w-[404px] h-auto bg-white-100 z-50 p-2 rounded-[12px] border border-gray-100">
       <ul>
         {studentStatus &&
           studentStatusList.map((status) => (
