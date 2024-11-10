@@ -114,7 +114,7 @@ declare interface CommonIdeal {
   text: string;
 }
 
-//그룹별 인재상
+//그룹별 인재상 Form
 declare interface GroupIdealForm {
   groupIdeals: {
     [groupName: string]: string;
@@ -132,3 +132,11 @@ declare interface GroupIdeals {
 
 //2-5 질문타입 드롭다운
 declare type QuestionType = "서술형 질문" | "객관형 질문";
+
+//2-5 지원서 폼 제작 Form
+declare interface CreateApplicationForm {
+  title: string;
+  commonQuestionCaution: string;
+  wordLimit: number;
+  multipleChoice: string;
+}

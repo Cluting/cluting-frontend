@@ -1,4 +1,10 @@
+//2-5, 지원 그룹
+import { useGroupStore } from "../../../../store/useStore";
+
 export default function ApplicantGroup() {
+  const { group } = useGroupStore();
+
+  //todo:여길 폼처리 받아야 하는건가..
   return (
     <div className="ml-8 w-full mt-[34px]">
       <div className="flex">
@@ -9,15 +15,15 @@ export default function ApplicantGroup() {
       </div>
       <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
         <div className="flex items-left gap-[11px]">
-          <button className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100">
-            기획
-          </button>
-          <button className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100">
-            디자인
-          </button>
-          <button className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100">
-            개발
-          </button>
+          {group.map((groupName) => (
+            <button
+              key={groupName}
+              type="button"
+              className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100"
+            >
+              {groupName}
+            </button>
+          ))}
         </div>
 
         <label className="flex items-center items-left mt-[14px] text-subheadline text-gray-900">
