@@ -3,9 +3,7 @@ export default function ApplicantProfile() {
     <div>
       {/*지원자 기본 프로필 */}
       <div className="flex mt-[34px]">
-        <p className="section-title">
-          <span className="mr-[0.25em] text-main-100">*</span>지원자 기본 프로필
-        </p>
+        <p className="section-title">지원자 기본 프로필</p>
         <div className="tooltip">지원자의 기본 프로필을 불러옵니다.</div>
       </div>
       <div className="mt-[12px] h-auto pt-[23px] pt-[29px] px-[30px] pb-[29px] bg-white-100 rounded-[12px]">

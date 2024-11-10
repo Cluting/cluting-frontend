@@ -129,3 +129,6 @@ interface GroupIdeals {
     nextId: number;
   };
 }
+
+//2-5 질문타입 드롭다운
+export type QuestionType = "서술형 질문" | "객관형 질문";

@@ -61,7 +61,7 @@
   }
 
   .section-title {
-    @apply text-[17px] font-bold pr-[21px] flex items-center;
+    @apply text-title3 pr-[21px] flex items-center;
   }
   .tooltip {
     @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-[#D9D9D9] text-[13px] text-[#73767F] font-medium flex-center;
