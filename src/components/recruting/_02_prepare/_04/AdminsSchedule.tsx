@@ -91,76 +91,74 @@ export default function AdminsSchedule() {
               면접에 들어갈 면접관 수에 맞게 클릭해 확정해 주세요.
             </div>
           </div>
-          <div className=" ">
-            <div className="mt-[16px] h-auto pt-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
-              <p className="text-main-100 text-caption3 text-left">
-                면접에 들어갈 2명을 선택해 주세요. 2명이 가능한 시간을 이후에
-                지원자들이 선택할 수 있습니다.
-              </p>
-              <div
-                className={`mt-3 border  rounded-[12px] bg-[#FBFBFF]
+          <div className="mt-[16px] h-auto pt-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
+            <p className="text-main-100 text-caption3 text-left">
+              면접에 들어갈 2명을 선택해 주세요. 2명이 가능한 시간을 이후에
+              지원자들이 선택할 수 있습니다.
+            </p>
+            <div
+              className={`mt-3 border  rounded-[12px] bg-[#FBFBFF]
               ${isSubmitted && errors.scheduleData ? "border-red-100" : "border-gray-300"}`}
-              >
-                <div className="flex-center bg-gray-200 border-b-[#C7C7CC rounded-t-[12px] pt-[15px] pb-[14px] text-headline">
-                  <img
-                    src="/assets/ic-prevDate.svg"
-                    alt="이전 날짜"
-                    className="mr-[6px]"
-                  />
-                  <p>10월 13일 월요일</p> {/*날짜*/}
-                  <img
-                    src="/assets/ic-nextDate.svg"
-                    alt="다음 날짜"
-                    className="ml-[6px]"
-                  />
-                </div>
-                <div className="pt-2 pb-[10px] pl-[11px]">
-                  <input
-                    type="hidden"
-                    {...register("scheduleData", {
-                      validate: validateScheduleData
-                    })}
-                  />
-                  {timeSlots.map((timeSlot) => (
-                    <div
-                      key={timeSlot}
-                      className="flex items-center space-x-[7px] mb-[13px] "
-                    >
-                      {/*시간*/}
-                      <div
-                        className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
-                          ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2`}
-                      >
-                        {timeSlot}
-                      </div>
-                      {/*운영진들 */}
-                      {admins.map((admin) => (
-                        <button
-                          key={`${timeSlot}-${admin}`}
-                          type="button"
-                          onClick={() => handleAdminSelect(timeSlot, admin)}
-                          disabled={
-                            getSelectedAdminCount(timeSlot) >= 2 &&
-                            !isAdminSelectedForTimeSlot(timeSlot, admin)
-                          }
-                          className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]
-                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
-                        >
-                          {admin}
-                        </button>
-                      ))}
-                    </div>
-                  ))}
-                </div>
+            >
+              <div className="flex-center bg-gray-200 border-b-[#C7C7CC rounded-t-[12px] pt-[15px] pb-[14px] text-headline">
+                <img
+                  src="/assets/ic-prevDate.svg"
+                  alt="이전 날짜"
+                  className="mr-[6px]"
+                />
+                <p>10월 13일 월요일</p> {/*날짜*/}
+                <img
+                  src="/assets/ic-nextDate.svg"
+                  alt="다음 날짜"
+                  className="ml-[6px]"
+                />
               </div>
-              {isSubmitted && errors.scheduleData?.message && (
-                <p className="text-state-error">
-                  {String(errors.scheduleData.message)}
-                </p>
-              )}
+              <div className="pt-2 pb-[10px] pl-[11px]">
+                <input
+                  type="hidden"
+                  {...register("scheduleData", {
+                    validate: validateScheduleData
+                  })}
+                />
+                {timeSlots.map((timeSlot) => (
+                  <div
+                    key={timeSlot}
+                    className="flex items-center space-x-[7px] mb-[13px] "
+                  >
+                    {/*시간*/}
+                    <div
+                      className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
+                          ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2`}
+                    >
+                      {timeSlot}
+                    </div>
+                    {/*운영진들 */}
+                    {admins.map((admin) => (
+                      <button
+                        key={`${timeSlot}-${admin}`}
+                        type="button"
+                        onClick={() => handleAdminSelect(timeSlot, admin)}
+                        disabled={
+                          getSelectedAdminCount(timeSlot) >= 2 &&
+                          !isAdminSelectedForTimeSlot(timeSlot, admin)
+                        }
+                        className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]
+                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
+                      >
+                        {admin}
+                      </button>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-            <button type="submit">임시 제출 버튼</button>
+            {isSubmitted && errors.scheduleData?.message && (
+              <p className="text-state-error">
+                {String(errors.scheduleData.message)}
+              </p>
+            )}
           </div>
+          <button type="submit">임시 제출 버튼</button>
         </div>
       </div>
     </form>
