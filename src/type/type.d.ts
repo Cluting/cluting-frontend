@@ -92,6 +92,7 @@ declare interface GroupStore {
   removeGroup: (groupToRemove: string) => void;
 }
 
+//단계 설정
 declare interface Step {
   id: number;
   name: string;
@@ -103,12 +104,13 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//공통 인재상
+//공통 인재상(배열로) Form
 declare interface CommonIdealForm {
   commonIdeal: string;
   commonIdeals: CommonIdeal[];
 }
 
+//공통 인재상
 declare interface CommonIdeal {
   id: number;
   text: string;
@@ -121,6 +123,7 @@ declare interface GroupIdealForm {
   };
 }
 
+//그룹별 인재상
 declare interface GroupIdeals {
   [groupName: string]: {
     ideals: GroupIdeal[];
@@ -128,6 +131,16 @@ declare interface GroupIdeals {
     value: string;
     nextId: number;
   };
+}
+
+//임원진 일정 Form
+declare interface AdminsScheduleFormData {
+  scheduleData: TimeSlotAdmins;
+}
+
+//임원진 일정
+declare interface TimeSlotAdmins {
+  [timeSlot: string]: string[];
 }
 
 //2-5 질문 드롭다운 타입
@@ -151,9 +164,9 @@ declare interface CreateApplicationForm {
     [key: string]: {
       // 동적 key를 위한 인덱스 시그니처
       question: string;
-      hasWordLimit?: boolean;
-      wordLimit?: number;
-      options?: string[];
+      hasWordLimit?: boolean; //서술형 글자수 제한 여부
+      wordLimit?: number; //서술형 글자수
+      options?: string[]; //객관형 질문
     };
   };
   hasPortfolio: boolean;
