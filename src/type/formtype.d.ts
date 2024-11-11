@@ -115,3 +115,9 @@ interface GroupIdeals {
     nextId: number;
   };
 }
+
+// 운영진 면접 일정 조정 Form - 면접관, 면접자
+interface InterviewNumValue {
+  interviewer: number;
+  interviewee: number;
+}
