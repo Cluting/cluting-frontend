@@ -68,7 +68,7 @@ export default function InterviewAvailableTime() {
         onMouseLeave={handleMouseUp}
       >
         {/* 요일, 날짜 렌더링 (표 밖) */}
-        <div className="relative flex left-[92px] gap-[7px] ">
+        <div className="relative flex left-[92px] gap-[8px] ">
           {days.map((day) => (
             <div
               key={day.date}
@@ -80,13 +80,10 @@ export default function InterviewAvailableTime() {
           ))}
         </div>
 
-        <table
-          className="w-[512px] text-center border-collapse table-fixed mb-3"
-          style={{ borderSpacing: "9px" }} // 각 열 사이에 9px 간격 추가
-        >
+        <table className="w-[512px] text-center border-collapse table-fixed mb-3 border-separate  border-spacing-x-2">
           <thead>
             <tr>
-              <th className="p-2 border-b border-gray-300 w-[77.85px]"></th>
+              <th className="p-2  border-gray-300 w-[77.85px]"></th>
               {days.map((day) => (
                 <th
                   key={day.date}
@@ -105,7 +102,7 @@ export default function InterviewAvailableTime() {
                 className={index % 2 === 1 ? "border-b border-gray-500" : ""}
               >
                 <td
-                  className="border-r text-caption2 text-gray-900"
+                  className="text-caption2 text-gray-900"
                   style={{ width: "77.85px" }}
                 >
                   {time.display}
