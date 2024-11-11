@@ -5,6 +5,11 @@ export default function TimeSlot() {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
+  const [caption, setCaption] = useState<string | null>(
+    "하루 중 면접 최초 시작 시간을 선택해 주세요."
+  );
+  const [showCaption, setShowCaption] = useState(false);
+
   const handleStartTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newStartTime = e.target.value;
     setStartTime(newStartTime);
@@ -27,7 +32,12 @@ export default function TimeSlot() {
   };
 
   return (
-    <div className="section-background ">
+    <div className="relative section-background ">
+      {showCaption && (
+        <p className="absolute top-[11px] right-[300px] text-main-100 text-caption2">
+          {caption}
+        </p>
+      )}
       <div className="flex gap-[150px]">
         <div className="flex items-center  gap-[14px]">
           <div className="bg-gray-100 rounded-[8px] px-3 py-[7px] text-subheadline text-gray-800">
@@ -40,9 +50,12 @@ export default function TimeSlot() {
           <div className="bg-gray-100 rounded-[8px] px-3 py-[7px] text-subheadline text-gray-800">
             면접 시간
           </div>
+
           <input
             value={startTime}
             onChange={handleStartTimeChange}
+            onFocus={() => setShowCaption(true)} // Show caption on focus
+            onBlur={() => setShowCaption(false)} // Hide caption on blur
             type="time"
             className="w-[160px] input-style input-background"
           />
