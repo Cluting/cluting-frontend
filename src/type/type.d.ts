@@ -147,7 +147,7 @@ declare interface TimeSlotAdmins {
 declare type QuestionType = "서술형 질문" | "객관형 질문";
 
 //2-5 질문들(서술형, 객관형) 정보 정의
-interface Question {
+declare interface Question {
   id: string;
   type: QuestionType;
   question: string;
@@ -156,18 +156,30 @@ interface Question {
   options?: string[]; // 객관식 선택지
 }
 
+// 그룹별 질문 구조
+declare interface GroupQuestion {
+  caution: string;
+  questions: {
+    [questionId: string]: Question;
+  };
+}
+
 //2-5 지원서 폼 제작 Form
 declare interface CreateApplicationForm {
+  // 지원서 제목
   title: string;
-  commonQuestionCaution: string; // 공통 질문 관련 주의 사항
-  questions: {
-    [key: string]: {
-      // 동적 key를 위한 인덱스 시그니처
-      question: string;
-      hasWordLimit?: boolean; //서술형 글자수 제한 여부
-      wordLimit?: number; //서술형 글자수
-      options?: string[]; //객관형 질문
-    };
+
+  // 공통 질문 섹션
+  commonQuestionCaution: string;
+  commonQuestions: {
+    [questionId: string]: Question;
   };
+
+  // 그룹별 질문 섹션
+  groupQuestions: {
+    [groupName: string]: GroupQuestion;
+  };
+
+  // 포트폴리오 섹션
   hasPortfolio: boolean;
 }
