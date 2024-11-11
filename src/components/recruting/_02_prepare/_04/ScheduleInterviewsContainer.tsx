@@ -42,7 +42,7 @@ export default function ScheduleInterviewsContainer() {
 
       {/* isTimeSet이 true일 때 다른 컴포넌트 표시 */}
       {isTimeSet && (
-        <div className="animate-dropdown ">
+        <div className="animate-slide-down ">
           <div className="flex items-center mx-8 my-4 ">
             <h1 className="text-title3 text-gray-900 mr-[18px]">
               <span className="text-main-100">* </span>면접 가능 시간 선택
