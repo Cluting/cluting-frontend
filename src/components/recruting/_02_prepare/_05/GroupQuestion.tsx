@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import { useGroupStore } from "../../../../store/useStore";
 
-//todo: form 처리 해야함,!
+//fix: 폼 처리 안 돼서 미치겠음.. 최악이야 최악...
 
 export default function GroupQuestion() {
   const { group } = useGroupStore();
@@ -139,7 +139,7 @@ export default function GroupQuestion() {
           className="flex items-center text-left w-full h-[42px] pl-[21px] rounded-[8px] border border-gray-500 text-subheadline outline-none focus:border-main-100"
           placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를
             유의해 주세요!"
-          {...register("commonQuestionCaution")}
+          {...register("groupQuestionCaution")}
         />
         <div className="flex-center my-[42px] border border-gray-200 "></div>
         <p className="mb-[15px] text-title3 text-[#3B3D46] text-left">
@@ -295,12 +295,12 @@ export default function GroupQuestion() {
             </div>
           ))}
         </div>
-        {isSubmitted &&
+        {/* {isSubmitted &&
           Object.keys(errors?.groupQuestions || {}).length > 0 && (
             <p className="text-state-error">
               질문을 한 가지 이상 추가해 주세요.
             </p>
-          )}
+          )} */}
 
         {/*버튼, 그룹으로 묶어서 색 변환 처리 */}
         <button

@@ -166,16 +166,14 @@ declare interface GroupQuestion {
 
 //2-5 지원서 폼 제작 Form
 declare interface CreateApplicationForm {
-  // 지원서 제목
   title: string;
-
-  // 공통 질문 섹션
   commonQuestionCaution: string;
   commonQuestions: {
     [questionId: string]: Question;
   };
 
   // 그룹별 질문 섹션
+  groupQuestionCaution: string;
   groupQuestions: {
     [groupName: string]: GroupQuestion;
   };
