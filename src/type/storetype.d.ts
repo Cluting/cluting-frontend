@@ -25,6 +25,7 @@ declare interface InterviewFormatStore {
   interviewEndDate: Date; // 면접 종료 날짜
   interviewStartTime: Date; // 면접 시작 시간
   interviewEndTime: Date; // 면접 시작 시간
+  isTimeSet: boolean; //시간 설정 완료 여부
 
   setInterviewer: (id: number) => void;
   setInterviewee: (id: number) => void;

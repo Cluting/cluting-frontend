@@ -82,15 +82,6 @@ export default function AdminsSchedule() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="ml-8 w-full mt-[34px]">
         <div>
-          <div className="flex">
-            <p className="section-title">
-              <span className="mr-[0.25em] text-main-100">*</span>면접관 일정
-              확정하기
-            </p>
-            <div className="tooltip">
-              면접에 들어갈 면접관 수에 맞게 클릭해 확정해 주세요.
-            </div>
-          </div>
           <div className="mt-[16px] h-auto pt-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
             <p className="text-main-100 text-caption3 text-left">
               면접에 들어갈 2명을 선택해 주세요. 2명이 가능한 시간을 이후에
