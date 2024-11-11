@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useInterviewStore } from "../../../../store/useStore";
 
 const days = [
   { date: "10월 13일", dayOfWeek: "월" },
@@ -23,6 +24,7 @@ const generateTimes = () => {
 const times = generateTimes();
 
 export default function InterviewAvailableTime() {
+  const { interviewStartTime, interviewEndTime } = useInterviewStore();
   const [selectedSlots, setSelectedSlots] = useState<{
     [key: string]: boolean;
   }>({});
@@ -59,6 +61,19 @@ export default function InterviewAvailableTime() {
     setIsDragging(false);
   };
 
+  // 시간을 비교하여, 시작 시간과 종료 시간 사이에 해당하는 셀만 표시
+  const isInSelectedTimeRange = (time: string) => {
+    const selectedTime = new Date(`1970-01-01T${time}:00`);
+    return (
+      selectedTime >= interviewStartTime && selectedTime <= interviewEndTime
+    );
+  };
+
+  // 시간 배열 필터링: 인터뷰 시작 시간과 종료 시간 사이에 해당하는 시간만 포함
+  const filteredTimes = times.filter((time) =>
+    isInSelectedTimeRange(time.value)
+  );
+
   return (
     <div className="section-background flex flex-wrap space-y-4 ">
       {/* 시간표 렌더링 (표 안) */}
@@ -83,7 +98,7 @@ export default function InterviewAvailableTime() {
         <table className="w-[512px] text-center border-collapse table-fixed mb-3 border-separate  border-spacing-x-2">
           <thead>
             <tr>
-              <th className="p-2  border-gray-300 w-[77.85px]"></th>
+              <th className="p-2 border-gray-300 w-[77.85px]"></th>
               {days.map((day) => (
                 <th
                   key={day.date}
@@ -96,7 +111,7 @@ export default function InterviewAvailableTime() {
             </tr>
           </thead>
           <tbody>
-            {times.map((time, index) => (
+            {filteredTimes.map((time, index) => (
               <tr
                 key={time.value}
                 className={index % 2 === 1 ? "border-b border-gray-500" : ""}
