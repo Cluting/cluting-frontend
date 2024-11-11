@@ -78,14 +78,14 @@ declare interface AdminUser {
   email: string;
 }
 
-interface Step {
+declare interface Step {
   id: number;
   name: string;
   admins: string[];
   isFixed?: boolean;
 }
 
-interface PrepareStepRolesFormValues {
+declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
@@ -101,19 +101,27 @@ declare interface CommonIdeal {
 }
 
 //그룹별 인재상
-interface GroupIdealForm {
+declare interface GroupIdealForm {
   groupIdeals: {
     [groupName: string]: string;
   };
 }
 
-interface GroupIdeals {
+declare interface GroupIdeals {
   [groupName: string]: {
     ideals: GroupIdeal[];
     showInput: boolean;
     value: string;
     nextId: number;
   };
+}
+
+declare interface AdminsScheduleFormData {
+  scheduleData: TimeSlotAdmins;
+}
+
+declare interface TimeSlotAdmins {
+  [timeSlot: string]: string[];
 }
 
 // 운영진 면접 일정 조정 Form - 면접관, 면접자

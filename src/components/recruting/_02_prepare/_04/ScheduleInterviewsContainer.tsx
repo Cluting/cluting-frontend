@@ -4,6 +4,8 @@ import InterviewFormat from "./InterviewFormat";
 import InterviewTime from "./InterviewTime";
 import TimeSlot from "./TimeSlot";
 
+import AdminsSchedule from "./AdminsSchedule";
+
 //2-1 운영진 면접 일정 조정 (컨테이너)
 export default function ScheduleInterviewsContainer() {
   return (
@@ -53,6 +55,11 @@ export default function ScheduleInterviewsContainer() {
         </div>
       </div>
       <InterviewerSchedule />
+    </div>
+  );
+  return (
+    <div className="w-[1100px]">
+      <AdminsSchedule />
     </div>
   );
 }
