@@ -1,5 +1,4 @@
 import InterviewAvailableTime from "./InterviewAvailableTime";
-import InterviewerSchedule from "./InterviewerSchedule";
 import InterviewFormat from "./InterviewFormat";
 import InterviewTime from "./InterviewTime";
 import TimeSlot from "./TimeSlot";
