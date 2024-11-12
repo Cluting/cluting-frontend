@@ -5,13 +5,15 @@ interface CustomSelectProps {
   onChange: (value: string) => void;
   options: string[];
   placeholder: string;
+  onFocus?: () => void; // onFocus props 추가
 }
 
 export default function CustomSelect({
   value,
   onChange,
   options,
-  placeholder
+  placeholder,
+  onFocus // onFocus props 추가
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,13 +27,16 @@ export default function CustomSelect({
   return (
     <div className="relative">
       <button
-        onClick={toggleDropdown}
+        onClick={() => {
+          toggleDropdown();
+          onFocus && onFocus(); // onFocus 이벤트 호출
+        }}
         className="w-[160px] input-style input-background"
       >
         {value || placeholder}
       </button>
       {isOpen && (
-        <ul className="absolute left-0 mt-2 w-full py-3 px-2 bg-white-100 rounded-[8px] custom-shadow max-h-48 overflow-y-auto z-10">
+        <ul className="animate-dropdown absolute left-0 mt-2 w-full py-3 px-2 bg-white-100 rounded-[8px] custom-shadow max-h-48 overflow-y-auto z-10">
           {options.map((time) => (
             <li
               key={time}
