@@ -23,27 +23,26 @@ export default function AdminsSchedule() {
 
   // 1시간 간격의 시간 배열 생성
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
+  const generateTimeSlots = () => {
+    const startTime = new Date(interviewStartTime);
+    const endTime = new Date(interviewEndTime);
+    const slots: string[] = [];
+
+    // 시작 시간부터 종료 시간까지 1시간 간격으로 timeSlots 배열 생성
+    while (startTime < endTime) {
+      const timeString = startTime.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true // 12시간제로 설정
+      });
+      slots.push(timeString);
+      startTime.setHours(startTime.getHours() + 1); // 1시간씩 증가
+    }
+
+    setTimeSlots(slots);
+  };
 
   useEffect(() => {
-    const generateTimeSlots = () => {
-      const startTime = new Date(interviewStartTime);
-      const endTime = new Date(interviewEndTime);
-      const slots: string[] = [];
-
-      // 시작 시간부터 종료 시간까지 1시간 간격으로 timeSlots 배열 생성
-      while (startTime < endTime) {
-        const timeString = startTime.toLocaleString("en-US", {
-          hour: "numeric",
-          minute: "numeric",
-          hour12: true // 12시간제로 설정
-        });
-        slots.push(timeString);
-        startTime.setHours(startTime.getHours() + 1); // 1시간씩 증가
-      }
-
-      setTimeSlots(slots);
-    };
-
     generateTimeSlots();
   }, [interviewStartTime, interviewEndTime]);
 
