@@ -37,7 +37,7 @@ export default function GroupCreate() {
   };
 
   return (
-    <div className="custom-shadow w-full h-auto bg-white-100 pt-6 pb-[60px] mx-8 mt-[34px] px-[13px] rounded-[12px]">
+    <div className=" w-full h-auto bg-white-100 pt-6 pb-[60px] mx-8 mt-[34px] px-[13px] rounded-[12px]">
       <div className="flex items-center mx-8 my-4">
         <h1 className="text-callout">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">

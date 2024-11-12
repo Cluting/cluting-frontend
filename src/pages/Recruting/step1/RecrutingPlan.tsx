@@ -18,7 +18,7 @@ export default function RecrutingPlan() {
           <h1 className="text-title1 mr-3">계획하기</h1>
         </div>
 
-        <section className="custom-shadow w-full h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
+        <section className=" w-full h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
           <div className="flex items-center mx-8 my-4">
             <h1 className="text-callout">
               <span className="text-main-100 text-left">* </span> 리크루팅 일정

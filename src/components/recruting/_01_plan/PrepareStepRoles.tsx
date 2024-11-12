@@ -91,7 +91,7 @@ export default function PrepareStepRoles() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full h-auto mt-[34px] ml-8 pt-[22px] pb-[38px] bg-white-100 custom-shadow rounded-[12px]"
+      className="w-full h-auto mt-[34px] ml-8 pt-[22px] pb-[38px] bg-white-100 rounded-[12px]"
     >
       <div className="ml-[22px] mr-[39px] flex justify-between">
         <div className="flex">

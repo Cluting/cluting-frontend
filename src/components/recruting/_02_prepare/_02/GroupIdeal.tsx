@@ -74,7 +74,7 @@ export default function GroupIdeal() {
         <div className="tooltip">각 그룹별 인재상을 작성해 주세요.</div>
       </div>
 
-      <div className="mt-[16px] py-[32px] relative h-auto bg-white-100 rounded-[12px] custom-shadow">
+      <div className="mt-[16px] py-[32px] relative h-auto bg-white-100 rounded-[12px] ">
         {groups.map((group) => (
           <div
             key={group.name}

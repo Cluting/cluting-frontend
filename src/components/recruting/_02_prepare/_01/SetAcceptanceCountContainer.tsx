@@ -92,7 +92,7 @@ export default function SetAcceptanceCountContainer() {
 
         <div className="pt-[16px]">
           {/* 서류 합격 인원 input box*/}
-          <div className="relative h-[105px] bg-white-100 rounded-[12px] custom-shadow ">
+          <div className="relative h-[105px] bg-white-100 rounded-[12px]  ">
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
                 className={`flex-center relative w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
@@ -132,7 +132,7 @@ export default function SetAcceptanceCountContainer() {
           <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
         </div>
         <div className="pt-[16px]">
-          <div className="relative h-[105px] bg-white-100 rounded-[12px] custom-shadow">
+          <div className="relative h-[105px] bg-white-100 rounded-[12px] ">
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
                 className={`flex-center w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${

@@ -24,7 +24,7 @@ export default function AnnouncementDetails() {
   return (
     <form
       onSubmit={onSubmit}
-      className="custom-shadow flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
+      className=" flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
     >
       <label className="mt-6">포스터 업로드</label>
       <button
