@@ -1,6 +1,6 @@
 /* eslint-disable indent */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   PATH,
   STEP2_ITEMS,
@@ -44,6 +44,28 @@ export default function Sidemenu() {
     }
   };
 
+  // 윈도우 사이즈 변경에 따른 사이드메뉴 상태 설정
+  const handleResize = () => {
+    if (window.innerWidth <= 1200) {
+      setSidemenuClose(true);
+    } else {
+      setSidemenuClose(false);
+    }
+  };
+
+  useEffect(() => {
+    // 초기 설정
+    handleResize();
+
+    // 리사이즈 이벤트 리스너 등록
+    window.addEventListener("resize", handleResize);
+
+    // 리스너 해제
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div
       className={`relative bg-white-100 custom-shadow ${
@@ -72,14 +94,16 @@ export default function Sidemenu() {
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <button className="flex items-center h-[46px]">
-          <img
-            src="/assets/ic-sidemenu-home.svg"
-            alt="리크루팅 홈"
-            className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
-          />
-          {!sidemenuClose && "리크루팅 홈"}
-        </button>
+        <Link to={"/recruting/home"}>
+          <button className="flex items-center h-[46px]">
+            <img
+              src="/assets/ic-sidemenu-home.svg"
+              alt="리크루팅 홈"
+              className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+            />
+            {!sidemenuClose && "리크루팅 홈"}
+          </button>
+        </Link>
 
         <button className="flex items-center h-[46px]">
           <img
