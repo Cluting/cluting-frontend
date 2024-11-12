@@ -15,8 +15,9 @@ declare interface GroupStore {
   group: {
     index: number;
     name: string;
-    documentPass?: number;
-    finalPass?: number;
+    documentPass: number;
+    finalPass: number;
+    ideals: string[]; // 인재상 추가
   }[];
   setGroup: (
     group: {
@@ -24,6 +25,7 @@ declare interface GroupStore {
       name: string;
       documentPass: number;
       finalPass: number;
+      ideals: string[]; // 인재상 추가
     }[]
   ) => void;
   addGroup: (newGroup: string) => void;

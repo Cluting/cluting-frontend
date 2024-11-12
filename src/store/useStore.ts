@@ -23,6 +23,7 @@ export const useGroupStore = create<GroupStore>()((set) => ({
       name: string;
       documentPass: number;
       finalPass: number;
+      ideals: string[]; // 인재상 추가
     }[]
   ) => set({ group }),
 
@@ -35,7 +36,8 @@ export const useGroupStore = create<GroupStore>()((set) => ({
           index: state.group.length, // 자동 증가 인덱스
           name: newGroup,
           documentPass: 0,
-          finalPass: 0
+          finalPass: 0,
+          ideals: [] // 새로운 그룹에 인재상 추가
         }
       ]
     })),

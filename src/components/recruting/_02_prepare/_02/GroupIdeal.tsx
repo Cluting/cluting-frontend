@@ -1,13 +1,15 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useGroupStore } from "../../../../store/useStore";
 
 export default function GroupIdeal() {
+  const { group: groups } = useGroupStore();
+
   const [groupIdeals, setGroupIdeals] = useState<GroupIdeals>(() => {
-    const groups = ["기획", "개발", "디자인"];
     return groups.reduce(
       (acc, group) => ({
         ...acc,
-        [group]: {
+        [group.name]: {
           ideals: [],
           showInput: true,
           value: "",
@@ -17,8 +19,6 @@ export default function GroupIdeal() {
       {}
     );
   });
-
-  const groups = [{ name: "기획" }, { name: "개발" }, { name: "디자인" }];
 
   const {
     register,
