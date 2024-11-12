@@ -33,4 +33,5 @@ declare interface InterviewFormatStore {
   setInterviewEndTime: (time: Date) => void;
   setInterviewStartDate: (date: Date) => void;
   setInterviewEndDate: (date: Date) => void;
+  applyTimeSettings: () => void; // 시간 설정 적용 함수
 }

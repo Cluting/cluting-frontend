@@ -44,11 +44,13 @@ export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
   setInterviewer: (id: number) => set({ interviewer: id }),
   setInterviewee: (id: number) => set({ interviewee: id }),
   setInterviewStartTime: (time: Date) => set({ interviewStartTime: time }),
-  setInterviewEndTime: (time: Date) =>
-    set((state) => ({
-      interviewEndTime: time,
-      isTimeSet: !!state.interviewStartTime && !!time // interviewEndTime 설정 시에만 isTimeSet 업데이트
-    })),
+  setInterviewEndTime: (time: Date) => set({ interviewEndTime: time }),
   setInterviewStartDate: (date: Date) => set({ interviewStartDate: date }),
-  setInterviewEndDate: (date: Date) => set({ interviewEndDate: date })
+  setInterviewEndDate: (date: Date) => set({ interviewEndDate: date }),
+
+  // 새로운 상태 업데이트 함수 추가
+  applyTimeSettings: () =>
+    set((state) => ({
+      isTimeSet: !!state.interviewStartTime && !!state.interviewEndTime
+    }))
 }));
