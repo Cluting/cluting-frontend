@@ -26,6 +26,7 @@ const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
 
 export default function InterviewAvailableTime() {
   const {
+    isTimeSet,
     interviewStartTime,
     interviewEndTime,
     interviewStartDate,
@@ -109,47 +110,48 @@ export default function InterviewAvailableTime() {
             </div>
           ))}
         </div>
-
-        <table className=" text-center table-layout:fixed table-fixed mb-3 border-separate  border-spacing-x-2">
-          <thead>
-            <tr>
-              <th className="p-2 border-gray-300 w-[77.85px] min-w-[77.85px] max-w-[77.85px]"></th>
-              {days.map((day) => (
-                <th
-                  key={day.date}
-                  className="p-2 border-b border-gray-300 w-[77.85px] min-w-[77.85px] max-w-[77.85px]"
-                >
-                  {/* 날짜 및 요일 */}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {times.map((time, index) => (
-              <tr
-                key={time}
-                className={index % 2 === 1 ? "border-b border-gray-500" : ""}
-              >
-                <td className="text-caption2 text-gray-900 w-[77.85px] min-w-[77.85px] max-w-[77.85px]">
-                  {index % 2 === 0 ? time : ""}
-                </td>
-                {days.map((day) => {
-                  const key = `${day.date}-${time}`;
-                  return (
-                    <td
-                      key={key}
-                      className={`p-2 border cursor-pointer h-[20px]w-[77.85px] min-w-[77.85px] max-w-[77.85px] ${
-                        selectedSlots[key] ? "bg-main-100" : "bg-main-300"
-                      } ${index % 2 === 1 ? "border-b border-gray-700 border-r-0 border-l-0" : "border border-gray-400 "} border border-gray-400 border-r-[1px] border-r-gray-400 `}
-                      onMouseDown={() => handleMouseDown(day.date, time)}
-                      onMouseEnter={() => handleMouseEnter(day.date, time)}
-                    ></td>
-                  );
-                })}
+        {isTimeSet && (
+          <table className="animate-slide-down text-center table-layout:fixed table-fixed mb-3 border-separate  border-spacing-x-2">
+            <thead>
+              <tr>
+                <th className="p-2 border-gray-300 w-[77.85px] min-w-[77.85px] max-w-[77.85px]"></th>
+                {days.map((day) => (
+                  <th
+                    key={day.date}
+                    className="p-2 border-b border-gray-300 w-[77.85px] min-w-[77.85px] max-w-[77.85px]"
+                  >
+                    {/* 날짜 및 요일 */}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {times.map((time, index) => (
+                <tr
+                  key={time}
+                  className={index % 2 === 1 ? "border-b border-gray-500" : ""}
+                >
+                  <td className="text-caption2 text-gray-900 w-[77.85px] min-w-[77.85px] max-w-[77.85px]">
+                    {index % 2 === 0 ? time : ""}
+                  </td>
+                  {days.map((day) => {
+                    const key = `${day.date}-${time}`;
+                    return (
+                      <td
+                        key={key}
+                        className={`p-2 border cursor-pointer h-[20px]w-[77.85px] min-w-[77.85px] max-w-[77.85px] ${
+                          selectedSlots[key] ? "bg-main-100" : "bg-main-300"
+                        } ${index % 2 === 1 ? "border-b border-gray-700 border-r-0 border-l-0" : "border border-gray-400 "} border border-gray-400 border-r-[1px] border-r-gray-400 `}
+                        onMouseDown={() => handleMouseDown(day.date, time)}
+                        onMouseEnter={() => handleMouseEnter(day.date, time)}
+                      ></td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </section>
     </div>
   );
