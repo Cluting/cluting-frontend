@@ -163,12 +163,14 @@ export default function AdminsSchedule() {
                 ))}
               </div>
             </div>
+
             {isSubmitted && errors.scheduleData?.message && (
               <p className="text-state-error">
                 {String(errors.scheduleData.message)}
               </p>
             )}
           </div>
+
           <button type="submit">임시 제출 버튼</button>
         </div>
       </div>

@@ -78,6 +78,7 @@ declare interface AdminUser {
   email: string;
 }
 
+//단계 설정
 declare interface Step {
   id: number;
   name: string;
@@ -89,24 +90,26 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//공통 인재상
+//공통 인재상(배열로) Form
 declare interface CommonIdealForm {
   commonIdeal: string;
   commonIdeals: CommonIdeal[];
 }
 
+//공통 인재상
 declare interface CommonIdeal {
   id: number;
   text: string;
 }
 
-//그룹별 인재상
+//그룹별 인재상 Form
 declare interface GroupIdealForm {
   groupIdeals: {
     [groupName: string]: string;
   };
 }
 
+//그룹별 인재상
 declare interface GroupIdeals {
   [groupName: string]: {
     ideals: GroupIdeal[];
@@ -116,12 +119,53 @@ declare interface GroupIdeals {
   };
 }
 
+//임원진 일정 Form
 declare interface AdminsScheduleFormData {
   scheduleData: TimeSlotAdmins;
 }
 
+//임원진 일정
 declare interface TimeSlotAdmins {
   [timeSlot: string]: string[];
+}
+
+//2-5 질문 드롭다운 타입
+declare type QuestionType = "서술형 질문" | "객관형 질문";
+
+//2-5 질문들(서술형, 객관형) 정보 정의
+declare interface Question {
+  id: string;
+  type: QuestionType;
+  question: string;
+  hasWordLimit?: boolean; //서술형 질문의 글자 수 제한 여부
+  wordLimit?: number; //서술형 질문의 글자 수 제한
+  options?: string[]; // 객관식 선택지
+}
+
+// 그룹별 질문 구조
+declare interface GroupQuestion {
+  caution: string;
+  questions: {
+    [questionId: string]: Question;
+  };
+}
+
+//2-5 지원서 폼 제작 Form
+declare interface CreateApplicationForm {
+  title: string;
+  commonQuestionCaution: string;
+  commonQuestions: {
+    [questionId: string]: Question;
+  };
+
+  // 그룹별 질문 섹션
+  groupQuestionCaution: string;
+  groupQuestions: {
+    [groupName: string]: GroupQuestion;
+  };
+
+  // 포트폴리오 섹션
+  hasPortfolio: boolean;
 }
 
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
