@@ -7,6 +7,7 @@ interface Day {
   dayOfWeek: string;
 }
 
+//날짜 새성 함수
 const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
   const days: Day[] = [];
   const currentDate = new Date(startDate);
@@ -24,6 +25,27 @@ const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
   return days;
 };
 
+// 시간대 생성 함수
+const generateTimeSlots = (start: Date, end: Date): string[] => {
+  const times: string[] = [];
+  const current = new Date(start);
+
+  while (current <= end) {
+    const hours = current.getHours();
+    const minutes = current.getMinutes();
+    const timeString = `${hours % 12 || 12}:${minutes === 0 ? "00" : "30"} ${
+      hours < 12 ? "AM" : "PM"
+    }`;
+
+    times.push(timeString);
+
+    // 30분 증가
+    current.setMinutes(current.getMinutes() + 30);
+  }
+
+  return times;
+};
+
 export default function InterviewAvailableTime() {
   const {
     isTimeSet,
@@ -34,25 +56,7 @@ export default function InterviewAvailableTime() {
   } = useInterviewStore();
   const days = generateDaysArray(interviewStartDate, interviewEndDate);
   // 하드코딩된 시간 배열
-  const times = [
-    "9:00 AM",
-    "9:30 AM",
-    "10:00 AM",
-    "10:30 AM",
-    "11:00 AM",
-    "11:30 AM",
-    "12:00 PM",
-    "12:30 PM",
-    "1:00 PM",
-    "1:30 PM",
-    "2:00 PM",
-    "2:30 PM",
-    "3:00 PM",
-    "3:30 PM",
-    "4:00 PM",
-    "4:30 PM",
-    "5:00 PM"
-  ];
+  const times = generateTimeSlots(interviewStartTime, interviewEndTime);
 
   const [selectedSlots, setSelectedSlots] = useState<{
     [key: string]: boolean;
