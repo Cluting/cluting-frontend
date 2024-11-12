@@ -8,7 +8,9 @@ import { useGroupStore } from "../../../../store/useStore";
 
 export default function GroupQuestion() {
   const { group } = useGroupStore();
-  const [selectedGroup, setSelectedGroup] = useState<string>(group[0] || ""); // 첫 번째 그룹을 기본값으로
+  const [selectedGroup, setSelectedGroup] = useState<string>(
+    group[0].name || ""
+  ); // 첫 번째 그룹을 기본값으로
 
   const handleGroupClick = (groupName: string) => {
     setSelectedGroup(groupName);
@@ -28,7 +30,7 @@ export default function GroupQuestion() {
     mode: "onBlur",
     defaultValues: {
       groupQuestions: {
-        [group[0]]: {
+        [group[0]?.name]: {
           // 첫 번째 그룹에 대한 초기값
           questions: {},
           caution: ""
@@ -120,12 +122,12 @@ export default function GroupQuestion() {
         <div className="flex items-left mt-[11px] gap-[11px]">
           {group.map((groupName) => (
             <button
-              key={groupName}
+              key={groupName.name}
               type="button"
-              className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout ${selectedGroup === groupName ? "bg-main-100 text-white-100 border-main-100" : "bg-white-100 text-[#43454F] border-gray-300 focus:bg-main-100 hover:text-white-100"}`}
-              onClick={() => handleGroupClick(groupName)}
+              className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout ${selectedGroup === groupName.name ? "bg-main-100 text-white-100 border-main-100" : "bg-white-100 text-[#43454F] border-gray-300 focus:bg-main-100 hover:text-white-100"}`}
+              onClick={() => handleGroupClick(groupName.name)}
             >
-              {groupName}
+              {groupName.name}
             </button>
           ))}
         </div>

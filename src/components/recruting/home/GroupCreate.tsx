@@ -64,9 +64,9 @@ export default function GroupCreate() {
               key={index}
               className="h-[50px] relative flex-center w-[158px] rounded-[8px]  py-[11px]  text-center border border-gray-400 "
             >
-              {group}
+              {group.name}
               <img
-                onClick={() => removeGroup(group)}
+                onClick={() => removeGroup(group.name)}
                 src="/assets/ic-minusCircle.svg"
                 alt="그룹 삭제"
                 className="absolute w-[16px] h-[16px] right-4"

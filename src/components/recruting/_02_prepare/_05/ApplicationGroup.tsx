@@ -17,11 +17,11 @@ export default function ApplicantGroup() {
         <div className="flex items-left gap-[11px]">
           {group.map((groupName) => (
             <button
-              key={groupName}
+              key={groupName.name}
               type="button"
               className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100"
             >
-              {groupName}
+              {groupName.name}
             </button>
           ))}
         </div>

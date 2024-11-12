@@ -12,8 +12,20 @@ declare interface RecruitmentStore {
 }
 
 declare interface GroupStore {
-  group: string[];
-  setGroup: (group: string[]) => void;
+  group: {
+    index: number;
+    name: string;
+    documentPass?: number;
+    finalPass?: number;
+  }[];
+  setGroup: (
+    group: {
+      index: number;
+      name: string;
+      documentPass: number;
+      finalPass: number;
+    }[]
+  ) => void;
   addGroup: (newGroup: string) => void;
   removeGroup: (groupToRemove: string) => void;
 }

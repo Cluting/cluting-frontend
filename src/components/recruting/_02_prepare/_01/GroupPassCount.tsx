@@ -1,5 +1,6 @@
 import { Control, RegisterOptions } from "react-hook-form";
 import GroupPassCard from "./GroupPassCard";
+import { useGroupStore } from "../../../../store/useStore";
 
 interface GroupPassCountProps {
   control: Control<any>;
@@ -12,7 +13,7 @@ export default function GroupPassCount({
   errors,
   rules
 }: GroupPassCountProps) {
-  const groups = [{ name: "기획" }, { name: "개발" }, { name: "디자인" }];
+  const { group } = useGroupStore();
 
   return (
     <div>
@@ -27,7 +28,7 @@ export default function GroupPassCount({
         <div className="pt-[16px]">
           <div className="h-[405px] rounded-[12px] bg-white-100 ">
             <div className="flex pl-[33.38px] pt-[31px] gap-[27px]">
-              {groups.map((group, index) => (
+              {group.map((group, index) => (
                 <GroupPassCard
                   key={group.name}
                   control={control}
