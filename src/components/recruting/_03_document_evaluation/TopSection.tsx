@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { STEP2_ITEMS } from "../../../constants/recruting";
+import { STEP3_ITEMS } from "../../../constants/recruting";
 import {
   useRecruitmentStepStore,
   useTopSectionStore
@@ -10,7 +10,6 @@ export default function TopSection() {
   const { currentStep, setCurrentStep } = useTopSectionStore();
   const { currentRecruitmentStep, setCurrentRecruitmentStep } =
     useRecruitmentStepStore(); //전체 스텝
-  //TODO: 이 섹션에서 전체 스텝 2로 설정하기
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAdmin, setShowAdmin] = useState(false); //권한자 보기 드롭다운
 
@@ -37,7 +36,7 @@ export default function TopSection() {
             {currentRecruitmentStep || "리크루팅 준비하기"}
           </h1>
           <p className="text-headline">
-            {`> (${currentStep + 1}) ${STEP2_ITEMS[currentStep]}`}
+            {`> (${currentStep + 1}) ${STEP3_ITEMS[currentStep]}`}
           </p>
         </div>
         <button
@@ -52,7 +51,7 @@ export default function TopSection() {
         {showAdmin && <AddAdmin isDropdown />}
       </div>
       <div className="w-full h-[110px] flex-center bg-white-100 ml-8 my-4 px-8 rounded-[12px]">
-        {STEP2_ITEMS.map((item, index) => (
+        {STEP3_ITEMS.map((item, index) => (
           <div key={index} className="flex items-center">
             <div
               className={`w-[174px] h-[64px] flex-center mx-[6px] px-[28px] rounded-[8px] text-subheadline ${

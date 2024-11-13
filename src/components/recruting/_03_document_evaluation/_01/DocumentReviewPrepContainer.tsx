@@ -11,7 +11,7 @@ type GroupWithAdmin = {
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
   const [dropdown, setDropdown] = useState(false);
-  const [currentGroupId, setCurrentGroupId] = useState<number>(1);
+  const [currentGroupId, setCurrentGroupId] = useState<number>(1); //드롭다운 시 현재 그룹 id
 
   // group+admin 배열
   const [groupsWithAdmins, setGroupsWithAdmins] = useState<GroupWithAdmin[]>(
@@ -84,49 +84,94 @@ export default function DocumentReviewPrepContainer() {
             각 그룹별 서류를 평가할 운영진을 분담해 주세요.
           </div>
         </div>
-
-        <div className="flex mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
-          {groupsWithAdmins.map((groupItem) => (
-            <div key={groupItem.id} className="mr-4">
-              <div className="flex-center w-[286px] h-[46px] mr-[17px] bg-gray-100 border border-gray-300 rounded-[7px] text-callout text-main-100">
-                {groupItem.groupName}
+        {groupsWithAdmins?.length ? (
+          <div>
+            <div className="flex mt-[34px]">
+              <p className="section-title">서류 평가 역할 설정</p>
+              <div className="tooltip">
+                각 그룹별 서류를 평가할 운영진을 분담해 주세요.
               </div>
-              <div className="mt-4">
-                {groupItem.admins.map((admin) => (
-                  <div
-                    key={admin}
-                    className="relative flex-center w-[286px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
-                  >
-                    <span className="text-gray-800">{admin}</span>
-                    <img
-                      src="/assets/ic-minusCircle.svg"
-                      alt="운영진 삭제 버튼"
-                      onClick={() => removeAdmin(groupItem.id, admin)}
-                      className="absolute right-[19px] cursor-pointer"
-                    />
+            </div>
+            <div className="flex mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
+              {groupsWithAdmins.map((groupItem) => (
+                <div key={groupItem.id} className="mr-4">
+                  <div className="flex-center w-[286px] h-[46px] mr-[17px] bg-gray-100 border border-gray-300 rounded-[7px] text-callout text-main-100">
+                    {groupItem.groupName}
                   </div>
-                ))}
+                  <div className="mt-4">
+                    {groupItem.admins.map((admin) => (
+                      <div
+                        key={admin}
+                        className="relative flex-center w-[286px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
+                      >
+                        <span className="text-gray-800">{admin}</span>
+                        <img
+                          src="/assets/ic-minusCircle.svg"
+                          alt="운영진 삭제 버튼"
+                          onClick={() => removeAdmin(groupItem.id, admin)}
+                          className="absolute right-[19px] cursor-pointer"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="relative flex-center w-[286px] h-[46px] mt-[15px] mr-[17px] bg-gray-100 border border-gray-300 rounded-[7px] text-subheadline text-gray-500"
+                    onClick={() => {
+                      setCurrentGroupId(groupItem.id);
+                      setDropdown(!dropdown);
+                    }}
+                  >
+                    <img src="/assets/ic-plus.svg" className="mr-2" />
+                    <p>운영진 추가</p>
+                    {dropdown && currentGroupId === groupItem.id && (
+                      <AddAdminDropdown
+                        onSelect={handleAdminSelect}
+                        currentAdmins={groupItem.admins}
+                      />
+                    )}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className="flex justify-between mt-[34px]">
+              <div className="flex items-center">
+                <p className="section-title">서류 평가 역할 설정</p>
+                <div className="tooltip">
+                  각 그룹별 서류를 평가할 운영진을 분담해 주세요.
+                </div>
               </div>
               <button
                 type="button"
-                className="relative flex-center w-[286px] h-[46px] mt-[15px] mr-[17px] bg-gray-100 border border-gray-300 rounded-[7px] text-subheadline text-gray-500"
-                onClick={() => {
-                  setCurrentGroupId(groupItem.id);
-                  setDropdown(!dropdown);
-                }}
+                className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
               >
-                <img src="/assets/ic-plus.svg" className="mr-2" />
-                <p>운영진 추가</p>
-                {dropdown && currentGroupId === groupItem.id && (
-                  <AddAdminDropdown
-                    onSelect={handleAdminSelect}
-                    currentAdmins={groupItem.admins}
+                <div className="relative mr-[4.81px]">
+                  <img
+                    alt="질문 추가 버튼"
+                    src="/assets/ic-mainColorPlus.svg"
+                    className="w-[13px] h-[13px] group-hover:opacity-0 "
                   />
-                )}
+                  <img
+                    alt="질문 추가 버튼"
+                    src="/assets/ic-whiteColorPlus.svg"
+                    className="w-[13px] h-[13px] absolute top-0 left-0 opacity-0 group-hover:opacity-100 "
+                  />
+                </div>
+                <span className="text-semibold">그룹 추가하기</span>
               </button>
             </div>
-          ))}
-        </div>
+            <div className="flex mt-[10px] w-full min-h-[318px] py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] text-body text-gray-400">
+              <p className="flex-center w-full">
+                그룹을 추가해 주세요. <br></br>
+                그룹을 추가하지 않으면, 운영진 모두가 모든 지원자를 평가하게
+                됩니다.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/*서류 합격자 인원수 */}
         <div className="flex mt-[34px]">
@@ -161,8 +206,26 @@ export default function DocumentReviewPrepContainer() {
             반영됩니다.
           </div>
         </div>
-
-        <div className="flex flex-col mt-[10px] w-full h-auto py-[30px] px-[36px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
+        <div className="flex mt-[18px]">
+          {groupsWithAdmins?.length ? (
+            groupsWithAdmins.map((groupItem) => (
+              <button
+                type="button"
+                className="flex-center w-[162px] h-[43px] rounded-t-[11px] bg-gray-100 border border-main-400 border-b-0 text-callout text-main-100 focus:bg-main-100 focus:text-white-100"
+              >
+                {groupItem.groupName}
+              </button>
+            ))
+          ) : (
+            <button
+              type="button"
+              className="flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout text-white-100 bg-main-100"
+            >
+              전체
+            </button>
+          )}
+        </div>
+        <div className="flex flex-col w-full h-auto py-[30px] px-[36px] bg-white-100 border border-[#D6D7DA] rounded-tr-[21px] rounded-bl-[21px] rounded-br-[21px]">
           <div className="flex items-center justify-between w-full ">
             <p className="text-gray-800 text-[16px] font-bold underline underline-offset-2">
               <a href="">지원서 폼 다시 보기</a>
