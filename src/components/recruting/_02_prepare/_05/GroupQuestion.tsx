@@ -320,7 +320,7 @@ export default function GroupQuestion() {
               className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 "
             />
           </div>
-          질문 추가하기
+          <span className="text-callout">질문 추가하기</span>
         </button>
       </div>
     </form>
