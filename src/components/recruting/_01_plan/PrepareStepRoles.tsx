@@ -119,14 +119,14 @@ export default function PrepareStepRoles() {
           <div className="flex">
             {/* 왼쪽 열 */}
             <div className="bg-main-300 border-r border-gray-400 rounded-l-[10px] flex flex-col">
-              <div className="flex-center w-[63.89px] h-[103.8px] border-b border-gray-400 text-[#3B3D46] text-caption1">
+              <div className="flex-center w-[63.89px] h-[103.8px] border-b border-gray-400 text-gray-1100 text-caption1">
                 <p>
                   준비
                   <br />
                   단계
                 </p>
               </div>
-              <div className="flex-1 min-h-[329px] flex-center text-[#3B3D46] text-caption1">
+              <div className="flex-1 min-h-[329px] flex-center text-gray-1100 text-caption1">
                 권한자
               </div>
             </div>

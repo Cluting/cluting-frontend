@@ -128,7 +128,7 @@ export default function AdminsSchedule() {
                     {/*시간*/}
                     <div
                       className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
-                          ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2`}
+                          ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2`}
                     >
                       {timeSlot}
                     </div>
@@ -143,7 +143,7 @@ export default function AdminsSchedule() {
                           !isAdminSelectedForTimeSlot(timeSlot, admin)
                         }
                         className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]
-                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-[#3B3D46]"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
+                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
                       >
                         {admin}
                       </button>

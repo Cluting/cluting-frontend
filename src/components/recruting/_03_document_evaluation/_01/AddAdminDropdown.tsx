@@ -11,14 +11,14 @@ export default function AddAdminDropdown({
 }: AddAdminDropdownProps) {
   return (
     <div className="absolute animate-dropdown top-[53.5px] w-[328px] bg-white-100 rounded-[12px]">
-      <ul className="flex-center flex-col h-full p-2 text-body text-[#3B3D46]">
+      <ul className="flex-center flex-col h-full p-2 text-body text-gray-1100">
         {ALL_ADMINS.map((admin: string) => (
           <li
             key={admin}
             onClick={() => onSelect(admin)}
             className="w-full h-[40px] rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center"
           >
-            <p className="text-center text-[#3B3D46] font-medium">
+            <p className="text-center text-gray-1100 font-medium">
               {admin}
               {currentAdmins.includes(admin) && (
                 <span className="ml-2 text-main-100">✓</span>

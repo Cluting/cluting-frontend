@@ -134,7 +134,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
         </div>
 
         <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
-          <p className="mb-[15px] text-title3 text-[#3B3D46] text-left text-title3">
+          <p className="mb-[15px] text-title3 text-gray-1100 text-left text-title3">
             공통 질문 관련 주의 사항
           </p>
           <input
@@ -146,7 +146,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
           <div className="flex-center my-[42px] border border-gray-200 "></div>
 
-          <p className="mb-[15px] text-title3 text-[#3B3D46] text-left">
+          <p className="mb-[15px] text-title3 text-gray-1100 text-left">
             공통 질문 추가하기
           </p>
           <div className="">
@@ -374,7 +374,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
           </div>
         </div>
         <div className="w-full mt-[12px] px-[30px] py-[20.5px] bg-white-100 rounded-[12px]">
-          <div className="flex flex-col gap-[12px] py-[28px] px-[26px] bg-[#FBFBFF] rounded-[12px] border border-gray-300 text-caption1 text-[#3B3D46]">
+          <div className="flex flex-col gap-[12px] py-[28px] px-[26px] bg-[#FBFBFF] rounded-[12px] border border-gray-300 text-caption1 text--gray-1100">
             {/*이렇게 한 묶음 */}
             <div className="flex">
               <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
