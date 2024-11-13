@@ -91,7 +91,7 @@ export default function GroupIdeal() {
                   key={ideal.id}
                   className="mt-[14px] py-[11px] pl-[21px] pr-[53px] bg-white-100 rounded-[8px] border border-gray-500 text-[15px] font-medium flex justify-between items-center"
                 >
-                  <span className="text-[#3B3D46]">{ideal.text}</span>
+                  <span className="text-gray-1100">{ideal.text}</span>
                   <button
                     type="button"
                     onClick={() => onRemove(group.name, ideal.id)}

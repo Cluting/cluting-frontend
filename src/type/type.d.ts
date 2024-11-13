@@ -181,3 +181,10 @@ declare interface CreateApplicationForm {
   // 포트폴리오 섹션
   hasPortfolio: boolean;
 }
+
+//3-1 group+admin 배열
+declare interface GroupWithAdmin {
+  id: number;
+  groupName: string;
+  admins: string[];
+}
