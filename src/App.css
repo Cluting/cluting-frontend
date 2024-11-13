@@ -61,7 +61,7 @@
   }
 
   .section-title {
-    @apply text-title3 pr-[21px] flex items-center;
+    @apply text-title3 pr-[21px] flex items-center text-[#3B3D46];
   }
   .tooltip {
     @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-gray-200 text-caption3 text-gray-900 flex-center;
