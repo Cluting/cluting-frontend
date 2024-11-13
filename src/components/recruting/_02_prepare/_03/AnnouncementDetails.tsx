@@ -1,11 +1,11 @@
 //2-3 공고 작성
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import useImageUpload from "../../../../hooks/useImageUpload";
 
 export default function AnnouncementDetails() {
-  const { previewUrl, errorMessage, handleImageChange } = useImageUpload();
+  const { previewUrl, handleImageChange } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -114,7 +114,6 @@ export default function AnnouncementDetails() {
       )}
 
       <label className="mt-6">
-        {" "}
         <span className="text-main-100">* </span> 서류 합격자 발표일
       </label>
       <input
@@ -129,7 +128,6 @@ export default function AnnouncementDetails() {
       )}
 
       <label className="mt-6">
-        {" "}
         <span className="text-main-100">* </span> 최종 합격자 발표일
       </label>
       <input

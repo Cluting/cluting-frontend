@@ -8,6 +8,7 @@ import {
   CALENDAR_ITEMS,
   CALENDAR_COLORS
 } from "../../../../constants/recruting";
+import { useInterviewStore } from "../../../../store/useStore";
 
 interface CalendarEvent {
   id: string;
@@ -19,6 +20,9 @@ interface CalendarEvent {
 }
 
 export default function RecrutingCalenderPicker() {
+  //면접 기간은 전역 상태로 저장
+  const { setInterviewStartDate, setInterviewEndDate } = useInterviewStore();
+
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [currrentTitle, setCurrentTitle] = useState("");
   const [selectedRange, setSelectedRange] = useState<{
@@ -62,6 +66,11 @@ export default function RecrutingCalenderPicker() {
       setCompletedTitles((prevTitles) => [...prevTitles, title]); // 완료된 제목에 추가
       console.log(events);
       setInstructionMessage("");
+      // title이 '면접 기간'인 경우에만 전역 상태에 시작, 종료 날짜 저장
+      if (title === "면접 기간") {
+        setInterviewStartDate(selectInfo.start);
+        setInterviewEndDate(selectInfo.end);
+      }
     } else if (isDuplicateTitle) {
       alert("같은 제목의 이벤트가 이미 있습니다.");
     }

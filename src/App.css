@@ -16,6 +16,21 @@
     transform: translateY(0);
   }
 }
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-down {
+  animation: slideDown 0.5s ease-out;
+}
 /* 자주 사용하는 스타일을 재사용하기 위해 컴포넌트화*/
 @layer components {
   .flex-center {
@@ -41,8 +56,14 @@
     @apply p-4 rounded-[8px] hover:bg-gray-200 flex items-center;
   }
 
+  /*input 공용 스타일 정의*/
+
   .input-background {
     @apply bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-main-100 focus:bg-gray-100 disabled:border-red-100 disabled:bg-gray-100;
+  }
+
+  .input-style {
+    @apply rounded-[8px] py-[11px] px-[20px] mt-2;
   }
 
   .text-state-error {
@@ -73,9 +94,7 @@
   .button-main-light {
     @apply bg-main-300 text-main-100 border border-main-400;
   }
-
-  /*2-3 공용 스타일 정의*/
-  .input-style {
-    @apply rounded-[8px] py-[11px] px-[20px] mt-2;
+  .section-background {
+    @apply flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left;
   }
 }

@@ -1,5 +1,8 @@
-import { useState } from "react";
+// 5 - 면접관 일정 확인하기
+
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useInterviewStore } from "../../../../store/useStore";
 
 export default function AdminsSchedule() {
   const {
@@ -16,15 +19,32 @@ export default function AdminsSchedule() {
   // 각 시간대별 선택된 면접관을 관리하는 상태
   const [timeSlotAdmins, setTimeSlotAdmins] = useState<TimeSlotAdmins>({});
 
-  //일단 시간대 임의로 써놨습니다..!
-  const timeSlots = [
-    "9:00AM",
-    "10:00AM",
-    "11:00AM",
-    "2:00PM",
-    "3:00PM",
-    "4:00PM"
-  ];
+  const { interviewStartTime, interviewEndTime } = useInterviewStore();
+
+  // 1시간 간격의 시간 배열 생성
+  const [timeSlots, setTimeSlots] = useState<string[]>([]);
+  const generateTimeSlots = () => {
+    const startTime = new Date(interviewStartTime);
+    const endTime = new Date(interviewEndTime);
+    const slots: string[] = [];
+
+    // 시작 시간부터 종료 시간까지 1시간 간격으로 timeSlots 배열 생성
+    while (startTime < endTime) {
+      const timeString = startTime.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true // 12시간제로 설정
+      });
+      slots.push(timeString);
+      startTime.setHours(startTime.getHours() + 1); // 1시간씩 증가
+    }
+
+    setTimeSlots(slots);
+  };
+
+  useEffect(() => {
+    generateTimeSlots();
+  }, [interviewStartTime, interviewEndTime]);
 
   //임원진도 임의로 써놨습니다!
   const admins = ["박시현", "윤다인", "곽서연", "최예은"];
@@ -82,15 +102,6 @@ export default function AdminsSchedule() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="ml-8 w-full mt-[34px]">
         <div>
-          <div className="flex">
-            <p className="section-title">
-              <span className="mr-[0.25em] text-main-100">*</span>면접관 일정
-              확정하기
-            </p>
-            <div className="tooltip">
-              면접에 들어갈 면접관 수에 맞게 클릭해 확정해 주세요.
-            </div>
-          </div>
           <div className="mt-[16px] h-auto pt-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
             <p className="text-main-100 text-caption3 text-left">
               면접에 들어갈 2명을 선택해 주세요. 2명이 가능한 시간을 이후에

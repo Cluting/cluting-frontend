@@ -1,4 +1,4 @@
-//Form Type
+//회원가입 From
 declare interface SignupFormValue {
   name: string;
   email?: string;
@@ -13,11 +13,13 @@ declare interface SignupFormValue {
   marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
 }
 
+//로그인 Form
 declare interface LoginFormValue {
   email: string;
   password: string;
 }
 
+//동아리 등록 Form
 declare interface RegisterClubFormValue {
   clubImage: FileList;
   clubName: string;
@@ -27,11 +29,13 @@ declare interface RegisterClubFormValue {
   clubDescription: string;
 }
 
+//리크루팅 시작하기 모달 Form
 declare interface RecrutingStartFormValue {
   sessionNumber: string;
   interviewType: string;
 }
 
+//공고 작성 Form
 declare interface AnnouncementForm {
   title: string;
   recruitmentStart: Date;
@@ -48,6 +52,7 @@ declare interface AnnouncementForm {
   content: string;
 }
 
+//이용 약관 Form Type
 declare interface Term {
   id: number;
   key: string;
@@ -56,6 +61,7 @@ declare interface Term {
   status: string;
 }
 
+// 합격 인원 설정 Form
 declare interface SetAcceptanceCountFormData {
   documentPassTotal: number;
   finalPassTotal: number;
@@ -70,26 +76,6 @@ declare interface AdminUser {
   id: string;
   name: string;
   email: string;
-}
-
-//zustand 단계 Type
-
-declare interface Store {
-  currentStep: number; // 현재 단계의 인덱스
-  setCurrentStep: (step: number) => void; // 단계 변경 함수
-}
-
-declare interface RecruitmentStore {
-  //전체 step
-  currentRecruitmentStep: number; // 현재 단계의 인덱스
-  setCurrentRecruitmentStep: (step: number) => void; // 단계 변경 함수
-}
-
-declare interface GroupStore {
-  group: string[];
-  setGroup: (group: string[]) => void;
-  addGroup: (newGroup: string) => void;
-  removeGroup: (groupToRemove: string) => void;
 }
 
 //단계 설정
@@ -187,4 +173,10 @@ declare interface GroupWithAdmin {
   id: number;
   groupName: string;
   admins: string[];
+}
+
+// 운영진 면접 일정 조정 Form - 면접관, 면접자
+interface InterviewNumValue {
+  interviewer: number;
+  interviewee: number;
 }
