@@ -2,16 +2,10 @@ import { useState } from "react";
 import { useGroupStore } from "../../../../store/useStore";
 import AddAdminDropdown from "./AddAdminDropdown";
 
-type GroupWithAdmin = {
-  id: number;
-  groupName: string;
-  admins: string[];
-};
-
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
   const [dropdown, setDropdown] = useState(false);
-  const [currentGroupId, setCurrentGroupId] = useState<number>(1); //드롭다운 시 현재 그룹 id
+  const [currentGroupId, setCurrentGroupId] = useState<number | null>(null);
 
   // group+admin 배열
   const [groupsWithAdmins, setGroupsWithAdmins] = useState<GroupWithAdmin[]>(
@@ -213,6 +207,7 @@ export default function DocumentReviewPrepContainer() {
           ) : (
             <button
               type="button"
+              key="all-groups"
               className="flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout text-white-100 bg-main-100"
             >
               전체
@@ -227,9 +222,11 @@ export default function DocumentReviewPrepContainer() {
             <label className="flex-center text-gray-800 text-[16px] font-bold">
               서류 만점 점수
               <input
-                type="text"
-                className="flex-center w-[89px] h-[38px] ml-2 px-[24px] py-[10px] rounded-[7px] bg-gray-100 text-callout text-gray-700 outline-none"
-                placeholder="100점"
+                type="number"
+                min="0"
+                max="100"
+                className="flex-center w-[89px] h-[38px] ml-2 px-[24px] py-[10px] rounded-[7px] bg-gray-100 text-callout text-gray-700 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none outline-none"
+                placeholder="100"
               />
             </label>
           </div>

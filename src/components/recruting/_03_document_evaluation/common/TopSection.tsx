@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { STEP3_ITEMS } from "../../../constants/recruting";
+import { STEP3_ITEMS } from "../../../../constants/recruting";
 import {
   useRecruitmentStepStore,
   useTopSectionStore
-} from "../../../store/useStore";
-import AddAdmin from "../home/AddAdmin";
+} from "../../../../store/useStore";
+import AddAdmin from "../../home/AddAdmin";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep } = useTopSectionStore();
@@ -45,7 +45,7 @@ export default function TopSection() {
           }}
           className="text-gray-700 hover:underline"
         >
-          권한자 보기{" "}
+          권한자 보기
         </button>
 
         {showAdmin && <AddAdmin isDropdown />}
