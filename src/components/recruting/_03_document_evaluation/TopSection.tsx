@@ -30,10 +30,10 @@ export default function TopSection() {
       <div className="relative flex justify-between items-center pl-8 mb-[9px] text-left">
         <div className="flex items-center">
           <div className="flex-center mr-3 w-[33px] h-[30px] bg-white-100 border border-gray-500 rounded-[8px]">
-            2
+            3
           </div>
           <h1 className="text-title1 mr-3">
-            {currentRecruitmentStep || "리크루팅 준비하기"}
+            {currentRecruitmentStep || "서류 평가하기"}
           </h1>
           <p className="text-headline">
             {`> (${currentStep + 1}) ${STEP3_ITEMS[currentStep]}`}
@@ -54,7 +54,7 @@ export default function TopSection() {
         {STEP3_ITEMS.map((item, index) => (
           <div key={index} className="flex items-center">
             <div
-              className={`w-[174px] h-[64px] flex-center mx-[6px] px-[28px] rounded-[8px] text-subheadline ${
+              className={`w-[469px] h-[62px] flex-center mx-[6px] px-[28px] rounded-[8px] text-subheadline ${
                 currentStep === index
                   ? "bg-main-100 text-white-100"
                   : "bg-main-300 text-gray-900"

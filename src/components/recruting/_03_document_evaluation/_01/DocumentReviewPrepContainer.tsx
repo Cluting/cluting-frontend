@@ -78,12 +78,6 @@ export default function DocumentReviewPrepContainer() {
           ))}
         </div>
 
-        <div className="flex mt-[34px]">
-          <p className="section-title">서류 평가 역할 설정</p>
-          <div className="tooltip">
-            각 그룹별 서류를 평가할 운영진을 분담해 주세요.
-          </div>
-        </div>
         {groupsWithAdmins?.length ? (
           <div>
             <div className="flex mt-[34px]">
@@ -183,14 +177,14 @@ export default function DocumentReviewPrepContainer() {
 
         <div className="flex gap-[15px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
           <div className="flex items-center gap-[15px]">
-            <p>전체</p>
+            <p className="text-body">전체</p>
             <div className="flex-center w-auto h-[38px] px-[25px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
               상위 30명
             </div>
           </div>
           {groupsWithAdmins.map((groupItem) => (
             <div key={groupItem.id} className="flex items-center gap-[15px]">
-              <p>{groupItem.groupName}</p>
+              <p className="text-body">{groupItem.groupName}</p>
               <div className="flex-center w-auto h-[38px] px-[25px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
                 상위 30명
               </div>
