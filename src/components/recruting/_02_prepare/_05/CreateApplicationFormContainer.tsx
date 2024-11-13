@@ -6,7 +6,6 @@ import ApplicantGroup from "./ApplicationGroup";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import GroupQuestion from "./GroupQuestion";
-import { watch } from "fs";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const [openDropdowns, setOpenDropdowns] = useState<{

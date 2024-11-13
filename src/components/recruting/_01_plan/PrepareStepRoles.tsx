@@ -104,13 +104,13 @@ export default function PrepareStepRoles() {
           </div>
         </div>
 
-        <button
+        {/* <button
           type="button"
           className="w-[118px] h-[38px] flex-center bg-main-300 border border-main-400 rounded-[7px] text-caption3 text-main-100 hover:bg-main-100 hover:text-white-100 hover:border-main-100"
           onClick={() => setNewStepName(" ")}
         >
           + 단계 추가
-        </button>
+        </button> */}
       </div>
       <div className="pl-[47px] pr-[48px]">
         <div
