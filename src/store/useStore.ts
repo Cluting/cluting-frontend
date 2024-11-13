@@ -12,6 +12,7 @@ export const useTopSectionStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계
   setCurrentStep: (step: number) => set({ currentStep: step }) // 단계 변경
 }));
+
 // 그룹 설정
 export const useGroupStore = create<GroupStore>()((set) => ({
   group: [], // 초기 그룹 상태

@@ -66,15 +66,17 @@ export default function TopSection() {
             >
               {item}
             </div>
-            <img
-              src={
-                hoveredIndex === index
-                  ? "/assets/ic-nextHover.svg"
-                  : "/assets/ic-next.svg"
-              }
-              alt="다음 클릭"
-              className="w-[6.5px] h-[13px] mx-2"
-            />
+            {index < STEP2_ITEMS.length - 1 && (
+              <img
+                src={
+                  hoveredIndex === index
+                    ? "/assets/ic-nextHover.svg"
+                    : "/assets/ic-next.svg"
+                }
+                alt="다음 클릭"
+                className="w-[6.5px] h-[13px] mx-2"
+              />
+            )}
           </div>
         ))}
       </div>

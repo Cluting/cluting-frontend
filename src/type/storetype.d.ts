@@ -1,8 +1,14 @@
 //zustand 단계 Type
 
 declare interface Store {
+  steps: any;
   currentStep: number; // 현재 단계의 인덱스
   setCurrentStep: (step: number) => void; // 단계 변경 함수
+}
+
+declare interface Step {
+  step: number;
+  completed: boolean;
 }
 
 declare interface RecruitmentStore {
