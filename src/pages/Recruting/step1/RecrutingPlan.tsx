@@ -1,7 +1,7 @@
 // 1- 리크루팅 :  계획하기 단계 (페이지)
 
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
-import GroupCreate from "../../../components/recruting/home/GroupCreate";
+import GroupCreate from "../../../components/recruting/_02_prepare/_01/GroupCreate";
 import PrepareStepRoles from "../../../components/recruting/_01_plan/PrepareStepRoles";
 import RecrutingCalenderPicker from "../../../components/recruting/_02_prepare/_01/RecruitingCalenderPicker";
 
