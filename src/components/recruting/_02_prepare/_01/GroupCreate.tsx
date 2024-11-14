@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGroupStore } from "../../../../store/useStore";
 
 // 1 - 계획하기 : 지원자 그룹 짓기
 export default function GroupCreate() {
   const [inputValue, setInputValue] = useState("");
+  const inputRef = useRef<HTMLInputElement | null>(null); // input 참조
   const [showInput, setShowInput] = useState(false); // input 표시 상태 - 그룹 추가 버튼을 클릭하면 input이 보이도록
   //useGroupStore 전역 상태 가져오기
   const addGroup = useGroupStore((state) => state.addGroup);
@@ -36,6 +37,23 @@ export default function GroupCreate() {
     setShowInput(true); //그룹 추가 클릭 후 input 표시
   };
 
+  // 외부 클릭 감지하여 input 숨기기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowInput(false); // input 외부 클릭 시 숨기기
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className=" w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]">
       <div className="flex items-center ml-8 my-4">
@@ -60,6 +78,7 @@ export default function GroupCreate() {
 
         {showInput && (
           <input
+            ref={inputRef}
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyPress}
