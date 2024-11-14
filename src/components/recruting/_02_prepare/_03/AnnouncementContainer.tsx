@@ -34,7 +34,6 @@ export default function AnnouncementContainer() {
           type="submit"
           onClick={() => {
             setStepCompleted(2, true);
-            //FIX: 각 인재상 폼 에러 여부 검사, 제출 여부 검사 후에 통과하면 완료처리가 되도록 수정
           }}
           aria-label={
             steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
