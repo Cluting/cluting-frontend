@@ -2,8 +2,6 @@ import "../../../style/calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
-import AddAdminModal from "./AddAdminModal";
-
 export default function RecruitingCalender() {
   return (
     <div className="mt-[30px] mx-10 bg-white-100 flex gap-[49px]">
