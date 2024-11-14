@@ -74,6 +74,7 @@ export default function SetAcceptanceCountContainer() {
 
   //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
+
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
       console.log("제출된 데이터:", data);
