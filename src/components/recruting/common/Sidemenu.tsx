@@ -115,7 +115,7 @@ export default function Sidemenu() {
         </Link>
 
         <button
-          className={`flex items-center hover:bg-gray-100 w-full rounded-[8px] ${
+          className={`flex items-center mt-1 hover:bg-gray-100 w-full rounded-[8px] ${
             sidemenuClose ? "pl-0" : "pl-3"
           }  h-[46px]`}
         >

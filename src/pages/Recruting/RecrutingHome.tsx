@@ -69,7 +69,7 @@ export default function RecrutingHome() {
           </div>
         </div>
 
-        <section className="w-[1100px] mb-10 bg-main-300 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px] border-main-400">
+        <section className="w-[1018px] mb-10 bg-main-300 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px] border-main-400">
           <p className="mt-7 text-headline text-gray-800 mb-[30px] text-left">
             아직 리크루팅을 시작하지 않았어요. 리크루팅을 시작해 주세요!
           </p>
