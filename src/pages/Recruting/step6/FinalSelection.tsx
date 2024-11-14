@@ -3,8 +3,9 @@
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 export default function FinalSelection() {
   return (
-    <div className="flex bg-gray-100 px-16 py-9">
+    <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
+      <div className="w-[1016px]"></div>
     </div>
   );
 }

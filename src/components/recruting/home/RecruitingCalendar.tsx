@@ -4,7 +4,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 export default function RecruitingCalender() {
   return (
-    <div className="mt-[30px] mx-10 bg-white-100 flex gap-[49px]">
+    <div className="mt-[30px]  bg-white-100 flex gap-[49px] pl-[33px]">
       <div className="flex flex-col">
         <p className="text-headline  text-left mb-[21px]">
           리크루팅 정보 바로가기
@@ -45,8 +45,8 @@ export default function RecruitingCalender() {
         </section>
       </div>
 
-      <div className="relative flex flex-col datepicker-container relative">
-        <p className="text-headline  text-left mb-[21px]">리크루팅 달력</p>
+      <div className="relative flex flex-col datepicker-container">
+        <p className="text-headline text-left mb-[21px]">리크루팅 달력</p>
         <FullCalendar
           locale="ko"
           plugins={[dayGridPlugin, interactionPlugin]}

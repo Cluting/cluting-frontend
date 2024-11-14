@@ -31,8 +31,8 @@ export default function RecrutingHome() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="flex flex-col">
-        <div className=" w-[1100px]  h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
+      <div className="w-[1050px] flex flex-col">
+        <div className="  h-auto bg-white-100 py-6 ml-8  rounded-[12px]">
           <RecruitmentStep />
           <div className="flex">
             <RecruitingCalender />
