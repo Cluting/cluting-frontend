@@ -85,7 +85,8 @@ module.exports = {
           300: "#E4E3FA", //main_light
           400: "#CAC8FF", //main_light2
           500: "#3E0CC4", //main-pressed
-          600: "#521FDF" //main_deep
+          600: "#521FDF", //main_deep
+          700: "#039B72" //main_sub_pressed
         }
       },
       animation: {

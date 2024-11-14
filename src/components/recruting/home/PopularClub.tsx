@@ -21,7 +21,7 @@ export default function PopularClub({
       />
       <div className="absolute inset-0 flex flex-col justify-end px-[23px] pb-[17.48px]">
         <div
-          className={`w-[40px] h-[20px] mb-[5.33px] bg-white-100 border border-gray-100 rounded-[26.13px] text-[10.26px] flex-center ${clubType === "연합" ? "text-main-500" : "text-main-600"}`}
+          className={`w-[40px] h-[20px] mb-[5.33px] bg-white-100 border border-gray-100 rounded-[26.13px] text-caption2 flex-center ${clubType === "연합" ? "text-main-600" : "text-main-700"}`}
         >
           {clubType}
         </div>
