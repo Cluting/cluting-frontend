@@ -134,55 +134,61 @@ export default function Sidemenu() {
         <p className={`my-[26px] text-left ${sidemenuClose && "hidden"}`}>
           리크루팅 단계
         </p>
-        {[...Array(6)].map((_, index) => (
-          <div key={index} onClick={() => handleDropdownClick(index)}>
-            <div
-              className={`relative dropdown-list flex items-center h-[46px] text-subheadline group-hover:text-gray-900 ${
-                sidemenuClose ? "justify-center" : ""
-              } group`}
-              onClick={() => navigateToPage(index)} // 페이지로 이동
-            >
-              <div className="flex-center w-[33px] h-[30px] bg-gray-100 border border-gray-500 group-hover:border-gray-900 group-hover:bg-main-100 group-hover:text-white-100 group-hover:border-0 rounded-[8px]">
-                {index + 1}
-              </div>
-              {!sidemenuClose && (
-                <p className="ml-3 group-hover:text-gray-1100">
-                  {
-                    [
-                      "계획하기",
-                      "모집 준비하기",
-                      "서류 평가하기",
-                      "서류 합격자 및 면접 안내",
-                      "면접 평가하기",
-                      "최종 합격자 및 활동 안내"
-                    ][index]
-                  }
-                </p>
-              )}
-              <img
-                src="/assets/ic-sidemenuDropdown.svg"
-                alt="메뉴 드롭다운"
-                className={`w-[10px] h-[10px] absolute right-3  ${
-                  openDropdownIndex === index ? "rotate-90" : ""
-                }  ${sidemenuClose && "hidden"}`}
-              />
-            </div>
-
-            {/* 드롭다운으로 열리는 경우 */}
-            {openDropdownIndex === index && (
-              <div className="ml-10 mt-2 text-sm text-gray-600">
-                {getDropdownContent(index).map((item, idx) => (
+        {[...Array(6)].map((_, index) => {
+          const isActive = location.pathname === PATH[index];
+          return (
+            <div key={index} onClick={() => handleDropdownClick(index)}>
+              <div
+                className={`relative dropdown-list flex items-center h-[46px] text-subheadline group-hover:text-gray-900 ${
+                  sidemenuClose ? "justify-center" : ""
+                } ${isActive ? "text-gray-900 bg-gray-100 " : ""} group`}
+                onClick={() => navigateToPage(index)}
+              >
+                <div
+                  className={`flex-center w-[33px] h-[30px] bg-gray-100 border ${isActive ? "border-0 bg-main-100 text-white-100" : "border-gray-500"} group-hover:border-gray-900 rounded-[8px]`}
+                >
+                  {index + 1}
+                </div>
+                {!sidemenuClose && (
                   <p
-                    key={idx}
-                    className="text-left h-[42px] dropdown-list hover:text-gray-900"
+                    className={`ml-3 group-hover:text-gray-1100  ${isActive ? "text-gray-1100" : ""}`}
                   >
-                    {item}
+                    {
+                      [
+                        "계획하기",
+                        "모집 준비하기",
+                        "서류 평가하기",
+                        "서류 합격자 및 면접 안내",
+                        "면접 평가하기",
+                        "최종 합격자 및 활동 안내"
+                      ][index]
+                    }
                   </p>
-                ))}
+                )}
+                <img
+                  src="/assets/ic-sidemenuDropdown.svg"
+                  alt="메뉴 드롭다운"
+                  className={`w-[10px] h-[10px] absolute right-3 ${
+                    openDropdownIndex === index ? "rotate-90" : ""
+                  } ${sidemenuClose && "hidden"}`}
+                />
               </div>
-            )}
-          </div>
-        ))}
+
+              {openDropdownIndex === index && (
+                <div className="ml-10 mt-2 text-sm text-gray-600">
+                  {getDropdownContent(index).map((item, idx) => (
+                    <p
+                      key={idx}
+                      className="text-left h-[42px] dropdown-list hover:text-gray-900"
+                    >
+                      {item}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </section>
 
       <section className="absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">

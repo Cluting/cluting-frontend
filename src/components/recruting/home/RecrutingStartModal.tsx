@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { ModalPortal } from "../../common/ModalPortal";
 import { ERROR_MESSAGES } from "../../../constants/recruting";
-import { useNavigate } from "react-router-dom";
 
 type RecrutingStartModalProps = {
   onClose: () => void;
@@ -18,10 +17,9 @@ export default function RecrutingStartModal({
     formState: { errors }
   } = useForm<RecrutingStartFormValue>({ mode: "onChange" });
 
-  const navigate = useNavigate(); // useNavigate 초기화
   const onSubmit = handleSubmit((data) => {
     console.log(data);
-    navigate("/recruting/01_plan"); // 경로로 이동
+    //TODO: 하단 유도바만 사라지도록
     onClose(); // 폼 제출 후 모달 닫기
   });
 
