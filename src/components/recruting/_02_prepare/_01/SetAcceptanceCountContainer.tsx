@@ -93,7 +93,8 @@ export default function SetAcceptanceCountContainer() {
         {/*서류 합격 인원 */}
         <div className="flex">
           <p className="section-title">
-            <span className="mr-[0.25em] text-main-100">*</span> 서류 합격 인원
+            <span className="mr-[0.25em] text-main-100">*</span>전체 서류 합격
+            인원
           </p>
           <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
         </div>

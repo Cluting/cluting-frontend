@@ -92,6 +92,20 @@ declare interface SetAcceptanceCountFormData {
   }[];
 }
 
+declare interface GroupPassCardProps {
+  control: Control<any>;
+  groupIndex: number;
+  groupName: string;
+  errors?: any;
+  rules?: RegisterOptions;
+}
+
+declare interface GroupPassCountProps {
+  control: Control<any>;
+  errors?: any;
+  rules?: RegisterOptions;
+}
+
 // 운영자 Type
 declare interface AdminUser {
   id: string;

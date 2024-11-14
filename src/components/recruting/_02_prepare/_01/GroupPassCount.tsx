@@ -2,12 +2,6 @@ import { Control, RegisterOptions } from "react-hook-form";
 import GroupPassCard from "./GroupPassCard";
 import { useGroupStore } from "../../../../store/useStore";
 
-interface GroupPassCountProps {
-  control: Control<any>;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
 export default function GroupPassCount({
   control,
   errors,

@@ -1,14 +1,6 @@
 import { Control, RegisterOptions } from "react-hook-form";
 import NumberSpinner from "./NumberSpinner";
 
-interface GroupPassCardProps {
-  control: Control<any>;
-  groupIndex: number;
-  groupName: string;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
 export default function GroupPassCard({
   control,
   groupIndex,
