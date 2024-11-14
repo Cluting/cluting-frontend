@@ -6,8 +6,38 @@ import ApplicantGroup from "./ApplicationGroup";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import GroupQuestion from "./GroupQuestion";
+import {
+  useRecruitmentStepStore,
+  useStepTwoStore
+} from "../../../../store/useStore";
+import { BUTTON_TEXT } from "../../../../constants/recruting";
+import StepCompleteModal from "../../common/StepCompleteModal";
 
 export default function CreateApplicationFormContainer(): ReactElement {
+  //현재 스텝 완료 여부 (전역 상태)
+  const { setStepCompleted, steps } = useStepTwoStore();
+  const { completedSteps, completeStep } = useRecruitmentStepStore();
+
+  // 1단계 완료 여부 처리
+  const isStepOneCompleted = completedSteps[0] || false;
+  const handleStepTwoSubmit = () => {
+    if (!isStepOneCompleted) {
+      setStepCompleteModalOpen(true); //완료 모달 열기
+    }
+  };
+
+  //완료 확인 모달
+  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
+  const handleCloseStepCompleteModal = () => {
+    setStepCompleteModalOpen(false);
+  };
+
+  const handleConfirmStepComplete = () => {
+    completeStep(1); //전체 2단계 완료 처리
+    setStepCompleted(4, true);
+    setStepCompleteModalOpen(false); // 모달 닫기
+  };
+
   const [openDropdowns, setOpenDropdowns] = useState<{
     [key: string]: boolean;
   }>({});
@@ -94,7 +124,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   };
 
   return (
-    <form className="w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
+    <form className="mb-[147px] w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
       {/*지원서 제목*/}
       <div className="ml-8 w-full mt-[26px]">
         <p className="section-title">
@@ -413,6 +443,53 @@ export default function CreateApplicationFormContainer(): ReactElement {
         </div>
       </div>
       <button type="submit">임시 제출 버튼</button>
+
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          onClick={handleStepTwoSubmit}
+          aria-label={
+            steps[4].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+          }
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            steps[4].completed
+              ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
+              : "bg-main-100 text-white-100 " //완료하기
+          }  text-body flex-center hover:bg-main-500`}
+        >
+          {steps[4].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+        </button>
+      </div>
+      {isStepCompleteModalOpen && (
+        <StepCompleteModal
+          onClose={handleCloseStepCompleteModal}
+          onConfirm={handleConfirmStepComplete}
+          stepIndex={1} // 현재 단계 번호 전달 , index는 -1
+        />
+      )}
+
+      {!steps[4].completed && (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+            우리 동아리에 지원하는 지원자의 입장으로 보고싶으신가요?
+            <button className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+              미리보기
+            </button>
+          </div>
+        </div>
+      )}
+      {steps[4].completed && (
+        //TODO: 여기 수정합시댜
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+            모든 준비 단계가 완료되었습니다. 최종적으로 모집 공고를 업로드해
+            주세요.
+            <button className="absolute right-[15px] bg-main-100 hover:bg-main-500 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+              공고 올리기
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

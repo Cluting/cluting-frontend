@@ -64,7 +64,7 @@ export default function DocumentReviewPrepContainer() {
           </div>
           {groupsWithAdmins.map((groupItem) => (
             <div key={groupItem.id} className="flex items-center gap-[15px]">
-              <p>{groupItem.groupName}</p>
+              <p>{groupItem.groupName.name}</p>
               <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
                 175명
               </div>
@@ -84,7 +84,7 @@ export default function DocumentReviewPrepContainer() {
               {groupsWithAdmins.map((groupItem) => (
                 <div key={groupItem.id} className="mr-4">
                   <div className="flex-center w-[286px] h-[46px] mr-[17px] bg-gray-100 border border-gray-300 rounded-[7px] text-callout text-main-100">
-                    {groupItem.groupName}
+                    {groupItem.groupName.name}
                   </div>
                   <div className="mt-4">
                     {groupItem.admins.map((admin) => (
@@ -178,7 +178,7 @@ export default function DocumentReviewPrepContainer() {
           </div>
           {groupsWithAdmins.map((groupItem) => (
             <div key={groupItem.id} className="flex items-center gap-[15px]">
-              <p className="text-body">{groupItem.groupName}</p>
+              <p className="text-body">{groupItem.groupName.name}</p>
               <div className="flex-center w-auto h-[38px] px-[25px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
                 상위 30명
               </div>
@@ -201,7 +201,7 @@ export default function DocumentReviewPrepContainer() {
                 type="button"
                 className="flex-center w-[162px] h-[43px] rounded-t-[11px] bg-gray-100 border border-main-400 border-b-0 text-callout text-main-100 focus:bg-main-100 focus:text-white-100"
               >
-                {groupItem.groupName}
+                {groupItem.groupName.name}
               </button>
             ))
           ) : (

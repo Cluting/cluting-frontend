@@ -51,7 +51,7 @@ export default function CommonIdeal() {
         <div className="tooltip">각 그룹별 인재상을 작성해 주세요.</div>
       </div>
 
-      <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px] custom-shadow">
+      <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px] ">
         {/* 인재상 목록 */}
         <div className="px-[30px]">
           {commonIdeals.map((ideal) => (

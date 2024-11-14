@@ -30,10 +30,9 @@ export default function RecrutingHome() {
 
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
-      {" "}
       <Sidemenu />
-      <div className="flex flex-col">
-        <div className="custom-shadow w-[1100px]  h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]">
+      <div className="w-[1050px] flex flex-col">
+        <div className="  h-auto bg-white-100 py-6 ml-8  rounded-[12px]">
           <RecruitmentStep />
           <div className="flex">
             <RecruitingCalender />
@@ -70,7 +69,7 @@ export default function RecrutingHome() {
           </div>
         </div>
 
-        <section className="w-[1100px] mb-10 bg-main-300 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px] border-main-400">
+        <section className="w-[1018px] mb-10 bg-main-300 text-headline flex items-center justify-between mx-8 mt-[14px] py-[15px] px-[30px] rounded-[12px] border-main-400">
           <p className="mt-7 text-headline text-gray-800 mb-[30px] text-left">
             아직 리크루팅을 시작하지 않았어요. 리크루팅을 시작해 주세요!
           </p>

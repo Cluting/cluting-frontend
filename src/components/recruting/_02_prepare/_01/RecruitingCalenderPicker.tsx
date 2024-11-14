@@ -8,6 +8,8 @@ import {
   CALENDAR_ITEMS,
   CALENDAR_COLORS
 } from "../../../../constants/recruting";
+import { useInterviewStore } from "../../../../store/useStore";
+import { addDays } from "date-fns";
 
 interface CalendarEvent {
   id: string;
@@ -19,6 +21,9 @@ interface CalendarEvent {
 }
 
 export default function RecrutingCalenderPicker() {
+  //면접 기간은 전역 상태로 저장
+  const { setInterviewStartDate, setInterviewEndDate } = useInterviewStore();
+
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [currrentTitle, setCurrentTitle] = useState("");
   const [selectedRange, setSelectedRange] = useState<{
@@ -54,7 +59,9 @@ export default function RecrutingCalenderPicker() {
         id: String(events.length + 1),
         title,
         start: selectInfo.startStr,
-        end: selectInfo.endStr,
+        end: addDays(new Date(selectInfo.endStr), 0)
+          .toISOString()
+          .split("T")[0], // 종료 날짜에 하루 더하기
         allDay: selectInfo.allDay,
         backgroundColor: backgroundColor
       };
@@ -62,14 +69,19 @@ export default function RecrutingCalenderPicker() {
       setCompletedTitles((prevTitles) => [...prevTitles, title]); // 완료된 제목에 추가
       console.log(events);
       setInstructionMessage("");
-    } else if (isDuplicateTitle) {
-      alert("같은 제목의 이벤트가 이미 있습니다.");
-    }
+      // title이 '면접 기간'인 경우에만 전역 상태에 시작, 종료 날짜 저장
+      if (title === "면접 기간") {
+        setInterviewStartDate(selectInfo.start);
+        setInterviewEndDate(addDays(selectInfo.end, 0)); // 종료 날짜를 하루 추가하여 전역 상태에 저장
+      } else if (isDuplicateTitle) {
+        alert("같은 제목의 이벤트가 이미 있습니다.");
+      }
 
-    // 날짜 선택 시작 시 안내 메시지 표시
-    setInstructionMessage(
-      "캘린더 위로 해당 일정의 시작 날짜부터 마지막 날짜까지 드래그 해주세요."
-    );
+      // 날짜 선택 시작 시 안내 메시지 표시
+      setInstructionMessage(
+        "캘린더 위로 해당 일정의 시작 날짜부터 마지막 날짜까지 드래그 해주세요."
+      );
+    }
   };
 
   const handleEventClick = (clickInfo: EventClickArg) => {
@@ -253,35 +265,37 @@ export default function RecrutingCalenderPicker() {
               {instructionMessage}
             </div>
           )}
-          <FullCalendar
-            locale="ko"
-            plugins={[dayGridPlugin, interactionPlugin]}
-            initialView="dayGridMonth"
-            editable={true}
-            selectable={true}
-            selectMirror={true}
-            nowIndicator={true}
-            events={events} // 생성된 이벤트를 FullCalendar에 전달
-            eventClick={handleEventClick}
-            select={handleDateSelect} // 날짜 범위를 선택할 때의 이벤트
-            headerToolbar={{
-              left: "prev",
-              center: "title",
-              right: "next"
-            }}
-            timeZone="UTC"
-            // 날짜 범위 선택 시 선택된 범위를 업데이트
-            datesSet={(dateInfo) => {
-              if (dateInfo.view.type === "dayGridMonth") {
-                const start = dateInfo.view.currentStart;
-                const end = dateInfo.view.currentEnd;
-                setSelectedRange({
-                  start: start.toISOString().split("T")[0], // 'yyyy-mm-dd' 형식
-                  end: end.toISOString().split("T")[0] // 'yyyy-mm-dd' 형식
-                });
-              }
-            }}
-          />
+          <div className="hover:border hover:border-main-100 rounded-[12px]">
+            <FullCalendar
+              locale="ko"
+              plugins={[dayGridPlugin, interactionPlugin]}
+              initialView="dayGridMonth"
+              editable={true}
+              selectable={true}
+              selectMirror={true}
+              nowIndicator={true}
+              events={events} // 생성된 이벤트를 FullCalendar에 전달
+              eventClick={handleEventClick}
+              select={handleDateSelect} // 날짜 범위를 선택할 때의 이벤트
+              headerToolbar={{
+                left: "prev",
+                center: "title",
+                right: "next"
+              }}
+              timeZone="UTC"
+              // 날짜 범위 선택 시 선택된 범위를 업데이트
+              datesSet={(dateInfo) => {
+                if (dateInfo.view.type === "dayGridMonth") {
+                  const start = dateInfo.view.currentStart;
+                  const end = addDays(dateInfo.view.currentEnd, 0);
+                  setSelectedRange({
+                    start: start.toISOString().split("T")[0], // 'yyyy-mm-dd' 형식
+                    end: end.toISOString().split("T")[0] // 'yyyy-mm-dd' 형식
+                  });
+                }
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

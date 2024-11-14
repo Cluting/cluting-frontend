@@ -117,16 +117,17 @@ export const ALL_ADMINS = [
 ];
 
 export const DEFAULT_STEPS: Step[] = [
-  { id: 1, name: "합격 인원 설정하기", admins: [] },
-  { id: 2, name: "인재상 구축하기", admins: [] },
-  { id: 3, name: "공고 작성하기", admins: [] },
+  { id: 1, name: "합격 인원 설정하기", completed: false, admins: [] },
+  { id: 2, name: "인재상 구축하기", completed: false, admins: [] },
+  { id: 3, name: "공고 작성하기", completed: false, admins: [] },
   {
     id: 4,
     name: "운영진 면접 일정 조율하기",
     admins: ["모든 운영진"],
+    completed: false,
     isFixed: true
   },
-  { id: 5, name: "지원서 폼 제작", admins: [] }
+  { id: 5, name: "지원서 폼 제작", completed: false, admins: [] }
 ];
 
 export const CALENDAR_ITEMS = [

@@ -58,7 +58,8 @@ module.exports = {
           800: "#636366", //gray08
           850: "#5C6067", //gray8.5
           900: "#3A3A3C", //gray09
-          1100: "#3B3D46" //gray11
+          1100: "#3B3D46", //gray11
+          1300: "#24252C" //gray13
         },
         blue: {
           100: "#FFFFFF",
@@ -83,8 +84,8 @@ module.exports = {
           200: "#3A3A3C", //다크모드 색상
           300: "#E4E3FA", //main_light
           400: "#CAC8FF", //main_light2
-          500: "#521FDF", //main_deep
-          600: "#039B72" //main_sub_pressed
+          500: "#3E0CC4", //main-pressed
+          600: "#521FDF" //main_deep
         }
       },
       animation: {
