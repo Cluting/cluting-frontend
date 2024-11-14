@@ -403,15 +403,22 @@ export default function CreateApplicationFormContainer(): ReactElement {
                         {question.options.map((option, index) => (
                           <li
                             key={option.id}
-                            className="flex items-center justify-between pl-[13px] w-[584px] h-[36px] pl-[13px] py-[10px] mb-[13px] bg-white-100 border border-gray-200 rounded-[6px] outline-none focus:border-main-100"
+                            className="flex items-center mb-[13px]"
                           >
-                            <div className="flex">{option.value}</div>
+                            <img
+                              src="/assets/ic-emptyCheck.svg"
+                              alt="빈 체크박스"
+                              className="mr-[13px]"
+                            />
+                            <div className="flex items-center pl-[13px] w-[584px] h-[36px] pl-[13px] py-[10px] bg-white-100 border border-gray-200 rounded-[6px] text-caption1 outline-none">
+                              {option.value}
+                            </div>
                             <button
                               type="button"
                               onClick={() =>
                                 removeOption(question.id, option.id)
                               }
-                              className="w-[16px] h-[16px] mr-[13px]"
+                              className="flex-center ml-[-30px] w-[16px] h-[16px] mr-[13px]"
                             >
                               <img
                                 src="/assets/ic-questionMinus.svg"
@@ -424,10 +431,15 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
                       {/* 입력창 */}
                       <div className="flex items-center mt-[13px]">
+                        <img
+                          src="/assets/ic-emptyCheck.svg"
+                          alt="빈 체크박스"
+                          className="mr-[13px]"
+                        />
                         <input
                           type="text"
                           placeholder="선택지 추가"
-                          className="flex w-[584px] h-[36px] pl-[13px] py-[10px] border border-gray-200 rounded-[6px] outline-none focus:border-main-100"
+                          className="flex w-[584px] h-[36px] pl-[13px] py-[10px] border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
                           onKeyDown={(e) => {
                             if (
                               e.key === "Enter" &&
