@@ -1,14 +1,23 @@
 //zustand 단계 Type
 
+// declare interface Store {
+//   steps: any;
+//   currentStep: number; // 현재 단계의 인덱스
+//   setCurrentStep: (step: number) => void; // 단계 변경 함수
+// }
+
 declare interface Store {
-  steps: any;
-  currentStep: number; // 현재 단계의 인덱스
-  setCurrentStep: (step: number) => void; // 단계 변경 함수
+  currentStep: number;
+  steps: Step[]; // 각 단계의 상태를 추적하기 위한 배열
+  setCurrentStep: (step: number) => void;
+  setStepCompleted: (stepId: number, completed: boolean) => void; // 단계 완료 상태 변경
 }
 
 declare interface Step {
-  step: number;
-  completed: boolean;
+  id: number;
+  name: string;
+  completed?: boolean;
+  admins: string[];
 }
 
 declare interface RecruitmentStore {

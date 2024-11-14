@@ -2,18 +2,9 @@ import "../../../style/calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
-import { useState } from "react";
 import AddAdminModal from "./AddAdminModal";
 
 export default function RecruitingCalender() {
-  //운영진 추가 모달
-  const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
-  const handleAddAdminOpenModal = () => {
-    setIsAddAdminModalOpen(true);
-  };
-  const handleAddAdminCloseModal = () => {
-    setIsAddAdminModalOpen(false);
-  };
   return (
     <div className="mt-[30px] mx-10 bg-white-100 flex gap-[49px]">
       <div className="flex flex-col">
@@ -45,10 +36,7 @@ export default function RecruitingCalender() {
             />
             서류 합격자 리스트 바로가기
           </button>
-          <button
-            onClick={handleAddAdminOpenModal}
-            className="bg-gray-100 border border-gray-200 flex items-center  py-[14px] pl-4 mb-[17px] rounded-[8px] text-subheadline text-gray-900"
-          >
+          <button className="bg-gray-100 border border-gray-200 flex items-center  py-[14px] pl-4 mb-[17px] rounded-[8px] text-subheadline text-gray-900">
             <img
               src="/assets/ic-recruitingList-04.svg"
               alt=" 최종 합격 리스트 보기"
@@ -58,9 +46,6 @@ export default function RecruitingCalender() {
           </button>
         </section>
       </div>
-      {isAddAdminModalOpen && (
-        <AddAdminModal onClose={handleAddAdminCloseModal} />
-      )}
 
       <div className="relative flex flex-col datepicker-container relative">
         <p className="text-headline  text-left mb-[21px]">리크루팅 달력</p>

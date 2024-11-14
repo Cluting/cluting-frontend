@@ -3,7 +3,6 @@
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import GroupCreate from "../../../components/recruting/home/GroupCreate";
 import PrepareStepRoles from "../../../components/recruting/_01_plan/PrepareStepRoles";
-import RecruitingCalender from "../../../components/recruting/home/RecruitingCalendar";
 import RecrutingCalenderPicker from "../../../components/recruting/_02_prepare/_01/RecruitingCalenderPicker";
 
 export default function RecrutingPlan() {

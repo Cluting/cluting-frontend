@@ -169,12 +169,19 @@ declare interface CreateApplicationForm {
 }
 
 //3-1 group+admin 배열
-declare interface GroupWithAdmin {
-  id: number;
-  groupName: string;
-  admins: string[];
+interface GroupDetails {
+  index: number;
+  name: string;
+  documentPass: number;
+  finalPass: number;
+  ideals: string[];
 }
 
+declare interface GroupWithAdmin {
+  id: number;
+  groupName: GroupDetails; // groupName의 타입을 string에서 GroupDetails로 변경
+  admins: any[]; // 필요에 따라 적절한 타입으로 수정
+}
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
 interface InterviewNumValue {
   interviewer: number;

@@ -10,7 +10,14 @@ export const useRecruitmentStepStore = create<RecruitmentStore>()((set) => ({
 // 2- 리크루팅 모집 준비하기 단계 Top Section
 export const useTopSectionStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계
-  setCurrentStep: (step: number) => set({ currentStep: step }) // 단계 변경
+  steps: [], // 빈 배열로 초기화
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 단계 변경
+  setStepCompleted: (stepId: number, completed: boolean) =>
+    set((state) => ({
+      steps: state.steps.map((step) =>
+        step.id === stepId ? { ...step, completed } : step
+      )
+    })) // 단계 완료 상태 변경 함수
 }));
 
 // 그룹 설정
