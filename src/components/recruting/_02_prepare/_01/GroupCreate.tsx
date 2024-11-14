@@ -37,15 +37,15 @@ export default function GroupCreate() {
   };
 
   return (
-    <div className=" w-full h-auto bg-white-100 pt-6 pb-[60px] mx-8 mt-[34px] px-[13px] rounded-[12px]">
-      <div className="flex items-center mx-8 my-4">
+    <div className=" w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]">
+      <div className="flex items-center ml-8 my-4">
         <h1 className="text-callout">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">
           동아리가 파트로 구분된다면 ex) 기획/디자인/홍보팀 등으로 그룹화해
           주세요
         </div>
       </div>
-      <div className="flex items-start overflow-scroll oveflow-x-hidden flex-wrap w-[1000px] ">
+      <div className="w-full flex items-start overflow-scroll oveflow-x-hidden flex-wrap ">
         <button
           onClick={handleShowInput}
           className=" button-main-light flex-center ml-8 mr-4 py-[14px] px-[38px] text-callout rounded-[10px]"

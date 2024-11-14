@@ -21,9 +21,14 @@ declare interface Step {
 }
 
 declare interface RecruitmentStore {
-  //전체 step
+  // 전체 step
   currentRecruitmentStep: number; // 현재 단계의 인덱스
   setCurrentRecruitmentStep: (step: number) => void; // 단계 변경 함수
+
+  // 단계 완료 여부 배열 및 관련 메서드
+  completedSteps: boolean[]; // 각 단계의 완료 여부를 저장하는 배열
+  completeStep: (step: number) => void; // 특정 단계를 완료로 설정하는 함수
+  resetStepCompletion: (step: number) => void; // 특정 단계의 완료 여부를 취소하는 함수
 }
 
 declare interface GroupStore {
