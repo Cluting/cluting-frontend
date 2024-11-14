@@ -8,9 +8,10 @@ import { useGroupStore } from "../../../../store/useStore";
 
 export default function GroupQuestion() {
   const { group } = useGroupStore();
+
   const [selectedGroup, setSelectedGroup] = useState<string>(
-    group[0].name || ""
-  ); // 첫 번째 그룹을 기본값으로
+    group[0]?.name || ""
+  );
 
   const handleGroupClick = (groupName: string) => {
     setSelectedGroup(groupName);
@@ -107,6 +108,9 @@ export default function GroupQuestion() {
       );
     }
   };
+
+  //그룹 없을 시 렌더링 되지 않도록 처리
+  if (group.length === 0) return null;
 
   return (
     <form className="ml-8 w-full mt-[58px]" onSubmit={handleSubmit(onSubmit)}>

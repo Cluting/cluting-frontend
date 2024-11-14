@@ -28,6 +28,9 @@ export default function GroupIdeal() {
     mode: "onBlur"
   });
 
+  //그룹 없을 시 렌더링 되지 않도록 처리
+  if (groups.length === 0) return null;
+
   const onInsert = (groupName: string, e: React.FormEvent) => {
     e.preventDefault();
     const currentGroup = groupIdeals[groupName];

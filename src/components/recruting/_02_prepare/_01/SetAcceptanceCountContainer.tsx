@@ -164,7 +164,7 @@ export default function SetAcceptanceCountContainer() {
         </div>
       </div>
 
-      {/*그룹별 합격 인원 */}
+      {/* 그룹별 합격 인원 */}
       <GroupPassCount
         control={control}
         errors={errors}

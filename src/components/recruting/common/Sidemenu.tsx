@@ -168,7 +168,7 @@ export default function Sidemenu() {
               />
             </div>
 
-            {/* Dropdown content */}
+            {/* 드롭다운으로 열리는 경우 */}
             {openDropdownIndex === index && (
               <div className="ml-10 mt-2 text-sm text-gray-600">
                 {getDropdownContent(index).map((item, idx) => (

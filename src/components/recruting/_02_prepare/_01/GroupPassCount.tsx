@@ -15,6 +15,9 @@ export default function GroupPassCount({
 }: GroupPassCountProps) {
   const { group } = useGroupStore();
 
+  //그룹 없을 시 렌더링 되지 않도록 처리
+  if (group.length === 0) return null;
+
   return (
     <div>
       <div className="pt-[34px]">
