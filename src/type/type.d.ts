@@ -83,6 +83,16 @@ declare interface PopularClubProps {
   tags: string[];
 }
 
+//메인 페이지 club 리스트
+declare interface ClubCardProps {
+  dDay: number;
+  logoSrc: string;
+  logoAlt: string;
+  title: string;
+  clubName: string;
+  tags: string[];
+}
+
 //zustand 단계 Type
 
 declare interface Store {

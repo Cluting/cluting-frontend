@@ -63,7 +63,7 @@ export default function MainCategory() {
               onClick={() => setSelectedDetailCategory(index)}
               className={`px-[25px] py-[6.87px] rounded-[15.74px] border transition-colors ${
                 selectedDetailCategory === index
-                  ? "bg-gray-800 text-white-100 border-gray-800"
+                  ? "bg-main-100 text-white-100 border-main-100"
                   : "bg-white-100 text-gray-800 border-[#D9D9D9]"
               }`}
             >
