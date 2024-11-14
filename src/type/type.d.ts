@@ -72,6 +72,17 @@ declare interface AdminUser {
   email: string;
 }
 
+//메인 페이지 popularClub
+declare interface PopularClubProps {
+  logoSrc: string;
+  logoAlt: string;
+  mainImageSrc: string;
+  clubType: string;
+  clubTitleFirst: string;
+  clubTitleSecond: string;
+  tags: string[];
+}
+
 //zustand 단계 Type
 
 declare interface Store {
