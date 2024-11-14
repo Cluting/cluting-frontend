@@ -11,9 +11,7 @@ export default function AnnouncementContainer() {
           {" "}
           <span className="text-main-100 mr-[0.25em]">* </span>공고 세부 사항
         </h1>
-        <div className=" ml-3 tooltip">
-          우리 동아리의 인재상을 작성해 주세요.
-        </div>
+        <div className=" ml-3 tooltip">우리 동아리의 공고를 작성해 주세요.</div>
       </div>
       <AnnouncementDetails />
       <div className="flex items-center mx-8 my-4">
@@ -22,7 +20,7 @@ export default function AnnouncementContainer() {
           <span className="text-main-100 mr-[0.25em]">* </span>본문 작성
         </h1>
         <div className=" ml-3 tooltip ">
-          우리 동아리의 인재상을 작성해 주세요.
+          우리 동아리 공고의 본문을 작성해 주세요.
         </div>
       </div>
       <AnnouncementContent />
