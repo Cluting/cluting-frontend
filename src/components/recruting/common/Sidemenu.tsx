@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   PATH,
   STEP2_ITEMS,
@@ -11,6 +11,9 @@ import {
 } from "../../../constants/recruting";
 
 export default function Sidemenu() {
+  // 현재 경로 가져오기
+  const location = useLocation();
+
   const [sidemenuClose, setSidemenuClose] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
     null
@@ -74,18 +77,20 @@ export default function Sidemenu() {
     >
       <section
         className={`flex items-center w-full h-[86px] ${
-          sidemenuClose ? "justify-center" : "bg-gray-100 px-[18px]"
+          sidemenuClose
+            ? "justify-center"
+            : "bg-gray-100 boreder border-main-300 px-[18px]"
         } rounded-[14px] transition-all`}
       >
         <img
           src="/assets/ic-profile.svg"
           alt="동아리 프로필"
           onClick={() => setSidemenuClose(!sidemenuClose)}
-          className="w-[50px] h-[50px] border border-white-100 rounded-full"
+          className="w-[50px] h-[50px] "
         />
         {!sidemenuClose && (
           <div className="text-left ml-4">
-            <p className="text-body">동아리 이름</p>
+            <p className="text-body">잇타</p>
             <p className="text-gray-900 text-caption1 mt-[5px]">
               1기 (리크루팅 준비)
             </p>
@@ -95,17 +100,25 @@ export default function Sidemenu() {
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
         <Link to={"/recruting/home"}>
-          <button className="flex items-center h-[46px]">
+          <button
+            className={`flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] ${
+              sidemenuClose ? "pl-0" : "pl-3"
+            } ${location.pathname === "/recruting/home" ? "bg-gray-100 w-full rounded-[8px]" : ""}`}
+          >
             <img
               src="/assets/ic-sidemenu-home.svg"
               alt="리크루팅 홈"
-              className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"}`}
+              className={`w-6 h-6  ${sidemenuClose ? "ml-[20px]" : "mr-[10px]"} `}
             />
             {!sidemenuClose && "리크루팅 홈"}
           </button>
         </Link>
 
-        <button className="flex items-center h-[46px]">
+        <button
+          className={`flex items-center mt-1 hover:bg-gray-100 w-full rounded-[8px] ${
+            sidemenuClose ? "pl-0" : "pl-3"
+          }  h-[46px]`}
+        >
           <img
             src="/assets/ic-sidemenu-setting.svg"
             alt="리크루팅 홈"
@@ -124,16 +137,16 @@ export default function Sidemenu() {
         {[...Array(6)].map((_, index) => (
           <div key={index} onClick={() => handleDropdownClick(index)}>
             <div
-              className={`relative dropdown-list flex items-center h-[46px] text-subheadline hover:text-gray-900 ${
+              className={`relative dropdown-list flex items-center h-[46px] text-subheadline group-hover:text-gray-900 ${
                 sidemenuClose ? "justify-center" : ""
-              }`}
+              } group`}
               onClick={() => navigateToPage(index)} // 페이지로 이동
             >
-              <div className="flex-center w-[33px] h-[30px] bg-gray-100 border border-gray-500 hover:border-gray-900 rounded-[8px]">
+              <div className="flex-center w-[33px] h-[30px] bg-gray-100 border border-gray-500 group-hover:border-gray-900 group-hover:bg-main-100 group-hover:text-white-100 group-hover:border-0 rounded-[8px]">
                 {index + 1}
               </div>
               {!sidemenuClose && (
-                <p className="ml-3">
+                <p className="ml-3 group-hover:text-gray-1100">
                   {
                     [
                       "계획하기",
@@ -149,11 +162,13 @@ export default function Sidemenu() {
               <img
                 src="/assets/ic-sidemenuDropdown.svg"
                 alt="메뉴 드롭다운"
-                className={`w-[10px] h-[10px] absolute right-3 ${sidemenuClose && "hidden"}`}
+                className={`w-[10px] h-[10px] absolute right-3  ${
+                  openDropdownIndex === index ? "rotate-90" : ""
+                }  ${sidemenuClose && "hidden"}`}
               />
             </div>
 
-            {/* Dropdown content */}
+            {/* 드롭다운으로 열리는 경우 */}
             {openDropdownIndex === index && (
               <div className="ml-10 mt-2 text-sm text-gray-600">
                 {getDropdownContent(index).map((item, idx) => (
@@ -180,7 +195,7 @@ export default function Sidemenu() {
           {!sidemenuClose && (
             <>
               <span>공지 알림 및 소통</span>
-              <div className="flex-center ml-[64px] py-[5px] px-[8px] bg-black-100 text-white-100 rounded-[8px] text-caption3 cursor-pointer">
+              <div className="flex-center ml-[75px] py-[2px] px-[8px] bg-red-100 text-white-100 rounded-[6.52px] text-[8.96px] cursor-pointer">
                 23
               </div>
             </>

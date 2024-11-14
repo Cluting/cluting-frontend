@@ -25,9 +25,7 @@ export default function TimeSlot() {
 
   const [startTime, setStartTime] = useState(""); // 초기값을 빈 문자열로 설정
   const [endTime, setEndTime] = useState("");
-  const [caption, setCaption] = useState<string | null>(
-    "하루 중 면접 최초 시작 시간을 선택해 주세요."
-  );
+  const [caption, setCaption] = useState<string | null>("");
   const [showCaption, setShowCaption] = useState(false);
 
   const handleStartTimeChange = (newStartTime: string) => {
@@ -65,12 +63,15 @@ export default function TimeSlot() {
     setInterviewStartTime(new Date(`1970-01-01T${startTime}:00`));
     setInterviewEndTime(new Date(`1970-01-01T${endTime}:00`));
     applyTimeSettings(); // isTimeSet을 true로 설정
+
+    // 캡션을 빈 문자열로 설정하여 캡션을 숨김
+    setCaption("");
   };
 
   return (
     <div className="relative section-background">
       {showCaption && (
-        <p className="absolute top-[11px] right-[300px] text-main-100 text-caption2">
+        <p className="absolute top-[0px] right-[300px] text-main-100 text-caption2">
           {caption}
         </p>
       )}
@@ -86,30 +87,41 @@ export default function TimeSlot() {
           </div>
         </div>
 
-        <div className="flex items-center gap-[14px]">
-          <div className="bg-gray-100 rounded-[8px] px-3 py-[7px] text-subheadline text-gray-800">
-            면접 시간
-          </div>
-          <CustomSelect
-            value={startTime}
-            onChange={handleStartTimeChange}
-            options={generateTimeOptions()}
-            placeholder="시간대 선택"
-          />
+        <div className="flex flex-col">
+          {caption && <p className="text-caption3 text-main-100">{caption}</p>}
 
-          <p className="text-subheadline text-gray-600">~</p>
-          <CustomSelect
-            value={endTime}
-            onChange={handleEndTimeChange}
-            options={generateTimeOptions()}
-            placeholder="시간대 선택"
-          />
-          <button
-            onClick={handleApplyTimeSettings}
-            className="button-main-bg py-[7px] px-[24px] rounded-[12px]"
-          >
-            적용하기
-          </button>
+          <div className="flex items-center gap-[14px]">
+            <div className="bg-gray-100 rounded-[8px] px-3 py-[7px] text-subheadline text-gray-800">
+              면접 시간
+            </div>
+
+            <CustomSelect
+              value={startTime}
+              onChange={handleStartTimeChange}
+              options={generateTimeOptions()}
+              placeholder="시간대 선택"
+              onFocus={() =>
+                setCaption("하루 중 면접 최초 시작 시간을 선택해 주세요.")
+              }
+            />
+
+            <p className="text-subheadline text-gray-600">~</p>
+            <CustomSelect
+              value={endTime}
+              onChange={handleEndTimeChange}
+              options={generateTimeOptions()}
+              placeholder="시간대 선택"
+              onFocus={() =>
+                setCaption("하루 중 면접의 마지막 시작 시간을 선택해 주세요.")
+              }
+            />
+            <button
+              onClick={handleApplyTimeSettings}
+              className="button-main-bg py-[7px] px-[24px] rounded-[12px]"
+            >
+              적용하기
+            </button>
+          </div>
         </div>
       </div>
     </div>

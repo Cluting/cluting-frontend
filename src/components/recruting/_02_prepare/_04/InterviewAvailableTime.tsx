@@ -98,7 +98,7 @@ export default function InterviewAvailableTime() {
     <div className="section-background flex flex-wrap space-y-4 ">
       {/* 시간표 렌더링 (표 안) */}
       <section
-        className="overflow-auto scrollbar-hidden w-[963px] h-auto relative border border-gray-300 custom-shadow rounded-[12px] pt-[27px] px-4"
+        className="overflow-auto scrollbar-hidden w-[963px] h-auto relative border border-gray-300 rounded-[12px] py-[27px] px-4"
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >

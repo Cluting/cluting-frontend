@@ -9,18 +9,20 @@ export default function Header() {
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
-      <div className="flex items-center gap-2">
-        <img
-          src="/assets/logo/ic-logoIcon.svg"
-          alt="로고 아이콘"
-          className="w-[20px] h-[23px] "
-        />
-        <img
-          src="/assets/logo/ic-logoTitle.svg"
-          alt="로고 타이틀"
-          className="w-[80px] h-[33px]"
-        />
-      </div>
+      <Link to="/">
+        <div className="flex items-center gap-2">
+          <img
+            src="/assets/logo/ic-logoIcon.svg"
+            alt="로고 아이콘"
+            className="w-[20px] h-[23px] "
+          />
+          <img
+            src="/assets/logo/ic-logoTitle.svg"
+            alt="로고 타이틀"
+            className="w-[80px] h-[33px]"
+          />
+        </div>
+      </Link>
       {!isLoginPage && (
         <div className="flex items-center">
           <img

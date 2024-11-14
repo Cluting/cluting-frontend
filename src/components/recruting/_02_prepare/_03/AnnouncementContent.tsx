@@ -1,21 +1,25 @@
+/* eslint-disable indent */
 import React, { useRef, FormEvent, useState } from "react";
 const MAX_CHARS = 2000;
 
 const AnnouncementContent: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [charCount, setCharCount] = useState(0);
+  const [isMaxLengthExceeded, setIsMaxLengthExceeded] = useState(false);
 
   const handleInput = (event: FormEvent<HTMLTextAreaElement>): void => {
     const textarea = textareaRef.current;
     if (textarea) {
-      setCharCount(textarea.value.length);
+      const count = textarea.value.length;
+      setCharCount(count);
+      setIsMaxLengthExceeded(count >= MAX_CHARS);
       textarea.style.height = "290px"; // 기본 높이 설정
       textarea.style.height = `${textarea.scrollHeight}px`; // 내용에 따라 높이 조정
     }
   };
+
   //FIX: onInput 리렌더링 문제 고민해보기, 디바운싱 고민해서 적용
 
-  //TODO: Form 연결 후 공고 글자수 에러 처리 추가
   return (
     <div className="relative ">
       <textarea
@@ -24,14 +28,24 @@ const AnnouncementContent: React.FC = () => {
         placeholder="상세 본문 내용을 작성해 주세요"
         maxLength={2000}
         onInput={handleInput}
-        className="bg-white-100 custom-shadow cursor-pointer border border-gray-200 focus:outline-none disabled:border-red-100
-         w-full min-h-[290px] mx-8 px-[26px] py-[22px] rounded-[12px] mb-[50px] overflow-hidden "
+        className={`bg-white-100 cursor-pointer border border-gray-200 focus:outline-none focus:border-main-100 
+          w-full min-h-[290px] mx-8 px-[26px] py-[22px] rounded-[12px] mb-[50px] overflow-hidden ${
+            isMaxLengthExceeded
+              ? "border-red-100"
+              : "border-gray-200 focus:border-main-100"
+          }`}
         style={{ resize: "none" }} // 수동 크기 조절 비활성화
       />
 
       <div className="text-right text-gray-500 absolute right-0 bottom-[80px]">
         {charCount}/{MAX_CHARS}
       </div>
+
+      {isMaxLengthExceeded && (
+        <p className="text-state-error absolute left-10 bottom-[30px]">
+          글자 수 제한을 초과했습니다.
+        </p>
+      )}
     </div>
   );
 };

@@ -1,13 +1,15 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useGroupStore } from "../../../../store/useStore";
 
 export default function GroupIdeal() {
+  const { group: groups } = useGroupStore();
+
   const [groupIdeals, setGroupIdeals] = useState<GroupIdeals>(() => {
-    const groups = ["기획", "개발", "디자인"];
     return groups.reduce(
       (acc, group) => ({
         ...acc,
-        [group]: {
+        [group.name]: {
           ideals: [],
           showInput: true,
           value: "",
@@ -18,8 +20,6 @@ export default function GroupIdeal() {
     );
   });
 
-  const groups = [{ name: "기획" }, { name: "개발" }, { name: "디자인" }];
-
   const {
     register,
     handleSubmit,
@@ -27,6 +27,9 @@ export default function GroupIdeal() {
   } = useForm<GroupIdealForm>({
     mode: "onBlur"
   });
+
+  //그룹 없을 시 렌더링 되지 않도록 처리
+  if (groups.length === 0) return null;
 
   const onInsert = (groupName: string, e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +77,7 @@ export default function GroupIdeal() {
         <div className="tooltip">각 그룹별 인재상을 작성해 주세요.</div>
       </div>
 
-      <div className="mt-[16px] py-[32px] relative h-auto bg-white-100 rounded-[12px] custom-shadow">
+      <div className="mt-[16px] py-[32px] relative h-auto bg-white-100 rounded-[12px] ">
         {groups.map((group) => (
           <div
             key={group.name}

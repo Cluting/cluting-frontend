@@ -84,6 +84,9 @@
   .section-title {
     @apply text-title3 pr-[21px] flex items-center text-gray-1100;
   }
+  .announcement-title {
+    @apply text-headline text-gray-1100;
+  }
   .tooltip {
     @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-gray-200 text-caption3 text-gray-900 flex-center;
   }

@@ -5,7 +5,7 @@ import TopSection from "../../../components/recruting/_03_document_evaluation/co
 import CreateApplicationFormContainer from "../../../components/recruting/_02_prepare/_05/CreateApplicationFormContainer";
 
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
-import { useTopSectionStore } from "../../../store/useStore";
+import { useStepTwoStore } from "../../../store/useStore";
 
 type StepComponent = React.FC;
 
@@ -15,7 +15,7 @@ const stepComponents: StepComponent[] = [
 ];
 
 export default function DocumentEvaluation() {
-  const { currentStep } = useTopSectionStore();
+  const { currentStep } = useStepTwoStore();
   const CurrentStepComponent = stepComponents[currentStep];
   return (
     <div className="flex justify-center pt-6 bg-gray-100">

@@ -5,6 +5,10 @@ export default function ApplicantGroup() {
   const { group } = useGroupStore();
 
   //todo:여길 폼처리 받아야 하는건가..
+
+  //그룹 없을 시 렌더링 되지 않도록 처리
+  if (group.length === 0) return null;
+
   return (
     <div className="ml-8 w-full mt-[34px]">
       <div className="flex">
@@ -17,11 +21,11 @@ export default function ApplicantGroup() {
         <div className="flex items-left gap-[11px]">
           {group.map((groupName) => (
             <button
-              key={groupName}
+              key={groupName.name}
               type="button"
               className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100"
             >
-              {groupName}
+              {groupName.name}
             </button>
           ))}
         </div>

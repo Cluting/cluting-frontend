@@ -10,7 +10,7 @@ export default function AddAdminDropdown({
   currentAdmins
 }: AddAdminDropdownProps) {
   return (
-    <div className="absolute animate-dropdown top-[53.5px] bg-white-100 w-[139px] rounded-[12px]">
+    <div className="absolute animate-dropdown top-[53.5px] bg-white-100 w-[139px] rounded-[12px] z-50">
       <ul className="flex-center flex-col h-full p-2 text-body text-gray-1100">
         {ALL_ADMINS.map((admin: string) => (
           <li

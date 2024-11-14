@@ -17,20 +17,28 @@ export default function AnnouncementDetails() {
     register,
     handleSubmit,
     formState: { errors },
-    getValues
+    getValues,
+    watch
   } = useForm<AnnouncementForm>({ mode: "onBlur" });
   const onSubmit = handleSubmit((data) => console.log(data));
 
+  //date 값
+  const recruitmentStart = watch("recruitmentStart");
+  const recruitmentEnd = watch("recruitmentEnd");
+  const announcementDate = watch("announcementDate");
+  const finalResultAnnouncementDate = watch("finalResultAnnouncementDate");
+  const activityStart = watch("activityStart");
+  const activityEnd = watch("activityEnd");
   return (
     <form
       onSubmit={onSubmit}
-      className="custom-shadow flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
+      className=" flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
     >
-      <label className="mt-6">포스터 업로드</label>
+      <label className="mt-6 announcement-title">포스터 업로드</label>
       <button
         type="button"
         onClick={handleClick}
-        className="h-60 input-background input-style border-dashed"
+        className={`h-60 input-background input-style border-dashed ${errors.posterImage ? "border-red-100" : ""}`}
       >
         {previewUrl ? (
           <img
@@ -39,23 +47,31 @@ export default function AnnouncementDetails() {
             className="w-full h-full object-cover rounded-full"
           />
         ) : (
-          <div>
-            <input
-              {...register("posterImage")}
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-            />
-            사진 불러오기
+          <div className="flex-center">
+            <div className="flex flex-col items-center text-gray-800 text-subheadline gap-3">
+              <input
+                {...(register("posterImage"),
+                { required: "필수 첨부 내용입니다." })}
+                required
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+              <img
+                src="/assets/ic-imageUpload.svg"
+                alt="불러오기"
+                className="w-[30px] h-[30px] "
+              />
+              사진 불러오기
+            </div>
           </div>
         )}
       </button>
 
-      <label className="mt-6">
-        {" "}
-        <span className="text-main-100">* </span> 공고 제목
+      <label className="mt-6 announcement-title">
+        <span className="text-main-100 ">* </span> 공고 제목
       </label>
       <input
         {...register("title", { required: "필수 입력 사항입니다." })}
@@ -71,12 +87,11 @@ export default function AnnouncementDetails() {
         <p className="text-state-error">{errors.title.message}</p>
       )}
 
-      <label className="mt-6">
-        {" "}
+      <label className="mt-6 announcement-title">
         <span className="text-main-100">* </span> 모집 기간
       </label>
 
-      <div className="w-full flex gap-2">
+      <div className="relative w-full flex gap-2">
         <input
           {...register("recruitmentStart", {
             required: "필수 선택 사항입니다."
@@ -85,10 +100,18 @@ export default function AnnouncementDetails() {
           required
           min={new Date().toISOString().split("T")[0]}
           aria-label="모집 시작일"
-          className={`w-full input-background input-style ${errors.recruitmentStart ? "border-red-100" : ""}`}
+          className={` relative h-[46px] w-full input-background rounded-[8px] px-[20px] mt-2  ${errors.recruitmentStart ? "border-red-100" : ""}`}
         />
-        {errors.recruitmentStart && (
-          <p className="text-state-error">{errors.recruitmentStart.message}</p>
+
+        {!recruitmentStart && (
+          <span className="absolute top-5 left-5 text-[#c9cace] ">
+            날짜를 선택해 주세요.
+          </span>
+        )}
+        {recruitmentStart && (
+          <span className="absolute top-5 left-5 text-gray-1100 ">
+            {new Date(recruitmentStart).toLocaleDateString()}
+          </span>
         )}
         <input
           {...register("recruitmentEnd", {
@@ -108,63 +131,131 @@ export default function AnnouncementDetails() {
           aria-label="모집 종료일"
           className={`w-full input-background input-style ${errors.recruitmentEnd ? "border-red-100" : ""}`}
         />
+        {!recruitmentEnd && (
+          <span className="absolute top-5 right-[310px] text-[#c9cace] ">
+            날짜를 선택해 주세요.
+          </span>
+        )}
+        {recruitmentEnd && (
+          <span className="absolute top-5 right-[355px] text-gray-1100 ">
+            {new Date(recruitmentEnd).toLocaleDateString()}
+          </span>
+        )}
       </div>
       {errors.recruitmentEnd && (
         <p className="text-state-error">{errors.recruitmentEnd.message}</p>
       )}
 
-      <label className="mt-6">
-        <span className="text-main-100">* </span> 서류 합격자 발표일
-      </label>
-      <input
-        {...register("announcementDate", { required: "필수 선택 사항입니다." })}
-        type="date"
-        aria-label="서류 합격자 발표일"
-        required
-        className={`input-background input-style ${errors.announcementDate ? "border-red-100" : ""}`}
-      />
-      {errors.announcementDate && (
-        <p className="text-state-error">{errors.announcementDate.message}</p>
-      )}
-
-      <label className="mt-6">
-        <span className="text-main-100">* </span> 최종 합격자 발표일
-      </label>
-      <input
-        {...register("finalResultAnnouncementDate", {
-          required: "필수 선택 사항입니다."
-        })}
-        type="date"
-        aria-label="최종 합격자 발표일"
-        required
-        className={`input-background input-style ${errors.finalResultAnnouncementDate ? "border-red-100" : ""}`}
-      />
-      {errors.finalResultAnnouncementDate && (
-        <p className="text-state-error">
-          {errors.finalResultAnnouncementDate.message}
-        </p>
-      )}
-      <label className="mt-6">모집 인원</label>
-      <input
-        {...register("recruitsCount")}
-        type="number"
-        min="1"
-        max="1000"
-        aria-label="모집 인원"
-        placeholder="모집 인원을 작성해 주세요."
-        className="input-background input-style"
-      />
-
-      <label className="mt-6">활동 기간</label>
-      <div className="w-full flex gap-2">
+      <div className="mt-6 relative">
+        <label className="w-full announcement-title">
+          <span className="text-main-100">* </span> 서류 합격자 발표일
+        </label>
         <input
-          {...register("activityStart")}
+          {...register("announcementDate", {
+            required: "필수 선택 사항입니다."
+          })}
+          type="date"
+          aria-label="서류 합격자 발표일"
+          required
+          className={`w-full input-background input-style ${errors.announcementDate ? "border-red-100" : ""}`}
+        />
+        {!announcementDate && (
+          <span className="absolute top-11  left-5 text-[#c9cace] ">
+            날짜를 선택해 주세요.
+          </span>
+        )}
+        {announcementDate && (
+          <span className="absolute top-11  left-5 text-gray-1100 ">
+            {new Date(announcementDate).toLocaleDateString()}
+          </span>
+        )}
+        {errors.announcementDate && (
+          <p className="text-state-error">{errors.announcementDate.message}</p>
+        )}
+      </div>
+
+      <div className="mt-6 relative">
+        <label className="mt-6 w-full announcement-title">
+          <span className="text-main-100">* </span> 최종 합격자 발표일
+        </label>
+        <input
+          {...register("finalResultAnnouncementDate", {
+            required: "필수 선택 사항입니다."
+          })}
+          type="date"
+          aria-label="최종 합격자 발표일"
+          required
+          className={`w-full input-background input-style ${errors.finalResultAnnouncementDate ? "border-red-100" : ""}`}
+        />
+        {!finalResultAnnouncementDate && (
+          <span className="absolute top-11  left-5 text-[#c9cace] ">
+            날짜를 선택해 주세요.
+          </span>
+        )}
+        {finalResultAnnouncementDate && (
+          <span className="absolute top-11  left-5 text-gray-1100 ">
+            {new Date(finalResultAnnouncementDate).toLocaleDateString()}
+          </span>
+        )}
+        {errors.finalResultAnnouncementDate && (
+          <p className="text-state-error">
+            {errors.finalResultAnnouncementDate.message}
+          </p>
+        )}
+      </div>
+
+      <div className="relative mt-6">
+        <label className="w-full announcement-title">
+          <span className="text-main-100">* </span>모집 인원
+        </label>
+        <input
+          {...register("recruitsCount", {
+            required: "필수 입력 사항입니다."
+          })}
+          required
+          type="number"
+          min="1"
+          max="1000"
+          aria-label="모집 인원"
+          placeholder="모집 인원을 작성해 주세요. (단위: 명)"
+          className={`w-full pl-14 input-background input-style ${errors.recruitsCount ? "border-red-100" : ""}`}
+        />
+        <img
+          src="/assets/ic-recruitsCount.svg"
+          alt="불러오기"
+          className="absolute top-11 left-5 w-[24px] h-[24px] "
+        />
+        {errors.recruitsCount && (
+          <p className="text-state-error">{errors.recruitsCount.message}</p>
+        )}
+      </div>
+
+      <label className="mt-6 announcement-title">
+        <span className="text-main-100">* </span>활동 기간
+      </label>
+      <div className="relative w-full flex gap-2">
+        <input
+          {...register("activityStart", {
+            required: "필수 선택 사항입니다."
+          })}
+          required
           aria-label="활동 시작일"
           type="date"
-          className="w-full input-background input-style"
+          className={`w-full input-background input-style ${errors.activityStart ? "border-red-100" : ""}`}
         />
+        {!activityStart && (
+          <span className="absolute top-5   left-5 text-[#c9cace] ">
+            활동 기간을 선택해 주세요.
+          </span>
+        )}
+        {activityStart && (
+          <span className="absolute top-5  left-5 text-gray-1100 ">
+            {new Date(activityStart).toLocaleDateString()}
+          </span>
+        )}
         <input
           {...register("activityEnd", {
+            required: "필수 선택 사항입니다.",
             validate: (value) => {
               const activityStart = getValues("activityStart");
               return (
@@ -174,42 +265,72 @@ export default function AnnouncementDetails() {
               );
             }
           })}
+          required
           aria-label="활동 종료일"
           type="date"
-          className="w-full input-background input-style"
+          className={`w-full input-background input-style ${errors.activityEnd ? "border-red-100" : ""}`}
         />
+        {!activityEnd && (
+          <span className="absolute top-5 right-[275px] text-[#c9cace] ">
+            활동 기간을 선택해 주세요.
+          </span>
+        )}
+        {activityEnd && (
+          <span className="absolute top-5  right-[355px]  text-gray-1100 ">
+            {new Date(activityEnd).toLocaleDateString()}
+          </span>
+        )}
       </div>
       {errors.activityEnd && (
         <p className="text-state-error">{errors.activityEnd.message}</p>
       )}
 
-      <label className="mt-6">활동 요일 및 시간</label>
-      <div className="w-full flex gap-2">
-        <input
-          {...register("activityDay")}
-          type="text"
-          aria-label="활동 요일"
-          placeholder="활동 요일을 입력해 주세요."
-          className="w-full input-background input-style"
-        />
-        <input
-          {...register("activityTime")}
-          aria-label="활동 시간"
-          type="time"
-          className="w-full input-background input-style"
-        />
+      <div className="mt-6 relative">
+        <label className="w-full announcement-title">활동 요일 및 시간</label>
+        <div className="w-full flex gap-2">
+          <input
+            {...register("activityDay")}
+            type="text"
+            aria-label="활동 요일"
+            placeholder="고정 활동 요일을 작성해 주세요."
+            className="w-full pl-14 input-background input-style"
+          />
+          <img
+            src="/assets/ic-activityDay.svg"
+            alt="활동 요일 아이콘"
+            className="absolute top-11 left-5 w-[24px] h-[24px] "
+          />
+          <input
+            {...register("activityTime")}
+            aria-label="활동 시간"
+            type="text"
+            placeholder="하루 당 시간을 작성해 주세요. (단위: 시간)"
+            className="w-full pl-14 input-background input-style"
+          />
+          <img
+            src="/assets/ic-activityTime.svg"
+            alt="활동 시간 아이콘"
+            className="absolute top-11  right-[424px] w-[22px] h-[22px] "
+          />
+        </div>
       </div>
 
-      <label className="mt-6">동아리 회비</label>
-      <input
-        {...register("clubFee")}
-        type="text"
-        pattern="[0-9,]+"
-        aria-label="동아리 회비"
-        placeholder="동아리 회비를 입력해 주세요."
-        className="input-background input-style mb-12"
-      />
-      <button type="submit">제출 테스트</button>
+      <div className="mt-6 relative">
+        <label className="w-full announcement-title">동아리 회비</label>
+        <input
+          {...register("clubFee")}
+          type="text"
+          pattern="[0-9,]+"
+          aria-label="동아리 회비"
+          placeholder="동아리 회비를 입력해 주세요. (단위: 원)"
+          className="w-full  pl-14  input-background input-style mb-12"
+        />
+        <img
+          src="/assets/ic-clubFee.svg"
+          alt="동아리 회비 아이콘"
+          className="absolute top-11 left-5 w-[22px] h-[22px] "
+        />
+      </div>
     </form>
   );
 }

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { STEP3_ITEMS } from "../../../../constants/recruting";
 import {
   useRecruitmentStepStore,
-  useTopSectionStore
+  useStepTwoStore
 } from "../../../../store/useStore";
 import AddAdmin from "../../home/AddAdmin";
 
 export default function TopSection() {
-  const { currentStep, setCurrentStep } = useTopSectionStore();
+  const { currentStep, setCurrentStep } = useStepTwoStore();
   const { currentRecruitmentStep, setCurrentRecruitmentStep } =
     useRecruitmentStepStore(); //전체 스텝
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

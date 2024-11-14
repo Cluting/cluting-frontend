@@ -5,9 +5,6 @@
   border-radius: 12px;
   border: 1px solid #b9bed3;
 }
-.fc-media-screen:hover {
-  border: 2px solid #5e2be8;
-}
 /* 헤더 높이와 여백 조정 */
 .fc-toolbar.fc-header-toolbar {
   padding: 5px 10px; /* 상하좌우 여백 조정 */
