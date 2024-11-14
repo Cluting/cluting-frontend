@@ -322,7 +322,7 @@ export default function AnnouncementDetails() {
           type="text"
           pattern="[0-9,]+"
           aria-label="동아리 회비"
-          placeholder="동아리 회비를 입력해 주세요."
+          placeholder="동아리 회비를 입력해 주세요. (단위: 원)"
           className="w-full  pl-14  input-background input-style mb-12"
         />
         <img
