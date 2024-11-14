@@ -109,6 +109,21 @@ export default function GroupQuestion() {
     }
   };
 
+  // 객관형 질문 선택지 삭제 함수
+  const removeOption = (questionId: string, optionId: string) => {
+    setGroupQuestions((prevQuestions) =>
+      prevQuestions.map((q) => {
+        if (q.id === questionId) {
+          return {
+            ...q,
+            options: q.options.filter((opt) => opt.id !== optionId)
+          };
+        }
+        return q;
+      })
+    );
+  };
+
   //그룹 없을 시 렌더링 되지 않도록 처리
   if (group.length === 0) return null;
 
@@ -164,11 +179,15 @@ export default function GroupQuestion() {
             >
               <div className="flex justify-between">
                 <div className="flex">
-                  <input
-                    type="text"
+                  <textarea
                     placeholder="질문을 작성해 주세요."
-                    className="w-[541px] h-[42px] mr-[12px] py-[11px] pl-[19px] rounded-[8px] border border-gray-400 outline-none focus:border-main-100"
-                    {...register(`groupQuestions.${question.id}.question`, {
+                    className="flex  leading-[18px] w-[541px] h-[42px] mr-[12px] py-[11px] px-[19px] rounded-[8px] border border-gray-200 outline-none focus:border-main-100 resize-none overflow-hidden"
+                    onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
+                      const target = e.currentTarget;
+                      target.style.height = "42px";
+                      target.style.height = `${target.scrollHeight}px`;
+                    }}
+                    {...register(`commonQuestions.${question.id}.question`, {
                       required: "질문을 한 가지 이상 추가해 주세요."
                     })}
                   />
@@ -288,14 +307,71 @@ export default function GroupQuestion() {
               ) : (
                 //객관형 질문
                 <div>
-                  <input
-                    type="text"
-                    placeholder="선택지 추가"
-                    className="flex w-[584px] h-[36px] mt-[18px] pl-[13px] py-[10px] border border-gray-500 rounded-[6px] outline-none focus:border-main-100"
-                    {...register(`groupQuestions.${question.id}.options`, {
-                      required: "질문을 한 가지 이상 추가해 주세요."
-                    })}
-                  />
+                  <ul className="mt-[13px]">
+                    {question.options.map((option, index) => (
+                      <li
+                        key={option.id}
+                        className="flex items-center mb-[13px]"
+                      >
+                        <img
+                          src="/assets/ic-emptyCheck.svg"
+                          alt="빈 체크박스"
+                          className="mr-[13px]"
+                        />
+                        <div className="flex items-center pl-[13px] w-[584px] h-[36px] pl-[13px] py-[10px] bg-white-100 border border-gray-200 rounded-[6px] text-caption1 outline-none">
+                          {option.value}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeOption(question.id, option.id)}
+                          className="flex-center ml-[-30px] w-[16px] h-[16px] mr-[13px]"
+                        >
+                          <img
+                            src="/assets/ic-questionMinus.svg"
+                            alt="선택지 삭제"
+                          />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* 입력창 */}
+                  <div className="flex items-center mt-[13px]">
+                    <img
+                      src="/assets/ic-emptyCheck.svg"
+                      alt="빈 체크박스"
+                      className="mr-[13px]"
+                    />
+                    <input
+                      type="text"
+                      placeholder="선택지 추가"
+                      className="flex w-[584px] h-[36px] pl-[13px] py-[10px] border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
+                      onKeyDown={(e) => {
+                        if (
+                          e.key === "Enter" &&
+                          e.currentTarget.value.trim() !== ""
+                        ) {
+                          e.preventDefault();
+                          const value = e.currentTarget.value;
+                          setGroupQuestions((prevQuestions) =>
+                            prevQuestions.map((q) => {
+                              if (q.id === question.id) {
+                                return {
+                                  ...q,
+                                  options: [
+                                    ...q.options,
+                                    { id: uuidv4(), value }
+                                  ]
+                                };
+                              }
+                              return q;
+                            })
+                          );
+                          e.currentTarget.value = ""; // input 초기화
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
               )}
             </div>

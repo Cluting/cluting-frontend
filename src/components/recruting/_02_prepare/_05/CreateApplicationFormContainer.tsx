@@ -123,21 +123,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
   };
 
-  // // 객관형 질문 선택지 추가 함수
-  // const addOption = (questionId: string) => {
-  //   setCommonQuestions((prevQuestions) =>
-  //     prevQuestions.map((q) => {
-  //       if (q.id === questionId) {
-  //         return {
-  //           ...q,
-  //           options: [...q.options, { id: uuidv4(), value: "" }]
-  //         };
-  //       }
-  //       return q;
-  //     })
-  //   );
-  // };
-
   // 객관형 질문 선택지 삭제 함수
   const removeOption = (questionId: string, optionId: string) => {
     setCommonQuestions((prevQuestions) =>
@@ -153,26 +138,26 @@ export default function CreateApplicationFormContainer(): ReactElement {
     );
   };
 
-  // 선택지 값 변경 처리 함수
-  const handleOptionChange = (
-    questionId: string,
-    optionId: string,
-    value: string
-  ) => {
-    setCommonQuestions((prevQuestions) =>
-      prevQuestions.map((q) => {
-        if (q.id === questionId) {
-          return {
-            ...q,
-            options: q.options.map((opt) =>
-              opt.id === optionId ? { ...opt, value } : opt
-            )
-          };
-        }
-        return q;
-      })
-    );
-  };
+  // // 선택지 값 변경 처리 함수
+  // const handleOptionChange = (
+  //   questionId: string,
+  //   optionId: string,
+  //   value: string
+  // ) => {
+  //   setCommonQuestions((prevQuestions) =>
+  //     prevQuestions.map((q) => {
+  //       if (q.id === questionId) {
+  //         return {
+  //           ...q,
+  //           options: q.options.map((opt) =>
+  //             opt.id === optionId ? { ...opt, value } : opt
+  //           )
+  //         };
+  //       }
+  //       return q;
+  //     })
+  //   );
+  // };
 
   // 엔터키 처리 함수
   const handleKeyDown = (
