@@ -123,6 +123,83 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
   };
 
+  // // 객관형 질문 선택지 추가 함수
+  // const addOption = (questionId: string) => {
+  //   setCommonQuestions((prevQuestions) =>
+  //     prevQuestions.map((q) => {
+  //       if (q.id === questionId) {
+  //         return {
+  //           ...q,
+  //           options: [...q.options, { id: uuidv4(), value: "" }]
+  //         };
+  //       }
+  //       return q;
+  //     })
+  //   );
+  // };
+
+  // 객관형 질문 선택지 삭제 함수
+  const removeOption = (questionId: string, optionId: string) => {
+    setCommonQuestions((prevQuestions) =>
+      prevQuestions.map((q) => {
+        if (q.id === questionId) {
+          return {
+            ...q,
+            options: q.options.filter((opt) => opt.id !== optionId)
+          };
+        }
+        return q;
+      })
+    );
+  };
+
+  // 선택지 값 변경 처리 함수
+  const handleOptionChange = (
+    questionId: string,
+    optionId: string,
+    value: string
+  ) => {
+    setCommonQuestions((prevQuestions) =>
+      prevQuestions.map((q) => {
+        if (q.id === questionId) {
+          return {
+            ...q,
+            options: q.options.map((opt) =>
+              opt.id === optionId ? { ...opt, value } : opt
+            )
+          };
+        }
+        return q;
+      })
+    );
+  };
+
+  // 엔터키 처리 함수
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    questionId: string
+  ) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const inputValue = e.currentTarget.value;
+
+      setCommonQuestions((prevQuestions) =>
+        prevQuestions.map((q) => {
+          if (q.id === questionId) {
+            // 현재 input의 값을 options 배열에 추가
+            const newOption = { id: uuidv4(), value: inputValue };
+            // 빈 새 option도 추가
+            return {
+              ...q,
+              options: [...q.options, newOption, { id: uuidv4(), value: "" }]
+            };
+          }
+          return q;
+        })
+      );
+    }
+  };
+
   return (
     <form className="mb-[147px] w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
       {/*지원서 제목*/}
@@ -191,10 +268,14 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 >
                   <div className="flex justify-between">
                     <div className="flex">
-                      <input
-                        type="text"
+                      <textarea
                         placeholder="질문을 작성해 주세요."
-                        className="w-[541px] h-[42px] mr-[12px] py-[11px] pl-[19px] rounded-[8px] border border-gray-400 outline-none focus:border-main-100"
+                        className="flex  leading-[18px] w-[541px] h-[42px] mr-[12px] py-[11px] px-[19px] rounded-[8px] border border-gray-200 outline-none focus:border-main-100 resize-none overflow-hidden"
+                        onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
+                          const target = e.currentTarget;
+                          target.style.height = "42px";
+                          target.style.height = `${target.scrollHeight}px`;
+                        }}
                         {...register(
                           `commonQuestions.${question.id}.question`,
                           {
@@ -207,7 +288,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
                       <div className="relative">
                         <button
                           type="button"
-                          className="flex items-center w-[247px] h-[42px] pl-[19px] py-[11px] bg-white-100 rounded-[8px] border border-gray-400 outline-none"
+                          className="flex items-center w-[247px] h-[42px] pl-[19px] py-[11px] bg-white-100 rounded-[8px] border border-gray-200 outline-none"
                           onClick={() => toggleDropdown(question.id)}
                         >
                           {question.type === "서술형 질문" ? (
@@ -281,7 +362,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
                     <button
                       type="button"
                       onClick={() => deleteQuestion(question.id)}
-                      className={`${commonQuestions.length === 1 ? "opacity-30 cursor-not-allowed" : "cursor-pointer"}`}
+                      className={`flex ${commonQuestions.length === 1 ? "opacity-30 cursor-not-allowed" : "cursor-pointer"}`}
                       disabled={commonQuestions.length === 1}
                     >
                       <img src="/assets/ic-questionMinus.svg" alt="질문 삭제" />
@@ -318,14 +399,61 @@ export default function CreateApplicationFormContainer(): ReactElement {
                   ) : (
                     //객관형 질문
                     <div>
-                      <input
-                        type="text"
-                        placeholder="선택지 추가"
-                        className="flex w-[584px] h-[36px] mt-[18px] pl-[13px] py-[10px] border border-gray-500 rounded-[6px] outline-none focus:border-main-100"
-                        {...register(`commonQuestions.${question.id}.options`, {
-                          required: "질문을 한 가지 이상 추가해 주세요."
-                        })}
-                      />
+                      <ul className="mt-[13px]">
+                        {question.options.map((option, index) => (
+                          <li
+                            key={option.id}
+                            className="flex items-center justify-between pl-[13px] w-[584px] h-[36px] pl-[13px] py-[10px] mb-[13px] bg-white-100 border border-gray-200 rounded-[6px] outline-none focus:border-main-100"
+                          >
+                            <div className="flex">{option.value}</div>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                removeOption(question.id, option.id)
+                              }
+                              className="w-[16px] h-[16px] mr-[13px]"
+                            >
+                              <img
+                                src="/assets/ic-questionMinus.svg"
+                                alt="선택지 삭제"
+                              />
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* 입력창 */}
+                      <div className="flex items-center mt-[13px]">
+                        <input
+                          type="text"
+                          placeholder="선택지 추가"
+                          className="flex w-[584px] h-[36px] pl-[13px] py-[10px] border border-gray-200 rounded-[6px] outline-none focus:border-main-100"
+                          onKeyDown={(e) => {
+                            if (
+                              e.key === "Enter" &&
+                              e.currentTarget.value.trim() !== ""
+                            ) {
+                              e.preventDefault();
+                              const value = e.currentTarget.value;
+                              setCommonQuestions((prevQuestions) =>
+                                prevQuestions.map((q) => {
+                                  if (q.id === question.id) {
+                                    return {
+                                      ...q,
+                                      options: [
+                                        ...q.options,
+                                        { id: uuidv4(), value }
+                                      ]
+                                    };
+                                  }
+                                  return q;
+                                })
+                              );
+                              e.currentTarget.value = ""; // input 초기화
+                            }
+                          }}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -344,7 +472,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
               </p>
             )} */}
 
-          {/*버튼, 그룹으로 묶어서 색 변환 처리 */}
           <button
             type="button"
             className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 hover:bg-main-100 hover:text-white-100 group" // group 추가
@@ -442,7 +569,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
           </div>
         </div>
       </div>
-      <button type="submit">임시 제출 버튼</button>
 
       <div className="flex justify-center">
         <button

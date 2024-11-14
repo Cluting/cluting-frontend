@@ -153,6 +153,12 @@ declare interface TimeSlotAdmins {
 //2-5 질문 드롭다운 타입
 declare type QuestionType = "서술형 질문" | "객관형 질문";
 
+//2-5 객관형 질문들
+declare interface Option {
+  id: string;
+  value: string;
+}
+
 //2-5 질문들(서술형, 객관형) 정보 정의
 declare interface Question {
   id: string;
@@ -160,7 +166,7 @@ declare interface Question {
   question: string;
   hasWordLimit?: boolean; //서술형 질문의 글자 수 제한 여부
   wordLimit?: number; //서술형 질문의 글자 수 제한
-  options?: string[]; // 객관식 선택지
+  options: Option[]; // 객관형 질문의 객관식들
 }
 
 // 그룹별 질문 구조
