@@ -9,7 +9,7 @@ export default function DefineIdealCandidateContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
 
   return (
-    <div>
+    <div className=" mb-[147px]">
       <div className="ml-8 w-full mt-[25px]">
         <CommonIdeal />
       </div>
@@ -35,6 +35,13 @@ export default function DefineIdealCandidateContainer() {
           {steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
+      {steps[1].completed && (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="custom-shadow ml-8 w-[1016px] h-[79px] bg-gray-100 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+            확정된 내용만을 서류 평가 시에 참고할 수 있습니다.
+          </div>
+        </div>
+      )}
     </div>
   );
 }
