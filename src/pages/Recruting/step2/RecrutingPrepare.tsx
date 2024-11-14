@@ -8,7 +8,7 @@ import CreateApplicationFormContainer from "../../../components/recruting/_02_pr
 import TopSection from "../../../components/recruting/_02_prepare/TopSection";
 
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
-import { useTopSectionStore } from "../../../store/useStore";
+import { useStepTwoStore } from "../../../store/useStore";
 
 type StepComponent = React.FC;
 
@@ -20,7 +20,7 @@ const stepComponents: StepComponent[] = [
   CreateApplicationFormContainer
 ];
 export default function RecrutingPrepare() {
-  const { currentStep } = useTopSectionStore();
+  const { currentStep } = useStepTwoStore();
   const CurrentStepComponent = stepComponents[currentStep];
 
   return (

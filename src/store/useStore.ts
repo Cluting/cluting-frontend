@@ -24,18 +24,31 @@ export const useRecruitmentStepStore = create<RecruitmentStore>()((set) => ({
       return { completedSteps: updatedCompletedSteps };
     })
 }));
-
-// 2- 리크루팅 모집 준비하기 단계 Top Section
-export const useTopSectionStore = create<Store>()((set) => ({
+// 리크루팅 모집 준비하기 단계 (2) Top Section
+export const useStepTwoStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계
-  steps: [], // 빈 배열로 초기화
-  setCurrentStep: (step: number) => set({ currentStep: step }), // 단계 변경
+  steps: [
+    { id: 0, completed: false, name: "합격 인원 설정하기", admins: [] },
+    { id: 1, completed: false, name: "인재상 구축하기", admins: [] },
+    { id: 2, completed: false, name: "공고 작성하기", admins: [] },
+    { id: 3, completed: false, name: "운영진 면접 일정 조정하기", admins: [] },
+    {
+      id: 4,
+      completed: false,
+      name: "지원서 폼 제작 및 공고 올리기",
+      admins: []
+    }
+  ],
+
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 현재 단계 설정
+
+  // 단계 완료 상태 변경 메서드
   setStepCompleted: (stepId: number, completed: boolean) =>
     set((state) => ({
       steps: state.steps.map((step) =>
         step.id === stepId ? { ...step, completed } : step
       )
-    })) // 단계 완료 상태 변경 함수
+    }))
 }));
 
 // 그룹 설정

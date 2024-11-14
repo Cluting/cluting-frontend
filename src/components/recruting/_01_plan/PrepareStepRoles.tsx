@@ -81,6 +81,7 @@ export default function PrepareStepRoles() {
         {
           id: steps.length + 1,
           name: newStepName.trim(),
+          completed: false,
           admins: []
         }
       ]);

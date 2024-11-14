@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import GroupPassCount from "./GroupPassCount";
 import NumberSpinner from "./NumberSpinner";
-import CompleteButton from "../../CompleteButton";
+import { BUTTON_TEXT } from "../../../../constants/recruting";
+import { useStepTwoStore } from "../../../../store/useStore";
 
 //TODO: 폼 유효성 검사-> 그룹별 최종 합격 인원 총합과 전체 최종 합격 인원 일치하는지도..
 
@@ -71,16 +72,22 @@ export default function SetAcceptanceCountContainer() {
     }
   };
 
+  //현재 스텝 완료 여부 (전역 상태)
+  const { setStepCompleted, steps } = useStepTwoStore();
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
       console.log("제출된 데이터:", data);
+      setStepCompleted(0, true); // 스텝투의 인덱스 0번을 완료 처리
     } catch (error) {
       console.error("제출 중 에러 발생:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="ml-8 w-full mt-[25px]">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="ml-8 w-full mt-[25px] mb-[147px]"
+    >
       <div>
         {/*서류 합격 인원 */}
         <div className="flex">
@@ -172,9 +179,20 @@ export default function SetAcceptanceCountContainer() {
           validate: validateForm.groupFinalPassCheck
         }}
       />
-
-      <div className="flex-center pt-[50px] pb-[40px]">
-        <CompleteButton isSubmitting={isSubmitting} />
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          aria-label={
+            steps[0].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+          }
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            steps[0].completed
+              ? "bg-main-400 border border-main-100 text-main-100 "
+              : "bg-main-100 text-white-100 "
+          }  text-body flex-center hover:bg-main-500`}
+        >
+          {steps[0].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+        </button>
       </div>
     </form>
   );
