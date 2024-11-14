@@ -118,7 +118,7 @@ export default function GroupQuestion() {
       </div>
 
       <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
-        <p className="text-title3 text-[#3B3D46] text-left ">지원 그룹</p>
+        <p className="text-title3 text-gray-1100 text-left ">지원 그룹</p>
         <div className="flex items-left mt-[11px] gap-[11px]">
           {group.map((groupName) => (
             <button
@@ -133,7 +133,7 @@ export default function GroupQuestion() {
         </div>
         <div className="flex-center my-[42px] border border-gray-200 "></div>
 
-        <p className="mb-[15px] text-title3 text-[#3B3D46] text-left text-title3">
+        <p className="mb-[15px] text-title3 text-gray-1100 text-left text-title3">
           '{selectedGroup}' 그룹 질문 관련 주의 사항
         </p>
 
@@ -144,7 +144,7 @@ export default function GroupQuestion() {
           {...register("groupQuestionCaution")}
         />
         <div className="flex-center my-[42px] border border-gray-200 "></div>
-        <p className="mb-[15px] text-title3 text-[#3B3D46] text-left">
+        <p className="mb-[15px] text-title3 text-gray-1100 text-left">
           그룹별 질문 추가하기
         </p>
 
@@ -322,7 +322,7 @@ export default function GroupQuestion() {
               className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 "
             />
           </div>
-          질문 추가하기
+          <span className="text-callout">질문 추가하기</span>
         </button>
       </div>
     </form>

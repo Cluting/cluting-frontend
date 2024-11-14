@@ -168,6 +168,13 @@ declare interface CreateApplicationForm {
   hasPortfolio: boolean;
 }
 
+//3-1 group+admin 배열
+declare interface GroupWithAdmin {
+  id: number;
+  groupName: string;
+  admins: string[];
+}
+
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
 interface InterviewNumValue {
   interviewer: number;
