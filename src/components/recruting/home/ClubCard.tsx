@@ -1,5 +1,6 @@
 export default function ClubCard({
   dDay,
+  clubImg,
   logoSrc,
   logoAlt,
   title,
@@ -8,7 +9,8 @@ export default function ClubCard({
 }: ClubCardProps) {
   return (
     <div className="relative w-[322px] h-[211px] rounded-[16.86px] bg-[#FBFBFF] border border-gray-300">
-      <div className="absolute top-0 left-0 right-0 h-[126px] rounded-t-[16px] bg-gray-300 ">
+      <div className="w-full h-[126px] rounded-t-[16px] bg-gray-300 ">
+        <img src={clubImg} className="w-full h-[126px] rounded-t-[16px]" />
         <div className="absolute left-[11px] top-[13px] w-[40px] h-[27px] rounded-[10.25px] bg-white-100 text-[#FF4E4E] text-[11px] flex items-center justify-center font-bold">
           D-{dDay}
         </div>
