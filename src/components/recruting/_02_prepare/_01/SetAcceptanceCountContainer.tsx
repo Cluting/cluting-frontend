@@ -162,7 +162,7 @@ export default function SetAcceptanceCountContainer() {
             <span className="mr-[0.25em] text-main-100">*</span>전체 서류 합격
             인원
           </p>
-          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+          <div className="tooltip">서류 합격 인원을 설정해 주세요.</div>
         </div>
 
         <div className="pt-[16px]">
@@ -201,7 +201,7 @@ export default function SetAcceptanceCountContainer() {
             <span className="mr-[0.25em] text-main-100">*</span>
             전체 최종 합격 인원
           </p>
-          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+          <div className="tooltip">최종 합격 인원을 설정해 주세요.</div>
         </div>
         <div className="pt-[16px]">
           <div className="relative h-[105px] bg-white-100 rounded-[12px]">

@@ -20,7 +20,9 @@ export default function GroupPassCount({
             <span className="mr-[0.25em] text-main-100">*</span> 그룹별 합격
             인원
           </p>
-          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+          <div className="tooltip">
+            그룹별로 서류와 최종 합격 인원을 설정해 주세요.
+          </div>
         </div>
         <div className="pt-[16px]">
           <div className="h-[405px] rounded-[12px] bg-white-100 ">
