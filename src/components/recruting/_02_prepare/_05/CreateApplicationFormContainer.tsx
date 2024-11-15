@@ -453,6 +453,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 register={register}
                 errors={errors}
                 isSubmitted={isSubmitted}
+                setError={setError}
+                totalQuestions={Object.keys(commonQuestions).length}
               />
             ))}
           </div>
@@ -544,6 +546,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
                     register={register}
                     errors={errors}
                     isSubmitted={isSubmitted}
+                    setError={setError}
+                    totalQuestions={
+                      Object.keys(groupQuestions[selectedGroup].questions)
+                        .length
+                    }
                   />
                 )
               )}
