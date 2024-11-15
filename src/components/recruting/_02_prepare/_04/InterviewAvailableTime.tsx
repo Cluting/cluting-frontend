@@ -135,7 +135,7 @@ export default function InterviewAvailableTime() {
                   key={time}
                   className={index % 2 === 1 ? "border-b border-gray-500" : ""}
                 >
-                  <td className="text-caption2 text-gray-900 w-[77.85px] min-w-[77.85px] max-w-[77.85px]">
+                  <td className="user-select-none text-caption2 text-gray-900 w-[77.85px] min-w-[77.85px] max-w-[77.85px]">
                     {index % 2 === 0 ? time : ""}
                   </td>
                   {days.map((day) => {

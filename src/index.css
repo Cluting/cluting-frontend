@@ -23,6 +23,10 @@
   height: 20%;
 }
 
+.user-select-none {
+  user-select: none; /* 텍스트 선택 방지 */
+}
+
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
