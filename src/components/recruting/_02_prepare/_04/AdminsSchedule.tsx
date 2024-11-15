@@ -170,8 +170,6 @@ export default function AdminsSchedule() {
               </p>
             )}
           </div>
-
-          <button type="submit">임시 제출 버튼</button>
         </div>
       </div>
     </form>

@@ -20,7 +20,18 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const titleRef = useRef<HTMLInputElement>(null);
   const commonCautionRef = useRef<HTMLTextAreaElement>(null);
 
-  // 상태 관리
+  //지원 그룹
+  const [applyGroupSelect, setApplyGroupSelect] = useState<string[]>([]);
+
+  const applyGroup = (groupName: string) => {
+    setApplyGroupSelect((prev) =>
+      prev.includes(groupName)
+        ? prev.filter((name) => name !== groupName)
+        : [...prev, groupName]
+    );
+  };
+
+  //그룹별 질문 - 지원 그룹 상태 관리
   const [selectedGroup, setSelectedGroup] = useState<string>(
     group[0]?.name || ""
   );
@@ -386,11 +397,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
                   type="button"
                   className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout
                     ${
-                      selectedGroup === groupName.name
+                      applyGroupSelect.includes(groupName.name)
                         ? "bg-main-100 text-white-100 border-main-100"
                         : "bg-white-100 text-[#43454F] border-gray-300 hover:bg-main-100 hover:text-white-100"
                     }`}
-                  onClick={() => handleGroupClick(groupName.name)}
+                  onClick={() => applyGroup(groupName.name)}
                 >
                   {groupName.name}
                 </button>
@@ -599,6 +610,54 @@ export default function CreateApplicationFormContainer(): ReactElement {
               이후 지원자의 저장된 포트폴리오를 불러옵니다.
             </div>
           )}
+        </div>
+      </div>
+
+      {/*면접 시간 선택 */}
+      <div className="ml-8 w-full mt-[58px] mb-[50px]">
+        <div className="flex items-center">
+          <p className="section-title">면접 시간 선택</p>
+          <div className="tooltip">
+            앞서 정해진 면접 일정을 바탕으로, 지원자들이 면접 시간을 선택합니다.
+          </div>
+        </div>
+        <div className="w-full mt-[12px] px-[30px] py-[20.5px] bg-white-100 rounded-[12px]">
+          <div className="flex flex-col gap-[12px] py-[28px] px-[26px] bg-[#FBFBFF] rounded-[12px] border border-gray-300 text-caption1 text--gray-1100">
+            {/*이렇게 한 묶음 */}
+            <div className="flex">
+              <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
+                12일 화요일
+              </div>
+              <div className="flex gap-[7px]">
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+              </div>
+            </div>
+            {/*이렇게 한 묶음 */}
+            <div className="flex ">
+              <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
+                12일 화요일
+              </div>
+              <div className="flex gap-[7px]">
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -139,7 +139,7 @@ export default function QuestionItem({
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute z-50 w-full mt-1 px-2 py-2 bg-white-100 border border-gray-200 rounded-[8px]">
+                <div className="absolute z-50 w-full mt-1 px-2 py-2 bg-white-100 border border-gray-200 rounded-[8px] animate-dropdown">
                   <button
                     className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
                     onClick={() => {
