@@ -4,7 +4,7 @@ export default function ClubCardList() {
     {
       dDay: 3,
       clubImg: "/assets/home/main/1.svg",
-      logoSrc: "/assets/home/main/4Logo.svg/assets/home/main/1Logo.svg",
+      logoSrc: "/assets/home/main/1Logo.svg",
       logoAlt: "1",
       title: "밴드 온더락 6기 모집",
       clubName: "밴드 On The Rock",
@@ -13,7 +13,7 @@ export default function ClubCardList() {
     {
       dDay: 3,
       clubImg: "/assets/home/main/2.svg",
-      logoSrc: "/assets/home/main/4Logo.svg/assets/home/main/2Logo.svg",
+      logoSrc: "/assets/home/main/2Logo.svg",
       logoAlt: "2",
       title: "맛집 탐방 동아리 '연' 2기 모집",
       clubName: "맛집 탐방 동아리 '연'",
@@ -22,7 +22,7 @@ export default function ClubCardList() {
     {
       dDay: 3,
       clubImg: "/assets/home/main/3.svg",
-      logoSrc: "/assets/home/main/4Logo.svg/assets/home/main/3Logo.svg",
+      logoSrc: "/assets/home/main/3Logo.svg",
       logoAlt: "동아리 로고 3",
       title: "낙화 밴드 기타 추가모집",
       clubName: "밴드 낙화",
@@ -31,7 +31,7 @@ export default function ClubCardList() {
     {
       dDay: 3,
       clubImg: "/assets/home/main/4.svg",
-      logoSrc: "/assets/home/main/4Logo.svg/assets/home/main/4Logo.svg",
+      logoSrc: "/assets/home/main/4Logo.svg",
       logoAlt: "동아리 로고 3",
       title: "Tour de Force 4기 모집",
       clubName: "연합 봉사 동아리 our de Force",
