@@ -259,6 +259,7 @@ export default function QuestionItem({
       </div>
 
       {/*질문 하나일 때 에러 메시지 */}
+      {/*//fix: 근데 질문 하나 일 때만 보고 질문 안에 값이 있는지 여부를 못 봄.. 수정해야해*/}
       {totalQuestions === 1 &&
         errors &&
         ((section === "common" &&
