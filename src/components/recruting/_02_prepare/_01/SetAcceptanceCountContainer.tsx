@@ -5,9 +5,6 @@ import NumberSpinner from "./NumberSpinner";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
 
-//TODO: 폼 유효성 검사-> 그룹별 최종 합격 인원 총합과 전체 최종 합격 인원 일치하는지도..
-
-//2-1 합격 인원 설정 (컨테이너)
 export default function SetAcceptanceCountContainer() {
   const {
     control,
@@ -25,10 +22,11 @@ export default function SetAcceptanceCountContainer() {
         { documentPass: 0, finalPass: 0 }
       ]
     },
-    mode: "onBlur",
-    reValidateMode: "onChange" // 재검증도 값이 변경될 때마다 실행
+    mode: "onTouched",
+    reValidateMode: "onSubmit"
   });
 
+  const documentPassTotal = watch("documentPassTotal");
   const finalPassTotal = watch("finalPassTotal");
   const groups = watch("groups");
 
@@ -47,38 +45,107 @@ export default function SetAcceptanceCountContainer() {
           trigger(`groups.${index}.finalPass`);
         }
       });
+
+      if (touchedFields.documentPassTotal) {
+        trigger("documentPassTotal");
+      }
+
+      if (finalPassTotal > 0) {
+        groups.forEach((_, index) => {
+          trigger(`groups.${index}.finalPass`);
+        });
+      }
+
+      if (documentPassTotal > 0) {
+        groups.forEach((_, index) => {
+          trigger(`groups.${index}.documentPass`);
+        });
+      }
     }
-  }, [finalPassTotal, touchedFields.groups, groups, trigger]);
+  }, [
+    documentPassTotal,
+    finalPassTotal,
+    touchedFields.groups,
+    groups,
+    trigger,
+    touchedFields.documentPassTotal,
+    groups.reduce((sum, group) => sum + (group.documentPass || 0), 0),
+    groups.reduce((sum, group) => sum + (group.finalPass || 0), 0)
+  ]);
 
   const validateForm = {
     required: "필수 입력 사항입니다.",
-    //서류
     documentPassCheck: (value: number) => {
-      if (!touchedFields.documentPassTotal) return true; // 터치되지 않았으면 검증 스킵
+      if (!touchedFields.documentPassTotal) return true;
       if (!value) return "필수 입력 사항입니다.";
       if (value < finalPassTotal) {
         return "최종 합격 인원보다 적어요. 최종 합격 인원보다 많은 수로 조정해 주세요.";
       }
       return true;
     },
-    //그룹
-    groupFinalPassCheck: (value: number) => {
-      if (!touchedFields.groups) return true; // 터치되지 않았으면 검증 스킵
+    groupDocumentPassCheck: (value: number) => {
       if (!value) return "필수 입력 사항입니다.";
-      if (value > finalPassTotal) {
-        return "전체 최종 합격 인원을 초과했어요.";
+      if (!touchedFields.groups) return true;
+
+      const groupTotalDocumentPass = groups.reduce(
+        (sum, group) => sum + (group.documentPass || 0),
+        0
+      );
+      if (groupTotalDocumentPass !== documentPassTotal) {
+        return "전체 서류 합격 인원 수에 맞춰 설정해주세요.";
+      }
+      return true;
+    },
+    groupFinalPassCheck: (value: number, index: number) => {
+      if (!value) return "필수 입력 사항입니다.";
+      if (!touchedFields.groups) return true;
+
+      const groupTotalFinalPass = groups.reduce(
+        (sum, group) => sum + (group.finalPass || 0),
+        0
+      );
+      if (groupTotalFinalPass !== finalPassTotal) {
+        return "전체 최종 합격 인원 수에 맞춰 설정해주세요.";
       }
       return true;
     }
   };
 
-  //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
 
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
+      await trigger("documentPassTotal");
+      await trigger("finalPassTotal");
+      await trigger();
+      // 모든 그룹 필드 validation
+      for (let i = 0; i < groups.length; i++) {
+        await trigger(`groups.${i}.documentPass`);
+        await trigger(`groups.${i}.finalPass`);
+      }
+
+      // // validation 결과 확인
+      if (Object.keys(errors).length > 0) return;
+
+      const groupTotalDocumentPass = data.groups.reduce(
+        (sum, group) => sum + (group.documentPass || 0),
+        0
+      );
+      const groupTotalFinalPass = data.groups.reduce(
+        (sum, group) => sum + (group.finalPass || 0),
+        0
+      );
+
+      if (groupTotalDocumentPass !== data.documentPassTotal) {
+        return;
+      }
+
+      if (groupTotalFinalPass !== data.finalPassTotal) {
+        return;
+      }
+
       console.log("제출된 데이터:", data);
-      setStepCompleted(0, true); // 스텝투의 인덱스 0번을 완료 처리
+      setStepCompleted(0, true);
     } catch (error) {
       console.error("제출 중 에러 발생:", error);
     }
@@ -90,17 +157,16 @@ export default function SetAcceptanceCountContainer() {
       className="ml-8 w-full mt-[25px] mb-[147px]"
     >
       <div>
-        {/*서류 합격 인원 */}
         <div className="flex">
           <p className="section-title">
-            <span className="mr-[0.25em] text-main-100">*</span> 서류 합격 인원
+            <span className="mr-[0.25em] text-main-100">*</span>전체 서류 합격
+            인원
           </p>
-          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+          <div className="tooltip">서류 합격 인원을 설정해 주세요.</div>
         </div>
 
         <div className="pt-[16px]">
-          {/* 서류 합격 인원 input box*/}
-          <div className="relative h-[105px] bg-white-100 rounded-[12px]  ">
+          <div className="relative h-[105px] bg-white-100 rounded-[12px]">
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
                 className={`flex-center relative w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
@@ -120,7 +186,6 @@ export default function SetAcceptanceCountContainer() {
               </div>
               <p className="section-title pl-[11px]">명</p>
             </div>
-            {/*에러처리 */}
             {errors.documentPassTotal && (
               <p className="absolute top-[70px] left-[32px] text-red-100 font-medium text-[11px]">
                 {errors.documentPassTotal.message}
@@ -131,16 +196,15 @@ export default function SetAcceptanceCountContainer() {
       </div>
 
       <div className="mt-[34px]">
-        {/*전체 최종 합격 인원 */}
         <div className="flex">
           <p className="section-title">
             <span className="mr-[0.25em] text-main-100">*</span>
             전체 최종 합격 인원
           </p>
-          <div className="tooltip">우리 동아리의 인재상을 작성해 주세요..</div>
+          <div className="tooltip">최종 합격 인원을 설정해 주세요.</div>
         </div>
         <div className="pt-[16px]">
-          <div className="relative h-[105px] bg-white-100 rounded-[12px] ">
+          <div className="relative h-[105px] bg-white-100 rounded-[12px]">
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
                 className={`flex-center w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
@@ -153,13 +217,12 @@ export default function SetAcceptanceCountContainer() {
                   error={errors.finalPassTotal?.message}
                   rules={{
                     validate: (value: number) => {
-                      if (!touchedFields.finalPassTotal) return true; // 터치되지 않았으면 검증 스킵
+                      if (!touchedFields.finalPassTotal) return true;
                       if (!value || value <= 0) return "필수 입력 사항입니다";
                       return true;
                     }
                   }}
                 />
-                {/*에러처리 */}
                 {errors.finalPassTotal && (
                   <p className="absolute top-[42px] left-0 text-red-100 font-medium text-[11px]">
                     {errors.finalPassTotal.message}
@@ -172,12 +235,18 @@ export default function SetAcceptanceCountContainer() {
         </div>
       </div>
 
-      {/* 그룹별 합격 인원 */}
       <GroupPassCount
         control={control}
         errors={errors}
         rules={{
-          validate: validateForm.groupFinalPassCheck
+          documentPass: {
+            required: "필수 입력 사항입니다",
+            validate: validateForm.groupDocumentPassCheck
+          },
+          finalPass: {
+            required: "필수 입력 사항입니다",
+            validate: validateForm.groupFinalPassCheck
+          }
         }}
       />
       <div className="flex justify-center">

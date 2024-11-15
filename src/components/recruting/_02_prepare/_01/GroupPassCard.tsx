@@ -1,14 +1,6 @@
 import { Control, RegisterOptions } from "react-hook-form";
 import NumberSpinner from "./NumberSpinner";
 
-interface GroupPassCardProps {
-  control: Control<any>;
-  groupIndex: number;
-  groupName: string;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
 export default function GroupPassCard({
   control,
   groupIndex,
@@ -40,7 +32,7 @@ export default function GroupPassCard({
                 control={control}
                 name={`groups.${groupIndex}.documentPass`}
                 error={errors?.groups?.[groupIndex]?.documentPass?.message}
-                rules={rules}
+                rules={rules.documentPass}
               />
             </div>
             {/*에러처리 */}
@@ -73,7 +65,7 @@ export default function GroupPassCard({
                 control={control}
                 name={`groups.${groupIndex}.finalPass`}
                 error={errors?.groups?.[groupIndex]?.finalPass?.message}
-                rules={rules}
+                rules={rules.finalPass}
               />
             </div>
             {/*에러처리 */}

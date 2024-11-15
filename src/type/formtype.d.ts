@@ -61,6 +61,27 @@ declare interface Term {
   status: string;
 }
 
+//메인 홈 인기 있는 동아리
+declare interface PopularClubProps {
+  logoSrc: string;
+  logoAlt: string;
+  mainImageSrc: string;
+  clubType: string;
+  clubTitleFirst: string;
+  clubTitleSecond: string;
+  tags: string[];
+}
+
+//메인 홈 동아리 리스트
+declare interface ClubCardProps {
+  dDay: number;
+  logoSrc: string;
+  logoAlt: string;
+  title: string;
+  clubName: string;
+  tags: string[];
+}
+
 // 합격 인원 설정 Form
 declare interface SetAcceptanceCountFormData {
   documentPassTotal: number;
@@ -69,6 +90,20 @@ declare interface SetAcceptanceCountFormData {
     documentPass: number;
     finalPass: number;
   }[];
+}
+
+declare interface GroupPassCardProps {
+  control: Control<any>;
+  groupIndex: number;
+  groupName: string;
+  errors?: any;
+  rules?: RegisterOptions;
+}
+
+declare interface GroupPassCountProps {
+  control: Control<any>;
+  errors?: any;
+  rules?: RegisterOptions;
 }
 
 // 운영자 Type
@@ -132,6 +167,12 @@ declare interface TimeSlotAdmins {
 //2-5 질문 드롭다운 타입
 declare type QuestionType = "서술형 질문" | "객관형 질문";
 
+//2-5 객관형 질문들
+declare interface Option {
+  id: string;
+  value: string;
+}
+
 //2-5 질문들(서술형, 객관형) 정보 정의
 declare interface Question {
   id: string;
@@ -139,7 +180,7 @@ declare interface Question {
   question: string;
   hasWordLimit?: boolean; //서술형 질문의 글자 수 제한 여부
   wordLimit?: number; //서술형 질문의 글자 수 제한
-  options?: string[]; // 객관식 선택지
+  options: Option[]; // 객관형 질문의 객관식들
 }
 
 // 그룹별 질문 구조
