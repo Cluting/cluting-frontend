@@ -21,8 +21,8 @@ module.exports = {
       { allowConstantExport: true }
     ], // React 컴포넌트는 오직 컴포넌트만 내보내야 합니다.
 
-    indent: ["error", 2], // 들여쓰기 스타일 설정 (2칸 들여쓰기)
-
+    // indent: ["error", 2], // 들여쓰기 스타일 설정 (2칸 들여쓰기)
+    indent: "off",
     "no-unused-vars": "warn", // 사용하지 않는 변수 경고 끄기
 
     "@typescript-eslint/explicit-function-return-type": "warn",
@@ -30,6 +30,8 @@ module.exports = {
 
     "no-empty": "warn", // 빈 블록문에 대한 경고 설정
 
-    semi: ["error", "always"] // 세미콜론(;) 사용 강제 설정
+    semi: ["error", "always"], // 세미콜론(;) 사용 강제 설정
+
+    "@typescript-eslint/indent": "off"
   }
 };

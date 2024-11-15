@@ -1,199 +1,235 @@
 //2-5 지원서 폼 제작 및 공고 올리기 (컨테이너)
-import { ReactElement } from "react";
-import { useState, ChangeEvent, useEffect } from "react";
-import ApplicantProfile from "./ApplicantProfile";
-import { useGroupStore } from "../../../../store/useStore";
-import { v4 as uuidv4 } from "uuid";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 import {
+  useGroupStore,
   useRecruitmentStepStore,
   useStepTwoStore
 } from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
+import ApplicantProfile from "./ApplicantProfile";
 import StepCompleteModal from "../../common/StepCompleteModal";
+import QuestionItem from "./QuestionItem"; // 이 부분 추가
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
-
-  //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
-  // 1단계 완료 여부 처리
-  const isStepOneCompleted = completedSteps[0] || false;
-  const handleStepTwoSubmit = () => {
-    if (!isStepOneCompleted) {
-      setStepCompleteModalOpen(true); //완료 모달 열기
-    }
-  };
+  const titleRef = useRef<HTMLInputElement>(null);
+  const commonCautionRef = useRef<HTMLTextAreaElement>(null);
 
-  //완료 확인 모달
-  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
-  const handleCloseStepCompleteModal = () => {
-    setStepCompleteModalOpen(false);
-  };
-
-  const handleConfirmStepComplete = () => {
-    completeStep(1); //전체 2단계 완료 처리
-    setStepCompleted(4, true);
-    setStepCompleteModalOpen(false); // 모달 닫기
-  };
-
-  //그룹
+  const [applyGroupSelect, setApplyGroupSelect] = useState<string[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<string>(
     group[0]?.name || ""
   );
+  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
 
-  const handleGroupClick = (groupName: string) => {
-    setSelectedGroup(groupName);
+  const initialQuestion: Question = {
+    id: uuidv4(),
+    type: "서술형 질문",
+    question: "",
+    hasWordLimit: false,
+    wordLimit: 500,
+    options: [],
   };
 
-  const [openDropdowns, setOpenDropdowns] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const [commonQuestions, setCommonQuestions] = useState<
+    Record<string, Question>
+  >({
+    [initialQuestion.id]: initialQuestion,
+  });
 
-  const [groupQuestions, setGroupQuestions] = useState<Question[]>([
-    {
-      id: uuidv4(),
-      type: "서술형 질문",
-      question: "",
-      hasWordLimit: false,
-      wordLimit: 500,
-      options: [] //객관식 선택지
-    }
-  ]);
+  const [groupQuestions, setGroupQuestions] = useState<
+    Record<
+      string,
+      {
+        caution: string;
+        questions: Record<string, Question>;
+      }
+    >
+  >(
+    group.reduce(
+      (acc, g) => ({
+        ...acc,
+        [g.name]: {
+          caution: "",
+          questions: {
+            [uuidv4()]: { ...initialQuestion },
+          },
+        },
+      }),
+      {}
+    )
+  );
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitted }
+    formState: { errors, isSubmitted },
+    setValue,
+    getValues,
+    setError,
   } = useForm<CreateApplicationForm>({
-    mode: "onBlur",
     defaultValues: {
-      commonQuestions: {}, //빈 객체로 초기화
-      groupQuestions: {
-        [group[0]?.name]: {
-          // 첫 번째 그룹에 대한 초기값
-          questions: {},
-          caution: ""
-        }
-      }
-    }
+      title: "",
+      commonSection: {
+        caution: "",
+        questions: commonQuestions,
+      },
+      groupSections: groupQuestions,
+      portfolio: {
+        enabled: false,
+      },
+      multipleApplicationAllowed: false,
+    },
+    mode: "onBlur",
   });
 
-  const [commonQuestions, setCommonQuestions] = useState<Question[]>([
-    {
-      id: uuidv4(),
-      type: "서술형 질문",
-      question: "",
-      hasWordLimit: false,
-      wordLimit: 500,
-      options: [] //객관식 선택지
+  const handleStepTwoSubmit = () => {
+    if (!completedSteps[0]) {
+      setStepCompleteModalOpen(true);
     }
-  ]);
+  };
 
-  const handleSelectChange =
-    (id: string) => (e: ChangeEvent<HTMLSelectElement>) => {
-      const newQuestions = commonQuestions.map((question) =>
-        question.id === id
-          ? { ...question, type: e.target.value as QuestionType }
-          : question
-      );
-      setCommonQuestions(newQuestions);
-    };
+  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
-  const addNewQuestion = () => {
+  const handleConfirmStepComplete = () => {
+    completeStep(1);
+    setStepCompleted(4, true);
+    setStepCompleteModalOpen(false);
+  };
+
+  const handleGroupClick = (groupName: string) => setSelectedGroup(groupName);
+
+  const addQuestion = (section: "common" | string) => {
     const newQuestion: Question = {
       id: uuidv4(),
       type: "서술형 질문",
       question: "",
       hasWordLimit: false,
       wordLimit: 500,
-      options: []
-    };
-    setCommonQuestions([...commonQuestions, newQuestion]);
-  };
-
-  const onSubmit = (data: CreateApplicationForm) => {
-    console.log(data);
-  };
-
-  // useEffect 수정
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest(".relative")) {
-        setOpenDropdowns({});
-      }
+      options: [],
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  // 드롭다운 토글 함수 추가
-  const toggleDropdown = (questionId: string) => {
-    setOpenDropdowns((prev) => ({
-      ...prev,
-      [questionId]: !prev[questionId]
-    }));
-  };
-
-  //질문 삭제 함수
-  const deleteQuestion = (id: string) => {
-    if (commonQuestions.length > 1) {
-      setCommonQuestions(
-        commonQuestions.filter((question) => question.id !== id)
+    if (section === "common") {
+      setCommonQuestions((prev) => ({
+        ...prev,
+        [newQuestion.id]: newQuestion,
+      }));
+      setValue(`commonSection.questions.${newQuestion.id}`, newQuestion);
+    } else {
+      setGroupQuestions((prev) => ({
+        ...prev,
+        [section]: {
+          ...prev[section],
+          questions: {
+            ...prev[section].questions,
+            [newQuestion.id]: newQuestion,
+          },
+        },
+      }));
+      setValue(
+        `groupSections.${section}.questions.${newQuestion.id}`,
+        newQuestion
       );
     }
   };
 
-  // 객관형 질문 선택지 삭제 함수
-  const removeOption = (questionId: string, optionId: string) => {
-    setCommonQuestions((prevQuestions) =>
-      prevQuestions.map((q) => {
-        if (q.id === questionId) {
-          return {
-            ...q,
-            options: q.options.filter((opt) => opt.id !== optionId)
-          };
-        }
-        return q;
-      })
-    );
+  const deleteQuestion = (section: "common" | string, questionId: string) => {
+    if (section === "common") {
+      if (Object.keys(commonQuestions).length <= 1) return;
+      const newQuestions = { ...commonQuestions };
+      delete newQuestions[questionId];
+      setCommonQuestions(newQuestions);
+      const { [questionId]: _, ...rest } = getValues("commonSection.questions");
+      setValue("commonSection.questions", rest);
+    } else {
+      const sectionQuestions = groupQuestions[section].questions;
+      if (Object.keys(sectionQuestions).length <= 1) return;
+
+      setGroupQuestions((prev) => {
+        const newQuestions = { ...prev[section].questions };
+        delete newQuestions[questionId];
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            questions: newQuestions,
+          },
+        };
+      });
+      const { [questionId]: _, ...rest } = getValues(
+        `groupSections.${section}.questions`
+      );
+      setValue(`groupSections.${section}.questions`, rest);
+    }
   };
 
-  // // 엔터키 처리 함수
-  // const handleKeyDown = (
-  //   e: React.KeyboardEvent<HTMLInputElement>,
-  //   questionId: string
-  // ) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-  //     const inputValue = e.currentTarget.value;
+  const onSubmit = async (data: CreateApplicationForm) => {
+    try {
+      if (Object.keys(data.commonSection.questions).length === 0) {
+        setError("commonSection", {
+          type: "manual",
+          message: "최소 한 개의 공통 질문이 필요합니다.",
+        });
+        return;
+      }
 
-  //     setCommonQuestions((prevQuestions) =>
-  //       prevQuestions.map((q) => {
-  //         if (q.id === questionId) {
-  //           // 현재 input의 값을 options 배열에 추가
-  //           const newOption = { id: uuidv4(), value: inputValue };
-  //           // 빈 새 option도 추가
-  //           return {
-  //             ...q,
-  //             options: [...q.options, newOption, { id: uuidv4(), value: "" }]
-  //           };
-  //         }
-  //         return q;
-  //       })
-  //     );
-  //   }
-  // };
+      if (group.length > 0) {
+        for (const groupName of group.map((g) => g.name)) {
+          if (
+            Object.keys(data.groupSections[groupName].questions).length === 0
+          ) {
+            setError(`groupSections.${groupName}`, {
+              type: "manual",
+              message: "각 그룹별로 최소 한 개의 질문이 필요합니다.",
+            });
+            return;
+          }
+        }
+      }
+
+      console.log(data);
+      handleStepTwoSubmit();
+    } catch (error) {
+      console.error("Form submission error:", error);
+    }
+  };
 
   return (
     <form className="mb-[147px] w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
+      {/* 지원서 제목 */}
+      <div className="ml-8 w-full mt-[26px]">
+        <p className="section-title">
+          <span className="mr-[0.25em] text-main-100">*</span>지원서 제목
+        </p>
+        <div className="mt-[12px] h-auto py-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
+          <input
+            type="text"
+            alt="지원서 제목 입력"
+            placeholder="ex) OO 동아리 5기 지원"
+            className={`w-full h-[42px] pl-[21px] rounded-[8px] border outline-none focus:border-main-100 text-subheadline ${
+              errors.title ? "border-red-100" : "border-gray-500"
+            }`}
+            {...register("title", {
+              required: "필수 입력 사항입니다.",
+              onBlur: (e) => {
+                if (!e.target.value) {
+                  setError("title", {
+                    type: "manual",
+                    message: "필수 입력 사항입니다."
+                  });
+                }
+              }
+            })}
+          />
+          {errors.title?.message && (
+            <p className="text-state-error">{String(errors.title.message)}</p>
+          )}
+        </div>
       <div className={`${steps[4].completed ? "pointer-events-none" : ""}`}>
         {/*지원서 제목*/}
         <div className="ml-8 w-full mt-[26px]">
@@ -223,6 +259,33 @@ export default function CreateApplicationFormContainer(): ReactElement {
           <ApplicantProfile />
         </div>
 
+      {/* 지원 그룹 */}
+      {group.length > 0 && (
+        <div className="ml-8 w-full mt-[34px]">
+          <div className="flex">
+            <p className="section-title">지원 그룹</p>
+            <div className="tooltip">
+              미리 설정한 그룹에 따라 지원자들이 지원할 그룹을 선택합니다.
+            </div>
+          </div>
+          <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
+            <div className="flex items-left gap-[11px]">
+              {group.map((groupName) => (
+                <button
+                  key={groupName.name}
+                  type="button"
+                  className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout
+                    ${
+                      applyGroupSelect.includes(groupName.name)
+                        ? "bg-main-100 text-white-100 border-main-100"
+                        : "bg-white-100 text-[#43454F] border-gray-300 hover:bg-main-100 hover:text-white-100"
+                    }`}
+                  onClick={() => applyGroup(groupName.name)}
+                >
+                  {groupName.name}
+                </button>
+              ))}
+            </div>
         {/*지원 그룹 */}
         {group.length != 0 && (
           <div className="ml-8 w-full mt-[34px]">
@@ -245,6 +308,20 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 ))}
               </div>
 
+            <label className="flex items-center mt-[14px] text-subheadline text-gray-900">
+              <input
+                type="checkbox"
+                className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                {...register("multipleApplicationAllowed")}
+              />
+              다중 지원 가능
+              <span className="ml-[11px] text-main-100 text-caption3">
+                동아리 지원자는 2개 이상의 그룹으로 지원할 수 있습니다.
+              </span>
+            </label>
+          </div>
+        </div>
+      )}
               <label className="flex items-center items-left mt-[14px] text-subheadline text-gray-900">
                 <input
                   type="checkbox"
@@ -262,6 +339,14 @@ export default function CreateApplicationFormContainer(): ReactElement {
           </div>
         )}
 
+      {/* 공통 질문 섹션 */}
+      <div className="ml-8 w-full mt-[58px]">
+        <div className="flex">
+          <p className="section-title">
+            <span className="mr-[0.25em] text-main-100">*</span>공통 질문 만들기
+          </p>
+          <div className="tooltip">공통 질문을 작성해 주세요.</div>
+        </div>
         {/*공통 질문 만들기 */}
         <div className="ml-8 w-full mt-[58px]">
           <div className="flex">
@@ -272,6 +357,17 @@ export default function CreateApplicationFormContainer(): ReactElement {
             <div className="tooltip">공통 질문을 작성해 주세요.</div>
           </div>
 
+        <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
+          {/* 공통 질문 주의사항 */}
+          <p className="mb-[15px] text-title3 text-gray-1100 text-left">
+            공통 질문 관련 주의 사항
+          </p>
+          <input
+            type="text"
+            placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
+            className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
+            {...register("commonSection.caution")}
+          />
           <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
             <p className="mb-[15px] text-title3 text-gray-1100 text-left text-title3">
               공통 질문 관련 주의 사항
@@ -287,8 +383,55 @@ export default function CreateApplicationFormContainer(): ReactElement {
               {...register("commonQuestionCaution")}
             />
 
+          <div className="flex-center my-[42px] border border-gray-200" />
             <div className="flex-center my-[42px] border border-gray-200 "></div>
 
+          {/* 공통 질문 목록 */}
+          <p className="mb-[15px] text-title3 text-gray-1100 text-left">
+            공통 질문 추가하기
+          </p>
+          <div className="space-y-4">
+            {Object.values(commonQuestions).map((question) => (
+              <QuestionItem
+                key={question.id}
+                section="common"
+                question={question}
+                registerPath={`commonSection.questions.${question.id}`}
+                onTypeChange={handleQuestionTypeChange}
+                onDelete={deleteQuestion}
+                onAddOption={addOption}
+                onRemoveOption={removeOption}
+                register={register}
+                errors={errors}
+                isSubmitted={isSubmitted}
+                setError={setError}
+                totalQuestions={Object.keys(commonQuestions).length}
+              />
+            ))}
+          </div>
+
+          {/* 질문 추가 버튼 */}
+          <button
+            type="button"
+            className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
+            onClick={() => addQuestion("common")}
+          >
+            <div className="relative mr-2">
+              <img
+                alt="질문 추가 버튼"
+                src="/assets/ic-mainColorPlus.svg"
+                className="group-hover:opacity-0"
+              />
+              <img
+                alt="질문 추가 버튼"
+                src="/assets/ic-whiteColorPlus.svg"
+                className="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
+              />
+            </div>
+            질문 추가하기
+          </button>
+        </div>
+      </div>
             <p className="mb-[15px] text-title3 text-gray-1100 text-left">
               공통 질문 추가하기
             </p>
@@ -543,6 +686,15 @@ export default function CreateApplicationFormContainer(): ReactElement {
           </div>
         </div>
 
+      {/* 그룹별 질문 섹션 */}
+      {group.length > 0 && (
+        <div className="ml-8 w-full mt-[58px]">
+          <div className="flex">
+            <p className="section-title">
+              <span className="mr-[0.25em] text-main-100">*</span>그룹별 질문
+            </p>
+            <div className="tooltip">각 그룹별 질문을 작성해 주세요.</div>
+          </div>
         {/*그룹별 질문도.. 그룹 있을 때 들어감 */}
         {group.length != 0 && (
           <div
@@ -556,6 +708,27 @@ export default function CreateApplicationFormContainer(): ReactElement {
               <div className="tooltip">각 그룹별 질문을 작성해 주세요.</div>
             </div>
 
+          <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
+            {/* 그룹 선택 */}
+            <p className="text-title3 text-gray-1100 text-left">지원 그룹</p>
+            <div className="flex items-left mt-[11px] gap-[11px]">
+              {group.map((groupName) => (
+                <button
+                  key={groupName.name}
+                  type="button"
+                  className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout ${
+                    selectedGroup === groupName.name
+                      ? "bg-main-100 text-white-100 border-main-100"
+                      : "bg-white-100 text-[#43454F] border-gray-300 hover:bg-main-100 hover:text-white-100"
+                  }`}
+                  onClick={() => handleGroupClick(groupName.name)}
+                >
+                  {groupName.name}
+                </button>
+              ))}
+            </div>
+
+            <div className="flex-center my-[42px] border border-gray-200" />
             <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
               <p className="text-title3 text-gray-1100 text-left ">지원 그룹</p>
               <div className="flex items-left mt-[11px] gap-[11px]">
@@ -572,10 +745,75 @@ export default function CreateApplicationFormContainer(): ReactElement {
               </div>
               <div className="flex-center my-[42px] border border-gray-200 "></div>
 
+            {/* 그룹별 주의사항 */}
+            <p className="mb-[15px] text-title3 text-gray-1100 text-left">
+              '{selectedGroup}' 그룹 질문 관련 주의 사항
+            </p>
               <p className="mb-[15px] text-title3 text-gray-1100 text-left text-title3">
                 '{selectedGroup}' 그룹 질문 관련 주의 사항
               </p>
 
+            <input
+              type="text"
+              key={selectedGroup}
+              className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
+              placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
+              {...register(`groupSections.${selectedGroup}.caution`)}
+            />
+            <div className="flex-center my-[42px] border border-gray-200" />
+
+            {/* 그룹별 질문 목록 */}
+            <p className="mb-[15px] text-title3 text-gray-1100 text-left">
+              그룹별 질문 추가하기
+            </p>
+            <div className="space-y-4">
+              {Object.values(groupQuestions[selectedGroup].questions).map(
+                (question) => (
+                  <QuestionItem
+                    key={question.id}
+                    section={selectedGroup}
+                    question={question}
+                    registerPath={`groupSections.${selectedGroup}.questions.${question.id}`} // 추가
+                    onTypeChange={handleQuestionTypeChange}
+                    onDelete={deleteQuestion}
+                    onAddOption={addOption}
+                    onRemoveOption={removeOption}
+                    register={register}
+                    errors={errors}
+                    isSubmitted={isSubmitted}
+                    setError={setError}
+                    totalQuestions={
+                      Object.keys(groupQuestions[selectedGroup].questions)
+                        .length
+                    }
+                  />
+                )
+              )}
+            </div>
+
+            {/* 질문 추가 버튼 */}
+            <button
+              type="button"
+              className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
+              onClick={() => addQuestion(selectedGroup)}
+            >
+              <div className="relative mr-2">
+                <img
+                  alt="질문 추가 버튼"
+                  src="/assets/ic-mainColorPlus.svg"
+                  className="group-hover:opacity-0"
+                />
+                <img
+                  alt="질문 추가 버튼"
+                  src="/assets/ic-whiteColorPlus.svg"
+                  className="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
+                />
+              </div>
+              질문 추가하기
+            </button>
+          </div>
+        </div>
+      )}
               <textarea
                 className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none overflow-hidden"
                 placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
@@ -836,6 +1074,27 @@ export default function CreateApplicationFormContainer(): ReactElement {
           </div>
         )}
 
+      {/* 포트폴리오 섹션 */}
+      <div className="ml-8 w-full mt-[58px]">
+        <div className="flex items-center">
+          <p className="section-title">포트폴리오</p>
+          <label className="flex-center text-subheadline text-gray-900">
+            <input
+              type="checkbox"
+              className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+              {...register("portfolio.enabled")}
+            />
+            포트폴리오 받기
+          </label>
+        </div>
+        <div className="flex-center w-full min-h-[207px] mt-[12px] bg-white-100 rounded-[12px]">
+          {watch("portfolio.enabled") && (
+            <div className="tooltip">
+              이후 지원자의 저장된 포트폴리오를 불러옵니다.
+            </div>
+          )}
+        </div>
+      </div>
         {/*포트폴리오 */}
         <div className="ml-8 w-full mt-[58px]">
           <div className="flex items-center">
@@ -861,6 +1120,55 @@ export default function CreateApplicationFormContainer(): ReactElement {
           </div>
         </div>
 
+      {/*면접 시간 선택 */}
+      <div className="ml-8 w-full mt-[58px] mb-[50px]">
+        <div className="flex items-center">
+          <p className="section-title">면접 시간 선택</p>
+          <div className="tooltip">
+            앞서 정해진 면접 일정을 바탕으로, 지원자들이 면접 시간을 선택합니다.
+          </div>
+        </div>
+        <div className="w-full mt-[12px] px-[30px] py-[20.5px] bg-white-100 rounded-[12px]">
+          <div className="flex flex-col gap-[12px] py-[28px] px-[26px] bg-[#FBFBFF] rounded-[12px] border border-gray-300 text-caption1 text--gray-1100">
+            {/*이렇게 한 묶음 */}
+            <div className="flex">
+              <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
+                12일 화요일
+              </div>
+              <div className="flex gap-[7px]">
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+              </div>
+            </div>
+            {/*이렇게 한 묶음 */}
+            <div className="flex ">
+              <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
+                12일 화요일
+              </div>
+              <div className="flex gap-[7px]">
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+                <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
+                  10:00
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 하단 버튼 */}
         {/*면접 시간 선택 */}
         <div className="ml-8 w-full mt-[58px] mb-[50px]">
           <div className="flex items-center">
@@ -914,43 +1222,47 @@ export default function CreateApplicationFormContainer(): ReactElement {
         <button
           type="submit"
           onClick={handleStepTwoSubmit}
-          aria-label={
-            steps[4].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
-          }
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
             steps[4].completed
-              ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
-              : "bg-main-100 text-white-100 " //완료하기
-          }  text-body flex-center hover:bg-main-500`}
+              ? "bg-main-400 border border-main-100 text-main-100"
+              : "bg-main-100 text-white-100"
+          } text-body flex-center hover:bg-main-500`}
         >
           {steps[4].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
+
+      {/* 모달 */}
       {isStepCompleteModalOpen && (
         <StepCompleteModal
           onClose={handleCloseStepCompleteModal}
           onConfirm={handleConfirmStepComplete}
-          stepIndex={1} // 현재 단계 번호 전달 , index는 -1
+          stepIndex={1}
         />
       )}
 
-      {!steps[4].completed && (
+      {/* 하단 알림 */}
+      {!steps[4].completed ? (
         <div className="fixed animate-dropdown bottom-[16px]">
-          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
             우리 동아리에 지원하는 지원자의 입장으로 보고싶으신가요?
-            <button className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+            <button
+              type="button"
+              className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]"
+            >
               미리보기
             </button>
           </div>
         </div>
-      )}
-      {steps[4].completed && (
-        //TODO: 여기 수정합시댜
+      ) : (
         <div className="fixed animate-dropdown bottom-[16px]">
-          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
             모든 준비 단계가 완료되었습니다. 최종적으로 모집 공고를 업로드해
             주세요.
-            <button className="absolute right-[15px] bg-main-100 hover:bg-main-500 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+            <button
+              type="button"
+              className="absolute right-[15px] bg-main-100 hover:bg-main-500 text-white-100 py-[13px] px-[25px] rounded-[10px]"
+            >
               공고 올리기
             </button>
           </div>
