@@ -40,8 +40,13 @@ export default function AddAdminModal({ onClose }: AddAdminModalProps) {
 
           <button
             onClick={handleCopyLink}
-            className="mb-[30px] py-[9px] px-[30px] bg-gray-900 text-body text-gray-400 hover:text-white-100 rounded-[7px]"
+            className="flex-center mb-[30px] py-[9px] pr-[26px] button-main-bg hover:bg-main-500 text-body hover:text-white-100 rounded-[7px]"
           >
+            <img
+              src="/assets/ic-link.svg"
+              alt="링크 복사 아이콘"
+              className="w-[20px] h-[20px] mr-[7px] ml-[14px]"
+            />
             링크 복사
           </button>
 

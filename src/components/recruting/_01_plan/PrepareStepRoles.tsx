@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { DEFAULT_STEPS } from "../../../constants/recruting";
+import { useRecruitmentStepStore } from "../../../store/useStore";
 
 export default function PrepareStepRoles() {
   const [dropdown, setDropdown] = useState(false);
@@ -89,10 +90,15 @@ export default function PrepareStepRoles() {
     }
   };
 
+  //1단계 완료 여부
+  const { completedSteps } = useRecruitmentStepStore();
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full h-auto mt-[34px] ml-8 pt-[22px] pb-[38px] bg-white-100 rounded-[12px]"
+      className={`${
+        completedSteps[0] ? "pointer-events-none" : ""
+      } w-full h-auto mt-[34px] ml-8 pt-[22px] pb-[38px] bg-white-100 rounded-[12px]`}
     >
       <div className="ml-[22px] mr-[39px] flex justify-between">
         <div className="flex">

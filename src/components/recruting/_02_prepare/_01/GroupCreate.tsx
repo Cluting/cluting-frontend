@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useGroupStore } from "../../../../store/useStore";
+import {
+  useGroupStore,
+  useRecruitmentStepStore
+} from "../../../../store/useStore";
 
 // 1 - 계획하기 : 지원자 그룹 짓기
 export default function GroupCreate() {
@@ -54,8 +57,15 @@ export default function GroupCreate() {
     };
   }, []);
 
+  //1단계 완료 여부
+  const { completedSteps } = useRecruitmentStepStore();
+
   return (
-    <div className=" w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]">
+    <div
+      className={`${
+        completedSteps[0] ? "pointer-events-none" : ""
+      }  w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]`}
+    >
       <div className="flex items-center ml-8 my-4">
         <h1 className="text-callout">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">
