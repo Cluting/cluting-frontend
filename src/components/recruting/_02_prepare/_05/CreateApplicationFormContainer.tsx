@@ -2,7 +2,7 @@
 import { ReactElement } from "react";
 import { useState, ChangeEvent, useEffect } from "react";
 import ApplicantProfile from "./ApplicantProfile";
-import ApplicantGroup from "./ApplicationGroup";
+import { useGroupStore } from "../../../../store/useStore";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import GroupQuestion from "./GroupQuestion";
@@ -14,6 +14,8 @@ import { BUTTON_TEXT } from "../../../../constants/recruting";
 import StepCompleteModal from "../../common/StepCompleteModal";
 
 export default function CreateApplicationFormContainer(): ReactElement {
+  const { group } = useGroupStore();
+
   //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -138,27 +140,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     );
   };
 
-  // // 선택지 값 변경 처리 함수
-  // const handleOptionChange = (
-  //   questionId: string,
-  //   optionId: string,
-  //   value: string
-  // ) => {
-  //   setCommonQuestions((prevQuestions) =>
-  //     prevQuestions.map((q) => {
-  //       if (q.id === questionId) {
-  //         return {
-  //           ...q,
-  //           options: q.options.map((opt) =>
-  //             opt.id === optionId ? { ...opt, value } : opt
-  //           )
-  //         };
-  //       }
-  //       return q;
-  //     })
-  //   );
-  // };
-
   // 엔터키 처리 함수
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -213,8 +194,44 @@ export default function CreateApplicationFormContainer(): ReactElement {
         <ApplicantProfile />
       </div>
 
-      {/*지원 그룹이 있으면 지원 그룹 컴포넌트 들어가야함 */}
-      <ApplicantGroup />
+      {/*지원 그룹 */}
+      {group.length != 0 && (
+        <div className="ml-8 w-full mt-[34px]">
+          <div className="flex">
+            <p className="section-title">지원 그룹</p>
+            <div className="tooltip">
+              미리 설정한 그룹에 따라 지원자들이 지원할 그룹을 선택합니다.
+            </div>
+          </div>
+          <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
+            <div className="flex items-left gap-[11px]">
+              {group.map((groupName) => (
+                <button
+                  key={groupName.name}
+                  type="button"
+                  className="w-[225px] h-[50px] bg-white-100 border border-gray-300 rounded-[11px] flex-center text-callout text-[#43454F] hover:bg-main-100 hover:text-white-100"
+                >
+                  {groupName.name}
+                </button>
+              ))}
+            </div>
+
+            <label className="flex items-center items-left mt-[14px] text-subheadline text-gray-900">
+              <input
+                type="checkbox"
+                className="w-[18px] h-[18px] mr-2 cursor-pointer 
+            appearance-none
+            checked:bg-main-100 
+            border border-gray-300 rounded"
+              />
+              다중 지원 가능
+              <span className="ml-[11px] text-main-100 text-caption3">
+                동아리 지원자는 2개 이상의 그룹으로 지원할 수 있습니다.
+              </span>
+            </label>
+          </div>
+        </div>
+      )}
 
       {/*공통 질문 만들기 */}
       <div className="ml-8 w-full mt-[58px]">
@@ -229,10 +246,14 @@ export default function CreateApplicationFormContainer(): ReactElement {
           <p className="mb-[15px] text-title3 text-gray-1100 text-left text-title3">
             공통 질문 관련 주의 사항
           </p>
-          <input
-            className="flex items-center text-left w-full h-[42px] pl-[21px] rounded-[8px] border border-gray-500 text-subheadline outline-none focus:border-main-100"
-            placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를
-            유의해 주세요!"
+
+          <textarea
+            className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
+            placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
+            style={{ overflow: "hidden" }}
+            onInput={(e) =>
+              (e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`)
+            }
             {...register("commonQuestionCaution")}
           />
 
@@ -256,11 +277,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
                       <textarea
                         placeholder="질문을 작성해 주세요."
                         className="flex  leading-[18px] w-[541px] h-[42px] mr-[12px] py-[11px] px-[19px] rounded-[8px] border border-gray-200 outline-none focus:border-main-100 resize-none overflow-hidden"
-                        onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                          const target = e.currentTarget;
-                          target.style.height = "42px";
-                          target.style.height = `${target.scrollHeight}px`;
-                        }}
+                        onInput={(e) =>
+                          (e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`)
+                        }
                         {...register(
                           `commonQuestions.${question.id}.question`,
                           {
@@ -395,7 +414,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
                               alt="빈 체크박스"
                               className="mr-[13px]"
                             />
-                            <div className="flex items-center pl-[13px] w-[584px] h-[36px] pl-[13px] py-[10px] bg-white-100 border border-gray-200 rounded-[6px] text-caption1 outline-none">
+                            <div className="flex items-center pl-[13px] w-[584px] h-auto pl-[13px] pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1 outline-none">
                               {option.value}
                             </div>
                             <button
@@ -424,7 +443,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
                         <input
                           type="text"
                           placeholder="선택지 추가"
-                          className="flex w-[584px] h-[36px] pl-[13px] py-[10px] border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
+                          className="flex w-[584px] h-auto px-[13px] py-2 border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
                           onKeyDown={(e) => {
                             if (
                               e.key === "Enter" &&

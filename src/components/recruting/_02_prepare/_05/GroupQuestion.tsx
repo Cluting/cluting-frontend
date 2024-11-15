@@ -156,7 +156,7 @@ export default function GroupQuestion() {
           '{selectedGroup}' 그룹 질문 관련 주의 사항
         </p>
 
-        <input
+        <textarea
           className="flex items-center text-left w-full h-[42px] pl-[21px] rounded-[8px] border border-gray-500 text-subheadline outline-none focus:border-main-100"
           placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를
             유의해 주세요!"
@@ -182,11 +182,9 @@ export default function GroupQuestion() {
                   <textarea
                     placeholder="질문을 작성해 주세요."
                     className="flex  leading-[18px] w-[541px] h-[42px] mr-[12px] py-[11px] px-[19px] rounded-[8px] border border-gray-200 outline-none focus:border-main-100 resize-none overflow-hidden"
-                    onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                      const target = e.currentTarget;
-                      target.style.height = "42px";
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
+                    onInput={(e) =>
+                      (e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`)
+                    }
                     {...register(`commonQuestions.${question.id}.question`, {
                       required: "질문을 한 가지 이상 추가해 주세요."
                     })}
@@ -318,7 +316,7 @@ export default function GroupQuestion() {
                           alt="빈 체크박스"
                           className="mr-[13px]"
                         />
-                        <div className="flex items-center pl-[13px] w-[584px] h-[36px] pl-[13px] py-[10px] bg-white-100 border border-gray-200 rounded-[6px] text-caption1 outline-none">
+                        <div className="flex items-center pl-[13px] w-[584px] h-auto pl-[13px] pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1 outline-none">
                           {option.value}
                         </div>
                         <button
@@ -345,7 +343,7 @@ export default function GroupQuestion() {
                     <input
                       type="text"
                       placeholder="선택지 추가"
-                      className="flex w-[584px] h-[36px] pl-[13px] py-[10px] border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
+                      className="flex w-[584px] h-[36px] px-[13px] py-2 border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
                       onKeyDown={(e) => {
                         if (
                           e.key === "Enter" &&
