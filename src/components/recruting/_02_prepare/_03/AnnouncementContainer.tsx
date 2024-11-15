@@ -10,25 +10,27 @@ export default function AnnouncementContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
   return (
     <div className=" mb-[147px]">
-      <div className="flex items-center mx-8 my-4">
-        <h1 className="section-title">
-          {" "}
-          <span className="text-main-100 mr-[0.25em]">* </span>공고 세부 사항
-        </h1>
-        <div className=" ml-3 tooltip">우리 동아리의 공고를 작성해 주세요.</div>
-      </div>
-      <AnnouncementDetails />
-      <div className="flex items-center mx-8 my-4">
-        <h1 className="section-title">
-          {" "}
-          <span className="text-main-100 mr-[0.25em]">* </span>본문 작성
-        </h1>
-        <div className=" ml-3 tooltip ">
-          우리 동아리 공고의 본문을 작성해 주세요.
+      <div className={`${steps[2].completed ? "pointer-events-none" : ""}`}>
+        <div className="flex items-center mx-8 my-4">
+          <h1 className="section-title">
+            <span className="text-main-100 mr-[0.25em]">* </span>공고 세부 사항
+          </h1>
+          <div className=" ml-3 tooltip">
+            우리 동아리의 공고를 작성해 주세요.
+          </div>
         </div>
+        <AnnouncementDetails />
+        <div className="flex items-center mx-8 my-4">
+          <h1 className="section-title">
+            {" "}
+            <span className="text-main-100 mr-[0.25em]">* </span>본문 작성
+          </h1>
+          <div className=" ml-3 tooltip ">
+            우리 동아리 공고의 본문을 작성해 주세요.
+          </div>
+        </div>
+        <AnnouncementContent />
       </div>
-      <AnnouncementContent />
-
       <div className="flex justify-center">
         <button
           type="submit"

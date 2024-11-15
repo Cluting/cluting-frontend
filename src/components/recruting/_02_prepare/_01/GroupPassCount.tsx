@@ -1,6 +1,5 @@
-import { Control, RegisterOptions } from "react-hook-form";
 import GroupPassCard from "./GroupPassCard";
-import { useGroupStore } from "../../../../store/useStore";
+import { useGroupStore, useStepTwoStore } from "../../../../store/useStore";
 
 export default function GroupPassCount({
   control,
@@ -9,11 +8,13 @@ export default function GroupPassCount({
 }: GroupPassCountProps) {
   const { group } = useGroupStore();
 
+  //2-1 완료 여부
+  const { steps } = useStepTwoStore();
   //그룹 없을 시 렌더링 되지 않도록 처리
   if (group.length === 0) return null;
 
   return (
-    <div>
+    <div className={`${steps[0].completed ? "pointer-events-none" : ""}`}>
       <div className="pt-[34px]">
         <div className="flex">
           <p className="section-title">

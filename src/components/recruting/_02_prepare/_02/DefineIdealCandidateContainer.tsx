@@ -10,13 +10,14 @@ export default function DefineIdealCandidateContainer() {
 
   return (
     <div className=" mb-[147px]">
-      <div className="ml-8 w-full mt-[25px]">
-        <CommonIdeal />
-      </div>
-      <div className="ml-8 w-full mt-[25px]">
-        <GroupIdeal />
-      </div>
-      <div className="flex justify-center">
+      <div className={`${steps[1].completed ? "pointer-events-none" : ""}`}>
+        <div className=" ml-8 w-full mt-[25px]">
+          <CommonIdeal />
+        </div>
+        <div className=" ml-8 w-full mt-[25px]">
+          <GroupIdeal />
+        </div>
+        <div className=" flex justify-center"></div>
         <button
           type="submit"
           onClick={() => {

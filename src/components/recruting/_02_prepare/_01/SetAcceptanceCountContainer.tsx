@@ -165,7 +165,11 @@ export default function SetAcceptanceCountContainer() {
           <div className="tooltip">서류 합격 인원을 설정해 주세요.</div>
         </div>
 
-        <div className="pt-[16px]">
+        <div
+          className={`${
+            steps[0].completed ? "pointer-events-none" : ""
+          } pt-[16px]`}
+        >
           <div className="relative h-[105px] bg-white-100 rounded-[12px]">
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
@@ -195,7 +199,11 @@ export default function SetAcceptanceCountContainer() {
         </div>
       </div>
 
-      <div className="mt-[34px]">
+      <div
+        className={`${
+          steps[0].completed ? "pointer-events-none" : ""
+        } mt-[34px]`}
+      >
         <div className="flex">
           <p className="section-title">
             <span className="mr-[0.25em] text-main-100">*</span>
