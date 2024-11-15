@@ -17,7 +17,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
-  // refs for enter key handling
   const titleRef = useRef<HTMLInputElement>(null);
   const commonCautionRef = useRef<HTMLTextAreaElement>(null);
 
@@ -70,8 +69,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
     )
   );
 
-  // Form 설정
-  const form = useForm<CreateApplicationForm>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors, isSubmitted },
+    setValue,
+    getValues,
+    setError
+  } = useForm<CreateApplicationForm>({
     defaultValues: {
       title: "",
       commonSection: {
@@ -83,7 +90,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
         enabled: false
       },
       multipleApplicationAllowed: false
-    }
+    },
+    mode: "onBlur"
   });
 
   // 핸들러 함수들
@@ -103,16 +111,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   const handleGroupClick = (groupName: string) => setSelectedGroup(groupName);
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent,
-    nextRef?: React.RefObject<HTMLElement>
-  ) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      nextRef?.current?.focus();
-    }
-  };
-
   // 질문 관리 함수들
   const addQuestion = (section: "common" | string) => {
     const newQuestion: Question = {
@@ -129,7 +127,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
         ...prev,
         [newQuestion.id]: newQuestion
       }));
-      form.setValue(`commonSection.questions.${newQuestion.id}`, newQuestion);
+      setValue(`commonSection.questions.${newQuestion.id}`, newQuestion);
     } else {
       setGroupQuestions((prev) => ({
         ...prev,
@@ -141,7 +139,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
           }
         }
       }));
-      form.setValue(
+      setValue(
         `groupSections.${section}.questions.${newQuestion.id}`,
         newQuestion
       );
@@ -154,10 +152,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
       const newQuestions = { ...commonQuestions };
       delete newQuestions[questionId];
       setCommonQuestions(newQuestions);
-      const { [questionId]: _, ...rest } = form.getValues(
-        "commonSection.questions"
-      );
-      form.setValue("commonSection.questions", rest);
+      const { [questionId]: _, ...rest } = getValues("commonSection.questions");
+      setValue("commonSection.questions", rest);
     } else {
       const sectionQuestions = groupQuestions[section].questions;
       if (Object.keys(sectionQuestions).length <= 1) return;
@@ -173,10 +169,10 @@ export default function CreateApplicationFormContainer(): ReactElement {
           }
         };
       });
-      const { [questionId]: _, ...rest } = form.getValues(
+      const { [questionId]: _, ...rest } = getValues(
         `groupSections.${section}.questions`
       );
-      form.setValue(`groupSections.${section}.questions`, rest);
+      setValue(`groupSections.${section}.questions`, rest);
     }
   };
 
@@ -186,13 +182,13 @@ export default function CreateApplicationFormContainer(): ReactElement {
     newType: "서술형 질문" | "객관형 질문"
   ) => {
     const createNewQuestion = (oldQuestion: Question): Question => {
-      return newType === "서술형 질문"
+      return newType == "서술형 질문"
         ? {
             id: questionId,
             type: "서술형 질문",
             question: oldQuestion.question,
             hasWordLimit: false,
-            wordLimit: 500,
+            wordLimit: 5000,
             options: []
           }
         : {
@@ -310,7 +306,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const onSubmit = async (data: CreateApplicationForm) => {
     try {
       if (Object.keys(data.commonSection.questions).length === 0) {
-        form.setError("commonSection", {
+        setError("commonSection", {
           type: "manual",
           message: "최소 한 개의 공통 질문이 필요합니다."
         });
@@ -322,7 +318,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
           if (
             Object.keys(data.groupSections[groupName].questions).length === 0
           ) {
-            form.setError(`groupSections.${groupName}`, {
+            setError(`groupSections.${groupName}`, {
               type: "manual",
               message: "각 그룹별로 최소 한 개의 질문이 필요합니다."
             });
@@ -352,10 +348,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   }, []);
 
   return (
-    <form
-      className="mb-[147px] w-[1016px]"
-      onSubmit={form.handleSubmit(onSubmit)}
-    >
+    <form className="mb-[147px] w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
       {/* 지원서 제목 */}
       <div className="ml-8 w-full mt-[26px]">
         <p className="section-title">
@@ -367,26 +360,26 @@ export default function CreateApplicationFormContainer(): ReactElement {
             alt="지원서 제목 입력"
             placeholder="ex) OO 동아리 5기 지원"
             className={`w-full h-[42px] pl-[21px] rounded-[8px] border outline-none focus:border-main-100 text-subheadline ${
-              form.formState.isSubmitted && form.formState.errors.title
-                ? "border-red-100"
-                : "border-gray-500"
+              errors.title ? "border-red-100" : "border-gray-500"
             }`}
-            onKeyDown={(e) => handleKeyDown(e, commonCautionRef)}
-            {...form.register("title", {
+            {...register("title", {
               required: "필수 입력 사항입니다.",
               onBlur: (e) => {
+                if (!e.target.value) {
+                  setError("title", {
+                    type: "manual",
+                    message: "필수 입력 사항입니다."
+                  });
+                }
                 if (e.key === "Enter") {
                   commonCautionRef.current?.focus();
                 }
               }
             })}
           />
-          {form.formState.isSubmitted &&
-            form.formState.errors.title?.message && (
-              <p className="text-state-error">
-                {String(form.formState.errors.title.message)}
-              </p>
-            )}
+          {errors.title?.message && (
+            <p className="text-state-error">{String(errors.title.message)}</p>
+          )}
         </div>
 
         <ApplicantProfile />
@@ -407,7 +400,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 <button
                   key={groupName.name}
                   type="button"
-                  className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout 
+                  //에러 떠서 주석처리
+                  className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout
                     ${
                       selectedGroup === groupName.name
                         ? "bg-main-100 text-white-100 border-main-100"
@@ -424,7 +418,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
               <input
                 type="checkbox"
                 className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                {...form.register("multipleApplicationAllowed")}
+                {...register("multipleApplicationAllowed")}
               />
               다중 지원 가능
               <span className="ml-[11px] text-main-100 text-caption3">
@@ -449,21 +443,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
           <p className="mb-[15px] text-title3 text-gray-1100 text-left">
             공통 질문 관련 주의 사항
           </p>
-          {/* <textarea
-            className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
-            placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
-            style={{ overflow: "hidden" }}
-            onInput={(e) => {
-              e.currentTarget.style.height = "auto";
-              e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-            }}
-            {...form.register("commonSection.caution")}
-          /> */}
           <input
             type="text"
             placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
             className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
-            {...form.register("commonSection.caution")}
+            {...register("commonSection.caution")}
           />
 
           <div className="flex-center my-[42px] border border-gray-200" />
@@ -478,14 +462,14 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 key={question.id}
                 section="common"
                 question={question}
-                registerPath={`commonSection.questions.${question.id}`} // 추가
+                registerPath={`commonSection.questions.${question.id}`}
                 onTypeChange={handleQuestionTypeChange}
                 onDelete={deleteQuestion}
                 onAddOption={addOption}
                 onRemoveOption={removeOption}
-                register={form.register}
-                errors={form.formState.errors}
-                isSubmitted={form.formState.isSubmitted}
+                register={register}
+                errors={errors}
+                isSubmitted={isSubmitted}
               />
             ))}
           </div>
@@ -562,7 +546,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
               type="text"
               className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
               placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
-              {...form.register(`groupSections.${selectedGroup}.caution`)}
+              {...register(`groupSections.${selectedGroup}.caution`)}
             />
             <div className="flex-center my-[42px] border border-gray-200" />
 
@@ -582,9 +566,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
                     onDelete={deleteQuestion}
                     onAddOption={addOption}
                     onRemoveOption={removeOption}
-                    register={form.register}
-                    errors={form.formState.errors}
-                    isSubmitted={form.formState.isSubmitted}
+                    register={register}
+                    errors={errors}
+                    isSubmitted={isSubmitted}
                   />
                 )
               )}
@@ -622,13 +606,13 @@ export default function CreateApplicationFormContainer(): ReactElement {
             <input
               type="checkbox"
               className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-              {...form.register("portfolio.enabled")}
+              {...register("portfolio.enabled")}
             />
             포트폴리오 받기
           </label>
         </div>
         <div className="flex-center w-full min-h-[207px] mt-[12px] bg-white-100 rounded-[12px]">
-          {form.watch("portfolio.enabled") && (
+          {watch("portfolio.enabled") && (
             <div className="tooltip">
               이후 지원자의 저장된 포트폴리오를 불러옵니다.
             </div>
