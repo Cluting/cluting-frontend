@@ -163,49 +163,49 @@ declare interface TimeSlotAdmins {
   [timeSlot: string]: string[];
 }
 
-//2-5 질문 드롭다운 타입
-declare type QuestionType = "서술형 질문" | "객관형 질문";
-
-//2-5 객관형 질문들
-declare interface Option {
+//2-5
+declare interface BaseQuestion {
   id: string;
-  value: string;
-}
-
-//2-5 질문들(서술형, 객관형) 정보 정의
-declare interface Question {
-  id: string;
-  type: QuestionType;
   question: string;
-  hasWordLimit?: boolean; //서술형 질문의 글자 수 제한 여부
-  wordLimit?: number; //서술형 질문의 글자 수 제한
-  options: Option[]; // 객관형 질문의 객관식들
+  type: "서술형 질문" | "객관형 질문";
 }
 
-// 그룹별 질문 구조
-declare interface GroupQuestion {
+declare interface DescriptiveQuestion extends BaseQuestion {
+  type: "서술형 질문";
+  hasWordLimit: boolean;
+  wordLimit: number;
+  options: [];
+}
+
+declare interface MultipleChoiceQuestion extends BaseQuestion {
+  type: "객관형 질문";
+  hasWordLimit?: never; // 객관형은 글자수 제한 사용 안 함
+  wordLimit?: never;
+  options: Array<{
+    id: string;
+    value: string;
+  }>;
+}
+
+declare type Question = DescriptiveQuestion | MultipleChoiceQuestion;
+
+declare interface QuestionSection {
   caution: string;
-  questions: {
-    [questionId: string]: Question;
-  };
+  questions: Record<string, Question>;
 }
 
-//2-5 지원서 폼 제작 Form
 declare interface CreateApplicationForm {
   title: string;
-  commonQuestionCaution: string;
-  commonQuestions: {
-    [questionId: string]: Question;
+  commonSection: {
+    caution: string;
+    questions: Record<string, Question>;
   };
-
-  // 그룹별 질문 섹션
-  groupQuestionCaution: string;
-  groupQuestions: {
-    [groupName: string]: GroupQuestion;
+  groupSections: Record<string, QuestionSection>;
+  portfolio: {
+    enabled: boolean;
+    requirements?: string;
   };
-
-  // 포트폴리오 섹션
-  hasPortfolio: boolean;
+  multipleApplicationAllowed: boolean;
 }
 
 //3-1 group+admin 배열

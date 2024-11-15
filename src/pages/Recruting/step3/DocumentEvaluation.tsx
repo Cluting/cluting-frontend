@@ -3,7 +3,6 @@ import DocumentReviewPrepContainer from "../../../components/recruting/_03_docum
 import TopSection from "../../../components/recruting/_03_document_evaluation/common/TopSection";
 //임시로 넣어놨어요
 import CreateApplicationFormContainer from "../../../components/recruting/_02_prepare/_05/CreateApplicationFormContainer";
-
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import { useStepTwoStore } from "../../../store/useStore";
 
