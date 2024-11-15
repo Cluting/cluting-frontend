@@ -97,11 +97,11 @@ export default function PrepareStepRoles() {
       <div className="ml-[22px] mr-[39px] flex justify-between">
         <div className="flex">
           <p className="section-title">
-            <span className="mr-[0.25em] text-main-100">*</span>면접관 일정
-            확인하기 역할 분담
+            <span className="mr-[0.25em] text-main-100">*</span>모집 준비하기
+            역할 분담
           </p>
           <div className="tooltip">
-            면접에 들어갈 면접관 수에 맞게 클릭해 확정해 주세요.
+            모집 준비하기의 세부 단계에 따른 역할을 분담해 주세요.
           </div>
         </div>
 

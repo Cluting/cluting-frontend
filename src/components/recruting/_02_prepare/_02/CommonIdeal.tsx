@@ -1,46 +1,41 @@
-import React, { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
-// import CompleteButton from "../../CompleteButton";
+import React, { useRef } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+
+type CommonIdeal = {
+  id: number;
+  text: string;
+};
+
+type CommonIdealForm = {
+  commonIdeals: { text: string }[];
+};
 
 export default function CommonIdeal() {
-  const [commonIdeals, setCommonIdeals] = useState<CommonIdeal[]>([]);
-  const [value, setValue] = useState<string>("");
-  const [showInput, setShowInput] = useState<boolean>(true);
-  const nextId = useRef<number>(1);
-
   const {
     register,
+    control,
     handleSubmit,
-    formState: { errors } //isSubmitting
+    formState: { errors }
   } = useForm<CommonIdealForm>({
+    defaultValues: { commonIdeals: [{ text: "" }] },
     mode: "onBlur"
   });
 
-  const onInsert = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (value.trim()) {
-      const ideal = {
-        id: nextId.current,
-        text: value
-      };
-      setCommonIdeals([...commonIdeals, ideal]);
-      setValue("");
-      setShowInput(false);
-      nextId.current += 1;
-    }
-  };
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "commonIdeals"
+  });
 
-  const onRemove = (id: number) => {
-    setCommonIdeals(commonIdeals.filter((ideal) => ideal.id !== id));
-  };
+  const nextId = useRef<number>(1);
 
   const onSubmit = handleSubmit((data) => {
-    const formData = {
-      ...data,
-      commonIdeals
-    };
-    console.log(formData);
+    console.log("Form Data:", data);
   });
+
+  const addInputField = () => {
+    append({ text: "" });
+    nextId.current += 1;
+  };
 
   return (
     <form onSubmit={onSubmit}>
@@ -51,68 +46,49 @@ export default function CommonIdeal() {
         <div className="tooltip">각 그룹별 인재상을 작성해 주세요.</div>
       </div>
 
-      <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px] ">
-        {/* 인재상 목록 */}
-        <div className="px-[30px]">
-          {commonIdeals.map((ideal) => (
-            <div
-              key={ideal.id}
-              className="mt-[14px] py-[11px] pl-[21px] pr-[53px] bg-white-100 rounded-[8px] border border-gray-500 text-[15px] font-medium flex justify-between items-center"
-            >
-              <span className="text-gray-1100">{ideal.text}</span>
-              <button
-                type="button"
-                onClick={() => onRemove(ideal.id)}
-                aria-label={`${ideal.text} 삭제하기`}
-                className="flex-center bg-gray-100 rounded-full w-4 h-4 text-gray-500 hover:text-red-500"
-              >
-                -
-              </button>
-            </div>
-          ))}
-        </div>
-
+      <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px]">
         {/* 인재상 입력 */}
         <div className="px-[30px]">
-          {showInput && (
-            <input
-              {...register("commonIdeals", {
-                required: "필수 입력 사항입니다."
-              })}
-              className={`w-full mt-[14px] py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
-                errors.commonIdeals && commonIdeals.length === 0
-                  ? "border-red-100"
-                  : "border-gray-500"
-              }`}
-              type="text"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  onInsert(e);
-                }
-              }}
-              placeholder="인재상을 작성해 주세요."
-            />
-          )}
-
-          {errors.commonIdeals && commonIdeals.length === 0 && (
-            <p className="text-state-error">{errors.commonIdeals.message}</p>
-          )}
+          {fields.map((field, index) => (
+            <>
+              <div key={field.id} className="flex items-center mt-4">
+                <input
+                  {...register(`commonIdeals.${index}.text`, {
+                    required: "필수 입력 사항입니다."
+                  })}
+                  className={`w-full py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
+                    errors.commonIdeals?.[index]?.text
+                      ? "border-red-100"
+                      : "border-gray-500"
+                  }`}
+                  placeholder="인재상을 작성해 주세요."
+                />
+                <button
+                  type="button"
+                  onClick={() => remove(index)}
+                  aria-label="인재상 삭제하기"
+                  className="absolute right-16 ml-2 flex-center bg-gray-100 rounded-full w-[16px] h-[16px] text-gray-500 hover:text-red-500"
+                >
+                  -
+                </button>
+              </div>
+              {errors.commonIdeals?.[index]?.text && (
+                <div className="w-full text-state-error mt-[4px] ">
+                  {errors.commonIdeals?.[index]?.text?.message}
+                </div>
+              )}
+            </>
+          ))}
 
           <button
             type="button"
-            onClick={() => setShowInput(true)}
+            onClick={addInputField}
             className="w-full mt-[14px] py-[11px] px-[14.55px] bg-gray-100 rounded-[8px] border border-gray-500 outline-none text-[15px] font-semibold text-left text-gray-700"
           >
             + 인재상 추가하기
           </button>
         </div>
       </div>
-      {/* <div className="flex-center mt-[50px]">
-        <CompleteButton isSubmitting={isSubmitting} />
-      </div> */}
     </form>
   );
 }

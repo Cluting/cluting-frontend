@@ -148,12 +148,11 @@ declare interface GroupIdealForm {
 declare interface GroupIdeals {
   [groupName: string]: {
     ideals: GroupIdeal[];
-    showInput: boolean;
-    value: string;
+    showInput: boolean[];
+    value: string[];
     nextId: number;
   };
 }
-
 //임원진 일정 Form
 declare interface AdminsScheduleFormData {
   scheduleData: TimeSlotAdmins;

@@ -117,7 +117,11 @@ export default function TimeSlot() {
             />
             <button
               onClick={handleApplyTimeSettings}
-              className="button-main-bg py-[7px] px-[24px] rounded-[12px]"
+              className={` py-[7px] px-[24px] rounded-[12px] text-white-100  ${
+                interviewStartDate && interviewEndDate && startTime && endTime
+                  ? " button-main-bg cursor-pointer"
+                  : "bg-gray-500 cursor-not-allowed"
+              }`}
             >
               적용하기
             </button>

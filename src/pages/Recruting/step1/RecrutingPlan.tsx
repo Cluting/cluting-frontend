@@ -7,9 +7,14 @@ import RecrutingCalenderPicker from "../../../components/recruting/_02_prepare/_
 import { BUTTON_TEXT } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 import StepCompleteModal from "../../../components/recruting/common/StepCompleteModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function RecrutingPlan() {
+  // 페이지 로드 시 가장 위로 스크롤 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
   // 1단계 완료 여부 처리

@@ -49,7 +49,7 @@ export default function LoginContainer() {
         </div>
         <button
           aria-label="로그인"
-          className="bg-main-100 text-white-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100"
+          className="bg-main-100 hover:bg-main-500 text-white-100 w-[404px] h-[56px] rounded-[8px] text-body mt-[50px] text-white-100"
         >
           로그인
         </button>
