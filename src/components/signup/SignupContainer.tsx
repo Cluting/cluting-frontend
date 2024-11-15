@@ -189,7 +189,7 @@ export default function SignupContainer() {
 
         <button
           type="submit"
-          className="bg-main-100 text-white-100 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
+          className="bg-main-100 hover:bg-main-500 text-white-100 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
         >
           회원가입
         </button>

@@ -131,7 +131,7 @@ export const DEFAULT_STEPS: Step[] = [
 ];
 
 export const CALENDAR_ITEMS = [
-  "지원자 준비 기간",
+  "리크루팅 준비 기간",
   "공고 업로드",
   "모집 기간",
   "서류 평가 기간",

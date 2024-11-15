@@ -63,3 +63,15 @@ declare interface InterviewFormatStore {
   setInterviewEndDate: (date: Date) => void;
   applyTimeSettings: () => void; // 시간 설정 적용 함수
 }
+
+//동아리 기수
+declare interface RecruitmentSessionStore {
+  sessionNumber: string; // 현재 기수
+  setSessionNumber: (session: string) => void; // 기수를 설정하는 함수
+}
+
+//리크루팅 시작 여부
+declare interface RecruitmentStartStore {
+  isRecruitingStarted: boolean; // 리크루팅 시작 여부
+  startRecruiting: () => void; // 리크루팅 시작 메서드
+}

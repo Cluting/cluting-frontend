@@ -37,8 +37,19 @@ export default function UploadProfile<T extends FieldValues>({
     <button
       type="button"
       onClick={handleClick}
-      className="flex-center flex-col w-[150px] h-[150px] my-8 bg-white-0 border border-gray-500 text-gray-500 rounded-full cursor-pointer"
+      className="relative flex-center flex-col w-[150px] h-[150px] my-8 bg-white-0  text-gray-500 rounded-full cursor-pointer"
     >
+      <img
+        src="/assets/ic-profile.svg"
+        alt="프로필 사진"
+        className="w-full h-full object-cover rounded-full"
+      />
+      <img
+        src="/assets/ic-profile-edit.svg"
+        alt="프로필 사진 수정"
+        className="absolute w-[34px] h-[34px] bottom-0 right-0"
+      />
+
       {previewUrl ? (
         <img
           src={previewUrl}
@@ -47,7 +58,6 @@ export default function UploadProfile<T extends FieldValues>({
         />
       ) : (
         <div>
-          {" "}
           <input
             {...register(name)}
             ref={fileInputRef}
@@ -56,7 +66,6 @@ export default function UploadProfile<T extends FieldValues>({
             onChange={handleImageChange}
             style={{ display: "none" }}
           />
-          프로필 사진 추가
         </div>
       )}
     </button>
