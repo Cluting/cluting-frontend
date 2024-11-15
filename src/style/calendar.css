@@ -4,6 +4,7 @@
   font-family: "Pretendard";
   border-radius: 12px;
   border: 1px solid #b9bed3;
+  z-index: 2;
 }
 /* 헤더 높이와 여백 조정 */
 .fc-toolbar.fc-header-toolbar {

@@ -148,8 +148,8 @@ declare interface GroupIdealForm {
 declare interface GroupIdeals {
   [groupName: string]: {
     ideals: GroupIdeal[];
-    showInput: boolean[];
-    value: string[];
+    showInput: boolean;
+    value: string;
     nextId: number;
   };
 }

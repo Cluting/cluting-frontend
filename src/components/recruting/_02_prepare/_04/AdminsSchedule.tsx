@@ -19,7 +19,16 @@ export default function AdminsSchedule() {
   // 각 시간대별 선택된 면접관을 관리하는 상태
   const [timeSlotAdmins, setTimeSlotAdmins] = useState<TimeSlotAdmins>({});
 
-  const { interviewStartTime, interviewEndTime } = useInterviewStore();
+  //면접 기간
+  const {
+    interviewStartTime,
+    interviewEndTime,
+    interviewStartDate,
+    interviewEndDate
+  } = useInterviewStore();
+  const [currentDate, setCurrentDate] = useState<Date>(
+    new Date(interviewStartDate)
+  );
 
   // 1시간 간격의 시간 배열 생성
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
@@ -98,6 +107,25 @@ export default function AdminsSchedule() {
       : true;
   };
 
+  //면접 기간 이전, 다음 화살표 클릭 시 이벤트 핸들러
+  //FIX: 날짜가 넘어가는 건 되는데 날짜 별로 가능한 면접 시간이 저장되진 않음
+  //TODO: 날짜 바꿔서 가능한 면접 시간 선택한 거 반영되도록
+  const goToPreviousDate = () => {
+    setCurrentDate((prev) => {
+      const newDate = new Date(prev);
+      newDate.setDate(newDate.getDate() - 1);
+      return newDate;
+    });
+  };
+
+  const goToNextDate = () => {
+    setCurrentDate((prev) => {
+      const newDate = new Date(prev);
+      newDate.setDate(newDate.getDate() + 1);
+      return newDate;
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="ml-8 w-full mt-[34px]">
@@ -112,17 +140,31 @@ export default function AdminsSchedule() {
               ${isSubmitted && errors.scheduleData ? "border-red-100" : "border-gray-300"}`}
             >
               <div className="flex-center bg-gray-200 border-b-[#C7C7CC rounded-t-[12px] pt-[15px] pb-[14px] text-headline">
-                <img
-                  src="/assets/ic-prevDate.svg"
-                  alt="이전 날짜"
-                  className="mr-[6px]"
-                />
-                <p>10월 13일 월요일</p> {/*날짜*/}
-                <img
-                  src="/assets/ic-nextDate.svg"
-                  alt="다음 날짜"
-                  className="ml-[6px]"
-                />
+                {currentDate > new Date(interviewStartDate) && (
+                  <button type="button" onClick={goToPreviousDate}>
+                    <img
+                      src="/assets/ic-prevDate.svg"
+                      alt="이전 날짜"
+                      className="mr-[6px]"
+                    />
+                  </button>
+                )}
+                <p>
+                  {currentDate.toLocaleDateString("ko-KR", {
+                    month: "long", // '11' -> '11월'
+                    day: "numeric", // '6'
+                    weekday: "long" // '월' -> '월요일'
+                  })}
+                </p>
+                {currentDate < new Date(interviewEndDate) && (
+                  <button type="button" onClick={goToNextDate}>
+                    <img
+                      src="/assets/ic-nextDate.svg"
+                      alt="다음 날짜"
+                      className="ml-[6px]"
+                    />
+                  </button>
+                )}
               </div>
               <div className="pt-2 pb-[10px] pl-[11px]">
                 <input
@@ -171,7 +213,7 @@ export default function AdminsSchedule() {
             )}
           </div>
 
-          <button type="submit">임시 제출 버튼</button>
+          {/* <button type="submit">임시 제출 버튼</button> */}
         </div>
       </div>
     </form>
