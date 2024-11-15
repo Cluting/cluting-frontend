@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { UseFormRegister, FieldErrors, Path } from "react-hook-form";
 
 interface QuestionItemProps {
@@ -8,7 +8,7 @@ interface QuestionItemProps {
     section: string,
     questionId: string,
     newType: "서술형 질문" | "객관형 질문"
-  ) => void; // 여기 타입이 달랐네요
+  ) => void;
   onDelete: (section: string, questionId: string) => void;
   onAddOption: (section: string, questionId: string, value: string) => void;
   onRemoveOption: (
@@ -22,7 +22,7 @@ interface QuestionItemProps {
   isSubmitted: boolean;
 }
 
-const QuestionItem = ({
+export default function QuestionItem({
   section,
   question,
   onTypeChange,
@@ -33,8 +33,21 @@ const QuestionItem = ({
   registerPath,
   errors,
   isSubmitted
-}: QuestionItemProps) => {
+}: QuestionItemProps): ReactElement {
   const [newOption, setNewOption] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest(".relative")) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div
@@ -56,41 +69,69 @@ const QuestionItem = ({
             {...register(
               (registerPath + ".question") as Path<CreateApplicationForm>,
               {
-                required: "질문을 입력해주세요."
+                required: "필수 입력 사항입니다."
               }
             )}
           />
 
-          <button
-            type="button"
-            onClick={() =>
-              onTypeChange(
-                section,
-                question.id,
-                question.type === "서술형 질문" ? "객관형 질문" : "서술형 질문"
-              )
-            }
-          >
-            {question.type === "서술형 질문" ? (
-              <div className="flex items-center">
-                <img
-                  src="/assets/ic-descriptive.svg"
-                  alt=""
-                  className="w-5 h-5 mr-[11px]"
-                />
-                <span>서술형 질문</span>
-              </div>
-            ) : (
-              <div className="flex items-center">
-                <img
-                  src="/assets/ic-multiple.svg"
-                  alt=""
-                  className="w-5 h-5 mr-[11px]"
-                />
-                <span>객관형 질문</span>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-[247px] h-[42px] pl-[21px] rounded-[8px] bg-white-100 border border-gray-200"
+            >
+              {question.type === "서술형 질문" ? (
+                <div className="flex items-center">
+                  <img
+                    src="/assets/ic-descriptive.svg"
+                    alt=""
+                    className="w-5 h-5 mr-[11px]"
+                  />
+                  <span>서술형 질문</span>
+                  <img
+                    src="/assets/ic-toggleButton.svg"
+                    className="ml-[99px]"
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center">
+                  <img
+                    src="/assets/ic-multiple.svg"
+                    alt=""
+                    className="w-5 h-5 mr-[11px]"
+                  />
+                  <span>객관형 질문</span>
+                  <img
+                    src="/assets/ic-toggleButton.svg"
+                    className="ml-[99px]"
+                  />
+                </div>
+              )}
+            </button>
+
+            {isDropdownOpen && (
+              <div className="absolute z-50 w-full mt-1 px-2 py-2 bg-white-100 border border-gray-200 rounded-[8px]">
+                <button
+                  className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
+                  onClick={() => {
+                    onTypeChange(section, question.id, "서술형 질문");
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  서술형 질문
+                </button>
+                <button
+                  className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
+                  onClick={() => {
+                    onTypeChange(section, question.id, "객관형 질문");
+                    setIsDropdownOpen(false);
+                  }}
+                >
+                  객관형 질문
+                </button>
               </div>
             )}
-          </button>
+          </div>
         </div>
 
         <button
@@ -186,6 +227,4 @@ const QuestionItem = ({
       )}
     </div>
   );
-};
-
-export default QuestionItem;
+}

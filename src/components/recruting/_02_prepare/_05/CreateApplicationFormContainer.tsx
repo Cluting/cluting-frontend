@@ -25,9 +25,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     group[0]?.name || ""
   );
   const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
-  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>(
-    {}
-  );
 
   // 초기 질문
   const initialQuestion: Question = {
@@ -334,19 +331,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
   };
 
-  // Click outside handler
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest(".relative")) {
-        setOpenDropdowns({});
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <form className="mb-[147px] w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
       {/* 지원서 제목 */}
@@ -400,7 +384,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 <button
                   key={groupName.name}
                   type="button"
-                  //에러 떠서 주석처리
                   className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout
                     ${
                       selectedGroup === groupName.name
@@ -533,15 +516,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
             <p className="mb-[15px] text-title3 text-gray-1100 text-left">
               '{selectedGroup}' 그룹 질문 관련 주의 사항
             </p>
-            {/* <textarea
-              className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
-              placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
-              onInput={(e) => {
-                e.currentTarget.style.height = "auto";
-                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-              }}
-              {...form.register(`groupSections.${selectedGroup}.caution`)}
-            /> */}
+
             <input
               type="text"
               className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
