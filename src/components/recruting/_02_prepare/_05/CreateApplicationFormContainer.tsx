@@ -366,9 +366,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
                     message: "필수 입력 사항입니다."
                   });
                 }
-                if (e.key === "Enter") {
-                  commonCautionRef.current?.focus();
-                }
               }
             })}
           />
