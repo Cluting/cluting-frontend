@@ -75,7 +75,7 @@ export default function TimeSlot() {
           {caption}
         </p>
       )}
-      <div className="flex gap-[150px]">
+      <div className="flex justify-between">
         <div className="flex items-center gap-[14px]">
           <div className="bg-gray-100 rounded-[8px] px-3 py-[7px] text-subheadline text-gray-800">
             면접 기간
