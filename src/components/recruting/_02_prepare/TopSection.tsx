@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { STEP2_ITEMS } from "../../../constants/recruting";
-import {
-  useRecruitmentStepStore,
-  useStepTwoStore
-} from "../../../store/useStore";
+import { useStepTwoStore } from "../../../store/useStore";
 import AddAdmin from "../home/AddAdmin";
 
 export default function TopSection() {
-  const { currentStep, setCurrentStep } = useStepTwoStore();
-  const { currentRecruitmentStep, setCurrentRecruitmentStep } =
-    useRecruitmentStepStore(); //전체 스텝
+  const { currentStep, setCurrentStep, steps } = useStepTwoStore();
   //TODO: 이 섹션에서 전체 스텝 2로 설정하기
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAdmin, setShowAdmin] = useState(false); //권한자 보기 드롭다운
@@ -53,7 +48,7 @@ export default function TopSection() {
         {STEP2_ITEMS.map((item, index) => (
           <div key={index} className="flex items-center">
             <div
-              className={`w-[174px] h-[64px] flex-center mx-[6px] px-[28px] rounded-[8px] text-subheadline ${
+              className={`relative w-[174px] h-[64px] flex-center ${steps[index].completed ? "mr-[6px] pr-[20px]" : "px-[28px]"} rounded-[8px] text-subheadline ${
                 currentStep === index
                   ? "bg-main-100 text-white-100"
                   : "bg-main-300 text-gray-900"
@@ -62,6 +57,13 @@ export default function TopSection() {
               onMouseLeave={handleMouseLeave}
               onClick={() => handleItemClick(index)} // 클릭 시 단계 변경
             >
+              {steps[index].completed && (
+                <img
+                  src="/assets/ic-step2-complete.svg"
+                  alt="완료 아이콘"
+                  className="w-[16px] h-[16px] ml-[11px] mr-[8px]"
+                />
+              )}
               {item}
             </div>
             {index < STEP2_ITEMS.length - 1 && (

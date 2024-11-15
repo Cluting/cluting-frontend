@@ -11,7 +11,7 @@ export default function SetAcceptanceCountContainer() {
     handleSubmit,
     watch,
     trigger,
-    formState: { errors, isSubmitting, touchedFields }
+    formState: { errors, touchedFields }
   } = useForm<SetAcceptanceCountFormData>({
     defaultValues: {
       documentPassTotal: 0,
