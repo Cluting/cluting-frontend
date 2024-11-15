@@ -3,6 +3,10 @@
 import { useForm } from "react-hook-form";
 import { ModalPortal } from "../../common/ModalPortal";
 import { ERROR_MESSAGES } from "../../../constants/recruting";
+import {
+  useRecruitmentSessionStore,
+  useRecruitmentStartStore
+} from "../../../store/useStore";
 
 type RecrutingStartModalProps = {
   onClose: () => void;
@@ -14,12 +18,19 @@ export default function RecrutingStartModal({
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    watch
   } = useForm<RecrutingStartFormValue>({ mode: "onChange" });
+
+  const selectedInterviewType = watch("interviewType");
+  const { setSessionNumber } = useRecruitmentSessionStore();
+  const { startRecruiting } = useRecruitmentStartStore();
 
   const onSubmit = handleSubmit((data) => {
     console.log(data);
-    //TODO: 하단 유도바만 사라지도록
+    setSessionNumber(data.sessionNumber); // 동아리 기수 Store에 반영
+    startRecruiting(); //리크루팅 프로세스 시작 여부 Store에 반영
+    window.scrollTo(0, 0);
     onClose(); // 폼 제출 후 모달 닫기
   });
 
@@ -73,7 +84,13 @@ export default function RecrutingStartModal({
                   value="서류(1차)"
                   className="hidden" // 라디오 버튼 숨기기
                 />
-                <span className="w-[149px] h-[43px] text-gray-900 text-headline p-2  rounded-[7px] input-background hover:bg-gray-100 ">
+                <span
+                  className={`w-[180px] h-[43px] text-gray-900 text-headline p-2  rounded-[7px] input-background hover:bg-gray-100 ${
+                    selectedInterviewType === "서류(1차)"
+                      ? "bg-main-300 border-main-400"
+                      : ""
+                  } `}
+                >
                   서류(1차)
                 </span>
               </label>
@@ -84,7 +101,13 @@ export default function RecrutingStartModal({
                   value="서류(1차) + 면접(2차)"
                   className="hidden" // 라디오 버튼 숨기기
                 />
-                <span className="w-[180px] h-[43px] text-gray-900 text-headline p-2  rounded-[7px] input-background hover:bg-gray-100 ">
+                <span
+                  className={`w-[180px] h-[43px] text-gray-900 text-headline p-2  rounded-[7px] input-background hover:bg-gray-100 ${
+                    selectedInterviewType === "서류(1차) + 면접(2차)"
+                      ? "bg-main-300 border-main-400"
+                      : ""
+                  } `}
+                >
                   서류(1차) + 면접(2차)
                 </span>
               </label>
@@ -95,9 +118,9 @@ export default function RecrutingStartModal({
 
             <button
               type="submit"
-              className="mt-11 mb-[30px] py-[9px] px-[30px] bg-gray-900 text-body text-gray-400 hover:text-white-100 rounded-[7px]"
+              className="button-main-bg mt-11 mb-[30px] py-[9px] px-[30px] text-body hover:bg-main-500 rounded-[7px]"
             >
-              리크루팅 시작하기
+              시작하기
             </button>
           </form>
         </div>

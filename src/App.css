@@ -91,12 +91,6 @@
     @apply w-auto h-[34px] px-[13.37px] rounded-[11px] bg-white-100 border border-gray-200 text-caption3 text-gray-900 flex-center;
   }
 
-  .button-main-bg {
-    @apply bg-main-100 text-white-100;
-  }
-  .button-main-light {
-    @apply bg-main-300 text-main-100 border border-main-400;
-  }
   .section-background {
     @apply flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left;
   }

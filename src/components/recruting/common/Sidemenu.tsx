@@ -9,10 +9,14 @@ import {
   STEP5_ITEMS,
   STEP6_ITEMS
 } from "../../../constants/recruting";
+import { useRecruitmentSessionStore } from "../../../store/useStore";
 
 export default function Sidemenu() {
   // 현재 경로 가져오기
   const location = useLocation();
+
+  //기수 불러오기
+  const { sessionNumber } = useRecruitmentSessionStore();
 
   const [sidemenuClose, setSidemenuClose] = useState(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
@@ -92,7 +96,7 @@ export default function Sidemenu() {
           <div className="text-left ml-4">
             <p className="text-body">잇타</p>
             <p className="text-gray-900 text-caption1 mt-[5px]">
-              1기 (리크루팅 준비)
+              {sessionNumber ? sessionNumber : "-"} (리크루팅 준비)
             </p>
           </div>
         )}

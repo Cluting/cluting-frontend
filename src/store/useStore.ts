@@ -111,3 +111,19 @@ export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
       isTimeSet: !!state.interviewStartTime && !!state.interviewEndTime
     }))
 }));
+
+// 기수 설정 Store
+export const useRecruitmentSessionStore = create<RecruitmentSessionStore>()(
+  (set) => ({
+    sessionNumber: "", // 현재 기수
+    setSessionNumber: (session: string) => set({ sessionNumber: session }) // 기수 설정
+  })
+);
+
+//리크루팅 시작 여부 Store
+export const useRecruitmentStartStore = create<RecruitmentStartStore>(
+  (set) => ({
+    isRecruitingStarted: false, // 초기값: 리크루팅 시작 안 됨
+    startRecruiting: () => set({ isRecruitingStarted: true }) // 시작 상태로 변경
+  })
+);
