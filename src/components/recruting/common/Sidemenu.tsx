@@ -139,7 +139,7 @@ export default function Sidemenu() {
           return (
             <div key={index} onClick={() => handleDropdownClick(index)}>
               <div
-                className={`relative dropdown-list flex items-center h-[46px] text-subheadline group-hover:text-gray-900 ${
+                className={`relative mt-1 dropdown-list flex items-center h-[46px] text-subheadline group-hover:text-gray-900 ${
                   sidemenuClose ? "justify-center" : ""
                 } ${isActive ? "text-gray-900 bg-gray-100 " : ""} group`}
                 onClick={() => navigateToPage(index)}
