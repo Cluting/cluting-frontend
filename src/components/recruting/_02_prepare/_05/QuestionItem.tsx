@@ -6,6 +6,7 @@ import {
   UseFormSetError
 } from "react-hook-form";
 
+//fix:이걸 formtype.d.ts 파일로 빼면 에러가 남.. why!!!
 interface QuestionItemProps {
   section: "common" | string;
   question: Question;

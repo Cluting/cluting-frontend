@@ -532,6 +532,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
             <input
               type="text"
+              key={selectedGroup}
               className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
               placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
               {...register(`groupSections.${selectedGroup}.caution`)}
