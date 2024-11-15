@@ -23,12 +23,13 @@ module.exports = {
         body: ["17px", { lineHeight: "24px", fontWeight: "500" }],
         headline: ["17px", { lineHeight: "22px", fontWeight: "600" }],
         title1: ["28px", { lineHeight: "34px", fontWeight: "600" }],
-        title3: ["20px", { lineHeight: "22px", fontWeight: "600" }],
+        title3: ["20px", { lineHeight: "24px", fontWeight: "600" }],
         caption1: ["13px", { lineHeight: "22px", fontWeight: "500" }],
         caption2: ["12px", { lineHeight: "16px", fontWeight: "500" }],
         caption3: ["13px", { lineHeight: "18px", fontWeight: "500" }],
         subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
-        callout: ["16px", { lineHeight: "21px", fontWeight: "600" }]
+        callout: ["16px", { lineHeight: "21px", fontWeight: "600" }],
+        largeTitle: ["34px", { lineHeight: "41px", fontWeight: "800" }]
       },
       colors: {
         black: {
@@ -83,7 +84,9 @@ module.exports = {
           200: "#3A3A3C", //다크모드 색상
           300: "#E4E3FA", //main_light
           400: "#CAC8FF", //main_light2
-          500: "#3E0CC4" //main-pressed
+          500: "#3E0CC4", //main-pressed
+          600: "#521FDF", //main_deep
+          700: "#039B72" //main_sub_pressed
         }
       },
       animation: {
