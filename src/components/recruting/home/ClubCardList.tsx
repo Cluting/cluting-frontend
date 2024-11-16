@@ -3,7 +3,8 @@ export default function ClubCardList() {
   const clubsData = [
     {
       dDay: 3,
-      logoSrc: "/assets/itTimeLogo.svg",
+      clubImg: "/assets/home/main/1.svg",
+      logoSrc: "/assets/home/main/1Logo.svg",
       logoAlt: "1",
       title: "밴드 온더락 6기 모집",
       clubName: "밴드 On The Rock",
@@ -11,7 +12,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "/assets/club2Logo.svg",
+      clubImg: "/assets/home/main/2.svg",
+      logoSrc: "/assets/home/main/2Logo.svg",
       logoAlt: "2",
       title: "맛집 탐방 동아리 '연' 2기 모집",
       clubName: "맛집 탐방 동아리 '연'",
@@ -19,7 +21,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/3.svg",
+      logoSrc: "/assets/home/main/3Logo.svg",
       logoAlt: "동아리 로고 3",
       title: "낙화 밴드 기타 추가모집",
       clubName: "밴드 낙화",
@@ -27,7 +30,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/4.svg",
+      logoSrc: "/assets/home/main/4Logo.svg",
       logoAlt: "동아리 로고 3",
       title: "Tour de Force 4기 모집",
       clubName: "연합 봉사 동아리 our de Force",
@@ -35,7 +39,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/5.svg",
+      logoSrc: "/assets/home/main/5Logo.svg",
       logoAlt: "동아리 로고 5",
       title: "댄스 동아리 디온 13기 모집",
       clubName: "댄스 D-ON",
@@ -43,7 +48,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/6.svg",
+      logoSrc: "/assets/home/main/6Logo.svg",
       logoAlt: "동아리 로고 6",
       title: "일본어 동아리 오소이 부원 모집",
       clubName: "오소이",
@@ -51,7 +57,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/7.svg",
+      logoSrc: "/assets/home/main/7Logo.svg",
       logoAlt: "동아리 로고 7",
       title: "일이 활발 동아리 UNSC 신규 모집",
       clubName: "UNSC",
@@ -59,7 +66,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/8.svg",
+      logoSrc: "/assets/home/main/8Logo.svg",
       logoAlt: "동아리 로고 8",
       title: "IT 서비스 동아리 잇타 6기 모집",
       clubName: "잇타",
@@ -67,7 +75,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/9.svg",
+      logoSrc: "/assets/home/main/9Logo.svg",
       logoAlt: "동아리 로고 9",
       title: "FRONT LINE 신규 3기 모집합니다!",
       clubName: "Front Line",
@@ -75,7 +84,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/10.svg",
+      logoSrc: "/assets/home/main/10Logo.svg",
       logoAlt: "동아리 로고 10",
       title: "전람 디자인 동아리 뉴비 6기 모집",
       clubName: "New-B",
@@ -83,7 +93,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/11.svg",
+      logoSrc: "/assets/home/main/11Logo.svg",
       logoAlt: "동아리 로고 11",
       title: "로맨스노우 17기 크루원 모집",
       clubName: "ROMAN SNOW",
@@ -91,7 +102,8 @@ export default function ClubCardList() {
     },
     {
       dDay: 3,
-      logoSrc: "",
+      clubImg: "/assets/home/main/12.svg",
+      logoSrc: "/assets/home/main/12Logo.svg",
       logoAlt: "동아리 로고 12",
       title: "트라이브 4기 멤버 모집합니다.",
       clubName: "Tribe",
@@ -104,6 +116,7 @@ export default function ClubCardList() {
         <ClubCard
           key={index}
           dDay={club.dDay}
+          clubImg={club.clubImg}
           logoSrc={club.logoSrc}
           logoAlt={club.logoAlt}
           title={club.title}

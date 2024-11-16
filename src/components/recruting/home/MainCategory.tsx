@@ -2,7 +2,7 @@ import { useState } from "react";
 import ClubAlignDropdown from "./ClubAlignDropdown";
 
 export default function MainCategory() {
-  const [clubAlign, setClubAlgin] = useState(true); //동아리 정렬 드롭다운
+  const [clubAlign, setClubAlgin] = useState(false); //동아리 정렬 드롭다운
   const [selectedCategory, setSelectedCategory] = useState(0); //전체 카테고리
   const [selectedDetailCategory, setSelectedDetailCategory] = useState(0); //세부 카테고리
   const categories = ["전체", "연합", "교내"];
