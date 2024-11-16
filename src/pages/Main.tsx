@@ -6,7 +6,7 @@ import Paging from "../components/recruting/home/Paging";
 export default function Main() {
   return (
     <div>
-      <div className="relative w-full h-[378px] bg-[#E2E3E5] ">
+      <div className="relative top-[-2px] w-full h-[378px] bg-[#E2E3E5] ">
         <MainBanner />
       </div>
 
