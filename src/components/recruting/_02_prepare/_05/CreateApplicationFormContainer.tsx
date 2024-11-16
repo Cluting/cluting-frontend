@@ -24,11 +24,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const [applyGroupSelect, setApplyGroupSelect] = useState<string[]>([]);
 
   const applyGroup = (groupName: string) => {
-    setApplyGroupSelect((prev) =>
-      prev.includes(groupName)
+    setApplyGroupSelect((prev) => {
+      const newSelected = prev.includes(groupName)
         ? prev.filter((name) => name !== groupName)
-        : [...prev, groupName]
-    );
+        : [...prev, groupName];
+
+      // form 값 업데이트
+      setValue("applyGroups", newSelected);
+
+      return newSelected;
+    });
   };
 
   //그룹별 질문 - 지원 그룹 상태 관리
@@ -99,6 +104,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   } = useForm<CreateApplicationForm>({
     defaultValues: {
       title: "",
+      applyGroups: [],
       commonSection: {
         caution: "",
         questions: commonQuestions
