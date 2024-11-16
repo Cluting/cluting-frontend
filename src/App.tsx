@@ -12,6 +12,7 @@ import RecrutingPrepare from "./pages/Recruting/step2/RecrutingPrepare";
 import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
+import LandingPage from "./pages/LandingPage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <div className="relative bg-white-100 h-full w-full pt-[55px]">
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/landing" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/register_club" element={<RegisterClub />} />
