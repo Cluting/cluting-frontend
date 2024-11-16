@@ -38,44 +38,54 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
 
   // 초기 질문
-  const initialQuestion: Question = {
-    id: uuidv4(),
-    type: "서술형 질문",
-    question: "",
-    hasWordLimit: false,
-    wordLimit: 500,
-    options: []
+  const createInitialQuestion = (
+    type: "서술형 질문" | "객관형 질문" = "서술형 질문"
+  ): Question => {
+    if (type === "서술형 질문") {
+      return {
+        id: uuidv4(),
+        type: "서술형 질문",
+        question: "",
+        hasWordLimit: false,
+        wordLimit: 500,
+        options: []
+      };
+    } else {
+      return {
+        id: uuidv4(),
+        type: "객관형 질문",
+        question: "",
+        options: []
+      };
+    }
   };
 
   // 질문 상태 관리
   const [commonQuestions, setCommonQuestions] = useState<
     Record<string, Question>
-  >({
-    [initialQuestion.id]: initialQuestion
+  >(() => {
+    const initial = createInitialQuestion();
+    return {
+      [initial.id]: initial
+    };
   });
 
   const [groupQuestions, setGroupQuestions] = useState<
-    Record<
-      string,
-      {
-        caution: string;
-        questions: Record<string, Question>;
-      }
-    >
-  >(
-    group.reduce(
-      (acc, g) => ({
+    Record<string, QuestionSection>
+  >(() => {
+    return group.reduce((acc, g) => {
+      const initial = createInitialQuestion();
+      return {
         ...acc,
         [g.name]: {
           caution: "",
           questions: {
-            [uuidv4()]: { ...initialQuestion }
+            [initial.id]: initial
           }
         }
-      }),
-      {}
-    )
-  );
+      };
+    }, {});
+  });
 
   const {
     register,
@@ -121,14 +131,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   // 질문 관리 함수들
   const addQuestion = (section: "common" | string) => {
-    const newQuestion: Question = {
-      id: uuidv4(),
-      type: "서술형 질문",
-      question: "",
-      hasWordLimit: false,
-      wordLimit: 500,
-      options: []
-    };
+    const newQuestion = createInitialQuestion();
 
     if (section === "common") {
       setCommonQuestions((prev) => ({
@@ -190,39 +193,57 @@ export default function CreateApplicationFormContainer(): ReactElement {
     newType: "서술형 질문" | "객관형 질문"
   ) => {
     const createNewQuestion = (oldQuestion: Question): Question => {
-      return newType == "서술형 질문"
-        ? {
-            id: questionId,
-            type: "서술형 질문",
-            question: oldQuestion.question,
-            hasWordLimit: false,
-            wordLimit: 5000,
-            options: []
-          }
-        : {
-            id: questionId,
-            type: "객관형 질문",
-            question: oldQuestion.question,
-            options: []
-          };
+      const baseQuestion = {
+        id: questionId,
+        question: oldQuestion.question
+      };
+
+      if (newType === "서술형 질문") {
+        return {
+          ...baseQuestion,
+          type: "서술형 질문",
+          hasWordLimit: false,
+          wordLimit: 500,
+          options: []
+        };
+      } else {
+        return {
+          ...baseQuestion,
+          type: "객관형 질문",
+          options: []
+        };
+      }
     };
 
     if (section === "common") {
-      setCommonQuestions((prev) => ({
-        ...prev,
-        [questionId]: createNewQuestion(prev[questionId])
-      }));
+      setCommonQuestions((prev) => {
+        const updatedQuestion = createNewQuestion(prev[questionId]);
+        setValue(`commonSection.questions.${questionId}`, updatedQuestion);
+        return {
+          ...prev,
+          [questionId]: updatedQuestion
+        };
+      });
     } else {
-      setGroupQuestions((prev) => ({
-        ...prev,
-        [section]: {
-          ...prev[section],
-          questions: {
-            ...prev[section].questions,
-            [questionId]: createNewQuestion(prev[section].questions[questionId])
+      setGroupQuestions((prev) => {
+        const updatedQuestion = createNewQuestion(
+          prev[section].questions[questionId]
+        );
+        setValue(
+          `groupSections.${section}.questions.${questionId}`,
+          updatedQuestion
+        );
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            questions: {
+              ...prev[section].questions,
+              [questionId]: updatedQuestion
+            }
           }
-        }
-      }));
+        };
+      });
     }
   };
 
