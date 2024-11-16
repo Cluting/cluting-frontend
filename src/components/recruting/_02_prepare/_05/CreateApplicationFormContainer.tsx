@@ -259,12 +259,17 @@ export default function CreateApplicationFormContainer(): ReactElement {
         const question = prev[questionId];
         if (question.type !== "객관형 질문") return prev;
 
+        const updatedQuestion = {
+          ...question,
+          options: [...question.options, newOption]
+        };
+
+        // form 값도 업데이트
+        setValue(`commonSection.questions.${questionId}`, updatedQuestion);
+
         return {
           ...prev,
-          [questionId]: {
-            ...question,
-            options: [...question.options, newOption]
-          }
+          [questionId]: updatedQuestion
         };
       });
     } else {
@@ -273,16 +278,24 @@ export default function CreateApplicationFormContainer(): ReactElement {
         const question = groupQuestions.questions[questionId];
         if (question.type !== "객관형 질문") return prev;
 
+        const updatedQuestion = {
+          ...question,
+          options: [...question.options, newOption]
+        };
+
+        // form 값도 업데이트
+        setValue(
+          `groupSections.${section}.questions.${questionId}`,
+          updatedQuestion
+        );
+
         return {
           ...prev,
           [section]: {
             ...groupQuestions,
             questions: {
               ...groupQuestions.questions,
-              [questionId]: {
-                ...question,
-                options: [...question.options, newOption]
-              }
+              [questionId]: updatedQuestion
             }
           }
         };
@@ -300,12 +313,17 @@ export default function CreateApplicationFormContainer(): ReactElement {
         const question = prev[questionId];
         if (question.type !== "객관형 질문") return prev;
 
+        const updatedQuestion = {
+          ...question,
+          options: question.options.filter((opt) => opt.id !== optionId)
+        };
+
+        // form 값도 업데이트
+        setValue(`commonSection.questions.${questionId}`, updatedQuestion);
+
         return {
           ...prev,
-          [questionId]: {
-            ...question,
-            options: question.options.filter((opt) => opt.id !== optionId)
-          }
+          [questionId]: updatedQuestion
         };
       });
     } else {
@@ -314,16 +332,24 @@ export default function CreateApplicationFormContainer(): ReactElement {
         const question = groupQuestions.questions[questionId];
         if (question.type !== "객관형 질문") return prev;
 
+        const updatedQuestion = {
+          ...question,
+          options: question.options.filter((opt) => opt.id !== optionId)
+        };
+
+        // form 값도 업데이트
+        setValue(
+          `groupSections.${section}.questions.${questionId}`,
+          updatedQuestion
+        );
+
         return {
           ...prev,
           [section]: {
             ...groupQuestions,
             questions: {
               ...groupQuestions.questions,
-              [questionId]: {
-                ...question,
-                options: question.options.filter((opt) => opt.id !== optionId)
-              }
+              [questionId]: updatedQuestion
             }
           }
         };
