@@ -79,7 +79,7 @@ export default function QuestionItem({
           <div className="flex">
             <textarea
               placeholder="질문을 작성해 주세요."
-              className="flex leading-[18px] w-[541px] h-[42px] mr-[12px] py-[11px] px-[19px] rounded-[8px] border border-gray-200 outline-none focus:border-main-100 resize-none"
+              className="flex leading-[18px] w-[541px] h-[42px] mr-[12px] py-[11px] px-[19px] rounded-[8px] border border-gray-200 outline-none overflow-hidden focus:border-main-100 resize-none"
               onInput={(e) => {
                 e.currentTarget.style.height = "auto";
                 e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
@@ -177,7 +177,7 @@ export default function QuestionItem({
           <div>
             <textarea
               placeholder="지원자의 답변 작성란 입니다."
-              className="w-full min-h-[91px] mt-[18px] py-[15px] pl-[20px] rounded-[8px] border border-gray-400 outline-none focus:border-main-100"
+              className="w-full min-h-[91px] mt-[18px] py-[15px] pl-[20px] rounded-[8px] border border-gray-400 outline-none overflow-hidden focus:border-main-100"
               disabled
             />
             <div className="flex-center justify-end mt-[10px]">
