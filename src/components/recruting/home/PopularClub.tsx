@@ -8,7 +8,7 @@ export default function PopularClub({
   tags
 }: PopularClubProps) {
   return (
-    <div className="relative w-[248px] h-[243px] rounded-[11.88px] bg-black overflow-hidden">
+    <div className="hover-animation relative w-[248px] h-[243px] rounded-[11.88px] bg-black overflow-hidden">
       <img
         src={logoSrc}
         alt={logoAlt}
