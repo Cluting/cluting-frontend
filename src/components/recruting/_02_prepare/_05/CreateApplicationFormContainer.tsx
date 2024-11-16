@@ -453,11 +453,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 ))}
               </div>
 
-              <label className="flex items-center mt-[14px] text-subheadline text-gray-900">
+              <label className="relative flex items-center mt-[14px] text-subheadline text-gray-900">
                 <input
                   type="checkbox"
-                  className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                  className=" peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
                   {...register("multipleApplicationAllowed")}
+                />
+                <img
+                  src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
+                  alt=""
+                  className="absolute left-[3px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
                 />
                 다중 지원 가능
                 <span className="ml-[11px] text-main-100 text-caption3">
@@ -642,11 +647,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
         <div className="ml-8 w-full mt-[58px]">
           <div className="flex items-center">
             <p className="section-title">포트폴리오</p>
-            <label className="flex-center text-subheadline text-gray-900">
+            <label className="relative flex-center text-subheadline text-gray-900">
               <input
                 type="checkbox"
-                className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                className="peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
                 {...register("portfolio.enabled")}
+              />
+              <img
+                src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
+                alt=""
+                className="absolute left-[3px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
               />
               포트폴리오 받기
             </label>
