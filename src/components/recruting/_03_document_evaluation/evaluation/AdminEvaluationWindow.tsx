@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import EvaluationCard from "./EvaluationCard";
+import AdminEvaluationList from "./AdminEvaluationList";
 
 export default function AdminEvaluationWindow() {
+  const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleInput = () => {
@@ -24,7 +26,12 @@ export default function AdminEvaluationWindow() {
           /100점
         </p>
       </div>
-      <button className="flex justify-between items-center w-full hover:bg-main-300 border border-main-400 text-gray-1100 text-[15.71px] font-semibold rounded-[5.24px] px-[19px] py-4 mt-3">
+      <button
+        onClick={() => {
+          setShowAdminEvaluation(!showAdminEvaluation);
+        }}
+        className="flex justify-between items-center w-full hover:bg-main-300 border border-main-400 text-gray-1100 text-[15.71px] font-semibold rounded-[5.24px] px-[19px] py-4 mt-3"
+      >
         다른 운영진 평가 보기
         <img
           src="/assets/ic-next.svg"
@@ -32,6 +39,10 @@ export default function AdminEvaluationWindow() {
           className="w-[15px] h-[15px]"
         />
       </button>
+
+      {showAdminEvaluation && (
+        <AdminEvaluationList onClose={() => setShowAdminEvaluation(false)} />
+      )}
 
       <section className="w-full mt-10">
         <div className="flex justify-between">
