@@ -19,6 +19,7 @@ export default function Sidemenu() {
   const { sessionNumber } = useRecruitmentSessionStore();
 
   const [sidemenuClose, setSidemenuClose] = useState(false);
+  const [sidemenuEvaluationVersion, setEvaluationVersion] = useState(false); //평가 페이지일 경우
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
     null
   );
@@ -66,7 +67,11 @@ export default function Sidemenu() {
 
     // 리사이즈 이벤트 리스너 등록
     window.addEventListener("resize", handleResize);
-
+    //평가 페이지일 경우
+    if (location.pathname === "/recruting/evaluation") {
+      setEvaluationVersion(true);
+      setSidemenuClose(true);
+    }
     // 리스너 해제
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -75,9 +80,9 @@ export default function Sidemenu() {
 
   return (
     <div
-      className={`relative bg-white-100 custom-shadow ${
+      className={` ${sidemenuEvaluationVersion ? "absolute top-[54px] left-0 rounded-br-xl" : "relative rounded-[28px]"}  bg-white-100 custom-shadow ${
         sidemenuClose ? "w-[80px] px-2" : "w-[300px] px-5"
-      } h-[916px] rounded-[28px]  py-[26px] transition-all`}
+      } h-[916px]   py-[26px] transition-all`}
     >
       <section
         className={`flex items-center w-full h-[86px] ${
