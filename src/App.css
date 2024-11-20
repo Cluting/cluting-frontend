@@ -37,11 +37,18 @@
     @apply flex justify-center items-center;
   }
 
+  /*버튼 스타일*/
   .button-main-bg {
     @apply bg-main-100 text-white-100;
   }
+  .button-main-bg-sm {
+    @apply py-2 px-[19px] button-main-bg hover:bg-main-500 text-callout rounded-[7px];
+  }
   .button-main-light {
     @apply bg-main-300 text-main-100 border border-main-400;
+  }
+  .button-main-light-sm {
+    @apply py-2 px-[19px] button-main-light hover:bg-main-500 hover:text-white-100 text-callout rounded-[7px];
   }
 
   .custom-shadow {
