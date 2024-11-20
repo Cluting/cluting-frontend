@@ -20,7 +20,7 @@ export default function TopSection() {
 
   return (
     <div>
-      <div className="relative flex justify-between items-center pl-8 mb-[9px] text-left">
+      <div className="relative flex justify-between items-center mb-[9px] text-left">
         <section className="flex items-center">
           <div className="flex-center mr-3 w-[33px] h-[30px] bg-white-100 border border-gray-500 rounded-[8px]">
             4
@@ -31,7 +31,7 @@ export default function TopSection() {
           </p>
         </section>
       </div>
-      <section className="w-full h-[110px] flex-center bg-white-100 ml-8 my-4 px-8 rounded-[12px]">
+      <section className="w-full h-[110px] flex-center bg-white-100 my-4 px-8 rounded-[12px]">
         {STEP4_ITEMS.map((item, index) => (
           <div key={index} className="flex items-center">
             <div

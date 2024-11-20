@@ -21,7 +21,7 @@ export default function InterviewNotification() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="w-[1016px]">
+      <div className="w-[1016px] pl-8">
         <TopSection />
         <CurrentStepComponent />
       </div>
