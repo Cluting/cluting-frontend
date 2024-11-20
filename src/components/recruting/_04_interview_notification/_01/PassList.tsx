@@ -1,4 +1,17 @@
+import { useEffect, useState } from "react";
+import { Applicant } from "../../../../type/type";
+
 export default function PassList() {
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
+
+  useEffect(() => {
+    // JSON 파일에서 더미 데이터 가져오기
+    fetch("/passApplicant.json")
+      .then((response) => response.json())
+      .then((data: Applicant[]) => setApplicants(data))
+      .catch((error) => console.error("JSON 오류:", error));
+  }, []);
+
   return (
     <div className="w-max-[440px] pr-[10px]">
       <section className="flex items-center gap-[18px]">
@@ -42,43 +55,26 @@ export default function PassList() {
           </tr>
         </thead>
         <tbody>
-          <tr className="h-[50px] text-[12.85px] font-semibold border-b border-[#D6D7DA]">
-            <td>
-              <div className="bg-[#9EA2A9] rounded-[4.82px] text-white-100 flex-center py-[5px] px-[5px] text-[11px] font-semibold">
-                완료
-              </div>
-            </td>
-            <td>
-              <div className="flex flex-col items-start ml-[25px]">
-                <div className="text-3">김민지</div>
-                <div className="font-normal text-[9.64px] text-gray-800">
-                  010-****-5687
+          {applicants.map((applicant) => (
+            <tr className="h-[50px] text-[12.85px] font-semibold border-b border-[#D6D7DA]">
+              <td>
+                <div className="bg-[#9EA2A9] rounded-[4.82px] text-white-100 flex-center py-[5px] px-[5px] text-[11px] font-semibold">
+                  {applicant.status}
                 </div>
-              </div>
-            </td>
-            <td>{"기획"}</td>
-            <td>2위</td>
-            <td className="text-[#416AFF]">합격</td>
-          </tr>
-
-          <tr className="h-[50px] text-[12.85px] font-semibold border-b border-[#D6D7DA]">
-            <td>
-              <div className="bg-[#9EA2A9] rounded-[4.82px] text-white-100 flex-center py-[5px] px-[5px] text-[11px] font-semibold">
-                완료
-              </div>
-            </td>
-            <td>
-              <div className="flex flex-col items-start ml-[25px]">
-                <div className="text-3">김민지</div>
-                <div className="font-normal text-[9.64px] text-gray-800">
-                  010-****-5687
+              </td>
+              <td>
+                <div className="flex flex-col items-start ml-[25px]">
+                  <div className="text-3"> {applicant.name}</div>
+                  <div className="font-normal text-[9.64px] text-gray-800">
+                    {applicant.phone}
+                  </div>
                 </div>
-              </div>
-            </td>
-            <td>{"기획"}</td>
-            <td>1위</td>
-            <td className="text-[#416AFF]">합격</td>
-          </tr>
+              </td>
+              <td> {applicant.group}</td>
+              <td> {applicant.rank}</td>
+              <td className="text-[#416AFF]"> {applicant.result}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
