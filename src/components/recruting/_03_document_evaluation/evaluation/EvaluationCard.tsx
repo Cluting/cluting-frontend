@@ -14,17 +14,17 @@ export default function EvaluationCard() {
         </div>
       </div>
 
-      <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[16px] text-left text-[#595959]">
+      <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[12px] text-left text-[#595959]">
         {"본인이 가지고 있는 기술능력을 잘 설명했는가?"}
       </div>
 
-      <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[16px] text-left text-[#595959]">
+      <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[12px] text-left text-[#595959]">
         {
           "본인이 가지고 있는 기술능력을 잘 설명했는가?본인이 가지고 있는 기술능력을 잘 설명했는가?"
         }
       </div>
 
-      <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[16px] text-left text-[#595959]">
+      <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[12px] text-left text-[#595959]">
         {"본인이 가지고 있는 기술능력을 잘 설명했는가?"}
       </div>
     </div>
