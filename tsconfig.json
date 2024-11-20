@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "declaration": true
   },
-  "include": ["src"]
+  "include": ["src", "custom.d.ts"]
 }

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import EvaluationCard from "./EvaluationCard";
 import AdminEvaluationList from "./AdminEvaluationList";
+import { ReactComponent as IdealIcon } from "../../../../assets/ic-ideal.svg";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
@@ -16,8 +17,8 @@ export default function AdminEvaluationWindow() {
 
   return (
     <div className="absolute top-[90px] right-[-420px] z-50 w-[386px] p-[17px] bg-gray-50 rounded-lg border border-gray-200 custom-shadow">
-      <button className="flex-center w-full py-[13px] button-main-light border border-main-400 hover:text-white-100 hover:bg-main-100 font-semibold rounded-[7px]">
-        <img src="/assets/ic-ideal.svg" alt="인재상" className="w-6 h-6 mr-2" />
+      <button className="flex-center gap-[3px] w-full py-[13px] button-main-light border border-main-400 hover:text-white-100 hover:bg-main-100 font-semibold rounded-[7px]">
+        <IdealIcon fill="#5E2BE8" />
         우리 동아리 인재상 확인하기
       </button>
       <div className="flex items-center bg-gray-100 rounded-[7px] mt-[31px] py-[15px] px-[87px] flex-center">
