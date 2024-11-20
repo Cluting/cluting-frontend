@@ -224,6 +224,14 @@ declare interface GroupWithAdmin {
   groupName: GroupDetails; // groupName의 타입을 string에서 GroupDetails로 변경
   admins: any[]; // 필요에 따라 적절한 타입으로 수정
 }
+
+//3-1 평가 기준 설정하기
+declare interface evaluationCriteria {
+  id: number;
+  criteria: string;
+  detailCriteria: string[];
+}
+
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
 interface InterviewNumValue {
   interviewer: number;
