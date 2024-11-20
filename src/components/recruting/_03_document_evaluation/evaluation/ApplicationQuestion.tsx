@@ -2,7 +2,7 @@
 export default function ApplicationQuestion() {
   return (
     <div className="flex flex-col items-start h-full pt-6 bg-gray-100">
-      <p className="evalutation-title mb-[8.5px]">지원 문항</p>
+      <p className="evalutation-title mb-[9px]">지원 문항</p>
       <section className="w-full mb-[24px] py-[27px] px-[17px] bg-main-300 border border-gray-200 rounded-lg ">
         <p className="text-headline text-left text-gray-1100 pl-[5px]">
           1. 잇타에 지원하게 된 계기를 본인의 꿈과 연결지어 설명해 주세요. (공백

@@ -2,7 +2,7 @@
 export default function UserProfile() {
   return (
     <div className="flex flex-col items-start h-full pt-6 bg-gray-100">
-      <p className="evalutation-title mb-[5px]">기본 프로필</p>
+      <p className="evalutation-title mb-[9px]">기본 프로필</p>
 
       <div className="flex gap-4 w-full">
         <section className="w-full bg-gray-50 border border-gray-200 rounded-[8px] px-[20px] py-[30px]">

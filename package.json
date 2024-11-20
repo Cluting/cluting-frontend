@@ -7,6 +7,7 @@
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
+    "@naverpay/react-pdf": "^0.3.4",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.112",
     "@types/react": "^18.3.11",

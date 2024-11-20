@@ -1,11 +1,14 @@
 import { useState } from "react";
+import PortfolioPDF from "./PortfolioPDF";
 
 //3 - 리크루팅 : 서류 평가하기 단계 포트폴리오
 export default function Portfolio() {
   //포트폴리오 link,none,pdf
-  const [showPortfolio, setShowPortfolio] = useState("link");
+  const [showPortfolio, setShowPortfolio] = useState("pdf");
   return (
-    <div className="flex flex-col items-start h-screen pt-6 bg-gray-100">
+    <div
+      className={` h-full pt-6 bg-gray-100 ${showPortfolio === "pdf" ? "flex flex-col items-center" : "flex flex-col items-start"}`}
+    >
       {showPortfolio === "link" && (
         <section className="custom-shadow w-full py-[27px] px-[17px] bg-main-300 border border-gray-200 rounded-lg ">
           <div className="bg-white-100  break-words whitespace-normal rounded-lg border border-gray-200 p-[19px] text-qustion leading-6 text-justify text-gray-1000">
@@ -39,6 +42,8 @@ export default function Portfolio() {
           등록하지 않았습니다
         </div>
       )}
+
+      {showPortfolio === "pdf" && <PortfolioPDF />}
     </div>
   );
 }
