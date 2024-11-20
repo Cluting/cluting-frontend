@@ -13,7 +13,7 @@ export default function UserProfile() {
             </p>
           </div>
           <div className="flex gap-[25px] items-start">
-            <div className="grid grid-cols-2 self-stretch gap-y-7 text-left text-subheadline text-gray-800 text ">
+            <div className="grid grid-cols-[5fr_7fr] self-stretch gap-y-7 text-left text-subheadline text-gray-800 text ">
               <div>지원 그룹</div>
               <div>기획</div>
               <div>이메일</div>
@@ -31,9 +31,9 @@ export default function UserProfile() {
           </div>
         </section>
 
-        <section className="bg-gray-50 border border-gray-200 rounded-[8px] px-[20px] py-[30px]">
+        <section className="bg-gray-50 min-w-[340px] border border-gray-200 rounded-[8px] px-[20px] py-[30px]">
           <div className="flex">
-            <div className="grid grid-cols-2 pt-[55px] gap-y-7 text-left text-subheadline text-gray-800 text ">
+            <div className="grid grid-cols-[2fr_7fr] pt-[55px] gap-y-7 text-left text-subheadline text-gray-800 text ">
               <div>학교</div>
               <div>성신 여자 대학교</div>
               <div>학과</div>
