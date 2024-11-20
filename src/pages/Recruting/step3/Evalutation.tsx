@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ApplicationQuestion from "../../../components/recruting/_03_document_evaluation/evaluation/ApplicationQuestion";
 import UserProfile from "../../../components/recruting/_03_document_evaluation/evaluation/UserProfile";
+import Portfolio from "../../../components/recruting/_03_document_evaluation/evaluation/Portfolio";
 
 //3 - 리크루팅 : 서류 평가하기 단계
 export default function Evaluation() {
@@ -11,13 +12,13 @@ export default function Evaluation() {
         <div className="w-full flex justify-end">
           <button
             onClick={() => setView("application")}
-            className="button-main-bg-sm "
+            className={`button-main-bg-sm ${view === "application" ? "button-main-bg-sm" : "button-main-light-sm"}`}
           >
             지원서류
           </button>
           <button
             onClick={() => setView("portfolio")}
-            className="ml-4 button-main-light-sm"
+            className={`ml-4 ${view === "portfolio" ? "button-main-bg-sm" : "button-main-light-sm"}`}
           >
             포트폴리오
           </button>
@@ -26,6 +27,12 @@ export default function Evaluation() {
           <>
             <UserProfile />
             <ApplicationQuestion />
+          </>
+        )}
+
+        {view === "portfolio" && (
+          <>
+            <Portfolio />
           </>
         )}
       </div>
