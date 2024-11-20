@@ -4,6 +4,7 @@ import AdminEvaluationList from "./AdminEvaluationList";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
+  const [authority, setAuthority] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleInput = () => {
@@ -44,36 +45,40 @@ export default function AdminEvaluationWindow() {
         <AdminEvaluationList onClose={() => setShowAdminEvaluation(false)} />
       )}
 
-      <section className="w-full mt-10">
-        <div className="flex justify-between">
-          <div className="flex items-center">
-            <p className="text-title3">{"최예은"}</p>
-            <p className="text-subheadline text-[#949494] ml-1">평가자</p>
-          </div>
-          <div className="flex-center gap-[3px] bg-gray-100 rounded-[5px] pl-[26px] py-[5px] pr-1">
-            <p className="text-callout text-gray-1100 ">{"95"}</p>
-            <p className="text-caption3 text-gray-600">/100점</p>
-          </div>
-        </div>
-        <EvaluationCard />
-        <EvaluationCard />
-        <EvaluationCard />
-      </section>
+      {authority && (
+        <>
+          <section className="w-full mt-10">
+            <div className="flex justify-between">
+              <div className="flex items-center">
+                <p className="text-title3">{"최예은"}</p>
+                <p className="text-subheadline text-[#949494] ml-1">평가자</p>
+              </div>
+              <div className="flex-center gap-[3px] bg-gray-100 rounded-[5px] pl-[26px] py-[5px] pr-1">
+                <p className="text-callout text-gray-1100 ">{"95"}</p>
+                <p className="text-caption3 text-gray-600">/100점</p>
+              </div>
+            </div>
+            <EvaluationCard />
+            <EvaluationCard />
+            <EvaluationCard />
+          </section>
 
-      <section className="mt-10 mb-[27px] bg-main-300 rounded-[6.35px] p-3 ">
-        <p className="text-left text-body text-gray-1100">코멘트</p>
-        <textarea
-          ref={textareaRef}
-          placeholder="작성하신 코멘트는 운영진 평가 보기에서 다른 팀원들에게 보여집니다."
-          className="input-background input-style w-full text-[12.7px] overflow-hidden resize-none"
-          rows={4} // 기본 최소 높이 설정
-          onInput={handleInput} // 입력 이벤트 핸들러 연결
-        />
-      </section>
+          <section className="mt-10 mb-[27px] bg-main-300 rounded-[6.35px] p-3 ">
+            <p className="text-left text-body text-gray-1100">코멘트</p>
+            <textarea
+              ref={textareaRef}
+              placeholder="작성하신 코멘트는 운영진 평가 보기에서 다른 팀원들에게 보여집니다."
+              className="input-background input-style w-full text-[12.7px] overflow-hidden resize-none"
+              rows={4} // 기본 최소 높이 설정
+              onInput={handleInput} // 입력 이벤트 핸들러 연결
+            />
+          </section>
 
-      <button className="button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px]">
-        평가 완료
-      </button>
+          <button className="button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px]">
+            평가 완료
+          </button>
+        </>
+      )}
     </div>
   );
 }
