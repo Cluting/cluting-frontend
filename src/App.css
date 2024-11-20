@@ -99,4 +99,9 @@
   .hover-animation {
     @apply hover:scale-105 transform transition-transform duration-200 ease-out;
   }
+
+  /*평가하기 섹션*/
+  .evalutation-title {
+    @apply text-subheadline text-[#7E7E7E];
+  }
 }
