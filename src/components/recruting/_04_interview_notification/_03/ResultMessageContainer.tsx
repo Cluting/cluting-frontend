@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   useRecruitmentStepStore,
   useStepFourStore
@@ -8,9 +8,24 @@ import StepCompleteModal from "../../common/StepCompleteModal";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
-  const [massageType, setMessageType] = useState("합격");
+  const [messageType, setMessageType] = useState<"합격" | "불합격">("합격");
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
+  const [textareaValues, setTextareaValues] = useState<{
+    [key: string]: string;
+  }>({
+    합격: "",
+    불합격: ""
+  });
 
+  const handleTextareaChange = (
+    event: FormEvent<HTMLTextAreaElement>
+  ): void => {
+    setTextareaValues({
+      ...textareaValues,
+      [messageType]: event.currentTarget.value // 수정된 부분
+    });
+    console.log(messageType, textareaValues[messageType]);
+  };
   //4단계 완료
   const { setStepCompleted, steps } = useStepFourStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -34,7 +49,7 @@ export default function ResultMessageContainer() {
           onClick={() => {
             setMessageType("합격");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${massageType === "합격" ? "bg-main-100 text-white-100" : "bg-main-300"} `}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "합격" ? "bg-main-100 text-white-100" : "bg-main-300"} `}
         >
           합격
         </button>
@@ -42,7 +57,7 @@ export default function ResultMessageContainer() {
           onClick={() => {
             setMessageType("불합격");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${massageType === "불합격" ? "bg-main-100 text-white-100" : "bg-main-300"}`}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "불합격" ? "bg-main-100 text-white-100" : "bg-main-300"}`}
         >
           불합격
         </button>
@@ -79,7 +94,11 @@ export default function ResultMessageContainer() {
             />
           )}
 
-          <textarea className="w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] overflow-hidden " />
+          <textarea
+            value={textareaValues[messageType]}
+            onChange={handleTextareaChange}
+            className="w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] overflow-hidden "
+          />
         </div>
       </div>
       <div className="flex justify-center">
