@@ -20,7 +20,9 @@ export default function PreviewModal({
       <div className="modal-style">
         <div className="modal-animation custom-shadow relative m-[30px] flex flex-col items-center bg-white-100 w-[740px] h-[640px] rounded-[12px]">
           <div className=" flex items-center mt-[27px] mb-[22px]">
-            <h1 className="text-subheadline ">{type} 메시지 전송 (미리보기)</h1>
+            <h1 className="text-subheadline ">
+              {type === "pass" ? "합격" : "불합격"} 메시지 전송 (미리보기)
+            </h1>
             <img
               onClick={() => onClose()}
               src="/assets/ic-close.svg"
@@ -32,7 +34,6 @@ export default function PreviewModal({
           <hr className="w-full border border-gray-200 mb-[22px]" />
 
           <p className="text-body text-main-100">
-            {" "}
             *지원자 입장에서 보이는 본문 모습입니다.
           </p>
           <div className="overflow-scroll py-[40px] px-[60px]">{message}</div>

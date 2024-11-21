@@ -6,18 +6,21 @@ import {
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import PreviewModal from "./PreviewModal";
+import { useForm } from "react-hook-form";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
-  const [messageType, setMessageType] = useState<"합격" | "불합격">("합격");
+  const [messageType, setMessageType] = useState<"pass" | "fail">("pass");
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
   const [isSend, setIsSend] = useState(false); //전송 여부
+  const [showError, setShowError] = useState(false); //전송하지 않고 완료했을 때의 에러
   const [textareaValues, setTextareaValues] = useState<{
     [key: string]: string;
   }>({
     합격: "",
     불합격: ""
   });
+
   //전송 클릭 시 미리보기 모달
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const handleClosePreviewModal = () => {
@@ -31,6 +34,7 @@ export default function ResultMessageContainer() {
       ...textareaValues,
       [messageType]: event.currentTarget.value // 수정된 부분
     });
+    setShowError(false); // 입력 시 에러 숨김
     console.log(messageType, textareaValues[messageType]);
   };
 
@@ -38,6 +42,19 @@ export default function ResultMessageContainer() {
   const handleSend = () => {
     setIsSend(true); // 전송 완료 상태로 변경
   };
+
+  //Form 제출
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<ResultMessageForm>({
+    mode: "onSubmit"
+  });
+  // Form 제출 처리
+  const onSubmit = handleSubmit((data) => {
+    console.log("Form Submitted:", data);
+  });
 
   //4단계 완료
   const { setStepCompleted, steps } = useStepFourStore();
@@ -49,31 +66,48 @@ export default function ResultMessageContainer() {
     setStepCompleted(2, true); //4-3 단계 완료
     setStepCompleteModalOpen(false);
   };
-  const handleStepTwoSubmit = () => {
-    if (!completedSteps[0]) {
-      setStepCompleteModalOpen(true);
+  const handleStepTwoSubmit = handleSubmit(
+    () => {
+      // 폼 유효성 검사가 통과되었을 때만 실행
+      if (isSend === false) {
+        setShowError(true);
+        return;
+      }
+      if (!completedSteps[0]) {
+        setStepCompleteModalOpen(true);
+        setShowError(false); // 에러 숨김
+      }
+    },
+    () => {
+      // 폼 유효성 검사 실패 시
+      console.log("유효성 검사 실패:", errors);
     }
-  };
+  );
 
   return (
-    <div className="w-full">
-      <div className="w-full ml-1 flex gap-0">
+    <form onSubmit={onSubmit} className="w-full">
+      <div className="w-full ml-1 flex items-center gap-0">
         <button
           onClick={() => {
-            setMessageType("합격");
+            setMessageType("pass");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "합격" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  ${showError ? "border-red-100" : "border-main-400"} border-b-0 text-callout ${messageType === "pass" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
         >
           합격
         </button>
         <button
           onClick={() => {
-            setMessageType("불합격");
+            setMessageType("fail");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "불합격" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border ${showError ? "border-red-100" : "border-main-400"} border-b-0 text-callout ${messageType === "fail" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
         >
           불합격
         </button>
+        {showError && (
+          <p className="text-callout text-[12px] text-red-100 ml-3">
+            먼저 문자 전송을 완료해 주세요.
+          </p>
+        )}
       </div>
       <div className="relative">
         <div className="bg-gray-50 border border-gray-200 rounded-t-[6.65px]">
@@ -118,10 +152,19 @@ export default function ResultMessageContainer() {
             )}
 
             <textarea
+              {...register(messageType, { required: "필수 작성 내용입니다." })}
               value={textareaValues[messageType]}
               onChange={handleTextareaChange}
-              className="w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 overflow-hidden "
+              className={`w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 overflow-hidden ${errors.pass && "border border-red-100"}`}
             />
+
+            {errors.pass && (
+              <p className="text-state-error">{errors.pass.message}</p>
+            )}
+            {errors.fail && (
+              <p className="text-state-error">{errors.fail.message}</p>
+            )}
+            {/* FIX: 에러 나면 모달 안 뜨도록 */}
           </div>
         </div>
         <button
@@ -188,6 +231,6 @@ export default function ResultMessageContainer() {
           </div>
         </div>
       )}
-    </div>
+    </form>
   );
 }
