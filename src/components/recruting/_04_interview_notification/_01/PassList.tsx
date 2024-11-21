@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Applicant } from "../../../../type/type";
+import { useGroupStore } from "../../../../store/useStore";
 
 interface passListProps {
   filter: string;
@@ -7,7 +8,7 @@ interface passListProps {
 export default function PassList({ filter }: passListProps) {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const filteredData = applicants.filter((item) => item.group === filter);
-
+  const { group: groups } = useGroupStore();
   useEffect(() => {
     // JSON 파일에서 더미 데이터 가져오기
     fetch("/passApplicant.json")
@@ -25,27 +26,14 @@ export default function PassList({ filter }: passListProps) {
           </div>
           <p className="text-[#6F7278] text-[11px]">{"60"}</p>
         </div>
-
-        <div className="flex items-center">
-          <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-white-100 border border-gray-200">
-            기획
+        {groups.map((group) => (
+          <div className="flex items-center">
+            <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-white-100 border border-gray-200">
+              {group.name}
+            </div>
+            <p className="text-[#6F7278] text-[11px]">{"60"}</p>
           </div>
-          <p className="text-[#6F7278] text-[11px]">{"60"}</p>
-        </div>
-
-        <div className="flex items-center">
-          <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-white-100 border border-gray-200">
-            디자인
-          </div>
-          <p className="text-[#6F7278] text-[11px]">{"60"}</p>
-        </div>
-
-        <div className="flex items-center">
-          <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-white-100 border border-gray-200">
-            개발
-          </div>
-          <p className="text-[#6F7278] text-[11px]">{"60"}</p>
-        </div>
+        ))}
       </section>
 
       <table className="w-full mt-4 ">
