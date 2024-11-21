@@ -234,29 +234,25 @@ interface GroupForm {
 }
 
 //3-1 평가 기준 설정하기
-declare interface evaluationCriteria {
+declare interface EvaluationCriteria {
   id: number;
   criteria: string;
   detailCriteria: string[];
+  score: number | undefined;
+}
+
+declare interface DocumentReviewForm {
+  groups: {
+    id: number;
+    groupName: string;
+    admins: string[];
+  }[];
+  criteria: EvaluationCriteria[];
+  maxScore: number;
 }
 
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
 declare interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
-}
-
-declare interface documentReviewForm {
-  groups: {
-    id: number;
-    groupName: string;
-    admins: string[];
-  }[];
-  criteria: {
-    id: number;
-    criteria: string;
-    detailCriteria: string[];
-    score: number;
-  }[];
-  maxScore: number;
 }

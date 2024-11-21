@@ -7,13 +7,14 @@ import { useForm, useFieldArray } from "react-hook-form";
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
   const [dropdown, setDropdown] = useState(false);
-  const [groupCreationForms, setGroupCreationForms] = useState<GroupForm[]>([]);
+  const [newGroupCreation, setNewGroupCreation] = useState<GroupForm[]>([]); //새로 생성된 그룹
   const [currentId, setCurrentId] = useState<number | null>(null);
-  const [criteria, setCriteria] = useState<evaluationCriteria[]>([
+  const [criteria, setCriteria] = useState<EvaluationCriteria[]>([
     {
       id: 1,
       criteria: "",
-      detailCriteria: []
+      detailCriteria: [],
+      score: undefined
     }
   ]);
 
@@ -21,8 +22,9 @@ export default function DocumentReviewPrepContainer() {
     register,
     handleSubmit,
     formState: { errors },
-    getValues
-  } = useForm<documentReviewForm>({
+    getValues,
+    setValue
+  } = useForm<DocumentReviewForm>({
     mode: "onBlur",
     defaultValues: {
       groups: group.map((groupName, index) => ({
@@ -42,17 +44,49 @@ export default function DocumentReviewPrepContainer() {
     }
   });
 
-  const onSubmit = (data: documentReviewForm) => {
-    console.log(data);
+  const onSubmit = (data: DocumentReviewForm) => {
+    const allGroups = [
+      ...groupsWithAdmins,
+      ...newGroupCreation.map((group) => ({
+        id: group.id,
+        groupName: { name: group.groupName },
+        admins: group.admins
+      }))
+    ];
+
+    // score 값을 form data에서 가져와서 criteria에 적용
+    const updatedCriteria = criteria.map((item, index) => ({
+      ...item,
+      score: data.criteria[index]?.score
+    }));
+
+    const formData = {
+      ...data,
+      groups: allGroups,
+      criteria: updatedCriteria
+    };
+
+    console.log(formData);
+  };
+
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Enter") {
+      const target = e.target as HTMLElement;
+
+      // 세부 평가 기준 입력 필드인 경우에만 Enter 키 허용
+      if (!target.classList.contains("detail-criteria-input")) {
+        e.preventDefault();
+      }
+    }
   };
 
   const addGroupForm = () => {
     const newFormId =
-      groupCreationForms.length > 0
-        ? Math.max(...groupCreationForms.map((form) => form.id)) + 1
+      newGroupCreation.length > 0
+        ? Math.max(...newGroupCreation.map((form) => form.id)) + 1
         : 1;
-    setGroupCreationForms([
-      ...groupCreationForms,
+    setNewGroupCreation([
+      ...newGroupCreation,
       {
         id: newFormId,
         groupName: "",
@@ -67,7 +101,8 @@ export default function DocumentReviewPrepContainer() {
       {
         id: criteria.length + 1,
         criteria: "",
-        detailCriteria: []
+        detailCriteria: [],
+        score: undefined
       }
     ]);
   };
@@ -80,12 +115,19 @@ export default function DocumentReviewPrepContainer() {
     e: React.KeyboardEvent<HTMLInputElement>,
     id: number
   ) => {
-    if (e.key === "Enter" && e.currentTarget.value) {
-      const newCriteria = [...criteria];
-      const index = newCriteria.findIndex((c) => c.id === id);
-      newCriteria[index].detailCriteria.push(e.currentTarget.value);
-      e.currentTarget.value = "";
-      setCriteria(newCriteria);
+    if (e.key === "Enter") {
+      e.preventDefault(); // 수정 5: Enter 키로 인한 폼 제출 방지
+
+      if (e.currentTarget.value.trim()) {
+        const newCriteria = [...criteria];
+        const index = newCriteria.findIndex((c) => c.id === id);
+        newCriteria[index].detailCriteria = [
+          ...newCriteria[index].detailCriteria,
+          e.currentTarget.value.trim()
+        ];
+        e.currentTarget.value = "";
+        setCriteria(newCriteria);
+      }
     }
   };
 
@@ -108,7 +150,7 @@ export default function DocumentReviewPrepContainer() {
 
   const handleAdminSelect = (admin: string, id: number, isNewGroup = false) => {
     if (isNewGroup) {
-      setGroupCreationForms((prev) =>
+      setNewGroupCreation((prev) =>
         prev.map((form) => {
           if (form.id === id && !form.admins.includes(admin)) {
             return { ...form, admins: [...form.admins, admin] };
@@ -135,7 +177,7 @@ export default function DocumentReviewPrepContainer() {
     isNewGroup = false
   ) => {
     if (isNewGroup) {
-      setGroupCreationForms((prev) =>
+      setNewGroupCreation((prev) =>
         prev.map((form) => {
           if (form.id === id) {
             return {
@@ -162,7 +204,11 @@ export default function DocumentReviewPrepContainer() {
   };
 
   return (
-    <form className="w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="w-[1016px]"
+      onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={handleFormKeyDown}
+    >
       <div className="ml-8 w-full mt-[34px]">
         <div className="flex">
           <p className="section-title">전체 지원자 수</p>
@@ -272,9 +318,9 @@ export default function DocumentReviewPrepContainer() {
               </button>
             </div>
             <div className="flex mt-[10px] w-full min-h-[318px] pt-[18px] pb-[29px] px-[36px] bg-white-100 border border-[#D6D7DA] rounded-[21px] text-body text-gray-400">
-              {groupCreationForms.length > 0 ? (
+              {newGroupCreation.length > 0 ? (
                 <div className="w-full grid grid-cols-3 gap-6">
-                  {groupCreationForms.map((form, id) => (
+                  {newGroupCreation.map((form, id) => (
                     <div key={form.id} className="max-w-[286px]">
                       <div className="flex text-[12.25px] font-semibold gap-[8.33px] text-[#5C6067]">
                         <p>지원자 수</p>
@@ -293,7 +339,7 @@ export default function DocumentReviewPrepContainer() {
                         placeholder="그룹명"
                         value={form.groupName}
                         onChange={(e) => {
-                          setGroupCreationForms((prev) =>
+                          setNewGroupCreation((prev) =>
                             prev.map((item) =>
                               item.id === form.id
                                 ? { ...item, groupName: e.target.value }
@@ -450,7 +496,10 @@ export default function DocumentReviewPrepContainer() {
                   <div className="flex w-auto h-[40px] mr-[10px] px-[24px] py-[10px] bg-white-100 border border-gray-200 rounded-[7px] text-subheadline text-gray-500">
                     <input
                       type="number"
-                      {...register(`criteria.${id}.score`)}
+                      {...register(`criteria.${id}.score`, {
+                        valueAsNumber: true,
+                        min: 0
+                      })}
                       placeholder="0"
                       min="0"
                       className="flex-center w-[20px] outline-none button-none "
@@ -495,7 +544,7 @@ export default function DocumentReviewPrepContainer() {
                   type="text"
                   {...register(`criteria.${id}.detailCriteria`)}
                   placeholder="세부 평가 기준을 입력해 주세요."
-                  className="w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border border-gray-200 text-caption1 rounded-[6px]  focus:border-main-100 outline-none"
+                  className="detail-criteria-input w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border border-gray-200 text-caption1 rounded-[6px]  focus:border-main-100 outline-none"
                   onKeyDown={(e) => handleDetailCriteria(e, item.id)}
                 />
               </div>
