@@ -5,17 +5,24 @@ import {
 } from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import StepCompleteModal from "../../common/StepCompleteModal";
+import PreviewModal from "./PreviewModal";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
   const [messageType, setMessageType] = useState<"합격" | "불합격">("합격");
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
+  const [isSend, setIsSend] = useState(false); //전송 여부
   const [textareaValues, setTextareaValues] = useState<{
     [key: string]: string;
   }>({
     합격: "",
     불합격: ""
   });
+  //전송 클릭 시 미리보기 모달
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const handleClosePreviewModal = () => {
+    setShowPreviewModal(false);
+  };
 
   const handleTextareaChange = (
     event: FormEvent<HTMLTextAreaElement>
@@ -26,6 +33,12 @@ export default function ResultMessageContainer() {
     });
     console.log(messageType, textareaValues[messageType]);
   };
+
+  //전송 완료 처리
+  const handleSend = () => {
+    setIsSend(true); // 전송 완료 상태로 변경
+  };
+
   //4단계 완료
   const { setStepCompleted, steps } = useStepFourStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -43,13 +56,13 @@ export default function ResultMessageContainer() {
   };
 
   return (
-    <div>
-      <div className="ml-1 flex gap-0">
+    <div className="w-full">
+      <div className="w-full ml-1 flex gap-0">
         <button
           onClick={() => {
             setMessageType("합격");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "합격" ? "bg-main-100 text-white-100" : "bg-main-300"} `}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "합격" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
         >
           합격
         </button>
@@ -57,50 +70,79 @@ export default function ResultMessageContainer() {
           onClick={() => {
             setMessageType("불합격");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "불합격" ? "bg-main-100 text-white-100" : "bg-main-300"}`}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout ${messageType === "불합격" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
         >
           불합격
         </button>
       </div>
-      <div className="bg-gray-50 border border-gray-200 rounded-t-[6.65px]">
-        <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
-          <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
-          <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-[13px]">
-            <img src="/assets/ic-add.svg" className="w-[14px] h-[14px] mr-1" />
-            지원자
-          </div>
+      <div className="relative">
+        <div className="bg-gray-50 border border-gray-200 rounded-t-[6.65px]">
+          <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
+            <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-[13px]">
+              <img
+                src="/assets/ic-add.svg"
+                className="w-[14px] h-[14px] mr-1"
+              />
+              지원자
+            </div>
 
-          <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-[13px]">
-            <img src="/assets/ic-add.svg" className="w-[14px] h-[14px] mr-1" />
-            파트
-          </div>
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-[13px]">
+              <img
+                src="/assets/ic-add.svg"
+                className="w-[14px] h-[14px] mr-1"
+              />
+              파트
+            </div>
 
-          <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-[13px]">
-            <img src="/assets/ic-add.svg" className="w-[14px] h-[14px] mr-1" />
-            면접 시간대 링크
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-[13px]">
+              <img
+                src="/assets/ic-add.svg"
+                className="w-[14px] h-[14px] mr-1"
+              />
+              면접 시간대 링크
+            </div>
+            <div className="tooltip">
+              모든 지원자에게 해당하는 정의를 클릭해 본문을 추가해 주세요.
+            </div>
           </div>
-          <div className="tooltip">
-            모든 지원자에게 해당하는 정의를 클릭해 본문을 추가해 주세요.
-          </div>
-        </div>
-        <div className="relative bg-white-100 h-[690px] rounded-b-[6.65px]">
-          {isVisible && (
-            <img
-              onClick={() => {
-                setIsVisible(false);
-              }}
-              src="/assets/messageExample.png"
-              className="absolute top-[40px] left-[50px]"
+          <div className="relative bg-white-100 h-[690px] rounded-b-[6.65px]">
+            {isVisible && (
+              <img
+                onClick={() => {
+                  setIsVisible(false);
+                }}
+                src="/assets/messageExample.png"
+                className="absolute top-[40px] left-[50px]"
+              />
+            )}
+
+            <textarea
+              value={textareaValues[messageType]}
+              onChange={handleTextareaChange}
+              className="w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 overflow-hidden "
             />
-          )}
-
-          <textarea
-            value={textareaValues[messageType]}
-            onChange={handleTextareaChange}
-            className="w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] overflow-hidden "
-          />
+          </div>
         </div>
+        <button
+          onClick={() => {
+            setShowPreviewModal(true);
+          }}
+          className={`absolute right-0 w-[210px] h-[54px] rounded-[11px] mt-[50px] text-white-100 text-body flex-center ${
+            isSend ? "bg-gray-400 " : "bg-gray-1100 "
+          } `}
+        >
+          {isSend ? "전송 완료" : "전송하기"}
+        </button>
       </div>
+      {showPreviewModal && (
+        <PreviewModal
+          onSend={handleSend}
+          onClose={handleClosePreviewModal}
+          type={messageType}
+          message={textareaValues[messageType]}
+        />
+      )}
       <div className="flex justify-center">
         <button
           type="submit"
