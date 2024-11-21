@@ -219,10 +219,18 @@ interface GroupDetails {
   ideals: string[];
 }
 
+//이미 생성된 그룹들 관리
 declare interface GroupWithAdmin {
   id: number;
   groupName: GroupDetails; // groupName의 타입을 string에서 GroupDetails로 변경
   admins: any[]; // 필요에 따라 적절한 타입으로 수정
+}
+
+//새로 생성된 그룹들 관리
+interface GroupForm {
+  id: number;
+  groupName: string;
+  admins: string[];
 }
 
 //3-1 평가 기준 설정하기
@@ -233,7 +241,22 @@ declare interface evaluationCriteria {
 }
 
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
-interface InterviewNumValue {
+declare interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
+}
+
+declare interface documentReviewForm {
+  groups: {
+    id: number;
+    groupName: string;
+    admins: string[];
+  }[];
+  criteria: {
+    id: number;
+    criteria: string;
+    detailCriteria: string[];
+    score: number;
+  }[];
+  maxScore: number;
 }
