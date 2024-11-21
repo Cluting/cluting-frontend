@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { Applicant } from "../../../../type/type";
 
-export default function FailList() {
+interface failListProps {
+  filter: string;
+}
+export default function FailList({ filter }: failListProps) {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const filteredData = applicants.filter((item) => item.group === filter);
 
   useEffect(() => {
     // JSON 파일에서 더미 데이터 가져오기
@@ -33,7 +37,7 @@ export default function FailList() {
           </tr>
         </thead>
         <tbody>
-          {applicants.map((applicant) => (
+          {filteredData.map((applicant) => (
             <tr className="h-[50px] text-[12.85px] font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-[#9EA2A9] rounded-[4.82px] text-white-100 flex-center py-[5px] px-[5px] text-[11px] font-semibold">
