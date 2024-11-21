@@ -229,3 +229,24 @@ interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
 }
+
+//투두
+declare interface TodoInsertProps {
+  onInsert: (value: string) => void;
+}
+
+declare interface Todo {
+  id: number;
+  text: string;
+  checked: boolean;
+}
+
+declare interface TodoListProps {
+  todos: Todo[];
+  onToggle: (id: number) => void;
+}
+
+interface TodoListItemProps {
+  todo: Todo;
+  onToggle: (id: number) => void;
+}

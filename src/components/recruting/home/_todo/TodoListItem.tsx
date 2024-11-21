@@ -1,7 +1,6 @@
-import React from "react";
 import cn from "classnames";
 
-const TodoListItem = ({ todo, onToggle }) => {
+export default function TodoListItem({ todo, onToggle }: TodoListItemProps) {
   const { id, text, checked } = todo;
 
   return (
@@ -54,6 +53,4 @@ const TodoListItem = ({ todo, onToggle }) => {
       </div>
     </div>
   );
-};
-
-export default React.memo(TodoListItem);
+}

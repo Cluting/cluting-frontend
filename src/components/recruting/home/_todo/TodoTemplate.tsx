@@ -2,12 +2,12 @@ import { useState, useRef, useCallback } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoList from "./TodoList";
 
-const TodoTemplate = () => {
-  const [todos, setTodos] = useState([]);
-  const nextId = useRef(0);
+export default function TodoTemplate() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const nextId = useRef<number>(0);
 
-  const onInsert = useCallback((text) => {
-    const todo = {
+  const onInsert = useCallback((text: string) => {
+    const todo: Todo = {
       id: nextId.current,
       text,
       checked: false
@@ -16,7 +16,7 @@ const TodoTemplate = () => {
     nextId.current += 1;
   }, []);
 
-  const onToggle = useCallback((id) => {
+  const onToggle = useCallback((id: number) => {
     setTodos((todos) =>
       todos.map((todo) =>
         todo.id === id ? { ...todo, checked: !todo.checked } : todo
@@ -42,5 +42,4 @@ const TodoTemplate = () => {
       </div>
     </div>
   );
-};
-export default TodoTemplate;
+}
