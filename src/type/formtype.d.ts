@@ -197,7 +197,6 @@ declare interface QuestionSection {
 
 declare interface CreateApplicationForm {
   title: string;
-  applyGroups: string[];
   commonSection: {
     caution: string;
     questions: Record<string, Question>;
