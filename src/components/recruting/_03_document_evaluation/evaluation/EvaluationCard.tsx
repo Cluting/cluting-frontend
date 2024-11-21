@@ -9,7 +9,11 @@ export default function EvaluationCard() {
           <p className="text-subheadline text-gray-1400">{"파트 적합성"}</p>
         </div>
         <div className="flex-center gap-[3px] bg-white-100 border border-gray-200 rounded-[5px] px-[10px] py-[5px]">
-          <p className="text-caption3 text-gray-1100 ">{"95"}</p>
+          <input
+            type="text"
+            aria-label="평가 점수"
+            className=" w-[20px] outline-none text-caption3 text-gray-1100 "
+          />
           <p className="text-caption2 text-gray-600">/100점</p>
         </div>
       </div>
