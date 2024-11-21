@@ -1,9 +1,31 @@
 import { useState } from "react";
+import {
+  useRecruitmentStepStore,
+  useStepFourStore
+} from "../../../../store/useStore";
+import { BUTTON_TEXT } from "../../../../constants/recruting";
+import StepCompleteModal from "../../common/StepCompleteModal";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
   const [massageType, setMessageType] = useState("합격");
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
+
+  //4단계 완료
+  const { setStepCompleted, steps } = useStepFourStore();
+  const { completedSteps, completeStep } = useRecruitmentStepStore();
+  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
+  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
+  const handleConfirmStepComplete = () => {
+    completeStep(3); //전체 4단계 완료
+    setStepCompleted(2, true); //4-3 단계 완료
+    setStepCompleteModalOpen(false);
+  };
+  const handleStepTwoSubmit = () => {
+    if (!completedSteps[0]) {
+      setStepCompleteModalOpen(true);
+    }
+  };
 
   return (
     <div>
@@ -60,6 +82,51 @@ export default function ResultMessageContainer() {
           <textarea className="w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] overflow-hidden " />
         </div>
       </div>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          onClick={handleStepTwoSubmit}
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            steps[2].completed
+              ? "bg-main-400 border border-main-100 text-main-100"
+              : "bg-main-100 text-white-100"
+          } text-body flex-center hover:bg-main-500`}
+        >
+          {steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+        </button>
+      </div>
+
+      {isStepCompleteModalOpen && (
+        <StepCompleteModal
+          onClose={handleCloseStepCompleteModal}
+          onConfirm={handleConfirmStepComplete}
+          stepIndex={3}
+        />
+      )}
+      {!steps[2].completed && (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative custom-shadow w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+            지원자에게 문자로 전달될 내용을 미리 확인해 보세요.
+            <button className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+              미리보기
+            </button>
+          </div>
+        </div>
+      )}
+      {steps[2].completed && (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative custom-shadow w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
+            해당 단계는 완료되었습니다. 이후 일정을 위해 다음 일정으로 넘어갔을
+            시, 수정을 권하지 않습니다.
+            <button
+              type="button"
+              className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]"
+            >
+              미리보기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
