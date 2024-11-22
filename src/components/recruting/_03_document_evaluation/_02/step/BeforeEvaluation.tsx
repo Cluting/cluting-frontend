@@ -156,7 +156,7 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     }
 
     setFilteredData(data);
-  }, [filter, sortType]); // filter 또는 sortType이 변경될 때 실행
+  }, [filter, sortType]);
 
   return (
     <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[21px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">

@@ -26,11 +26,7 @@ const DocumentReviewContainer: React.FC = () => {
           />
         );
       case 2:
-        return (
-          <AfterEvaluation
-          // filter={filter} sortType={sortType}
-          />
-        );
+        return <AfterEvaluation filter={filter} sortType={sortType} />;
       case 3:
         return (
           <CompletedEvaluation

@@ -49,7 +49,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
             <div className="w-32 text-left">
               {/*  keyof typeof 를 쓸 경우, 예외처리가 발생 시 오류남. 목업 때만 사용 후 수정 필요 */}
               <button
-                className={`${stateStyles[item.state as keyof typeof stateStyles]} px-4 py-2 rounded-[38px] text-caption3 text-[#8B8FA4]`}
+                className={`${stateStyles[item.state as keyof typeof stateStyles]} px-4 py-2 rounded-[38px] text-caption3 `}
               >
                 {item.state}
               </button>
