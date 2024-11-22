@@ -67,15 +67,14 @@ export const clubTypeList = [
   { id: 2, description: "연합" }
 ];
 export const clubCategoryList = [
-  { id: 1, description: "전체" },
-  { id: 2, description: "문화 / 예술 / 공연" },
-  { id: 3, description: "봉사 / 사회 활동" },
-  { id: 4, description: "학술 / 교양" },
-  { id: 5, description: "창업 / 취업" },
-  { id: 6, description: "어학" },
-  { id: 7, description: "체육" },
-  { id: 8, description: "친목" },
-  { id: 9, description: "기타" }
+  { id: 1, description: "문화 / 예술 / 공연" },
+  { id: 2, description: "봉사 / 사회 활동" },
+  { id: 3, description: "학술 / 교양" },
+  { id: 4, description: "창업 / 취업" },
+  { id: 5, description: "어학" },
+  { id: 6, description: "체육" },
+  { id: 7, description: "친목" },
+  { id: 8, description: "기타" }
 ];
 
 export const TermsAgreementdata: Term[] = [
