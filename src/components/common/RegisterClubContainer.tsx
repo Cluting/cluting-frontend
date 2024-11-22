@@ -29,13 +29,13 @@ export default function RegisterClubContainer() {
 
   const handleTypeSelect = (type: string) => {
     setSelectedClubType(type);
-    setValue("clubType", type); // 폼 상태 업데이트
+    setValue("type", type); // 폼 상태 업데이트
     setClubType(!clubType); // 드롭다운을 닫음
   };
 
   const handleCategorySelect = (category: string) => {
     setSelectedClubCategory(category);
-    setValue("clubCategory", category); // 폼 상태 업데이트
+    setValue("category", category); // 폼 상태 업데이트
     setClubCategory(!clubCategory); // 드롭다운을 닫음
   };
 
@@ -46,11 +46,7 @@ export default function RegisterClubContainer() {
     >
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
-        <UploadProfile
-          name="clubImage"
-          register={register}
-          setValue={setValue}
-        />
+        <UploadProfile name="profile" register={register} setValue={setValue} />
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 mt-4 mb-8" />
@@ -58,7 +54,7 @@ export default function RegisterClubContainer() {
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">기본 정보</p>
         <Input
-          name="clubName"
+          name="name"
           register={register}
           type="text"
           placeholder="동아리 이름"
@@ -66,7 +62,7 @@ export default function RegisterClubContainer() {
         />
         <div className="relative">
           <Input
-            name="clubType"
+            name="type"
             register={register}
             value={selectedClubType}
             type="text"
@@ -82,7 +78,7 @@ export default function RegisterClubContainer() {
         </div>
         <div className="relative">
           <Input
-            name="clubCategory"
+            name="category"
             register={register}
             value={selectedClubCategory}
             type="text"
@@ -112,7 +108,7 @@ export default function RegisterClubContainer() {
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">동아리 소개</p>
         <Textarea
-          name="clubDescription"
+          name="description"
           register={register}
           maxLength={3000}
           placeholder="동아리 소개글을 작성해 주세요."

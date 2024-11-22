@@ -22,12 +22,12 @@ declare interface LoginFormValue {
 
 //동아리 등록 Form
 declare interface RegisterClubFormValue {
-  clubImage: FileList;
-  clubName: string;
-  clubType: string;
-  clubCategory: string;
+  name: string;
+  description: string;
+  profile: File;
+  category: string;
+  type: string;
   keywords: string[];
-  clubDescription: string;
 }
 
 //리크루팅 시작하기 모달 Form
