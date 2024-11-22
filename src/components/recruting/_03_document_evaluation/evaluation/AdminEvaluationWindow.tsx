@@ -4,7 +4,7 @@ import AdminEvaluationList from "./AdminEvaluationList";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
-  const [authority, setAuthority] = useState(false);
+  const [authority, setAuthority] = useState(true); //운영진 권한
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleInput = () => {
