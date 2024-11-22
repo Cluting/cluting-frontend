@@ -84,7 +84,7 @@ export default function ResultMessageContainer() {
     },
     () => {
       // 폼 유효성 검사 실패 시
-      console.log("유효성 검사 실패:", errors);
+      console.log("유효성 검사:", errors);
     }
   );
 
