@@ -2,12 +2,13 @@
 declare interface SignupFormValue {
   name: string;
   email?: string;
-  address?: string;
+  location?: string;
   school: string;
-  studentStatus: string;
+  studentStatus: string; //FIX: IsOnLeaver, boolean 값임 수정 필요
   semester: string;
   major: string;
-  minors?: string;
+  doubleMajor?: string;
+  //FIX: 약관 동의 백 요청에 없음
   termsOfService: boolean; // 클루팅 이용약관 동의
   privacyPolicy: boolean; // 개인정보 수집 및 이용 동의
   marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
