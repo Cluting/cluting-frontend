@@ -1,8 +1,16 @@
 import React from "react";
-import ItemList from "../common/ItemList";
+import WideMemberList from "../list/WideMemberList";
 
 interface BeforeEvaluationProps {
-  filteredData: { id: number; type: string; name: string }[];
+  filteredData: {
+    id: string;
+    state: string;
+    name: string;
+    phone: string;
+    group: string;
+    incomplete: number;
+    all: number;
+  }[];
   onFilter: (filterType: string) => void;
   onSort: (sortType: string) => void;
 }
@@ -13,9 +21,8 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
   onSort
 }) => {
   return (
-    <div>
-      <h2>평가 전 단계</h2>
-      <ItemList items={filteredData} />
+    <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[21px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
+      <WideMemberList items={filteredData} />
     </div>
   );
 };

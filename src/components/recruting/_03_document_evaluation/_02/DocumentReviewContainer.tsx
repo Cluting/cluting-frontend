@@ -9,11 +9,134 @@ import Dropdown from "./common/DropDown";
 const DocumentReviewContainer: React.FC = () => {
   const steps = ["평가 전", "평가 중", "평가 후", "평가 완료"];
   const [currentStep, setCurrentStep] = useState(0);
+  // 목업데이터 : API 연결시 삭제
   const mockData = [
-    { id: 1, type: "기획", name: "기획 아이템 1" },
-    { id: 2, type: "디자인", name: "디자인 아이템 1" },
-    { id: 3, type: "개발", name: "개발 아이템 1" },
-    { id: 4, type: "기획", name: "기획 아이템 2" }
+    {
+      id: "1",
+      state: "평가 전",
+      name: "김은혜",
+      phone: "010-1234-1234",
+      group: "개발",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "2",
+      state: "평가 전",
+      name: "윤다인",
+      phone: "010-1234-1234",
+      group: "개발",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "3",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "3",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "4",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "5",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "6",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "7",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "8",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "9",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "10",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "11",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "12",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "13",
+      state: "평가 전",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    }
   ];
 
   const [filteredData, setFilteredData] = useState(mockData);
@@ -23,7 +146,7 @@ const DocumentReviewContainer: React.FC = () => {
     if (filterType === "전체") {
       setFilteredData(mockData);
     } else {
-      setFilteredData(mockData.filter((item) => item.type === filterType));
+      setFilteredData(mockData.filter((item) => item.group === filterType));
     }
   };
 
@@ -98,7 +221,7 @@ const DocumentReviewContainer: React.FC = () => {
         currentStep={currentStep}
         onStepClick={setCurrentStep}
       />
-      {renderStepComponent()}
+      <div className="mb-8">{renderStepComponent()}</div>
     </div>
   );
 };
