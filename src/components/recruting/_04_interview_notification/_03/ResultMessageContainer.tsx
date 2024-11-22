@@ -12,15 +12,13 @@ import { useForm } from "react-hook-form";
 export default function ResultMessageContainer() {
   const [messageType, setMessageType] = useState<"pass" | "fail">("pass");
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
-  const [isSend, setIsSend] = useState(false); //전송 여부
+  const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
+  const [isSendFail, setIsSendFail] = useState(false); // 불합격 메시지 전송 여부
   const [showError, setShowError] = useState(false); //전송하지 않고 완료했을 때의 에러
-  const [textareaValues, setTextareaValues] = useState<{
-    [key: string]: string;
-  }>({
-    합격: "",
-    불합격: ""
+  const [textareaValues, setTextareaValues] = useState({
+    pass: "", // 합격 메시지 입력값
+    fail: "" // 불합격 메시지 입력값
   });
-
   //전송 클릭 시 미리보기 모달
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const handleClosePreviewModal = () => {
@@ -38,9 +36,13 @@ export default function ResultMessageContainer() {
     console.log(messageType, textareaValues[messageType]);
   };
 
-  //전송 완료 처리
+  // 전송 완료 처리
   const handleSend = () => {
-    setIsSend(true); // 전송 완료 상태로 변경
+    if (messageType === "pass") {
+      setIsSendPass(true); // 합격 메시지 전송 완료
+    } else {
+      setIsSendFail(true); // 불합격 메시지 전송 완료
+    }
   };
 
   //Form 제출
@@ -69,7 +71,11 @@ export default function ResultMessageContainer() {
   const handleStepTwoSubmit = handleSubmit(
     () => {
       // 폼 유효성 검사가 통과되었을 때만 실행
-      if (isSend === false) {
+      if (messageType === "pass" && !isSendPass) {
+        setShowError(true);
+        return;
+      }
+      if (messageType === "fail" && !isSendFail) {
         setShowError(true);
         return;
       }
@@ -153,7 +159,7 @@ export default function ResultMessageContainer() {
 
             <textarea
               {...register(messageType, { required: "필수 작성 내용입니다." })}
-              value={textareaValues[messageType]}
+              value={textareaValues[messageType]} // 현재 messageType에 해당하는 값
               onChange={handleTextareaChange}
               className={`w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 overflow-hidden ${errors.pass && "border border-red-100"}`}
             />
@@ -172,10 +178,17 @@ export default function ResultMessageContainer() {
             setShowPreviewModal(true);
           }}
           className={`absolute right-0 w-[210px] h-[54px] rounded-[11px] mt-[50px] text-white-100 text-body flex-center ${
-            isSend ? "bg-gray-400 " : "bg-gray-1100 "
+            (messageType === "pass" && isSendPass) ||
+            (messageType === "fail" && isSendFail)
+              ? "bg-gray-400 "
+              : "bg-gray-1100 "
           } `}
         >
-          {isSend ? "전송 완료" : "전송하기"}
+          {messageType === "pass" && isSendPass
+            ? "전송 완료"
+            : messageType === "fail" && isSendFail
+              ? "전송 완료"
+              : "전송하기"}
         </button>
       </div>
       {showPreviewModal && (
