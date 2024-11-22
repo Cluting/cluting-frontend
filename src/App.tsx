@@ -22,8 +22,8 @@ export default function App() {
       <div className="relative bg-white-100 h-full w-full">
         <div className="relative bg-white-100 h-full w-full pt-[55px]">
           <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/main" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/register_club" element={<RegisterClub />} />
