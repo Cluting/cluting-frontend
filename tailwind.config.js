@@ -29,7 +29,8 @@ module.exports = {
         caption3: ["13px", { lineHeight: "18px", fontWeight: "500" }],
         subheadline: ["15px", { lineHeight: "20px", fontWeight: "600" }],
         callout: ["16px", { lineHeight: "21px", fontWeight: "600" }],
-        largeTitle: ["34px", { lineHeight: "41px", fontWeight: "800" }]
+        largeTitle: ["34px", { lineHeight: "41px", fontWeight: "800" }],
+        qustion: ["16px", { lineHeight: "22px", fontWeight: "300" }]
       },
       colors: {
         black: {
@@ -59,6 +60,7 @@ module.exports = {
           800: "#636366", //gray08
           850: "#5C6067", //gray8.5
           900: "#3A3A3C", //gray09
+          1000: "#43454F", //gray10
           1100: "#3B3D46", //gray11
           1300: "#24252C", //gray13
           1400: "#1F2025" //gray14
