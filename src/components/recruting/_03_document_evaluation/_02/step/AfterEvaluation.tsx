@@ -40,15 +40,6 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       all: 5
     },
     {
-      id: "3",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 3,
-      all: 5
-    },
-    {
       id: "4",
       state: "수정 가능",
       name: "최예은",
@@ -59,7 +50,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
     },
     {
       id: "5",
-      state: "열람 가능",
+      state: "수정 가능",
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
@@ -95,7 +86,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
     },
     {
       id: "9",
-      state: "수정 가능",
+      state: "열람 가능",
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
@@ -131,6 +122,15 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
     },
     {
       id: "13",
+      state: "수정 가능",
+      name: "최예은",
+      phone: "010-1234-1234",
+      group: "디자인",
+      incomplete: 3,
+      all: 5
+    },
+    {
+      id: "14",
       state: "수정 가능",
       name: "최예은",
       phone: "010-1234-1234",

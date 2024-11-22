@@ -40,15 +40,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
       all: 5
     },
     {
-      id: "3",
-      state: "평가 전",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 3,
-      all: 5
-    },
-    {
       id: "4",
       state: "평가 전",
       name: "최예은",
