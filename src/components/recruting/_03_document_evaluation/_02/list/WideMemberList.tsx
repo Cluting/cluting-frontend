@@ -25,7 +25,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
   };
 
   return (
-    <div className="flex flex-col w-full rounded-[7px] gap-4 h-[720px]">
+    <div className="flex flex-col w-full rounded-[7px] gap-4 max-h-[720px]">
       <ul className="flex items-center p-4 w-full h-[42px] bg-[#F1F3FF] gap-2 rounded-md">
         <li className="w-32 font-Pretendard text-[13.856px] font-semibold text-[#565965] leading-normal text-left">
           상태

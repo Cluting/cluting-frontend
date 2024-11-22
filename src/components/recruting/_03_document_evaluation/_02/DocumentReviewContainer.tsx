@@ -20,11 +20,7 @@ const DocumentReviewContainer: React.FC = () => {
       case 0:
         return <BeforeEvaluation filter={filter} sortType={sortType} />;
       case 1:
-        return (
-          <DuringEvaluation
-          // filter={filter} sortType={sortType}
-          />
-        );
+        return <DuringEvaluation filter={filter} sortType={sortType} />;
       case 2:
         return <AfterEvaluation filter={filter} sortType={sortType} />;
       case 3:

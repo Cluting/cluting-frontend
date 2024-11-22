@@ -159,7 +159,7 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
   }, [filter, sortType]);
 
   return (
-    <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[21px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
+    <div className="w-[1016px] flex items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
       <WideMemberList items={filteredData} />
     </div>
   );
