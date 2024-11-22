@@ -71,13 +71,11 @@ export default function ResultMessageContainer() {
   const handleStepTwoSubmit = handleSubmit(
     () => {
       // 폼 유효성 검사가 통과되었을 때만 실행
-      if (messageType === "pass" && !isSendPass) {
-        setShowError(true);
+      if (!isSendPass || !isSendFail) {
+        setShowError(true); // 전송 여부를 만족하지 않으면 에러 표시
         return;
-      }
-      if (messageType === "fail" && !isSendFail) {
-        setShowError(true);
-        return;
+      } else {
+        setShowError(false); // 에러 숨김
       }
       if (!completedSteps[0]) {
         setStepCompleteModalOpen(true);
