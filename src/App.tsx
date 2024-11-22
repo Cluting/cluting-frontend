@@ -13,6 +13,7 @@ import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
+import Evaluation from "./pages/Recruting/step3/Evalutation";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
                 path="03_document_evaluation"
                 element={<DocumentEvaluation />}
               />
+              <Route path="evaluation" element={<Evaluation />} />
               <Route
                 path="04_interview_notification"
                 element={<InterviewNotification />}
