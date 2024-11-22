@@ -230,3 +230,9 @@ interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
 }
+
+// 4-3 합격 불합격 메시지
+declare interface ResultMessageForm {
+  pass: string;
+  fail: string;
+}
