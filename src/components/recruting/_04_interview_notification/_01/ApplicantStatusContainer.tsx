@@ -41,9 +41,16 @@ export default function ApplicantStatusContainer() {
               }}
               className="relative flex-center gap-[17px] bg-white-100 border border-gray-200 rounded-[6px] py-[6px] px-[11px] text-[14px]"
             >
-              <span className="font-semibold">정렬:</span> 가나다순
+              <span className="font-semibold">정렬:</span> {align}
               <img src="/assets/ic-dropdown.svg" />
-              {showAlign && <AlignDropdown align={align} />}
+              {showAlign && (
+                <AlignDropdown
+                  onSelectAlign={(selectedAlign) => {
+                    setAlign(selectedAlign); // 필터 업데이트
+                    setShowAlign(false); // 드롭다운 닫기
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
