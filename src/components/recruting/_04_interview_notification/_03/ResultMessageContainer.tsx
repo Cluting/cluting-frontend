@@ -1,9 +1,5 @@
 import { FormEvent, useState } from "react";
-import {
-  useRecruitmentStepStore,
-  useStepFourStore
-} from "../../../../store/useStore";
-import StepCompleteModal from "../../common/StepCompleteModal";
+import { useStepFourStore } from "../../../../store/useStore";
 import PreviewModal from "./PreviewModal";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +9,8 @@ export default function ResultMessageContainer() {
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
   const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
   const [isSendFail, setIsSendFail] = useState(false); // 불합격 메시지 전송 여부
+
+  //FIX: 모달에서 전송 완료 여부에 맞춰 전송 완료 안 눌렀을 때 오류 추가
   const [showError, setShowError] = useState(false); //전송하지 않고 완료했을 때의 에러
   const [textareaErrors, setTextareaErrors] = useState({
     pass: false,
@@ -80,15 +78,8 @@ export default function ResultMessageContainer() {
   });
 
   //4단계 완료
-  const { setStepCompleted, steps } = useStepFourStore();
-  const { completedSteps, completeStep } = useRecruitmentStepStore();
-  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
-  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
-  const handleConfirmStepComplete = () => {
-    completeStep(3); //전체 4단계 완료
-    setStepCompleted(2, true); //4-3 단계 완료
-    setStepCompleteModalOpen(false);
-  };
+  const { steps } = useStepFourStore();
+
   const handleStepTwoSubmit = handleSubmit(
     () => {
       // 폼 유효성 검사가 통과되었을 때만 실행
@@ -96,10 +87,6 @@ export default function ResultMessageContainer() {
         setShowError(true); // 전송 여부를 만족하지 않으면 에러 표시
         return;
       } else {
-        setShowError(false); // 에러 숨김
-      }
-      if (!completedSteps[0]) {
-        setStepCompleteModalOpen(true);
         setShowError(false); // 에러 숨김
       }
     },
@@ -224,13 +211,6 @@ export default function ResultMessageContainer() {
         />
       )}
 
-      {isStepCompleteModalOpen && (
-        <StepCompleteModal
-          onClose={handleCloseStepCompleteModal}
-          onConfirm={handleConfirmStepComplete}
-          stepIndex={3}
-        />
-      )}
       {!steps[2].completed && (
         <div className="fixed animate-dropdown bottom-[16px]">
           <div className="relative  w-[1016px] h-[79px] bg-gray-200  rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">

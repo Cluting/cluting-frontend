@@ -2,6 +2,12 @@
 
 import { useState } from "react";
 import { ModalPortal } from "../../../common/ModalPortal";
+import StepCompleteModal from "../../common/StepCompleteModal";
+import {
+  useRecruitmentStepStore,
+  useStepFiveStore,
+  useStepFourStore
+} from "../../../../store/useStore";
 
 interface previewModalProps {
   onClose: () => void;
@@ -37,7 +43,30 @@ export default function PreviewModal({
     setIsSendFailModalVisible(true); // 불합격 알림 모달 표시
     setIsSendFail(true);
     onSendFail(); // 상위 컴포넌트에 불합격 전송 상태 전달
-    setTimeout(() => setIsSendFailModalVisible(false), 2000); // 2초 후 숨김
+    setTimeout(() => setIsSendFailModalVisible(false), 2000);
+  };
+
+  // 메시지 모달 닫았을 때
+  const handleClose = () => {
+    if (isSendPass && isSendFail) {
+      console.log({ isSendPass, isSendFail, isStepCompleteModalOpen });
+      setStepCompleteModalOpen(!isStepCompleteModalOpen);
+    } else {
+      console.log({ isSendPass, isSendFail, isStepCompleteModalOpen });
+      onClose();
+    }
+  };
+
+  // 닫고 4단계 완료 모달
+  const { setStepCompleted } = useStepFourStore();
+  const { completeStep } = useRecruitmentStepStore();
+
+  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
+  const handleConfirmStepComplete = () => {
+    completeStep(3); //전체 4단계 완료
+    setStepCompleted(2, true); //4-3 단계 완료
+    setStepCompleteModalOpen(false);
+    onClose();
   };
 
   return (
@@ -60,7 +89,7 @@ export default function PreviewModal({
           <div className=" flex items-center mt-[27px] mb-[22px]">
             <h1 className="text-title3 ">메시지 전송하기</h1>
             <img
-              onClick={() => onClose()}
+              onClick={handleClose}
               src="/assets/ic-close.svg"
               alt="모달 닫기"
               className="absolute top-[30px] right-[20px] w-[16px] h-[16px] mx-3"
@@ -117,6 +146,13 @@ export default function PreviewModal({
           </div>
         </div>
       </div>
+
+      {isStepCompleteModalOpen && (
+        <StepCompleteModal
+          onConfirm={handleConfirmStepComplete}
+          stepIndex={3}
+        />
+      )}
     </ModalPortal>
   );
 }
