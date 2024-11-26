@@ -15,7 +15,14 @@ export default function ApplicantDocument() {
 
   return (
     <div className=" flex flex-col items-center h-full pt-6 bg-gray-100 ">
-      <Sidemenu />
+      <div className="z-40">
+        <Sidemenu />
+      </div>
+      <div className="z-[0] flex-center absolute top-50 left-28">
+        {/* TODO: 뒤로가기 버튼 추가 , 링크 연결 */}
+        <p className="text-title1">김민지</p>
+        <p className="text-gray-800 text-title3 ml-[5px]">기획</p>
+      </div>
       <div className="relative w-[829px] mb-[84px] h-full ">
         <div className="w-full flex justify-end">
           <button
