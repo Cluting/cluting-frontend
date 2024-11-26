@@ -3,7 +3,6 @@ import {
   useRecruitmentStepStore,
   useStepFourStore
 } from "../../../../store/useStore";
-import { BUTTON_TEXT } from "../../../../constants/recruting";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import PreviewModal from "./PreviewModal";
 import { useForm } from "react-hook-form";
@@ -107,6 +106,9 @@ export default function ResultMessageContainer() {
         >
           불합격
         </button>
+        <div className="tooltip ml-5">
+          모든 지원자에게 해당하는 정의를 클릭해 본문을 추가해 주세요.
+        </div>
         {showError && (
           <p className="text-callout text-[12px] text-red-100 ml-3">
             먼저 문자 전송을 완료해 주세요.
@@ -117,7 +119,7 @@ export default function ResultMessageContainer() {
         <div className="bg-gray-50 border border-gray-200 rounded-t-[6.65px]">
           <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
             <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-[13px]">
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-callout">
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
@@ -125,7 +127,7 @@ export default function ResultMessageContainer() {
               지원자
             </div>
 
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-[13px]">
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-callout">
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
@@ -133,15 +135,12 @@ export default function ResultMessageContainer() {
               파트
             </div>
 
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-[13px]">
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-callout">
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
               />
               면접 시간대 링크
-            </div>
-            <div className="tooltip">
-              모든 지원자에게 해당하는 정의를 클릭해 본문을 추가해 주세요.
             </div>
           </div>
           <div className="relative bg-white-100 h-[690px] rounded-b-[6.65px]">
@@ -150,8 +149,8 @@ export default function ResultMessageContainer() {
                 onClick={() => {
                   setIsVisible(false);
                 }}
-                src="/assets/messageExample.png"
-                className="absolute top-[40px] left-[50px]"
+                src="/assets/messageExample.jpg"
+                className="absolute w-[929px] top-[40px] left-[50px]"
               />
             )}
 
@@ -159,7 +158,7 @@ export default function ResultMessageContainer() {
               {...register(messageType, { required: "필수 작성 내용입니다." })}
               value={textareaValues[messageType]} // 현재 messageType에 해당하는 값
               onChange={handleTextareaChange}
-              className={`w-full h-full rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 overflow-hidden ${errors.pass && "border border-red-100"}`}
+              className={`w-full h-full overflow-scroll rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100  ${errors.pass && "border border-red-100"}`}
             />
 
             {errors.pass && (
@@ -171,45 +170,34 @@ export default function ResultMessageContainer() {
             {/* FIX: 에러 나면 모달 안 뜨도록 */}
           </div>
         </div>
-        <button
-          onClick={() => {
-            setShowPreviewModal(true);
-          }}
-          className={`absolute right-0 w-[210px] h-[54px] rounded-[11px] mt-[50px] text-white-100 text-body flex-center ${
-            (messageType === "pass" && isSendPass) ||
-            (messageType === "fail" && isSendFail)
-              ? "bg-gray-400 "
-              : "bg-gray-1100 "
-          } `}
-        >
-          {messageType === "pass" && isSendPass
-            ? "전송 완료"
-            : messageType === "fail" && isSendFail
+        <div className="flex justify-center">
+          <button
+            onClick={() => {
+              setShowPreviewModal(true);
+            }}
+            className={` w-[210px] h-[54px] rounded-[11px] mt-[50px] text-white-100 text-body flex-center ${
+              (messageType === "pass" && isSendPass) ||
+              (messageType === "fail" && isSendFail)
+                ? "bg-gray-500 "
+                : "bg-main-100 hover:bg-main-500 "
+            } `}
+          >
+            {messageType === "pass" && isSendPass
               ? "전송 완료"
-              : "전송하기"}
-        </button>
+              : messageType === "fail" && isSendFail
+                ? "전송 완료"
+                : "전송하기"}
+          </button>
+        </div>
       </div>
       {showPreviewModal && (
         <PreviewModal
           onSend={handleSend}
           onClose={handleClosePreviewModal}
-          type={messageType}
-          message={textareaValues[messageType]}
+          passMessage={textareaValues["pass"]}
+          failMessage={textareaValues["fail"]}
         />
       )}
-      <div className="flex justify-center">
-        <button
-          type="submit"
-          onClick={handleStepTwoSubmit}
-          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            steps[2].completed
-              ? "bg-main-400 border border-main-100 text-main-100"
-              : "bg-main-100 text-white-100"
-          } text-body flex-center hover:bg-main-500`}
-        >
-          {steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
-        </button>
-      </div>
 
       {isStepCompleteModalOpen && (
         <StepCompleteModal
@@ -220,9 +208,9 @@ export default function ResultMessageContainer() {
       )}
       {!steps[2].completed && (
         <div className="fixed animate-dropdown bottom-[16px]">
-          <div className="relative custom-shadow w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+          <div className="relative  w-[1016px] h-[79px] bg-gray-200  rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
             지원자에게 문자로 전달될 내용을 미리 확인해 보세요.
-            <button className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+            <button className="absolute right-[15px] bg-gray-800 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]">
               미리보기
             </button>
           </div>
