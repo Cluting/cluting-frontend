@@ -14,6 +14,10 @@ export default function ResultMessageContainer() {
   const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
   const [isSendFail, setIsSendFail] = useState(false); // 불합격 메시지 전송 여부
   const [showError, setShowError] = useState(false); //전송하지 않고 완료했을 때의 에러
+  const [textareaErrors, setTextareaErrors] = useState({
+    pass: false,
+    fail: false
+  });
   const [textareaValues, setTextareaValues] = useState({
     pass: "", // 합격 메시지 입력값
     fail: "" // 불합격 메시지 입력값
@@ -27,12 +31,9 @@ export default function ResultMessageContainer() {
   const handleTextareaChange = (
     event: FormEvent<HTMLTextAreaElement>
   ): void => {
-    setTextareaValues({
-      ...textareaValues,
-      [messageType]: event.currentTarget.value // 수정된 부분
-    });
-    setShowError(false); // 입력 시 에러 숨김
-    console.log(messageType, textareaValues[messageType]);
+    const { name, value } = event.currentTarget;
+    setTextareaValues({ ...textareaValues, [name]: value });
+    setTextareaErrors({ ...textareaErrors, [name]: false }); // 입력 시 에러 숨김
   };
 
   // 전송 완료 처리
@@ -41,6 +42,27 @@ export default function ResultMessageContainer() {
       setIsSendPass(true); // 합격 메시지 전송 완료
     } else {
       setIsSendFail(true); // 불합격 메시지 전송 완료
+    }
+  };
+
+  // 전송 완료 클릭 시 실행
+  const handleSendComplete = () => {
+    const passMessageEmpty = textareaValues.pass.trim() === "";
+    const failMessageEmpty = textareaValues.fail.trim() === "";
+
+    // 입력값 검증
+    if (passMessageEmpty || failMessageEmpty) {
+      setTextareaErrors({
+        pass: passMessageEmpty,
+        fail: failMessageEmpty
+      });
+      setShowPreviewModal(false); // 모달 닫힌 상태 유지
+    } else {
+      setTextareaErrors({
+        pass: false,
+        fail: false
+      });
+      setShowPreviewModal(true); // 모달 열기
     }
   };
 
@@ -94,7 +116,7 @@ export default function ResultMessageContainer() {
           onClick={() => {
             setMessageType("pass");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  ${showError ? "border-red-100" : "border-main-400"} border-b-0 text-callout ${messageType === "pass" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${messageType === "pass" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
         >
           합격
         </button>
@@ -102,7 +124,7 @@ export default function ResultMessageContainer() {
           onClick={() => {
             setMessageType("fail");
           }}
-          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border ${showError ? "border-red-100" : "border-main-400"} border-b-0 text-callout ${messageType === "fail" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
+          className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${messageType === "fail" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
         >
           불합격
         </button>
@@ -119,7 +141,7 @@ export default function ResultMessageContainer() {
         <div className="bg-gray-50 border border-gray-200 rounded-t-[6.65px]">
           <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
             <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-callout">
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-caption3">
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
@@ -127,7 +149,7 @@ export default function ResultMessageContainer() {
               지원자
             </div>
 
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-callout">
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3">
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
@@ -135,7 +157,7 @@ export default function ResultMessageContainer() {
               파트
             </div>
 
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-callout">
+            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-caption3">
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
@@ -150,31 +172,33 @@ export default function ResultMessageContainer() {
                   setIsVisible(false);
                 }}
                 src="/assets/messageExample.jpg"
-                className="absolute w-[929px] top-[40px] left-[50px]"
+                className="absolute w-[929px] top-[20px] left-[25px]"
               />
             )}
 
             <textarea
               {...register(messageType, { required: "필수 작성 내용입니다." })}
+              placeholder="서류 합격 및 면접 안내에 대한 메시지를 작성해 주세요."
               value={textareaValues[messageType]} // 현재 messageType에 해당하는 값
               onChange={handleTextareaChange}
-              className={`w-full h-full overflow-scroll rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100  ${errors.pass && "border border-red-100"}`}
+              className={`w-full h-full overflow-scroll rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 `}
             />
 
-            {errors.pass && (
-              <p className="text-state-error">{errors.pass.message}</p>
+            {messageType === "pass" && textareaErrors.pass && (
+              <p className="text-state-error text-red-100 mt-2">
+                필수 작성 내용입니다.
+              </p>
             )}
-            {errors.fail && (
-              <p className="text-state-error">{errors.fail.message}</p>
+            {messageType === "fail" && textareaErrors.fail && (
+              <p className="text-state-error text-red-100 mt-2">
+                필수 작성 내용입니다.
+              </p>
             )}
-            {/* FIX: 에러 나면 모달 안 뜨도록 */}
           </div>
         </div>
         <div className="flex justify-center">
           <button
-            onClick={() => {
-              setShowPreviewModal(true);
-            }}
+            onClick={handleSendComplete}
             className={` w-[210px] h-[54px] rounded-[11px] mt-[50px] text-white-100 text-body flex-center ${
               (messageType === "pass" && isSendPass) ||
               (messageType === "fail" && isSendFail)
