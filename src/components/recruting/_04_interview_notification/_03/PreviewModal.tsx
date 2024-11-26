@@ -5,19 +5,33 @@ import { ModalPortal } from "../../../common/ModalPortal";
 
 interface previewModalProps {
   onClose: () => void;
-  onSend: () => void;
+  onSendPass: () => void; // 합격 메시지 전송 완료 콜백
+  onSendFail: () => void; // 불합격 메시지 전송 완료 콜백
   passMessage: string;
   failMessage: string;
 }
 
 export default function PreviewModal({
   onClose,
-  onSend,
+  onSendPass,
+  onSendFail,
   passMessage,
   failMessage
 }: previewModalProps) {
   const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
   const [isSendFail, setIsSendFail] = useState(false); // 불합격 메시지 전송 여부
+
+  // 합격 전송 처리
+  const handleSendPass = () => {
+    setIsSendPass(true);
+    onSendPass(); // 상위 컴포넌트에 합격 전송 완료 알림
+  };
+
+  // 불합격 전송 처리
+  const handleSendFail = () => {
+    setIsSendFail(true);
+    onSendFail(); // 상위 컴포넌트에 불합격 전송 완료 알림
+  };
 
   return (
     <ModalPortal>
@@ -45,12 +59,15 @@ export default function PreviewModal({
 
               <div className="flex justify-center">
                 <button
-                  onClick={() => {
-                    onSend();
-                  }}
-                  className=" py-[9px] px-[45px] mb-[39px] button-main-bg hover:bg-main-500 text-body rounded-[7px]"
+                  onClick={handleSendPass}
+                  disabled={isSendPass} // 이미 전송 완료된 경우 비활성화
+                  className={`py-[9px] px-[45px] mb-[39px] rounded-[7px] ${
+                    isSendPass
+                      ? "bg-gray-500 text-white-100 "
+                      : "button-main-bg hover:bg-main-500 text-body"
+                  }`}
                 >
-                  전송하기
+                  {isSendPass ? "전송 완료" : "전송하기"}
                 </button>
               </div>
             </section>
@@ -65,12 +82,15 @@ export default function PreviewModal({
 
               <div className="flex justify-center">
                 <button
-                  onClick={() => {
-                    onSend();
-                  }}
-                  className="flex justify-center py-[9px] px-[45px] mb-[39px] button-main-bg hover:bg-main-500 text-body rounded-[7px]"
+                  onClick={handleSendFail}
+                  disabled={isSendFail} // 이미 전송 완료된 경우 비활성화
+                  className={`py-[9px] px-[45px] mb-[39px] rounded-[7px] ${
+                    isSendFail
+                      ? "bg-gray-500 text-white-100 "
+                      : "button-main-bg hover:bg-main-500 text-body"
+                  }`}
                 >
-                  전송하기
+                  {isSendFail ? "전송 완료" : "전송하기"}
                 </button>
               </div>
             </section>

@@ -216,7 +216,8 @@ export default function ResultMessageContainer() {
       </div>
       {showPreviewModal && (
         <PreviewModal
-          onSend={handleSend}
+          onSendFail={handleSend}
+          onSendPass={handleSend}
           onClose={handleClosePreviewModal}
           passMessage={textareaValues["pass"]}
           failMessage={textareaValues["fail"]}
