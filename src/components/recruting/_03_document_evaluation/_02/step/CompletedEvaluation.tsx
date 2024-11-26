@@ -107,8 +107,8 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           ? {
               ...member,
               state: "이의 제기중",
-              isDecisionMode: !member.isDisputed, // 처음 이의제기일 때만 결정 모드 활성화
-              isDisputed: true // 이의제기 완료
+              isDecisionMode: !member.isDisputed,
+              isDisputed: true
             }
           : member
       )
@@ -123,7 +123,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           ? {
               ...member,
               result: isAccepted ? "합격" : "불합격",
-              isDecisionMode: false // 합불 결정 모드 해제
+              isDecisionMode: false
             }
           : member
       )
