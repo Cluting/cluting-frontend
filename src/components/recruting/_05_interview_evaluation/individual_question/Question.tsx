@@ -1,12 +1,17 @@
 interface QuestionProps {
   id: number;
   onRemove: () => void;
+  onToggle: (id: number, checked: boolean) => void; // 체크박스 상태
 }
 
-export default function Question({ id, onRemove }: QuestionProps) {
+export default function Question({ id, onRemove, onToggle }: QuestionProps) {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onToggle(id, event.target.checked);
+  };
+
   return (
-    <div className="w-full my-3">
-      <div className="rounded-[6.35px] py-[11px] px-[15px] bg-[#F6F6F6] border border-[#D6D7DA]">
+    <div className="w-full my-3 flex items-center justify-between">
+      <div className="w-full rounded-[6.35px] py-[11px] px-[15px] bg-[#F6F6F6] border border-[#D6D7DA]">
         <div className="flex justify-between items-center">
           <div className="flex-center">
             <div className="flex-center w-7 h-7 rounded-full bg-main-300 text-main-100 mr-2">
@@ -27,6 +32,12 @@ export default function Question({ id, onRemove }: QuestionProps) {
           className="input-style input-background w-full h-[100px] mt-4 text-[12.7px]"
         />
       </div>
+
+      <input
+        type="checkbox"
+        onChange={handleCheckboxChange} // 체크박스 상태 변경 시 처리
+        className="ml-[22px] mr-[7px]"
+      />
     </div>
   );
 }

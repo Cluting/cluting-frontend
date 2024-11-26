@@ -2,18 +2,29 @@ import { useState } from "react";
 import Question from "./Question";
 
 export default function IndividualQuestionWindow() {
-  const [questions, setQuestions] = useState<{ id: number }[]>([]); // 질문 리스트
+  const [questions, setQuestions] = useState<
+    { id: number; checked: boolean }[]
+  >([]);
   const [nextId, setNextId] = useState(1); // 다음 ID 값
 
   // 질문 추가
   const handleAddQuestion = () => {
-    setQuestions((prev) => [...prev, { id: nextId }]);
+    setQuestions((prev) => [...prev, { id: nextId, checked: false }]);
     setNextId((prev) => prev + 1);
   };
 
   // 질문 삭제
   const handleRemoveQuestion = (id: number) => {
     setQuestions((prev) => prev.filter((question) => question.id !== id));
+  };
+
+  // 질문 체크 상태
+  const handleToggleCheckbox = (id: number, checked: boolean) => {
+    setQuestions((prev) =>
+      prev.map((question) =>
+        question.id === id ? { ...question, checked } : question
+      )
+    );
   };
 
   return (
@@ -42,6 +53,7 @@ export default function IndividualQuestionWindow() {
           <Question
             key={question.id}
             id={question.id}
+            onToggle={handleToggleCheckbox}
             onRemove={() => handleRemoveQuestion(question.id)}
           />
         ))}
