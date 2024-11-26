@@ -6,6 +6,7 @@ export default function IndividualQuestionWindow() {
     { id: number; checked: boolean }[]
   >([]);
   const [nextId, setNextId] = useState(1); // 다음 ID 값
+  const [questionNumber, setQuestionNumber] = useState(2);
 
   // 질문 추가
   const handleAddQuestion = () => {
@@ -19,10 +20,17 @@ export default function IndividualQuestionWindow() {
   };
 
   // 질문 체크 상태
-  const handleToggleCheckbox = (id: number, checked: boolean) => {
+  const handleToggleCheckbox = (id: number) => {
+    const selectedCount = questions.filter((q) => q.checked).length;
+
     setQuestions((prev) =>
       prev.map((question) =>
-        question.id === id ? { ...question, checked } : question
+        question.id === id
+          ? {
+              ...question,
+              checked: !question.checked && selectedCount < questionNumber
+            }
+          : question
       )
     );
   };
@@ -43,9 +51,11 @@ export default function IndividualQuestionWindow() {
 
       <div className="flex items-center my-4">
         <div className="py-[5px] px-[18px] mr-[10px] rounded-[5.29px] border border-gray-200 ">
-          총 2개
+          총 {questionNumber}개
         </div>
-        <div className="tooltip">개인 질문 '2개'를 선택해 주세요 </div>
+        <div className="tooltip">
+          개인 질문 '{questionNumber}개'를 선택해 주세요
+        </div>
       </div>
 
       <section>
@@ -53,6 +63,7 @@ export default function IndividualQuestionWindow() {
           <Question
             key={question.id}
             id={question.id}
+            checked={question.checked}
             onToggle={handleToggleCheckbox}
             onRemove={() => handleRemoveQuestion(question.id)}
           />

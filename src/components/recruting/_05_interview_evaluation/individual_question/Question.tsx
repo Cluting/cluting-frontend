@@ -2,24 +2,31 @@ import { useState } from "react";
 
 interface QuestionProps {
   id: number;
+  checked: boolean;
   onRemove: () => void;
-  onToggle: (id: number, checked: boolean) => void; // 체크박스 상태
+  onToggle: (id: number) => void;
 }
 
-export default function Question({ id, onRemove, onToggle }: QuestionProps) {
-  const [checked, setChecked] = useState(false);
+export default function Question({
+  id,
+  checked,
+  onRemove,
+  onToggle
+}: QuestionProps) {
   const handleCheckboxChange = () => {
-    const newChecked = !checked;
-    setChecked(newChecked); // 로컬 상태 업데이트
-    onToggle(id, newChecked); // 부모 컴포넌트에 상태 전달
+    onToggle(id); // 클릭 시 부모로 ID 전달
   };
+  //FIX: 체크박스, 질문 추가 아이콘 색상 변경
 
   return (
     <div className="w-full my-3 flex items-center justify-between">
       <div className="w-full rounded-[6.35px] py-[11px] px-[15px] bg-[#F6F6F6] border border-[#D6D7DA]">
         <div className="flex justify-between items-center">
-          <div className="flex-center">
-            <div className="flex-center w-7 h-7 rounded-full bg-main-300 text-main-100 mr-2">
+          <div
+            className="
+          )flex-center"
+          >
+            <div className="flex-center w-7 h-7 rounded-full bg-main-300 font-bold text-main-100 mr-2">
               {id}
             </div>
             <p className="font-semibold text-[15px]">개인 질문</p>
