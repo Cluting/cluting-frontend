@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface QuestionProps {
   id: number;
   onRemove: () => void;
@@ -5,8 +7,11 @@ interface QuestionProps {
 }
 
 export default function Question({ id, onRemove, onToggle }: QuestionProps) {
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onToggle(id, event.target.checked);
+  const [checked, setChecked] = useState(false);
+  const handleCheckboxChange = () => {
+    const newChecked = !checked;
+    setChecked(newChecked); // 로컬 상태 업데이트
+    onToggle(id, newChecked); // 부모 컴포넌트에 상태 전달
   };
 
   return (
@@ -32,12 +37,30 @@ export default function Question({ id, onRemove, onToggle }: QuestionProps) {
           className="input-style input-background w-full h-[100px] mt-4 text-[12.7px]"
         />
       </div>
-
-      <input
-        type="checkbox"
-        onChange={handleCheckboxChange} // 체크박스 상태 변경 시 처리
-        className="ml-[22px] mr-[7px]"
-      />
+      <button
+        className="relative ml-[22px] mr-[7px] cursor-pointer"
+        onClick={handleCheckboxChange} // 이미지 클릭 시 체크 상태 변경
+      >
+        <img
+          src="/assets/ic-uncheckbox.svg"
+          alt="체크박스"
+          className="w-6 h-6"
+        />
+        {checked && (
+          <>
+            <img
+              src="/assets/ic-checkbox.svg"
+              alt="체크박스 배경"
+              className="absolute top-0 left-0 w-6 h-6"
+            />
+            <img
+              src="/assets/ic-check.svg"
+              alt="체크 표시"
+              className="absolute top-[6px] left-[4px] w-3 h-3"
+            />
+          </>
+        )}
+      </button>
     </div>
   );
 }
