@@ -21,21 +21,41 @@ export default function PreviewModal({
   const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
   const [isSendFail, setIsSendFail] = useState(false); // 불합격 메시지 전송 여부
 
+  const [isSendPassModalVisible, setIsSendPassModalVisible] = useState(false); // 합격 알림 모달 상태
+  const [isSendFailModalVisible, setIsSendFailModalVisible] = useState(false); // 불합격 알림 모달 상태
+
   // 합격 전송 처리
   const handleSendPass = () => {
+    setIsSendPassModalVisible(true); // 합격 알림 모달 표시
     setIsSendPass(true);
-    onSendPass(); // 상위 컴포넌트에 합격 전송 완료 알림
+    onSendPass(); // 상위 컴포넌트에 합격 전송 상태 전달
+    setTimeout(() => setIsSendPassModalVisible(false), 2000); // 2초 후 숨김
   };
 
   // 불합격 전송 처리
   const handleSendFail = () => {
+    setIsSendFailModalVisible(true); // 불합격 알림 모달 표시
     setIsSendFail(true);
-    onSendFail(); // 상위 컴포넌트에 불합격 전송 완료 알림
+    onSendFail(); // 상위 컴포넌트에 불합격 전송 상태 전달
+    setTimeout(() => setIsSendFailModalVisible(false), 2000); // 2초 후 숨김
   };
 
   return (
     <ModalPortal>
       <div className="modal-style">
+        {/* 합격 전송 알림 */}
+        {isSendPassModalVisible && (
+          <div className="modal-animation absolute bg-white-100 top-[20px] left-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
+            전송이 완료되었습니다.
+          </div>
+        )}
+
+        {/* 불합격 전송 알림 */}
+        {isSendFailModalVisible && (
+          <div className="modal-animation absolute bg-white-100 top-[20px] right-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
+            전송이 완료되었습니다.
+          </div>
+        )}
         <div className="modal-animation custom-shadow relative m-[30px] flex flex-col items-center bg-white-100 w-[1000px] h-[640px] rounded-[12px]">
           <div className=" flex items-center mt-[27px] mb-[22px]">
             <h1 className="text-title3 ">메시지 전송하기</h1>
