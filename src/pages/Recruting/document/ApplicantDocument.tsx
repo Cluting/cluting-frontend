@@ -4,10 +4,14 @@ import UserProfile from "../../../components/recruting/document/UserProfile";
 import AdminEvaluationWindow from "../../../components/recruting/_03_document_evaluation/evaluation/AdminEvaluationWindow";
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import Portfolio from "../../../components/recruting/document/Portfolio";
+import { useLocation } from "react-router-dom";
 
 //3 - 리크루팅 : 서류 평가하기 단계
 export default function ApplicantDocument() {
   const [view, setView] = useState("application"); // 초기 상태는 "application"
+  // 현재 경로 가져오기
+  const location = useLocation();
+
   return (
     <div className=" flex flex-col items-center h-full pt-6 bg-gray-100 ">
       <Sidemenu />
