@@ -1,12 +1,12 @@
 import { useState } from "react";
-import ApplicationQuestion from "../../../components/recruting/_03_document_evaluation/evaluation/ApplicationQuestion";
-import UserProfile from "../../../components/recruting/_03_document_evaluation/evaluation/UserProfile";
-import Portfolio from "../../../components/recruting/_03_document_evaluation/evaluation/Portfolio";
+import ApplicationQuestion from "../../../components/recruting/document/ApplicationQuestion";
+import UserProfile from "../../../components/recruting/document/UserProfile";
 import AdminEvaluationWindow from "../../../components/recruting/_03_document_evaluation/evaluation/AdminEvaluationWindow";
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
+import Portfolio from "../../../components/recruting/document/Portfolio";
 
 //3 - 리크루팅 : 서류 평가하기 단계
-export default function Evaluation() {
+export default function ApplicantDocument() {
   const [view, setView] = useState("application"); // 초기 상태는 "application"
   return (
     <div className=" flex flex-col items-center h-full pt-6 bg-gray-100 ">
