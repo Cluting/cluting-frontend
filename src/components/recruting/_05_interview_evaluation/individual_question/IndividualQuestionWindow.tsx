@@ -1,16 +1,19 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Question from "./Question";
 
 export default function IndividualQuestionWindow() {
-  const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
-  const [authority, setAuthority] = useState(true); //운영진 권한
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [questions, setQuestions] = useState<{ id: number }[]>([]); // 질문 리스트
+  const [nextId, setNextId] = useState(1); // 다음 ID 값
 
-  const handleInput = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"; // 높이를 초기화하여 높이 재계산
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용 높이에 맞게 설정
-    }
+  // 질문 추가
+  const handleAddQuestion = () => {
+    setQuestions((prev) => [...prev, { id: nextId }]);
+    setNextId((prev) => prev + 1);
+  };
+
+  // 질문 삭제
+  const handleRemoveQuestion = (id: number) => {
+    setQuestions((prev) => prev.filter((question) => question.id !== id));
   };
 
   return (
@@ -35,12 +38,19 @@ export default function IndividualQuestionWindow() {
       </div>
 
       <section>
-        <Question />
-        <Question />
-        <Question />
+        {questions.map((question) => (
+          <Question
+            key={question.id}
+            id={question.id}
+            onRemove={() => handleRemoveQuestion(question.id)}
+          />
+        ))}
       </section>
 
-      <button className="my-4 button-main-light flex-center px-[100px] py-4 rounded-lg text-callout ">
+      <button
+        onClick={handleAddQuestion}
+        className="my-4 button-main-light flex-center px-[100px] py-4 rounded-lg text-callout "
+      >
         <img src="/assets/ic-plus.svg" className="mr-1" /> 개인 질문 추가하기
       </button>
       <div className="bg-gray-100 rounded-xl py-[25px] px-[29px] text-gray-1300 text-subheadline mb-[34px]">
