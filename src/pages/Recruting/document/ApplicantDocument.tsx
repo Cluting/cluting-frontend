@@ -5,6 +5,7 @@ import AdminEvaluationWindow from "../../../components/recruting/_03_document_ev
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import Portfolio from "../../../components/recruting/document/Portfolio";
 import { useLocation } from "react-router-dom";
+import IndividualQuestionWindow from "../../../components/recruting/_05_interview_evaluation/individual_question/IndividualQuestionWindow";
 
 //3 - 리크루팅 : 서류 평가하기 단계
 export default function ApplicantDocument() {
@@ -43,7 +44,12 @@ export default function ApplicantDocument() {
           </>
         )}
 
-        <AdminEvaluationWindow />
+        {location.pathname === "/recruting/evaluation" && (
+          <AdminEvaluationWindow />
+        )}
+        {location.pathname === "/recruting/individual_question" && (
+          <IndividualQuestionWindow />
+        )}
       </div>
     </div>
   );
