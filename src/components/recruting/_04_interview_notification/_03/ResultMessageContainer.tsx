@@ -20,8 +20,11 @@ export default function ResultMessageContainer() {
     pass: "", // 합격 메시지 입력값
     fail: "" // 불합격 메시지 입력값
   });
-  //전송 클릭 시 미리보기 모달
+
+  // 미리보기 모달
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  //전송 클릭 시 합격, 불합격 메시지 보기 및 전송 모달
+  const [showSendwModal, setShowSendModal] = useState(false);
   const handleClosePreviewModal = () => {
     setShowPreviewModal(false);
   };
@@ -54,13 +57,13 @@ export default function ResultMessageContainer() {
         pass: passMessageEmpty,
         fail: failMessageEmpty
       });
-      setShowPreviewModal(false); // 모달 닫힌 상태 유지
+      setShowSendModal(false); // 모달 닫힌 상태 유지
     } else {
       setTextareaErrors({
         pass: false,
         fail: false
       });
-      setShowPreviewModal(true); // 모달 열기
+      setShowSendModal(true); // 모달 열기
     }
   };
 
@@ -208,6 +211,17 @@ export default function ResultMessageContainer() {
           onClose={handleClosePreviewModal}
           passMessage={textareaValues["pass"]}
           failMessage={textareaValues["fail"]}
+          isPreview
+        />
+      )}
+
+      {showSendwModal && (
+        <PreviewModal
+          onSendFail={handleSend}
+          onSendPass={handleSend}
+          onClose={handleClosePreviewModal}
+          passMessage={textareaValues["pass"]}
+          failMessage={textareaValues["fail"]}
         />
       )}
 
@@ -215,7 +229,12 @@ export default function ResultMessageContainer() {
         <div className="fixed animate-dropdown bottom-[16px]">
           <div className="relative  w-[1016px] h-[79px] bg-gray-200  rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
             지원자에게 문자로 전달될 내용을 미리 확인해 보세요.
-            <button className="absolute right-[15px] bg-gray-800 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]">
+            <button
+              onClick={() => {
+                setShowPreviewModal(true);
+              }}
+              className="absolute right-[15px] bg-gray-800 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]"
+            >
               미리보기
             </button>
           </div>

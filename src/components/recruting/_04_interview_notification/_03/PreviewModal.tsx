@@ -5,7 +5,6 @@ import { ModalPortal } from "../../../common/ModalPortal";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import {
   useRecruitmentStepStore,
-  useStepFiveStore,
   useStepFourStore
 } from "../../../../store/useStore";
 
@@ -15,6 +14,7 @@ interface previewModalProps {
   onSendFail: () => void; // 불합격 메시지 전송 완료 콜백
   passMessage: string;
   failMessage: string;
+  isPreview?: boolean;
 }
 
 export default function PreviewModal({
@@ -22,7 +22,8 @@ export default function PreviewModal({
   onSendPass,
   onSendFail,
   passMessage,
-  failMessage
+  failMessage,
+  isPreview
 }: previewModalProps) {
   const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
   const [isSendFail, setIsSendFail] = useState(false); // 불합격 메시지 전송 여부
@@ -106,19 +107,21 @@ export default function PreviewModal({
               </div>
               <p className="h-[420px] mt-3 overflow-scroll "> {passMessage}</p>
 
-              <div className="flex justify-center">
-                <button
-                  onClick={handleSendPass}
-                  disabled={isSendPass} // 이미 전송 완료된 경우 비활성화
-                  className={`py-[9px] px-[45px] mb-[39px] rounded-[7px] ${
-                    isSendPass
-                      ? "bg-gray-500 text-white-100 "
-                      : "button-main-bg hover:bg-main-500 text-body"
-                  }`}
-                >
-                  {isSendPass ? "전송 완료" : "전송하기"}
-                </button>
-              </div>
+              {!isPreview && (
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleSendPass}
+                    disabled={isSendPass} // 이미 전송 완료된 경우 비활성화
+                    className={`py-[9px] px-[45px] mb-[39px] rounded-[7px] ${
+                      isSendPass
+                        ? "bg-gray-500 text-white-100 "
+                        : "button-main-bg hover:bg-main-500 text-body"
+                    }`}
+                  >
+                    {isSendPass ? "전송 완료" : "전송하기"}
+                  </button>
+                </div>
+              )}
             </section>
             <div className="absolute left-1/2 top-[75px] h-[565px] border-l border-gray-300 "></div>
             <section className="text-left  w-full h-min-[178px]  px-[47px] ">
@@ -129,19 +132,21 @@ export default function PreviewModal({
               </div>
               <p className="h-[420px] mt-3 overflow-scroll "> {failMessage}</p>
 
-              <div className="flex justify-center">
-                <button
-                  onClick={handleSendFail}
-                  disabled={isSendFail} // 이미 전송 완료된 경우 비활성화
-                  className={`py-[9px] px-[45px] mb-[39px] rounded-[7px] ${
-                    isSendFail
-                      ? "bg-gray-500 text-white-100 "
-                      : "button-main-bg hover:bg-main-500 text-body"
-                  }`}
-                >
-                  {isSendFail ? "전송 완료" : "전송하기"}
-                </button>
-              </div>
+              {!isPreview && (
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleSendFail}
+                    disabled={isSendFail} // 이미 전송 완료된 경우 비활성화
+                    className={`py-[9px] px-[45px] mb-[39px] rounded-[7px] ${
+                      isSendFail
+                        ? "bg-gray-500 text-white-100 "
+                        : "button-main-bg hover:bg-main-500 text-body"
+                    }`}
+                  >
+                    {isSendFail ? "전송 완료" : "전송하기"}
+                  </button>
+                </div>
+              )}
             </section>
           </div>
         </div>
