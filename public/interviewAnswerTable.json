@@ -1,0 +1,48 @@
+[
+  {
+    "time": "11:00 AM",
+    "groups": [
+      {
+        "category": "기획",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["김민지", "이태준"],
+        "interviewersId": 1
+      },
+      {
+        "category": "개발",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["김민지", "이태준"],
+        "interviewersId": 2
+      },
+      {
+        "category": "디자인",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["박시현", "박시현"],
+        "interviewersId": 3
+      }
+    ]
+  },
+  {
+    "time": "01:00 PM",
+    "groups": [
+      {
+        "category": "기획",
+        "interviewees": ["이민주", "최수영"],
+        "interviewers": ["이현수", "정세영"],
+        "interviewersId": 4
+      },
+      {
+        "category": "개발",
+        "interviewees": ["이민주", "최수영"],
+        "interviewers": ["이현수", "정세영"],
+        "interviewersId": 5
+      },
+      {
+        "category": "디자인",
+        "interviewees": ["이민주", "최수영"],
+        "interviewers": ["이현수", "정세영"],
+        "interviewersId": 6
+      }
+    ]
+  }
+]
