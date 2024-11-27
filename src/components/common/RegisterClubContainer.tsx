@@ -5,6 +5,8 @@ import Input from "./Input";
 import SignupDropdown from "../signup/SignupDropdown";
 import ClubKeyword from "../signup/ClubKeyword";
 import Textarea from "./Textarea";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { postClub } from "../../services/Club";
 
 export default function RegisterClubContainer() {
   const {
@@ -15,10 +17,16 @@ export default function RegisterClubContainer() {
     formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
-  const methods = useForm<RegisterClubFormValue>({ mode: "onChange" });
-
-  const onSubmit = (e: React.FormEvent) => {
-    handleSubmit((data) => console.log(data))(e);
+  const { mutate, isLoading, isError, isSuccess } = useMutation(postClub, {
+    onSuccess: () => {
+      console.log("동아리가 성공적으로 등록되었습니다!");
+    },
+    onError: (error) => {
+      console.error("동아리 등록 중 오류 발생:", error);
+    }
+  });
+  const onSubmit = (data: RegisterClubFormValue) => {
+    mutate(data);
   };
 
   //드롭다운
@@ -41,7 +49,7 @@ export default function RegisterClubContainer() {
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
     >
       <section className="flex flex-col items-center text-left mb-10">
