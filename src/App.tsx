@@ -13,7 +13,7 @@ import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
-import Evaluation from "./pages/Recruting/step3/Evalutation";
+import ApplicantDocument from "./pages/Recruting/document/ApplicantDocument";
 
 export default function App() {
   return (
@@ -28,7 +28,7 @@ export default function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/register_club" element={<RegisterClub />} />
             <Route path="recruting">
-              <Route path="home" element={<RecrutingHome />} />{" "}
+              <Route path="home" element={<RecrutingHome />} />
               {/* 수정된 경로 */}
               <Route path="01_plan" element={<RecrutingPlan />} />
               <Route path="02_prepare" element={<RecrutingPrepare />} />
@@ -36,7 +36,7 @@ export default function App() {
                 path="03_document_evaluation"
                 element={<DocumentEvaluation />}
               />
-              <Route path="evaluation" element={<Evaluation />} />
+              <Route path="evaluation" element={<ApplicantDocument />} />
               <Route
                 path="04_interview_notification"
                 element={<InterviewNotification />}
@@ -44,6 +44,10 @@ export default function App() {
               <Route
                 path="05_interview_evaluation"
                 element={<InterviewEvaluation />}
+              />
+              <Route
+                path="individual_question"
+                element={<ApplicantDocument />}
               />
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>
