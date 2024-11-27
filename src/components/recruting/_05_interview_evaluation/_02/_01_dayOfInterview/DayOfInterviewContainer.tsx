@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useInterviewStore } from "../../../../../store/useStore";
+import InterviewTable from "./InterviewTable";
 
 export default function DayOfInterviewContainer() {
   const { interviewStartDate, interviewEndDate } = useInterviewStore(); //면접 기간
@@ -57,6 +58,7 @@ export default function DayOfInterviewContainer() {
           </button>
         )}
       </section>
+      <InterviewTable />
     </div>
   );
 }
