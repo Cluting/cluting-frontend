@@ -1,14 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+interface InterviewTable {
+  category: string;
+  interviewees: string[];
+  interviewers: string[];
+  interviewersId: number;
+  isAnswered: boolean;
+}
+
+interface TimeGroup {
+  time: string;
+  timeGroupId: number;
+  groups: InterviewTable[];
+}
 
 export default function InterviewTable() {
   const navigate = useNavigate();
 
-  // 면접자의 답변 완료 상태 관리
-  const [responses, setResponses] = useState({
-    "김민지 이태준": false,
-    "박시현 최예은": true
-  });
+  const [timeGroups, setTimeGroups] = useState<TimeGroup[]>([]); // 시간과 그룹 데이터를 저장
+
+  useEffect(() => {
+    // JSON 데이터 불러오기
+    fetch("/interviewAnswerTable.json")
+      .then((response) => response.json())
+      .then((data: TimeGroup[]) => setTimeGroups(data))
+      .catch((error) => console.error("JSON 오류:", error));
+  }, []);
 
   return (
     <div className="w-full">
@@ -43,57 +61,32 @@ export default function InterviewTable() {
                 11:00 AM
               </div>
             </td>
-            <td className="text-[13.2px]">박시현/최예은</td>
-            <td className="relative">
-              <div className="text-gray-900 text-callout rounded-lg py-[5px] flex gap-[15px]">
-                <div className="py-[5px] px-2">김민지</div>
-                <div className="py-[5px] px-2">이태준</div>
+
+            <td className="row-span-2">
+              <div className="flex">
+                <div className="text-[13.2px] "> 박시현/최예은</div>
+                <div className="flex gap-[15px]">
+                  <div className="relative">
+                    <div className="text-gray-900 text-callout rounded-lg py-[5px] flex">
+                      <div className="py-[5px] px-2">김민지</div>
+                      <div className="py-[5px] px-2">이태준</div>
+                    </div>
+                    {/* {!group.isAnswered && (
+                      <button
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                      >
+                        답변 기록하기
+                      </button>
+                    )} */}
+                  </div>
+                </div>
               </div>
-              {!responses["김민지 이태준"] && (
-                <button
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                  className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                >
-                  답변 기록하기
-                </button>
-              )}
             </td>
-            <td className="text-[13.2px]">박시현/최예은</td>
-            <td className="relative">
-              <div className="text-gray-900 text-callout rounded-lg py-[5px] flex gap-[15px]">
-                <div className="py-[5px] px-2">김민지</div>
-                <div className="py-[5px] px-2">이태준</div>
-              </div>
-              {!responses["김민지 이태준"] && (
-                <button
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                  className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                >
-                  답변 기록하기
-                </button>
-              )}
-            </td>
-            <td className="text-[13.2px]">박시현/최예은</td>
-            <td className="relative">
-              <div className="text-gray-900 text-callout rounded-lg py-[5px] flex gap-[15px]">
-                <div className="py-[5px] px-2">박시현</div>
-                <div className="py-[5px] px-2">박시현</div>
-              </div>
-              {!responses["김민지 이태준"] && (
-                <button
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                  className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                >
-                  답변 기록하기
-                </button>
-              )}
-            </td>
+            <td className="row-span-2"></td>
+            <td className="row-span-2"></td>
           </tr>
         </tbody>
       </table>
