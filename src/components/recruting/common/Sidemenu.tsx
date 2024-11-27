@@ -68,7 +68,10 @@ export default function Sidemenu() {
     // 리사이즈 이벤트 리스너 등록
     window.addEventListener("resize", handleResize);
     //평가 페이지일 경우
-    if (location.pathname === "/recruting/evaluation") {
+    if (
+      location.pathname === "/recruting/evaluation" ||
+      location.pathname === "/recruting/individual_question"
+    ) {
       setEvaluationVersion(true);
       setSidemenuClose(true);
     }
