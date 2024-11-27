@@ -1,10 +1,11 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useStepFourStore } from "../../../../store/useStore";
 import PreviewModal from "./PreviewModal";
 import { useForm } from "react-hook-form";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
+  const { steps } = useStepFourStore();
   const [messageType, setMessageType] = useState<"pass" | "fail">("pass");
   const [isVisible, setIsVisible] = useState(true); //예시 이미지 여부
   const [isSendPass, setIsSendPass] = useState(false); // 합격 메시지 전송 여부
@@ -20,10 +21,7 @@ export default function ResultMessageContainer() {
     pass: "", // 합격 메시지 입력값
     fail: "" // 불합격 메시지 입력값
   });
-
-  // 미리보기 모달
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  //전송 클릭 시 합격, 불합격 메시지 보기 및 전송 모달
   const [showSendwModal, setShowSendModal] = useState(false);
   const handleClosePreviewModal = () => {
     setShowPreviewModal(false);
@@ -37,7 +35,29 @@ export default function ResultMessageContainer() {
     setTextareaErrors({ ...textareaErrors, [name]: false }); // 입력 시 에러 숨김
   };
 
-  // 전송 완료 처리
+  // 개별 정의 삽입
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textarea 참조
+  const handleInsertText = (text: string) => {
+    if (!textareaRef.current) return;
+
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart; // 현재 커서 시작 위치
+    const end = textarea.selectionEnd; // 현재 커서 끝 위치
+    const value = textareaValues[messageType];
+
+    // 새로운 값 계산
+    const newValue = value.substring(0, start) + text + value.substring(end);
+
+    // 상태 업데이트
+    setTextareaValues({ ...textareaValues, [messageType]: newValue });
+
+    // 커서 위치 재설정
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + text.length, start + text.length);
+    }, 0);
+  };
+
   const handleSend = () => {
     if (messageType === "pass") {
       setIsSendPass(true); // 합격 메시지 전송 완료
@@ -46,24 +66,22 @@ export default function ResultMessageContainer() {
     }
   };
 
-  // 전송 완료 클릭 시 실행
+  // 전송 완료 클릭 시
   const handleSendComplete = () => {
     const passMessageEmpty = textareaValues.pass.trim() === "";
     const failMessageEmpty = textareaValues.fail.trim() === "";
-
-    // 입력값 검증
     if (passMessageEmpty || failMessageEmpty) {
       setTextareaErrors({
         pass: passMessageEmpty,
         fail: failMessageEmpty
       });
-      setShowSendModal(false); // 모달 닫힌 상태 유지
+      setShowSendModal(false);
     } else {
       setTextareaErrors({
         pass: false,
         fail: false
       });
-      setShowSendModal(true); // 모달 열기
+      setShowSendModal(true);
     }
   };
 
@@ -75,29 +93,11 @@ export default function ResultMessageContainer() {
   } = useForm<ResultMessageForm>({
     mode: "onSubmit"
   });
-  // Form 제출 처리
   const onSubmit = handleSubmit((data) => {
     console.log("Form Submitted:", data);
   });
 
-  //4단계 완료
-  const { steps } = useStepFourStore();
-
-  const handleStepTwoSubmit = handleSubmit(
-    () => {
-      // 폼 유효성 검사가 통과되었을 때만 실행
-      if (!isSendPass || !isSendFail) {
-        setShowError(true); // 전송 여부를 만족하지 않으면 에러 표시
-        return;
-      } else {
-        setShowError(false); // 에러 숨김
-      }
-    },
-    () => {
-      // 폼 유효성 검사 실패 시
-      console.log("유효성 검사:", errors);
-    }
-  );
+  //TODO: 개별정의 데이터 연결 필요
 
   return (
     <form onSubmit={onSubmit} className="w-full">
@@ -131,29 +131,38 @@ export default function ResultMessageContainer() {
         <div className="bg-gray-50 border border-gray-200 rounded-t-[6.65px]">
           <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
             <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-caption3">
+            <button
+              onClick={() => handleInsertText("지원자")}
+              className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-caption3"
+            >
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
               />
               지원자
-            </div>
+            </button>
 
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3">
+            <button
+              onClick={() => handleInsertText("파트")}
+              className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3"
+            >
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
               />
               파트
-            </div>
+            </button>
 
-            <div className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-caption3">
+            <button
+              onClick={() => handleInsertText("면접 시간대 링크")}
+              className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[21px] py-[4px] px-[7px]  text-caption3"
+            >
               <img
                 src="/assets/ic-add.svg"
                 className="w-[14px] h-[14px] mr-1"
               />
               면접 시간대 링크
-            </div>
+            </button>
           </div>
           <div className="relative bg-white-100 h-[690px] rounded-b-[6.65px]">
             {isVisible && (
@@ -170,6 +179,7 @@ export default function ResultMessageContainer() {
               {...register(messageType, { required: "필수 작성 내용입니다." })}
               placeholder="서류 합격 및 면접 안내에 대한 메시지를 작성해 주세요."
               value={textareaValues[messageType]} // 현재 messageType에 해당하는 값
+              ref={textareaRef}
               onChange={handleTextareaChange}
               className={`w-full h-full overflow-scroll rounded-b-[6.65px] cursor-pointer focus:outline-none  px-[26px] py-[22px] text-gray-1100 `}
             />
