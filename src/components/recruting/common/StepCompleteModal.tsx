@@ -3,7 +3,7 @@ import { RECRUIT_STEP_ITEMS } from "../../../constants/recruting";
 import { ModalPortal } from "../../common/ModalPortal";
 
 interface CompleteModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   onConfirm: () => void;
   stepIndex: number;
 }
