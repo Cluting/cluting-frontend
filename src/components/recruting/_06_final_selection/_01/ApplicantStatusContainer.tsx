@@ -11,7 +11,7 @@ export default function ApplicantStatusContainer() {
 
   const [showFilter, setShowFilter] = useState(false);
   const [showAlign, setShowAlign] = useState(false);
-
+  //FIX: 합격, 불합격 json 임시 데이터로 연결
   //TODO: 정렬은 백에서 처리한 데이터로
   return (
     <div>
