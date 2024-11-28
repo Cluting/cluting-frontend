@@ -32,10 +32,10 @@ export default function PartQuestions() {
             className="flex gap-[32px] my-[27px] px-[30px] py-[24px] bg-gray-100 border border-gray-200 custom-shadow rounded-lg cursor-pointer"
           >
             <img
-              src="/assets/ic-toggle.svg"
+              src="/assets/ic-toggleButton.svg"
               alt={openQuestions[index] ? "질문 닫기" : "질문 열기"}
               className={`transition-transform duration-300 ${
-                openQuestions[index] ? "rotate-90" : "rotate-0"
+                openQuestions[index] ? "rotate-180" : "rotate-0"
               }`}
             />
             <p className="font-semibold text-[18px]">{question}</p>

@@ -1,6 +1,7 @@
 import CommonQuestions from "./CommonQuestions";
 import IndividualQuestion from "./IndividualQuestions";
 import PartQuestions from "./PartQuestions";
+import Profile from "./Profile";
 
 export default function AnswerRecordContainer() {
   return (
@@ -17,10 +18,17 @@ export default function AnswerRecordContainer() {
         </div>
       </div>
 
-      <div className="bg-white-100 p-[25px] rounded-lg">
+      <div className="bg-white-100 p-[22px] rounded-[23px]">
+        <p className="font-semibold text-[18px] text-[#7E7E7E] text-left mb-5">
+          면접자 정보
+        </p>
+        <div className="flex gap-6 items-center mb-11">
+          <Profile />
+          <Profile />
+        </div>
         <CommonQuestions />
         <PartQuestions />
-        <IndividualQuestion />
+        {/* <IndividualQuestion /> */}
       </div>
     </div>
   );
