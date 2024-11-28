@@ -12,6 +12,7 @@ export default function CommonQuestions() {
     }));
   };
 
+  //FIX: 질문 임시 데이터
   const questions = [
     "공통 질문 1. 팀 플레이 상황에서 만약 갈등 상황이 생긴다면 어떻게 대처하시겠습니까?",
     "공통 질문 2. 본인의 강점과 약점은 무엇인가요?"
