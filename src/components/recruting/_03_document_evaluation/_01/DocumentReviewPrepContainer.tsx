@@ -648,15 +648,6 @@ export default function DocumentReviewPrepContainer() {
             )
         )}
       </div>
-
-      <div className="flex justify-end mt-6 mb-6 px-8">
-        <button
-          type="submit"
-          className="px-6 py-2 bg-main-100 text-white rounded-[8px] hover:bg-main-200"
-        >
-          저장하기
-        </button>
-      </div>
     </form>
   );
 }
