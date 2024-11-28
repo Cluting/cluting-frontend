@@ -26,6 +26,9 @@ export default function ResultMessageContainer() {
   const handleClosePreviewModal = () => {
     setShowPreviewModal(false);
   };
+  const handleCloseSendModal = () => {
+    setShowSendModal(false);
+  };
 
   const handleTextareaChange = (
     event: FormEvent<HTMLTextAreaElement>
@@ -187,7 +190,12 @@ export default function ResultMessageContainer() {
         </div>
         <div className="flex justify-center">
           <button
-            onClick={handleSendComplete}
+            onClick={
+              (messageType === "pass" && isSendPass) ||
+              (messageType === "fail" && isSendFail)
+                ? undefined
+                : handleSendComplete
+            }
             className={` w-[210px] h-[54px] rounded-[11px] mt-[50px] text-white-100 text-body flex-center ${
               (messageType === "pass" && isSendPass) ||
               (messageType === "fail" && isSendFail)
@@ -218,7 +226,7 @@ export default function ResultMessageContainer() {
         <PreviewModal
           onSendFail={handleSend}
           onSendPass={handleSend}
-          onClose={handleClosePreviewModal}
+          onClose={handleCloseSendModal}
           passMessage={textareaValues["pass"]}
           failMessage={textareaValues["fail"]}
         />
@@ -245,7 +253,9 @@ export default function ResultMessageContainer() {
             해당 단계는 완료되었습니다. 이후 일정을 위해 다음 일정으로 넘어갔을
             시, 수정을 권하지 않습니다.
             <button
-              type="button"
+              onClick={() => {
+                setShowPreviewModal(true);
+              }}
               className="absolute right-[15px] bg-gray-1100 hover:bg-gray-1300 text-white-100 py-[13px] px-[25px] rounded-[10px]"
             >
               미리보기
