@@ -210,29 +210,6 @@ declare interface CreateApplicationForm {
   multipleApplicationAllowed: boolean;
 }
 
-// //3-1 group+admin 배열
-// interface GroupDetails {
-//   index: number;
-//   name: string;
-//   documentPass: number;
-//   finalPass: number;
-//   ideals: string[];
-// }
-
-// //이미 생성된 그룹들 관리
-// declare interface GroupWithAdmin {
-//   id: number;
-//   groupName: GroupDetails; // groupName의 타입을 string에서 GroupDetails로 변경
-//   admins: any[]; // 필요에 따라 적절한 타입으로 수정
-// }
-
-// //새로 생성된 그룹들 관리
-// interface GroupForm {
-//   id: number;
-//   groupName: string;
-//   admins: string[];
-// }
-
 declare interface Groups {
   id: number;
   groupName: string;

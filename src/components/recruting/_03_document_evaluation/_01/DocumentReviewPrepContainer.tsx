@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useGroupStore } from "../../../../store/useStore";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ export default function DocumentReviewPrepContainer() {
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
 
-  const [groups, setGroups] = useState<DocumentReviewForm["groups"]>(() => {
+  const defaultGroups = useMemo(() => {
     const existingGroups =
       group.length > 0
         ? group.map((g, index) => ({
@@ -29,7 +29,6 @@ export default function DocumentReviewPrepContainer() {
           }))
         : [];
 
-    // [공통 그룹] 디폴트로
     return [
       {
         id: 1,
@@ -47,65 +46,67 @@ export default function DocumentReviewPrepContainer() {
       },
       ...existingGroups
     ];
-  });
+  }, [group]);
 
   const {
     register,
     handleSubmit,
+    watch,
     setValue,
     formState: { errors }
   } = useForm<DocumentReviewForm>({
     defaultValues: {
-      groups: groups
+      groups: defaultGroups
     },
-    values: { groups },
-    mode: "onBlur"
+    mode: "onChange"
   });
 
-  // 새 그룹 추가
+  const groups = watch("groups");
+
+  const selectedGroupIndex = useMemo(
+    () => groups.findIndex((g) => g.id === selectedGroupId),
+    [groups, selectedGroupId]
+  );
+
   const addGroupForm = useCallback(() => {
-    const newGroup: DocumentReviewForm["groups"][0] = {
-      id: groups.length + 1,
-      groupName: "",
-      admins: [],
-      criteria: [
+    setValue("groups", [
+      ...groups,
+      {
+        id: groups.length + 1,
+        groupName: "",
+        admins: [],
+        criteria: [
+          {
+            id: 1,
+            criteria: "",
+            detailCriteria: [],
+            score: undefined
+          }
+        ],
+        maxScore: undefined
+      }
+    ]);
+    setSelectedGroupId(groups.length + 1);
+  }, [groups, setValue]);
+
+  const addCriteria = useCallback(
+    (groupId: number) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      const currentCriteria = groups[groupIndex].criteria;
+
+      setValue(`groups.${groupIndex}.criteria`, [
+        ...currentCriteria,
         {
-          id: 1,
+          id: currentCriteria.length + 1,
           criteria: "",
           detailCriteria: [],
           score: undefined
         }
-      ],
-      maxScore: undefined
-    };
-    setGroups((prev) => [...prev, newGroup]);
-    setSelectedGroupId(newGroup.id);
-  }, [groups]);
+      ]);
+    },
+    [groups, setValue]
+  );
 
-  // 평가 기준 추가
-  const addCriteria = useCallback((groupId: number) => {
-    setGroups((prev) =>
-      prev.map((group) => {
-        if (group.id === groupId) {
-          return {
-            ...group,
-            criteria: [
-              ...group.criteria,
-              {
-                id: group.criteria.length + 1,
-                criteria: "",
-                detailCriteria: [],
-                score: undefined
-              }
-            ]
-          };
-        }
-        return group;
-      })
-    );
-  }, []);
-
-  // 세부 평가 기준 추가
   const handleDetailCriteria = useCallback(
     (
       e: React.KeyboardEvent<HTMLInputElement>,
@@ -113,139 +114,93 @@ export default function DocumentReviewPrepContainer() {
       criteriaId: number
     ) => {
       if (e.key === "Enter") {
-        e.preventDefault(); // 폼 제출 방지
+        e.preventDefault();
         const newValue = e.currentTarget.value.trim();
 
         if (newValue) {
-          setGroups((prev) => {
-            return prev.map((group) => {
-              if (group.id === groupId) {
-                return {
-                  ...group,
-                  criteria: group.criteria.map((criterion) => {
-                    if (criterion.id === criteriaId) {
-                      return {
-                        ...criterion,
-                        detailCriteria: [
-                          ...(criterion.detailCriteria || []),
-                          newValue
-                        ]
-                      };
-                    }
-                    return criterion;
-                  })
-                };
-              }
-              return group;
-            });
-          });
+          const groupIndex = groups.findIndex((g) => g.id === groupId);
+          const criteriaIndex = groups[groupIndex].criteria.findIndex(
+            (c) => c.id === criteriaId
+          );
+          const currentCriteria = groups[groupIndex].criteria?.[criteriaIndex];
 
-          // input 값 초기화
+          setValue(
+            `groups.${groupIndex}.criteria.${criteriaIndex}.detailCriteria`,
+            [...currentCriteria.detailCriteria, newValue]
+          );
+
           e.currentTarget.value = "";
         }
       }
     },
-    []
+    [groups, setValue]
   );
 
-  // 평가 기준 삭제
-  const deleteCriteria = useCallback((groupId: number, criteriaId: number) => {
-    setGroups((prev) =>
-      prev.map((group) => {
-        if (group.id === groupId && group.criteria.length > 1) {
-          return {
-            ...group,
-            criteria: group.criteria.filter((c) => c.id !== criteriaId)
-          };
-        }
-        return group;
-      })
-    );
-  }, []);
+  const deleteCriteria = useCallback(
+    (groupId: number, criteriaId: number) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      const currentGroup = groups[groupIndex];
 
-  // 세부 평가 기준 삭제
+      if (currentGroup.criteria.length > 1) {
+        setValue(
+          `groups.${groupIndex}.criteria`,
+          currentGroup.criteria.filter((c) => c.id !== criteriaId)
+        );
+      }
+    },
+    [groups, setValue]
+  );
+
   const deleteDetailCriteria = useCallback(
     (groupId: number, criteriaId: number, detailIndex: number) => {
-      setGroups((prev) =>
-        prev.map((group) => {
-          if (group.id === groupId) {
-            return {
-              ...group,
-              criteria: group.criteria.map((criterion) => {
-                if (criterion.id === criteriaId) {
-                  return {
-                    ...criterion,
-                    detailCriteria: criterion.detailCriteria.filter(
-                      (_, i) => i !== detailIndex
-                    )
-                  };
-                }
-                return criterion;
-              })
-            };
-          }
-          return group;
-        })
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      const criteriaIndex = groups[groupIndex].criteria.findIndex(
+        (c) => c.id === criteriaId
+      );
+      const currentCriteria = groups[groupIndex].criteria?.[criteriaIndex];
+
+      setValue(
+        `groups.${groupIndex}.criteria.${criteriaIndex}.detailCriteria`,
+        currentCriteria.detailCriteria.filter((_, i) => i !== detailIndex)
       );
     },
-    []
+    [groups, setValue]
   );
 
-  // 운영진 추가
-  const handleAdminSelect = useCallback((admin: string, groupId: number) => {
-    setGroups((prev) =>
-      prev.map((group) => {
-        if (group.id === groupId && !group.admins.includes(admin)) {
-          return {
-            ...group,
-            admins: [...group.admins, admin]
-          };
-        }
-        return group;
-      })
-    );
-    setDropdown(false);
-  }, []);
+  const handleAdminSelect = useCallback(
+    (admin: string, groupId: number) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      const currentAdmins = groups[groupIndex].admins;
 
-  // 운영진 삭제
-  const removeAdmin = useCallback((groupId: number, adminToRemove: string) => {
-    setGroups((prev) =>
-      prev.map((group) => {
-        if (group.id === groupId) {
-          return {
-            ...group,
-            admins: group.admins.filter((admin) => admin !== adminToRemove)
-          };
-        }
-        return group;
-      })
-    );
-  }, []);
+      if (!currentAdmins.includes(admin)) {
+        setValue(`groups.${groupIndex}.admins`, [...currentAdmins, admin]);
+      }
+      setDropdown(false);
+    },
+    [groups, setValue]
+  );
 
-  // 그룹명 변경
-  const handleGroupNameChange = useCallback(
-    (groupId: number, newName: string) => {
-      setGroups((prev) =>
-        prev.map((group) =>
-          group.id === groupId ? { ...group, groupName: newName } : group
-        )
+  const removeAdmin = useCallback(
+    (groupId: number, adminToRemove: string) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      setValue(
+        `groups.${groupIndex}.admins`,
+        groups[groupIndex].admins.filter((admin) => admin !== adminToRemove)
       );
     },
-    []
+    [groups, setValue]
+  );
+
+  const handleGroupNameChange = useCallback(
+    (groupId: number, newName: string) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      setValue(`groups.${groupIndex}.groupName`, newName);
+    },
+    [groups, setValue]
   );
 
   const onSubmit = handleSubmit((data) => {
-    // 현재 groups 상태를 사용하여 제출
-    const formData: DocumentReviewForm = {
-      groups: groups.map((group) => ({
-        ...group,
-        criteria: group.criteria.map((criterion) => ({
-          ...criterion,
-          detailCriteria: criterion.detailCriteria || [] // 빈 배열 대신 실제 데이터 사용
-        }))
-      }))
-    };
-    console.log("제출된 데이터:", formData);
+    console.log(data);
   });
 
   return (
@@ -259,7 +214,7 @@ export default function DocumentReviewPrepContainer() {
           </div>
         </div>
 
-        <div className="flex gap-[15px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
+        <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
           <div className="flex items-center gap-[15px]">
             <p>전체</p>
             <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
@@ -437,85 +392,112 @@ export default function DocumentReviewPrepContainer() {
                     <input
                       type="number"
                       min="0"
-                      max="100"
-                      value={group.maxScore}
-                      onChange={(e) => {
-                        setGroups((prev) =>
-                          prev.map((g) =>
-                            g.id === group.id
-                              ? { ...g, maxScore: parseInt(e.target.value) }
-                              : g
-                          )
-                        );
-                      }}
-                      className="flex-center w-[89px] h-[41px] ml-2 px-[24px] py-[10px] rounded-[7px] bg-gray-100 text-callout text-gray-700 button-none focus:border-main-100"
+                      {...register(`groups.${selectedGroupIndex}.maxScore`, {
+                        required: "필수 입력 사항입니다.",
+                        validate: (value) => {
+                          const maxScore = Number(value) || 0;
+                          const totalScore = groups[
+                            selectedGroupIndex
+                          ].criteria.reduce(
+                            (sum, c) => sum + (Number(c.score) || 0),
+                            0
+                          );
+                          return totalScore <= maxScore;
+                        }
+                      })}
+                      className={`
+                        flex-center w-[89px] h-[41px] ml-2 px-[24px] py-[10px] rounded-[7px] 
+                        bg-gray-100 text-callout text-gray-700 button-none 
+                        ${
+                          errors.groups?.[selectedGroupIndex]?.maxScore
+                            ? "border border-red-100"
+                            : "focus:border-main-100"
+                        }
+                      `}
                       placeholder="100점"
                     />
                   </label>
                 </div>
+                {errors.groups?.[selectedGroupIndex]?.maxScore && (
+                  <span className="text-state-error text-right">
+                    {errors.groups?.[selectedGroupIndex]?.maxScore?.message}
+                  </span>
+                )}
 
-                {group.criteria.map((criterion) => (
+                {group.criteria.map((criterion, criteriaIndex) => (
                   <div
                     key={criterion.id}
                     className="w-full h-auto mt-[18px] bg-gray-100 border border-gray-200 px-[21px] py-[23px] rounded-[12px]"
                   >
-                    <div className="flex justify-between">
+                    <div className="flex justify-between relative">
                       <div className="flex items-center">
                         <div className="flex-center w-[28px] h-[28px] rounded-full bg-main-400 text-main-100 text-[15.71px] font-bold">
                           {criterion.id}
                         </div>
                         <input
                           type="text"
-                          value={criterion.criteria}
-                          onChange={(e) => {
-                            setGroups((prev) =>
-                              prev.map((g) =>
-                                g.id === group.id
-                                  ? {
-                                      ...g,
-                                      criteria: g.criteria.map((c) =>
-                                        c.id === criterion.id
-                                          ? { ...c, criteria: e.target.value }
-                                          : c
-                                      )
-                                    }
-                                  : g
-                              )
-                            );
-                          }}
+                          {...register(
+                            `groups.${selectedGroupIndex}.criteria.${criteriaIndex}.criteria`,
+                            {
+                              required: "평가 기준을 입력해주세요"
+                            }
+                          )}
                           placeholder="평가 기준"
-                          className="w-[110px] max-w-full h-[40px] ml-3 px-[24px] py-[10px] bg-white-100 border border-gray-200 text-subheadline rounded-[7px] outline-none focus:border-main-100"
+                          className={`w-[110px] max-w-full h-[40px] ml-3 px-[24px] py-[10px] bg-white-100 border text-subheadline rounded-[7px] outline-none
+                            ${
+                              errors.groups?.[selectedGroupIndex]?.criteria?.[
+                                criteriaIndex
+                              ]?.criteria
+                                ? "border-red-100"
+                                : "border-gray-200 focus:border-main-100"
+                            }`}
                         />
                       </div>
+
                       <div className="flex-center">
-                        <div className="flex w-auto h-[40px] mr-[10px] px-[24px] py-[10px] bg-white-100 border border-gray-200 rounded-[7px] text-subheadline text-gray-500">
+                        <div
+                          className={`flex-center w-auto h-[40px] mr-[10px] px-[24px] py-[10px] bg-white-100 border rounded-[7px] text-subheadline text-gray-500
+                          ${
+                            errors.groups?.[selectedGroupIndex]?.criteria?.[
+                              criteriaIndex
+                            ]?.score
+                              ? "border-red-100"
+                              : "border-gray-200 "
+                          }`}
+                        >
                           <input
                             type="number"
-                            value={criterion.score}
-                            onChange={(e) => {
-                              setGroups((prev) =>
-                                prev.map((g) =>
-                                  g.id === group.id
-                                    ? {
-                                        ...g,
-                                        criteria: g.criteria.map((c) =>
-                                          c.id === criterion.id
-                                            ? {
-                                                ...c,
-                                                score: parseInt(e.target.value)
-                                              }
-                                            : c
-                                        )
-                                      }
-                                    : g
-                                )
-                              );
-                            }}
+                            {...register(
+                              `groups.${selectedGroupIndex}.criteria.${criteriaIndex}.score`,
+                              {
+                                required: "필수 입력 사항입니다.",
+                                validate: (value) => {
+                                  // 현재 입력하는 값을 제외한 다른 score들의 합계 계산
+                                  const otherScoresSum = groups[
+                                    selectedGroupIndex
+                                  ].criteria.reduce((sum, c, idx) => {
+                                    if (idx === criteriaIndex) return sum;
+                                    return sum + (Number(c.score) || 0);
+                                  }, 0);
+
+                                  // 현재 입력값을 포함한 총합 계산
+                                  const totalScore =
+                                    otherScoresSum + (Number(value) || 0);
+
+                                  return (
+                                    totalScore <= (group.maxScore || 0) ||
+                                    "서류 만점 점수를 초과했어요. 다시 배점을 조율해 주세요."
+                                  );
+                                }
+                              }
+                            )}
                             min="0"
-                            className="flex-center w-[20px] outline-none button-none"
+                            max={group.maxScore}
+                            className={`flex-center w-[20px] outline-none button-none
+                              `}
                             placeholder="0"
                           />
-                          <p>/100점</p>
+                          <p>/ {group.maxScore}점</p>
                         </div>
                         <button
                           type="button"
@@ -529,42 +511,95 @@ export default function DocumentReviewPrepContainer() {
                       </div>
                     </div>
 
+                    {/*에러들 */}
+                    <div className="flex justify-between">
+                      <div className="ml-10">
+                        {errors.groups?.[selectedGroupIndex]?.criteria?.[
+                          criteriaIndex
+                        ]?.criteria && (
+                          <span className="text-state-error">
+                            {
+                              errors.groups?.[selectedGroupIndex]?.criteria?.[
+                                criteriaIndex
+                              ]?.criteria?.message
+                            }
+                          </span>
+                        )}
+                      </div>
+                      <div className="items-right mr-9">
+                        {errors.groups?.[selectedGroupIndex]?.criteria?.[
+                          criteriaIndex
+                        ]?.score && (
+                          <span className="text-state-error">
+                            {
+                              errors.groups?.[selectedGroupIndex]?.criteria?.[
+                                criteriaIndex
+                              ]?.score?.message
+                            }
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
                     <div className="mt-[23px]">
                       <p className="text-subheadline text-gray-700 text-left">
                         세부 평가 기준
                       </p>
-                      {criterion.detailCriteria?.map((detail, index) => (
-                        <div
-                          key={`${criterion.id}-${index}`}
-                          className="flex justify-between w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border border-gray-200 text-gray-1100 text-caption1 rounded-[6px] text-left"
-                        >
-                          {detail}
-                          <button
-                            type="button"
-                            onClick={() =>
-                              deleteDetailCriteria(
-                                group.id,
-                                criterion.id,
-                                index
-                              )
-                            }
+                      {Array.isArray(criterion.detailCriteria) &&
+                        criterion.detailCriteria?.map((detail, index) => (
+                          <div
+                            key={`${criterion.id}-${index}`}
+                            className="flex justify-between w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border border-gray-200 text-gray-1100 text-caption1 rounded-[6px] text-left"
                           >
-                            <img
-                              src="/assets/ic-minusCircleGray600.svg"
-                              alt="삭제"
-                              className="w-4 h-4"
-                            />
-                          </button>
-                        </div>
-                      ))}
+                            {detail}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                deleteDetailCriteria(
+                                  group.id,
+                                  criterion.id,
+                                  index
+                                )
+                              }
+                            >
+                              <img
+                                src="/assets/ic-minusCircleGray600.svg"
+                                alt="삭제"
+                                className="w-4 h-4"
+                              />
+                            </button>
+                          </div>
+                        ))}
                       <input
                         type="text"
+                        {...register(
+                          `groups.${selectedGroupIndex}.criteria.${criteriaIndex}.detailCriteria`,
+                          {
+                            required: "필수 입력 사항입니다."
+                          }
+                        )}
                         placeholder="세부 평가 기준을 입력해 주세요."
-                        className="w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border border-gray-200 text-caption1 rounded-[6px] focus:border-main-100 outline-none"
-                        onKeyDown={(e) =>
-                          handleDetailCriteria(e, group.id, criterion.id)
-                        }
+                        className={`w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border  text-caption1 rounded-[6px] focus:border-main-100 outline-none ${
+                          errors.groups?.[selectedGroupIndex]?.criteria?.[
+                            criteriaIndex
+                          ]?.detailCriteria
+                            ? "border border-red-100"
+                            : "border-gray-200 focus:border-main-100"
+                        }`}
                       />
+                    </div>
+                    <div className="flex">
+                      {errors.groups?.[selectedGroupIndex]?.criteria?.[
+                        criteriaIndex
+                      ]?.detailCriteria && (
+                        <span className="text-state-error">
+                          {
+                            errors.groups?.[selectedGroupIndex]?.criteria?.[
+                              criteriaIndex
+                            ]?.detailCriteria?.message
+                          }
+                        </span>
+                      )}
                     </div>
                   </div>
                 ))}
