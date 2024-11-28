@@ -443,7 +443,7 @@ export default function DocumentReviewPrepContainer() {
                             }
                           )}
                           placeholder="평가 기준"
-                          className={`w-[110px] max-w-full h-[40px] ml-3 px-[24px] py-[10px] bg-white-100 border text-subheadline rounded-[7px] outline-none
+                          className={`min-w-[110px] w-auto h-[40px] ml-3 px-[24px] py-[10px] bg-white-100 border text-subheadline rounded-[7px] outline-none 
                             ${
                               errors.groups?.[selectedGroupIndex]?.criteria?.[
                                 criteriaIndex
@@ -451,6 +451,15 @@ export default function DocumentReviewPrepContainer() {
                                 ? "border-red-100"
                                 : "border-gray-200 focus:border-main-100"
                             }`}
+                          style={{ width: "var(--input-width, 110px)" }}
+                          onInput={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            const textWidth = target.value.length * 8 + 110; // 기본 너비 110px에 텍스트 길이에 따라 증가
+                            target.style.setProperty(
+                              "--input-width",
+                              `${Math.max(110, textWidth)}px`
+                            );
+                          }}
                         />
                       </div>
 
