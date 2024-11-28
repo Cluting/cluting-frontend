@@ -62,16 +62,16 @@ export default function InterviewTable() {
               </div>
             </td>
 
-            <td className="row-span-2">
-              <div className="flex">
-                <div className="text-[13.2px] "> 박시현/최예은</div>
-                <div className="flex gap-[15px]">
-                  <div className="relative">
-                    <div className="text-gray-900 text-callout rounded-lg py-[5px] flex">
-                      <div className="py-[5px] px-2">김민지</div>
-                      <div className="py-[5px] px-2">이태준</div>
-                    </div>
-                    {/* {!group.isAnswered && (
+            <td className="border-r border-gray-300">
+              <div className="text-[13.2px] "> 박시현/최예은</div>
+            </td>
+            <td>
+              <div className="relative">
+                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
+                  <div className="py-[5px] px-2">김민지</div>
+                  <div className="py-[5px] px-2">이태준</div>
+                </div>
+                {/* {!group.isAnswered && (
                       <button
                         onClick={() => {
                           navigate("/");
@@ -81,12 +81,126 @@ export default function InterviewTable() {
                         답변 기록하기
                       </button>
                     )} */}
-                  </div>
-                </div>
               </div>
             </td>
-            <td className="row-span-2"></td>
-            <td className="row-span-2"></td>
+
+            <td className="border-r border-gray-300">
+              <div className="text-[13.2px] "> 박시현/최예은</div>
+            </td>
+            <td>
+              <div className="relative">
+                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
+                  <div className="py-[5px] px-2">김민지</div>
+                  <div className="py-[5px] px-2">이태준</div>
+                </div>
+                {/* {!group.isAnswered && (
+                      <button
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                      >
+                        답변 기록하기
+                      </button>
+                    )} */}
+              </div>
+            </td>
+
+            <td className="border-r border-gray-300">
+              <div className="text-[13.2px] "> 박시현/최예은</div>
+            </td>
+            <td>
+              <div className="relative">
+                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
+                  <div className="py-[5px] px-2">김민지</div>
+                  <div className="py-[5px] px-2">이태준</div>
+                </div>
+                {/* {!group.isAnswered && (
+                      <button
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                      >
+                        답변 기록하기
+                      </button>
+                    )} */}
+              </div>
+            </td>
+          </tr>
+
+          <tr className="h-[32px] group">
+            <td>
+              <div className="h-[32px] bg-gray-100 rounded-[4.82px] text-gray-1100 flex-center my-[11px] ml-[11px] py-[6px] px-[21px] text-subheadline  hover:text-main-100">
+                11:00 AM
+              </div>
+            </td>
+
+            <td className="border-r border-gray-300">
+              <div className="text-[13.2px] "> 박시현/최예은</div>
+            </td>
+            <td>
+              <div className="relative">
+                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
+                  <div className="py-[5px] px-2">김민지</div>
+                  <div className="py-[5px] px-2">이태준</div>
+                </div>
+                {/* {!group.isAnswered && (
+                      <button
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                      >
+                        답변 기록하기
+                      </button>
+                    )} */}
+              </div>
+            </td>
+
+            <td className="border-r border-gray-300">
+              <div className="text-[13.2px] "> 박시현/최예은</div>
+            </td>
+            <td>
+              <div className="relative">
+                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
+                  <div className="py-[5px] px-2">김민지</div>
+                  <div className="py-[5px] px-2">이태준</div>
+                </div>
+                {/* {!group.isAnswered && (
+                      <button
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                      >
+                        답변 기록하기
+                      </button>
+                    )} */}
+              </div>
+            </td>
+
+            <td className="border-r border-gray-300">
+              <div className="text-[13.2px] "> 박시현/최예은</div>
+            </td>
+            <td>
+              <div className="relative">
+                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
+                  <div className="py-[5px] px-2">김민지</div>
+                  <div className="py-[5px] px-2">이태준</div>
+                </div>
+                {/* {!group.isAnswered && (
+                      <button
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                      >
+                        답변 기록하기
+                      </button>
+                    )} */}
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

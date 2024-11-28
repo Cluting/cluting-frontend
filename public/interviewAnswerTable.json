@@ -2,6 +2,7 @@
   {
     "time": "11:00 AM",
     "timeGroupId": 1,
+    "InterviewStatus": "In Progress",
     "groups": [
       {
         "category": "기획",
@@ -29,6 +30,7 @@
   {
     "time": "01:00 PM",
     "timeGroupId": 2,
+    "InterviewStatus": "Before",
     "groups": [
       {
         "category": "기획",
