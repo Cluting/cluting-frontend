@@ -6,7 +6,10 @@ interface failListProps {
 }
 export default function FailList({ filter }: failListProps) {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
-  const filteredData = applicants.filter((item) => item.group === filter);
+  const filteredData =
+    filter === "전체"
+      ? applicants
+      : applicants.filter((item) => item.group === filter);
 
   useEffect(() => {
     // JSON 파일에서 더미 데이터 가져오기

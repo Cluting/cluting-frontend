@@ -7,7 +7,11 @@ interface passListProps {
 }
 export default function PassList({ filter }: passListProps) {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
-  const filteredData = applicants.filter((item) => item.group === filter);
+  const filteredData =
+    filter === "전체"
+      ? applicants
+      : applicants.filter((item) => item.group === filter);
+
   const { group: groups } = useGroupStore();
   useEffect(() => {
     // JSON 파일에서 더미 데이터 가져오기
