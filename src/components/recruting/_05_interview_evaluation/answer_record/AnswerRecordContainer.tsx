@@ -5,14 +5,14 @@ import Profile from "./Profile";
 
 export default function AnswerRecordContainer() {
   return (
-    <div className="w-[1016px] h-full pl-8  mb-[143px]">
-      <div className="flex mb-[30px]">
+    <div className="w-full h-full flex-col ">
+      <div className="flex mb-10">
         <img src="/assets/ic-back.svg" alt="뒤로가기" />
         <div className="flex-col justify-start text-left ml-[21px]">
-          <p className="text-[13px] font-semibold ">
+          <p className="text-caption2 text-gray-1100 font-semibold ">
             10월 13일 월요일 / 11:00 AM 면접
           </p>
-          <p className="text-title1 mt-1">
+          <p className="text-title1 text-gray-1300 mt-1">
             {"김민지"}/{"이태준"}
           </p>
         </div>
