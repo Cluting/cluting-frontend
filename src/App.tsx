@@ -14,6 +14,7 @@ import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
 import ApplicantDocument from "./pages/Recruting/document/ApplicantDocument";
+import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
 
 export default function App() {
   return (
@@ -49,6 +50,7 @@ export default function App() {
                 path="individual_question"
                 element={<ApplicantDocument />}
               />
+              <Route path="answer_record" element={<AnswerRecord />} />
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>
           </Routes>
