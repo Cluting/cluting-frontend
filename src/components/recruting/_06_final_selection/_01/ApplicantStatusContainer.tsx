@@ -21,7 +21,7 @@ export default function ApplicantStatusContainer() {
             </div>
           </div>
 
-          <div className="tooltip">
+          <div className="htooltip">
             마지막으로 최종 합불 결과를 확인해 주세요.
           </div>
         </div>
