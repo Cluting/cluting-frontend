@@ -22,7 +22,7 @@ export default function ResultMessageContainer() {
     fail: "" // 불합격 메시지 입력값
   });
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [showSendwModal, setShowSendModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
   const handleClosePreviewModal = () => {
     setShowPreviewModal(false);
   };
@@ -32,7 +32,7 @@ export default function ResultMessageContainer() {
   ): void => {
     const { name, value } = event.currentTarget;
     setTextareaValues({ ...textareaValues, [name]: value });
-    setTextareaErrors({ ...textareaErrors, [name]: false }); // 입력 시 에러 숨김
+    setTextareaErrors({ ...textareaErrors, [name]: false });
   };
 
   // 개별 정의 삽입
@@ -214,7 +214,7 @@ export default function ResultMessageContainer() {
         />
       )}
 
-      {showSendwModal && (
+      {showSendModal && (
         <PreviewModal
           onSendFail={handleSend}
           onSendPass={handleSend}
