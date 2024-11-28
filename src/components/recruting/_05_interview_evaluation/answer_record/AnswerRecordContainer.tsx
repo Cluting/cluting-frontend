@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import CommonQuestions from "./CommonQuestions";
 import IndividualQuestion from "./IndividualQuestions";
 import PartQuestions from "./PartQuestions";
@@ -6,8 +7,10 @@ import Profile from "./Profile";
 export default function AnswerRecordContainer() {
   return (
     <div className="w-full h-full flex-col ">
-      <div className="flex mb-10">
-        <img src="/assets/ic-back.svg" alt="뒤로가기" />
+      <div className="flex items-center mb-10">
+        <Link to="/recruting/05_interview_evaluation">
+          <img src="/assets/ic-back.svg" alt="뒤로가기" />
+        </Link>
         <div className="flex-col justify-start text-left ml-[21px]">
           <p className="text-caption2 text-gray-1100 font-semibold ">
             10월 13일 월요일 / 11:00 AM 면접
