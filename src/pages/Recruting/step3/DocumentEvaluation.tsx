@@ -6,12 +6,10 @@ import CreateApplicationFormContainer from "../../../components/recruting/_02_pr
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import { useStepTwoStore } from "../../../store/useStore";
 
-type StepComponent = React.FC;
-
-const stepComponents: StepComponent[] = [
+const stepComponents = [
   DocumentReviewPrepContainer,
   CreateApplicationFormContainer //임시로 넣어놨어요
-];
+] as const;
 
 export default function DocumentEvaluation() {
   const { currentStep } = useStepTwoStore();
