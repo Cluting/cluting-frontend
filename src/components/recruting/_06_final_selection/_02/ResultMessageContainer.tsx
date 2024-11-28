@@ -1,7 +1,7 @@
 import { FormEvent, useRef, useState } from "react";
 import { useStepSixStore } from "../../../../store/useStore";
 import { useForm } from "react-hook-form";
-import PreviewModal from "../../_04_interview_notification/_03/PreviewModal";
+import PreviewModal from "./PreviewModal";
 
 // 6-2 합불 안내 메시지 작성하기(컨테이너)
 export default function ResultMessageContainer() {
