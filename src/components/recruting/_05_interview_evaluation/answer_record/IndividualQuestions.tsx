@@ -17,15 +17,15 @@ export default function IndividualQuestion() {
     {
       name: "김민지",
       questions: [
-        "개인 질문 1. 지난 프로젝트에서 가장 어려웠던 점은 무엇이었나요?",
-        "개인 질문 2. 본인의 단기 목표와 장기 목표는 무엇인가요?"
+        "지난 프로젝트에서 가장 어려웠던 점은 무엇이었나요?",
+        "본인의 단기 목표와 장기 목표는 무엇인가요?"
       ]
     },
     {
       name: "이태준",
       questions: [
-        "개인 질문 1. 새로운 환경에서 적응하기 위해 어떤 노력을 하나요?",
-        "개인 질문 2. 팀워크에서 본인이 맡은 역할은 무엇이었나요?"
+        "새로운 환경에서 적응하기 위해 어떤 노력을 하나요?",
+        "팀워크에서 본인이 맡은 역할은 무엇이었나요?"
       ]
     }
   ];
@@ -46,7 +46,7 @@ export default function IndividualQuestion() {
                 className="flex gap-[32px] my-[27px] px-[30px] py-[24px] bg-gray-100 border border-gray-200 custom-shadow rounded-lg cursor-pointer"
               >
                 <img
-                  src="/assets/ic-toggleButton.svg"
+                  src="/assets/ic-toggleButton-right.svg"
                   alt={openQuestions[index] ? "질문 닫기" : "질문 열기"}
                   className={`transition-transform duration-300 ${
                     openQuestions[index] ? "rotate-90" : "rotate-0"
@@ -91,13 +91,16 @@ export default function IndividualQuestion() {
                 className="flex gap-[32px] my-[27px] px-[30px] py-[24px] bg-gray-100 border border-gray-200 custom-shadow rounded-lg cursor-pointer"
               >
                 <img
-                  src="/assets/ic-toggle.svg"
+                  src="/assets/ic-toggleButton-right.svg"
                   alt={openQuestions[index] ? "질문 닫기" : "질문 열기"}
                   className={`transition-transform duration-300 ${
                     openQuestions[index] ? "rotate-90" : "rotate-0"
                   }`}
                 />
-                <p className="font-semibold text-[18px]">{data.questions}</p>
+                <p className="font-semibold text-[18px]">
+                  <p className="text-main-500 font-bold mr-3">개인 질문</p>
+                  {data.questions}
+                </p>
               </div>
 
               {/* 숨겨진 답변 입력란 */}

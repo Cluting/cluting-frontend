@@ -1,7 +1,14 @@
-export default function Profile() {
+interface ProfileProps {
+  color: string;
+}
+
+export default function Profile({ color }: ProfileProps) {
   return (
     <section className="relative w-full h-[281px] flex-center bg-gray-100 border border-gray-200 rounded-[8px] px-[36px] py-[17px]">
-      <div className="absolute top-5 left-14 text-white-100 text-caption1 py-[5px] px-[12px] rounded bg-main-100">
+      <div
+        style={{ backgroundColor: `#${color}` }}
+        className="absolute top-5 left-14 text-white-100 text-caption1 py-[5px] px-[12px] rounded "
+      >
         면접자1
       </div>
       <div className="flex gap-[42px] items-start mt-[50px]">

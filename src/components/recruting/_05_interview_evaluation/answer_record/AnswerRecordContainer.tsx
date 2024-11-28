@@ -26,12 +26,12 @@ export default function AnswerRecordContainer() {
           면접자 정보
         </p>
         <div className="flex gap-6 items-center mb-11">
-          <Profile />
-          <Profile />
+          <Profile color="3E0CC4" />
+          <Profile color="039B72" />
         </div>
         <CommonQuestions />
         <PartQuestions />
-        {/* <IndividualQuestion /> */}
+        <IndividualQuestion />
       </div>
     </div>
   );
