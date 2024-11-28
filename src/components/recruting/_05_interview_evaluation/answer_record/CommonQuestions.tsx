@@ -49,16 +49,18 @@ export default function CommonQuestions() {
                 <div className="w-full p-4 bg-gray-100 border border-gray-200 custom-shadow rounded-lg">
                   <p className="font-bold text-[20px]">김민지 답변</p>
                   <textarea
+                    onClick={(e) => e.stopPropagation()}
                     className="input-style input-background w-full h-[170px] mt-[18px] text-[16px]"
-                    placeholder="면접자의 답변을 기록해 주세요."
+                    placeholder="지원자의 답변을 기록해 주세요."
                   />
                 </div>
 
                 <div className="w-full p-4 bg-gray-100 border border-gray-200 custom-shadow rounded-lg">
                   <p className="font-bold text-[20px]">이태준 답변</p>
                   <textarea
+                    onClick={(e) => e.stopPropagation()}
                     className="input-style input-background w-full h-[170px] mt-[18px] text-[16px]"
-                    placeholder="면접자의 답변을 기록해 주세요."
+                    placeholder="지원자의 답변을 기록해 주세요."
                   />
                 </div>
               </div>

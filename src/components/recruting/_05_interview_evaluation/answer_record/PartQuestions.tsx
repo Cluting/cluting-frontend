@@ -39,7 +39,7 @@ export default function PartQuestions() {
                 }`}
               />
               <p className="flex items-center font-semibold text-[18px]">
-                <p className="text-main-500 font-bold mr-3">공통 질문</p>
+                <p className="text-main-500 font-bold mr-3">파트별 질문</p>
                 {question}
               </p>
             </div>
@@ -49,16 +49,18 @@ export default function PartQuestions() {
                 <div className="w-full p-4 bg-gray-100 border border-gray-200 custom-shadow rounded-lg">
                   <p className="font-bold text-[20px]">김민지 답변</p>
                   <textarea
+                    onClick={(e) => e.stopPropagation()}
                     className="input-style input-background w-full h-[170px] mt-[18px] text-[16px]"
-                    placeholder="면접자의 답변을 기록해 주세요."
+                    placeholder="지원자의 답변을 기록해 주세요."
                   />
                 </div>
 
                 <div className="w-full p-4 bg-gray-100 border border-gray-200 custom-shadow rounded-lg">
                   <p className="font-bold text-[20px]">이태준 답변</p>
                   <textarea
+                    onClick={(e) => e.stopPropagation()}
                     className="input-style input-background w-full h-[170px] mt-[18px] text-[16px]"
-                    placeholder="면접자의 답변을 기록해 주세요."
+                    placeholder="지원자의 답변을 기록해 주세요."
                   />
                 </div>
               </div>
