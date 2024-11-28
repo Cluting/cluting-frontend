@@ -55,7 +55,7 @@ export default function FailList({ filter }: failListProps) {
                   </div>
                 </div>
               </td>
-              <td>{applicant.group}</td>
+              <td>{applicant.group ? applicant.group : "-"}</td>
               <td>{applicant.rank}</td>
               <td className="text-red-100">{applicant.result}</td>
             </tr>

@@ -66,7 +66,7 @@ export default function PassList({ filter }: passListProps) {
                   </div>
                 </div>
               </td>
-              <td> {applicant.group}</td>
+              <td>{applicant.group ? applicant.group : "-"}</td>
               <td> {applicant.rank}</td>
               <td className="text-[#416AFF]"> {applicant.result}</td>
             </tr>
