@@ -8,24 +8,24 @@ export default function ScheduleTopSection({
   setSchedule
 }: ScheduleTopSectionProps) {
   return (
-    <div className="flex h-[38px] gap-[17px] w-full text-subheadline">
+    <div className="flex gap-[17px] w-full text-subheadline bg-white-100 rounded-[7px] px-[18.5px] py-[10px]">
       <div
         onClick={() => setSchedule("당일")}
-        className={`w-full flex-center rounded-[6px] ${
+        className={`w-full flex-center rounded-[10.63px] py-[14.5px] ${
           schedule === "당일"
-            ? "bg-gray-500 text-white-100"
-            : "bg-[#F1F1F1]  text-[#5C6067]"
-        } border border-[#D9D9D9] cursor-pointer`}
+            ? "bg-main-400 text-main-100"
+            : "bg-main-300 text-gray-800"
+        }  cursor-pointer`}
       >
         면접 당일
       </div>
       <div
         onClick={() => setSchedule("이후")}
-        className={`w-full flex-center rounded-[6px] ${
+        className={`w-full flex-center rounded-[10.63px] ${
           schedule === "이후"
-            ? "bg-gray-500 text-white-100"
-            : "bg-[#F1F1F1] text-[#5C6067]"
-        } border border-[#D9D9D9] cursor-pointer`}
+            ? "bg-main-400 text-main-100"
+            : "bg-main-300 text-gray-800"
+        }  cursor-pointer`}
       >
         면접 이후
       </div>
