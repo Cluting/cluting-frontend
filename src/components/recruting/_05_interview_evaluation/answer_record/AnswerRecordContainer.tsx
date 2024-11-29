@@ -3,6 +3,7 @@ import CommonQuestions from "./CommonQuestions";
 import IndividualQuestion from "./IndividualQuestions";
 import PartQuestions from "./PartQuestions";
 import Profile from "./Profile";
+import { INTERVIEWEES } from "./interviewees";
 
 export default function AnswerRecordContainer() {
   return (
@@ -26,8 +27,17 @@ export default function AnswerRecordContainer() {
           면접자 정보
         </p>
         <div className="flex gap-6 items-center mb-11">
-          <Profile color="3E0CC4" />
-          <Profile color="039B72" />
+          {INTERVIEWEES.map((interviewee, index) => (
+            <Profile
+              key={index}
+              color={interviewee.color}
+              name={interviewee.name}
+              role={interviewee.role}
+              university={interviewee.university}
+              major={interviewee.major}
+              semester={interviewee.semester}
+            />
+          ))}
         </div>
         <CommonQuestions />
         <PartQuestions />

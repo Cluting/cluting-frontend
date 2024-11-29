@@ -1,28 +1,7 @@
 import { useState } from "react";
+import { INTERVIEWEES } from "./interviewees";
 
 export default function IndividualQuestion() {
-  // 면접자 데이터 (예: id, 이름, 직무, 질문들)
-  const interviewees = [
-    {
-      id: 1,
-      name: "김민지",
-      role: "기획",
-      questions: [
-        "팀 플레이 상황에서 갈등이 생긴다면 어떻게 대처하시겠습니까?",
-        "본인의 강점과 약점은 무엇인가요?"
-      ]
-    },
-    {
-      id: 2,
-      name: "이민호",
-      role: "디자인",
-      questions: [
-        "프로젝트를 진행하면서 가장 어려웠던 점은 무엇이었나요?",
-        "리더 역할을 수행한 경험이 있다면 어떤 식으로 팀을 이끌었나요?"
-      ]
-    }
-  ];
-
   // 면접자별 질문 상태 관리
   const [openQuestions, setOpenQuestions] = useState<
     Record<number, Record<number, boolean>>
@@ -45,7 +24,7 @@ export default function IndividualQuestion() {
         개인 질문
       </p>
       <div className="w-full flex flex-wrap gap-[25px]">
-        {interviewees.map((interviewee) => (
+        {INTERVIEWEES.map((interviewee) => (
           <section key={interviewee.id} className="w-[520px]">
             {/* 면접자 정보 */}
             <div className="flex flex-col items-start bg-main-100 rounded-lg text-white-100 px-5 py-[14px] mt-5">
