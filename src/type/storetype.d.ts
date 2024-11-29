@@ -4,7 +4,7 @@ declare interface Step {
   id: number;
   name: string;
   completed: boolean; // 단계 완료 여부
-  admins: string[]; // 관리자의 이름 배열
+  admins?: string[]; // 관리자의 이름 배열
 }
 
 declare interface Store {

@@ -85,14 +85,14 @@ export default function SignupContainer() {
             <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
           <Input
-            name="address"
+            name="location"
             register={register}
             type="text"
             placeholder="거주지"
             required
-            error={errors.address}
+            error={errors.location}
           />
-          {errors.address && (
+          {errors.location && (
             <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
         </section>
@@ -169,7 +169,7 @@ export default function SignupContainer() {
             <p className="text-state-error">{ERROR_MESSAGES.required}</p>
           )}
           <Input
-            name="minors"
+            name="doubleMajor"
             register={register}
             type="text"
             placeholder="(선택) 다전공 (복수 전공, 부전공)"

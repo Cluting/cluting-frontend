@@ -3,7 +3,7 @@ import { RECRUIT_STEP_ITEMS } from "../../../constants/recruting";
 import { ModalPortal } from "../../common/ModalPortal";
 
 interface CompleteModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   onConfirm: () => void;
   stepIndex: number;
 }
@@ -24,7 +24,7 @@ export default function StepCompleteModal({
             <h1 className="text-title3 ">{RECRUIT_STEP_ITEMS[stepIndex]}</h1>
           </div>
 
-          <hr className="w-full py- border border-gray-200 " />
+          <hr className="w-full  border border-gray-200 " />
 
           <div className="mt-[33px] mb-[28px]  text-center ">
             <p className="text-headline mb-[5px]">
