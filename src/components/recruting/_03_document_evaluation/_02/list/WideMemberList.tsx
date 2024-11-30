@@ -2,17 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 interface WideMemberListProps {
-  items: {
-    id: string;
-    state: string;
-    name: string;
-    phone: string;
-    group: string;
-    incomplete: number;
-    all: number;
-  }[];
+  items: Applicant[]; // Applicant 타입의 배열로 변경
 }
-
 const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
   const stateStyles = {
     "평가 전": "bg-[#F1F3FF] text-[#8B8FA4]",
@@ -43,38 +34,41 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
       </ul>
       <ul className="flex flex-col overflow-y-auto">
         <Link to="/recruting/evaluation">
-          {items.map((item) => (
-            <li
-              key={item.id}
-              className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
-            >
-              <div className="w-32 text-left">
-                {/*  keyof typeof 를 쓸 경우, 예외처리가 발생 시 오류남. 목업 때만 사용 후 수정 필요 */}
-                <button
-                  className={`${stateStyles[item.state as keyof typeof stateStyles]} px-4 py-2 rounded-[38px] text-caption3 `}
-                >
-                  {item.state}
-                </button>
-              </div>
-              <div className="flex flex-col w-32 text-left">
-                <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">
-                  {item.name}
+          {items.map((item) => {
+            const evaluatorState = item.evaluators?.[0]?.state || "평가 전";
+            return (
+              <li
+                key={item.id}
+                className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
+              >
+                <div className="w-32 text-left">
+                  {/*  keyof typeof 를 쓸 경우, 예외처리가 발생 시 오류남. 목업 때만 사용 후 수정 필요 */}
+                  <button
+                    className={`${stateStyles[evaluatorState as keyof typeof stateStyles]} px-4 py-2 rounded-[38px] text-caption3 `}
+                  >
+                    {evaluatorState}
+                  </button>
+                </div>
+                <div className="flex flex-col w-32 text-left">
+                  <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">
+                    {item.name}
+                  </div>
+
+                  <div className="text-xs font-Pretendard font-normal text-[#8b8fa4]">
+                    {maskPhoneNumber(item.phone)}
+                  </div>
                 </div>
 
-                <div className="text-xs font-Pretendard font-normal text-[#8b8fa4]">
-                  {maskPhoneNumber(item.phone)}
+                <div className="w-32 text-sm font-semibold text-left font-Pretendard text-gray-1100">
+                  {item.group}
                 </div>
-              </div>
 
-              <div className="w-32 text-sm font-semibold text-left font-Pretendard text-gray-1100">
-                {item.group}
-              </div>
-
-              <div className="w-48 text-sm font-medium text-left font-Pretendard text-gray-1100">
-                {item.incomplete} / {item.all}
-              </div>
-            </li>
-          ))}
+                <div className="w-48 text-sm font-medium text-left font-Pretendard text-gray-1100">
+                  {item.incomplete} / {item.all}
+                </div>
+              </li>
+            );
+          })}
         </Link>
       </ul>
     </div>

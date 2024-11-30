@@ -11,55 +11,126 @@ export const useApplicantEvaluationStore =
         name: "윤다인",
         phone: "010-3456-7890",
         group: "기획",
-        state: "평가 전",
         incomplete: 3,
         all: 5,
         isDisputed: false,
-        isPass: false
+        isPass: false,
+        evaluators: [
+          {
+            name: "평가자A",
+            state: "평가 전",
+            totalScore: 85,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 30 },
+              { id: 2, name: "창의성", score: 25 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "기획력이 우수하나, 창의성이 약간 부족합니다."
+          },
+          {
+            name: "평가자B",
+            state: "평가 완료",
+            totalScore: 90,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 35 },
+              { id: 2, name: "창의성", score: 30 },
+              { id: 3, name: "협업 능력", score: 25 }
+            ],
+            comment: "전반적으로 우수한 지원자입니다."
+          }
+        ]
       },
       {
         id: uuidv4(),
         name: "곽서연",
         phone: "010-3456-7890",
         group: "기획",
-        state: "평가 전",
         incomplete: 3,
         all: 5,
         isDisputed: false,
-        isPass: false
+        isPass: false,
+        evaluators: [
+          {
+            name: "평가자C",
+            state: "평가 전",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
       },
       {
         id: uuidv4(),
         name: "곽서연",
         phone: "010-3456-7890",
         group: "기획",
-        state: "평가 전",
         incomplete: 3,
         all: 5,
         isDisputed: false,
-        isPass: false
+        isPass: false,
+        evaluators: [
+          {
+            name: "평가자C",
+            state: "평가 중",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
       },
       {
         id: uuidv4(),
         name: "곽서연",
         phone: "010-0654-3210",
         group: "개발",
-        state: "평가 중",
         incomplete: 3,
         all: 5,
         isDisputed: false,
-        isPass: false
+        isPass: false,
+        evaluators: [
+          {
+            name: "평가자C",
+            state: "평가 중",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
       },
       {
         id: uuidv4(),
         name: "김은혜",
         phone: "010-5255-5555",
         group: "디자인",
-        state: "평가 완료",
         incomplete: 3,
         all: 5,
         isDisputed: false,
-        isPass: false
+        isPass: false,
+        evaluators: [
+          {
+            name: "평가자C",
+            state: "평가 중",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
       }
     ],
 

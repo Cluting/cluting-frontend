@@ -7,13 +7,28 @@ declare interface Applicant {
   name: string;
   phone: string;
   group: string;
-  state: ApplicantState;
   incomplete: number; // 완료 운영진 수
   all: number; //담당 운영진 수
-  isDisputed: boolean; //이의제기 여부
-  isPass: boolean; //합격 여부
+  isDisputed?: boolean; //이의제기 여부
+  isPass?: boolean; //합격 여부
+  evaluators?: Evaluator[]; // 평가자에 대한 운영진 정보
 }
 
+// 평가 기준
+declare interface EvaluatorCriteriaScore {
+  id: number;
+  name: string; // 평가 기준 이름
+  score: number; // 평가 점수
+}
+
+// 평가자 데이터 타입
+declare interface Evaluator {
+  name: string; // 평가자 이름
+  state: ApplicantState;
+  totalScore: number; // 총점
+  criteriaScores: EvaluatorCriteriaScore[]; // 평가 기준별 점수
+  comment: string; // 평가자 코멘트
+}
 // Zustand Store 타입
 declare interface ApplicantEvaluationStatusStore {
   applicants: Applicant[]; // 지원자 목록
