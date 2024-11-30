@@ -3,6 +3,7 @@ import { useGroupStore } from "../../../../store/useStore";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
@@ -243,22 +244,11 @@ export default function DocumentReviewPrepContainer() {
           </div>
           <button
             type="button"
-            className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
+            className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 text-semibold hover:bg-main-100 hover:text-white-100 group"
             onClick={addGroupForm}
           >
-            <div className="relative mr-[4.81px]">
-              <img
-                alt="그룹 추가 버튼"
-                src="/assets/ic-mainColorPlus.svg"
-                className="w-[13px] h-[13px] group-hover:opacity-0"
-              />
-              <img
-                alt="그룹 추가 버튼"
-                src="/assets/ic-whiteColorPlus.svg"
-                className="w-[13px] h-[13px] absolute top-0 left-0 opacity-0 group-hover:opacity-100"
-              />
-            </div>
-            <span className="text-semibold">그룹 추가하기</span>
+            <IdealIcon className="mr-[4.81px]" />
+            그룹 추가하기
           </button>
         </div>
 
@@ -623,9 +613,9 @@ export default function DocumentReviewPrepContainer() {
                 <button
                   type="button"
                   onClick={() => addCriteria(group.id)}
-                  className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
+                  className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 text-callout hover:bg-main-100 hover:text-white-100 group"
                 >
-                  <div className="relative mr-2">
+                  {/* <div className="relative mr-2">
                     <img
                       alt="평가 기준 추가"
                       src="/assets/ic-mainColorPlus.svg"
@@ -637,7 +627,9 @@ export default function DocumentReviewPrepContainer() {
                       className="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
                     />
                   </div>
-                  <span className="text-callout">평가 기준 추가하기</span>
+                  <span className="">평가 기준 추가하기</span> */}
+                  <IdealIcon className="mr-2" />
+                  평가 기준 추가하기
                 </button>
               </div>
             )
