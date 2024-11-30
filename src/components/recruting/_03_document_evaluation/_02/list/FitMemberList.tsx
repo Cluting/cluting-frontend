@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 interface FitMemberListProps {
   items: Applicant[]; // Applicant 타입의 배열로 변경
   state: string;
+  isEvaluationDone?: boolean;
   onDispute?: (id: string) => void; // 이의제기
   onDecision?: (id: string) => void;
 }
@@ -12,6 +13,7 @@ interface FitMemberListProps {
 const FitMemberList: React.FC<FitMemberListProps> = ({
   items,
   state,
+  isEvaluationDone,
   onDispute,
   onDecision
 }) => {
@@ -47,7 +49,8 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                       onClick={() => onDispute?.(item.id)}
                     />
                   )}
-                  {item.evaluators?.[0]?.state === "평가 완료" ? (
+                  {!isEvaluationDone &&
+                  item.evaluators?.[0]?.state === "평가 완료" ? (
                     groupAccess ? (
                       <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
                         수정 가능
@@ -58,6 +61,13 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                       </button>
                     )
                   ) : null}
+
+                  {isEvaluationDone &&
+                    item.evaluators?.[0]?.state === "평가 완료" && (
+                      <button className="text-caption2 text-main-100 bg-main-300 px-3 py-[6px] rounded-[7px] border border-main-400">
+                        이의 제기
+                      </button>
+                    )}
                 </div>
                 <div className="flex flex-col text-left w-28">
                   <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">
@@ -80,7 +90,7 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                     >
                       합불 결정하기
                     </button>
-                  ) : item.isPass ? (
+                  ) : isEvaluationDone ? (
                     <span
                       className={
                         item.isPass === true ? "text-[#007AFF]" : "text-red-100"

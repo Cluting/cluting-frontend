@@ -209,6 +209,78 @@ export const useApplicantEvaluationStore =
             comment: "협업 능력은 좋으나, 기획력이 부족합니다."
           }
         ]
+      },
+      {
+        id: uuidv4(),
+        name: "이재현",
+        phone: "010-5255-5555",
+        group: "개발",
+        incomplete: 5,
+        all: 5,
+        isDisputed: false,
+        isPass: true,
+        evaluators: [
+          {
+            name: "홍길동",
+            state: "평가 완료",
+            groupAccess: "기획",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
+      },
+      {
+        id: uuidv4(),
+        name: "정민주",
+        phone: "010-5255-5555",
+        group: "개발",
+        incomplete: 5,
+        all: 5,
+        isDisputed: false,
+        isPass: true,
+        evaluators: [
+          {
+            name: "홍길동",
+            state: "평가 완료",
+            groupAccess: "기획",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
+      },
+      {
+        id: uuidv4(),
+        name: "정주현",
+        phone: "010-5255-5555",
+        group: "개발",
+        incomplete: 5,
+        all: 5,
+        isDisputed: false,
+        isPass: false,
+        evaluators: [
+          {
+            name: "홍길동",
+            state: "평가 완료",
+            groupAccess: "개발",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
       }
     ],
 

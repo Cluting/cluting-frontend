@@ -48,7 +48,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
 
   return (
     <>
-      <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
+      <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100 ">
         <WideMemberList items={filteredData} />
       </div>
       <div className="flex-center">
@@ -57,7 +57,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
           onClick={() => {
             setEvaluationProcess(true);
           }}
-          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] mb-[143px] ${
             evaluationProcess
               ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
               : "bg-main-100 text-white-100 " //완료하기

@@ -6,17 +6,6 @@ interface CompletedEvaluationProps {
   sortType: string;
 }
 
-// interface Member {
-//   id: string;
-//   state: ButtonState;
-//   name: string;
-//   phone: string;
-//   group: string;
-//   result?: "합격" | "불합격";
-//   isDecisionMode?: boolean;
-//   isDisputed?: boolean;
-// }
-
 const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   filter,
   sortType
@@ -32,6 +21,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
     const completedMembers = members.filter(
       (item) =>
         item.evaluators &&
+        item.incomplete === item.all &&
         item.evaluators.some(
           (evaluator) =>
             evaluator.state === "평가 완료" && evaluator.name === "홍길동"
@@ -105,6 +95,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         <FitMemberList
           items={filteredData}
           state="평가 완료"
+          isEvaluationDone
           onDispute={handleDispute}
           onDecision={handleDecision}
         />
@@ -115,6 +106,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         <FitMemberList
           items={filteredData2}
           state="평가 완료"
+          isEvaluationDone
           onDispute={handleDispute}
           onDecision={handleDecision}
         />

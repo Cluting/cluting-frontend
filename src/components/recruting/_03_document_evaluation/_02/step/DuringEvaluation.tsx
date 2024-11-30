@@ -60,7 +60,9 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
         item.evaluators &&
         item.evaluators.some(
           (evaluator) =>
-            evaluator.name === "홍길동" && evaluator.state === "평가 완료"
+            evaluator.name === "홍길동" &&
+            evaluator.state === "평가 완료" &&
+            item.isPass === false
         )
     );
 
