@@ -36,7 +36,10 @@ export default function App() {
                 path="03_document_evaluation"
                 element={<DocumentEvaluation />}
               />
-              <Route path="evaluation" element={<ApplicantDocument />} />
+              <Route
+                path="/recruting/evaluation/:id"
+                element={<ApplicantDocument />}
+              />
               <Route
                 path="04_interview_notification"
                 element={<InterviewNotification />}

@@ -33,10 +33,10 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
         </li>
       </ul>
       <ul className="flex flex-col overflow-y-auto">
-        <Link to="/recruting/evaluation">
-          {items.map((item) => {
-            const evaluatorState = item.evaluators?.[0]?.state || "평가 전";
-            return (
+        {items.map((item) => {
+          const evaluatorState = item.evaluators?.[0]?.state || "평가 전";
+          return (
+            <Link to={`/recruting/evaluation/${item.id}`} key={item.id}>
               <li
                 key={item.id}
                 className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
@@ -67,9 +67,9 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
                   {item.incomplete} / {item.all}
                 </div>
               </li>
-            );
-          })}
-        </Link>
+            </Link>
+          );
+        })}
       </ul>
     </div>
   );

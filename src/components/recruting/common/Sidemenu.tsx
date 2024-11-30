@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   PATH,
   STEP2_ITEMS,
@@ -14,6 +14,7 @@ import { useRecruitmentSessionStore } from "../../../store/useStore";
 export default function Sidemenu() {
   // 현재 경로 가져오기
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
 
   //기수 불러오기
   const { sessionNumber } = useRecruitmentSessionStore();
@@ -69,7 +70,7 @@ export default function Sidemenu() {
     window.addEventListener("resize", handleResize);
     //평가 페이지일 경우
     if (
-      location.pathname === "/recruting/evaluation" ||
+      location.pathname === `/recruting/evaluation/${id}` ||
       location.pathname === "/recruting/individual_question"
     ) {
       setEvaluationVersion(true);
