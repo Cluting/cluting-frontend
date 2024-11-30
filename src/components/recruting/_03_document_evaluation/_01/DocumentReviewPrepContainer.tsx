@@ -204,7 +204,7 @@ export default function DocumentReviewPrepContainer() {
   });
 
   return (
-    <form className="w-[1016px]" onSubmit={onSubmit}>
+    <form className="w-full" onSubmit={onSubmit}>
       <div className="ml-8 w-full mt-[34px]">
         {/* 전체 지원자 수 섹션 */}
         <div className="flex">
@@ -215,12 +215,6 @@ export default function DocumentReviewPrepContainer() {
         </div>
 
         <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
-          <div className="flex items-center gap-[15px]">
-            <p>전체</p>
-            <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
-              175명
-            </div>
-          </div>
           {groups.map((groupItem) => (
             <div key={groupItem.id} className="flex items-center gap-[15px] ">
               <p>{groupItem.groupName}</p>
@@ -235,10 +229,17 @@ export default function DocumentReviewPrepContainer() {
         <div className="flex justify-between mt-[34px]">
           <div className="flex items-center">
             <p className="section-title">서류 평가 역할 설정</p>
-            <div className="tooltip">
-              서류 평가 시, 그룹을 형성하여 지원자를 나누고, 각 그룹별 평가자를
-              분담 해주세요.
-            </div>
+            {/*공통 그룹만 있을 때 툴팁 */}
+            {groups.length === 1 ? (
+              <div className="tooltip">
+                서류 평가 시, 그룹을 형성하여 지원자를 나누고, 각 그룹별
+                평가자를 분담 해주세요.
+              </div>
+            ) : (
+              <div className="tooltip">
+                각 그룹별 평가할 운영진을 분담해 주세요.
+              </div>
+            )}
           </div>
           <button
             type="button"
