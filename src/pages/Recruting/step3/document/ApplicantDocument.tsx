@@ -4,7 +4,7 @@ import UserProfile from "../../../../components/recruting/document/UserProfile";
 import AdminEvaluationWindow from "../../../../components/recruting/_03_document_evaluation/evaluation/AdminEvaluationWindow";
 import Sidemenu from "../../../../components/recruting/common/Sidemenu";
 import Portfolio from "../../../../components/recruting/document/Portfolio";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import IndividualQuestionWindow from "../../../../components/recruting/_05_interview_evaluation/individual_question/IndividualQuestionWindow";
 import { useApplicantEvaluationStore } from "../../../../store/useEvaluationStore";
 
@@ -24,7 +24,9 @@ export default function ApplicantDocument() {
         <Sidemenu />
       </div>
       <div className="z-[0] flex-center absolute top-50 left-28">
-        {/* TODO: 뒤로가기 버튼 추가 , 링크 연결 */}
+        <Link to="/recruting/03_document_evaluation">
+          <img src="/assets/ic-back.svg" alt="뒤로가기" className="mr-[11px]" />
+        </Link>
         <p className="text-title1">{applicant?.name}</p>
         <p className="text-gray-800 text-title3 ml-[5px]">{applicant?.group}</p>
       </div>
