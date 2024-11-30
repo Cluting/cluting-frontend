@@ -66,6 +66,14 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
           {evaluationProcess ? "수정하기" : "평가 끝내기"}
         </button>
       </div>
+
+      {!evaluationProcess && (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative custom-shadow  w-[1016px] h-[79px] bg-gray-100 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+            최종적으로 수정할 사항이 없다면 평가 끝내기 버튼을 눌러주세요.
+          </div>
+        </div>
+      )}
     </>
   );
 };
