@@ -16,14 +16,14 @@ export default function AddAdminDropdown({
           <li
             key={admin}
             onClick={() => onSelect(admin)}
-            className="w-[123px] h-[40px] rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center"
+            className="relative w-[123px] h-[40px] rounded-[8px] cursor-pointer hover:bg-gray-200 flex-center"
           >
-            <p className="text-center text-gray-800 font-medium">
-              {admin}
-              {currentAdmins.includes(admin) && (
-                <span className="ml-2 text-main-100">✓</span>
-              )}
-            </p>
+            <p className="text-center text-gray-800 font-medium">{admin}</p>
+            {currentAdmins.includes(admin) && (
+              <span className="absolute left-[calc(50%+2rem)] ml-1 text-main-100">
+                ✓
+              </span>
+            )}
           </li>
         ))}
       </ul>
