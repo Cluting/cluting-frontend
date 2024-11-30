@@ -24,6 +24,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
     data = data.filter(
       (item) =>
         item.evaluators &&
+        item.incomplete === item.all &&
         item.evaluators.some(
           (evaluator) =>
             evaluator.state === "평가 완료" && evaluator.name === "홍길동"
