@@ -615,19 +615,6 @@ export default function DocumentReviewPrepContainer() {
                   onClick={() => addCriteria(group.id)}
                   className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 text-callout hover:bg-main-100 hover:text-white-100 group"
                 >
-                  {/* <div className="relative mr-2">
-                    <img
-                      alt="평가 기준 추가"
-                      src="/assets/ic-mainColorPlus.svg"
-                      className="group-hover:opacity-0"
-                    />
-                    <img
-                      alt="평가 기준 추가"
-                      src="/assets/ic-whiteColorPlus.svg"
-                      className="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
-                    />
-                  </div>
-                  <span className="">평가 기준 추가하기</span> */}
                   <IdealIcon className="mr-2" />
                   평가 기준 추가하기
                 </button>
@@ -635,7 +622,6 @@ export default function DocumentReviewPrepContainer() {
             )
         )}
       </div>
-      <button onSubmit={onSubmit}>ㅇㄶㅁㄴㅇㅎ</button>
     </form>
   );
 }
