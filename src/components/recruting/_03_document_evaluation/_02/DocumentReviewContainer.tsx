@@ -12,7 +12,7 @@ const DocumentReviewContainer: React.FC = () => {
 
   // 필터와 정렬 상태 관리
   const [filter, setFilter] = useState("전체");
-  const [sortType, setSortType] = useState("가나다순");
+  const [sortType, setSortType] = useState("지원순");
 
   // 현재 단계에 따라 컴포넌트 렌더링
   const renderStepComponent = (): React.ReactNode => {
@@ -42,8 +42,8 @@ const DocumentReviewContainer: React.FC = () => {
         />
         <Dropdown
           label="정렬 : "
-          defaultValue="가나다순"
-          options={["가나다순"]}
+          defaultValue="지원순"
+          options={["지원순", "최신순"]}
           onSelect={(value) => setSortType(value)}
         />
       </div>

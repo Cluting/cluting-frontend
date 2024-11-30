@@ -1,11 +1,11 @@
 import { useState } from "react";
-import ApplicationQuestion from "../../../components/recruting/document/ApplicationQuestion";
-import UserProfile from "../../../components/recruting/document/UserProfile";
-import AdminEvaluationWindow from "../../../components/recruting/_03_document_evaluation/evaluation/AdminEvaluationWindow";
-import Sidemenu from "../../../components/recruting/common/Sidemenu";
-import Portfolio from "../../../components/recruting/document/Portfolio";
+import ApplicationQuestion from "../../../../components/recruting/document/ApplicationQuestion";
+import UserProfile from "../../../../components/recruting/document/UserProfile";
+import AdminEvaluationWindow from "../../../../components/recruting/_03_document_evaluation/evaluation/AdminEvaluationWindow";
+import Sidemenu from "../../../../components/recruting/common/Sidemenu";
+import Portfolio from "../../../../components/recruting/document/Portfolio";
 import { useLocation } from "react-router-dom";
-import IndividualQuestionWindow from "../../../components/recruting/_05_interview_evaluation/individual_question/IndividualQuestionWindow";
+import IndividualQuestionWindow from "../../../../components/recruting/_05_interview_evaluation/individual_question/IndividualQuestionWindow";
 
 //3 - 리크루팅 : 서류 평가하기 단계
 export default function ApplicantDocument() {
