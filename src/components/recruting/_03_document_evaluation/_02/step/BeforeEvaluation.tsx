@@ -16,7 +16,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
 
   useEffect(() => {
     let data = [...applicants];
-    console.log("Original data:", data);
 
     // 평가 전 상태를 가진 항목 필터링
     data = data.filter(
@@ -24,7 +23,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
         item.evaluators &&
         item.evaluators.some((evaluator) => evaluator.state === "평가 전")
     );
-    console.log("Filtered by evaluators:", data);
 
     // 필터 처리
     if (filter !== "전체") {
@@ -37,7 +35,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     }
 
     setFilteredData(data);
-    console.log(filteredData);
   }, [filter, sortType]);
 
   return (
