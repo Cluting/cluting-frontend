@@ -1,8 +1,5 @@
 // 지원자 상태 타입
-declare type ApplicantState =
-  | "BEFORE" // 평가 전
-  | "IN_PROGRESS" // 평가 진행 중
-  | "COMPLETED"; // 평가 완료
+declare type ApplicantState = "평가 전" | "평가 중" | "평가 완료";
 
 // 지원자 데이터 타입
 declare interface Applicant {
