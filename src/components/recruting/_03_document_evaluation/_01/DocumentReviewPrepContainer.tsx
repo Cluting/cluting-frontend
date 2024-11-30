@@ -214,7 +214,7 @@ export default function DocumentReviewPrepContainer() {
           </div>
         </div>
 
-        <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
+        <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
           <div className="flex items-center gap-[15px]">
             <p>전체</p>
             <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
@@ -222,7 +222,7 @@ export default function DocumentReviewPrepContainer() {
             </div>
           </div>
           {groups.map((groupItem) => (
-            <div key={groupItem.id} className="flex items-center gap-[15px]">
+            <div key={groupItem.id} className="flex items-center gap-[15px] ">
               <p>{groupItem.groupName}</p>
               <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
                 175명
@@ -344,15 +344,9 @@ export default function DocumentReviewPrepContainer() {
           </div>
         </div>
 
-        <div className="flex gap-[15px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
-          <div className="flex items-center gap-[15px]">
-            <p className="text-body">전체</p>
-            <div className="flex-center w-auto h-[38px] px-[25px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
-              상위 30명
-            </div>
-          </div>
+        <div className="flex gap-[15px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
           {groups.map((groupItem) => (
-            <div key={groupItem.id} className="flex items-center gap-[15px]">
+            <div key={groupItem.id} className="flex items-center gap-[15px] ">
               <p className="text-body">{groupItem.groupName}</p>
               <div className="flex-center w-auto h-[38px] px-[25px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
                 상위 30명
@@ -375,11 +369,11 @@ export default function DocumentReviewPrepContainer() {
             <button
               key={groupItem.id}
               type="button"
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border border-main-400 border-b-0 text-callout 
+              className={`flex-center w-[162px] min-h-[43px] rounded-t-[11px] bg-gray-100 border border-b-0 text-callout 
                 ${
                   selectedGroupId === groupItem.id
-                    ? "bg-main-100 text-white-100"
-                    : "bg-gray-100 text-main-100"
+                    ? "border-main-100 bg-main-100 text-white-100"
+                    : "border-gray-200 text-main-100"
                 }`}
               onClick={() => setSelectedGroupId(groupItem.id)}
             >
