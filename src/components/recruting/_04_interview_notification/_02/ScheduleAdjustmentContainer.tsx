@@ -55,12 +55,12 @@ export default function ScheduleAdjustmentContainer() {
           )}
         </div>
         <div className="w-full h-auto bg-gray-50 border border-gray-200 rounded-tr-[6.65px] rounded-bl-[6.65px] rounded-br-[6.65px]">
-          <div className="flex bg-gray-100 border-b border-gray-200">
+          <div className="flex gap-4 py-3 pl-[54px] bg-gray-100 border-b border-gray-200 text-gray-800">
             <p>면접관</p>
             <p>시간</p>
             <p>지원자</p>
           </div>
-          a asdgasdg sdag sdagsdga sdag
+          여기가 앞 부분 데이터가 없어서 수정해야함미다..
         </div>
       </div>
     </div>
