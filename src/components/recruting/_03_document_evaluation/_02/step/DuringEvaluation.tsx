@@ -84,7 +84,7 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
           이어서 평가를 완료해 주세요.
         </h2>
         {/* FitMemberList에 필터링된 데이터 전달 */}
-        <FitMemberList items={filteredData} />
+        <FitMemberList items={filteredData} state="평가 중" />
       </div>
 
       <div className="flex flex-col gap-4 w-[476px]">
@@ -92,7 +92,7 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
           팀원들이 아직 평가 중이에요.
         </h2>
         {/* FitMemberList에 필터링된 데이터 전달 */}
-        <FitMemberList items={filteredData2} />
+        <FitMemberList items={filteredData2} state="평가 완료" />
       </div>
     </div>
   );

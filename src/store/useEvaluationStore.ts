@@ -199,7 +199,7 @@ export const useApplicantEvaluationStore =
           {
             name: "홍길동",
             state: "평가 완료",
-            groupAccess: "개발",
+            groupAccess: "기획",
             totalScore: 78,
             criteriaScores: [
               { id: 1, name: "기획력", score: 28 },

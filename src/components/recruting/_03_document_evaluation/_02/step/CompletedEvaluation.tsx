@@ -87,6 +87,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         </h2>
         <FitMemberList
           items={filteredData}
+          state="평가 완료"
           onDispute={handleDispute}
           onDecision={handleDecision}
         />
@@ -96,6 +97,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         <h2 className="text-left text-gray-1100 text-title3 h-[24px]"></h2>
         <FitMemberList
           items={filteredData2}
+          state="평가 완료"
           onDispute={handleDispute}
           onDecision={handleDecision}
         />

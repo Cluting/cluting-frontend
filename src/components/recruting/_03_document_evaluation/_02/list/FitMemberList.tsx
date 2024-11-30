@@ -3,12 +3,14 @@ import Button from "./button/Button";
 
 interface FitMemberListProps {
   items: Applicant[]; // Applicant 타입의 배열로 변경
+  state: string;
   onDispute?: (id: string) => void; // 이의제기
   onDecision?: (id: string) => void;
 }
 
 const FitMemberList: React.FC<FitMemberListProps> = ({
   items,
+  state,
   onDispute,
   onDecision
 }) => {
@@ -30,17 +32,27 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
       </ul>
       <ul className="flex flex-col overflow-y-auto">
         {items.map((item) => {
-          const evaluatorState = item.evaluators?.[0]?.state || "평가 중";
+          const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
           return (
             <li
               key={item.id}
               className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
             >
               <div className="text-left w-28">
-                <Button
-                  state={evaluatorState}
-                  onClick={() => onDispute?.(item.id)}
-                />
+                {state === "평가 중" && (
+                  <Button state={state} onClick={() => onDispute?.(item.id)} />
+                )}
+                {item.evaluators?.[0]?.state === "평가 완료" ? (
+                  groupAccess ? (
+                    <button className="text-caption3 text-gray-1000 bg-main-300 px-[15px] py-[4.5px] rounded-[38px]">
+                      수정 가능
+                    </button>
+                  ) : (
+                    <button className="text-caption3 text-gray-1000 bg-[#BAF3E4] px-[15px] py-[4.5px] rounded-[38px]">
+                      열람 가능
+                    </button>
+                  )
+                ) : null}
               </div>
               <div className="flex flex-col text-left w-28">
                 <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">

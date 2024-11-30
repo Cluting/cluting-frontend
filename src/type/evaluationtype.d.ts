@@ -31,6 +31,7 @@ declare interface Evaluator {
   comment: string; // 평가자 코멘트
   groupAccess: string; // 권한을 가지고 있는 그룹명
 }
+
 // Zustand Store 타입
 declare interface ApplicantEvaluationStatusStore {
   applicants: Applicant[]; // 지원자 목록
