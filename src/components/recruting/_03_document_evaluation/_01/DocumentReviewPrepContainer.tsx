@@ -10,6 +10,7 @@ export default function DocumentReviewPrepContainer() {
   const [dropdown, setDropdown] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
+  const [newDetailCriteria, setNewDetailCriteria] = useState<string>("");
 
   const defaultGroups = useMemo(() => {
     const existingGroups =
@@ -116,25 +117,25 @@ export default function DocumentReviewPrepContainer() {
     ) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        const newValue = e.currentTarget.value.trim();
 
-        if (newValue) {
+        if (newDetailCriteria.trim()) {
           const groupIndex = groups.findIndex((g) => g.id === groupId);
           const criteriaIndex = groups[groupIndex].criteria.findIndex(
             (c) => c.id === criteriaId
           );
-          const currentCriteria = groups[groupIndex].criteria?.[criteriaIndex];
+          const currentCriteria = groups[groupIndex].criteria[criteriaIndex];
 
           setValue(
             `groups.${groupIndex}.criteria.${criteriaIndex}.detailCriteria`,
-            [...currentCriteria.detailCriteria, newValue]
+            [...currentCriteria.detailCriteria, newDetailCriteria.trim()]
           );
 
-          e.currentTarget.value = "";
+          // 입력 필드 초기화
+          setNewDetailCriteria("");
         }
       }
     },
-    [groups, setValue]
+    [groups, setValue, newDetailCriteria]
   );
 
   const deleteCriteria = useCallback(
@@ -578,14 +579,13 @@ export default function DocumentReviewPrepContainer() {
                         ))}
                       <input
                         type="text"
-                        {...register(
-                          `groups.${selectedGroupIndex}.criteria.${criteriaIndex}.detailCriteria`,
-                          {
-                            required: "필수 입력 사항입니다."
-                          }
-                        )}
+                        value={newDetailCriteria}
+                        onChange={(e) => setNewDetailCriteria(e.target.value)}
+                        onKeyDown={(e) =>
+                          handleDetailCriteria(e, group.id, criterion.id)
+                        }
                         placeholder="세부 평가 기준을 입력해 주세요."
-                        className={`w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border  text-caption1 rounded-[6px] focus:border-main-100 outline-none ${
+                        className={`w-full h-[36px] mt-[9px] px-[13px] py-[9px] bg-white-100 border text-caption1 rounded-[6px] focus:border-main-100 outline-none ${
                           errors.groups?.[selectedGroupIndex]?.criteria?.[
                             criteriaIndex
                           ]?.detailCriteria
@@ -635,6 +635,7 @@ export default function DocumentReviewPrepContainer() {
             )
         )}
       </div>
+      <button onSubmit={onSubmit}>ㅇㄶㅁㄴㅇㅎ</button>
     </form>
   );
 }
