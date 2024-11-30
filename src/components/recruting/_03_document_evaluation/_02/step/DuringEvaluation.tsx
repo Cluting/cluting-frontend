@@ -64,6 +64,8 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
         )
     );
 
+    //FIX: 현재 운영진의 이름이 홍길동이라 가정
+
     // 필터 처리
     if (filter !== "전체") {
       data = data.filter((item) => item.group === filter);

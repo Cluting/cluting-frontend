@@ -21,8 +21,13 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     data = data.filter(
       (item) =>
         item.evaluators &&
-        item.evaluators.some((evaluator) => evaluator.state === "평가 전")
+        item.evaluators.some(
+          (evaluator) =>
+            evaluator.state === "평가 전" && evaluator.name === "홍길동"
+        )
     );
+
+    //FIX: 현재 운영진의 이름이 홍길동이라 가정
 
     // 필터 처리
     if (filter !== "전체") {

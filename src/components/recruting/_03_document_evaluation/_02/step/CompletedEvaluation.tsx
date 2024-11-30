@@ -28,8 +28,25 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
 
   useEffect(() => {
-    const filteredAccepted = members.filter((item) => item.isPass === true);
-    const filteredRejected = members.filter((item) => item.isPass === false);
+    // 평가 완료 상태 데이터 필터링
+    const completedMembers = members.filter(
+      (item) =>
+        item.evaluators &&
+        item.evaluators.some(
+          (evaluator) =>
+            evaluator.state === "평가 완료" && evaluator.name === "홍길동"
+        )
+    );
+
+    //FIX: 현재 운영진의 이름이 홍길동이라 가정
+
+    // 합격자와 불합격자 분리
+    const filteredAccepted = completedMembers.filter(
+      (item) => item.isPass === true
+    );
+    const filteredRejected = completedMembers.filter(
+      (item) => item.isPass === false
+    );
 
     const sortData = (data: Applicant[]) =>
       sortType === "가나다순"

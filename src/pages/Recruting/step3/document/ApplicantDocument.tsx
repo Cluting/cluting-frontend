@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ApplicationQuestion from "../../../../components/recruting/document/ApplicationQuestion";
 import UserProfile from "../../../../components/recruting/document/UserProfile";
 import AdminEvaluationWindow from "../../../../components/recruting/_03_document_evaluation/evaluation/AdminEvaluationWindow";
@@ -17,6 +17,11 @@ export default function ApplicantDocument() {
 
   const { applicants } = useApplicantEvaluationStore();
   const applicant = applicants.find((item) => item.id === id);
+
+  // 페이지 로드 시 가장 위로 스크롤 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className=" flex flex-col items-center h-full pt-6 bg-gray-100 ">

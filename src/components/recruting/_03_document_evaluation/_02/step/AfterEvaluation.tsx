@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import WideMemberList from "../list/WideMemberList";
+import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 
 interface AfterEvaluationProps {
   filter: string;
@@ -10,141 +11,28 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  // 목업 데이터 -> API 연결 시 삭제
-  const mockData = [
-    {
-      id: "1",
-      state: "수정 가능",
-      name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "2",
-      state: "수정 가능",
-      name: "윤다인",
-      phone: "010-1234-1234",
-      group: "개발",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "3",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "4",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "5",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "6",
-      state: "열람 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "7",
-      state: "열람 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "8",
-      state: "열람 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "9",
-      state: "열람 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "10",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "11",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "12",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "13",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    },
-    {
-      id: "14",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 5,
-      all: 5
-    }
-  ];
+  const { applicants } = useApplicantEvaluationStore();
+  const [filteredData, setFilteredData] = useState<Applicant[]>([]);
 
-  const [filteredData, setFilteredData] = useState(mockData);
+  //평가 끝내기
+  const [evaluationProcess, setEvaluationProcess] = useState(false);
 
   useEffect(() => {
-    let data = [...mockData];
+    let data = [...applicants];
 
+    // 평가 완료 상태를 가진 항목 필터링
+    data = data.filter(
+      (item) =>
+        item.evaluators &&
+        item.evaluators.some(
+          (evaluator) =>
+            evaluator.state === "평가 완료" && evaluator.name === "홍길동"
+        )
+    );
+
+    //FIX: 현재 운영진의 이름이 홍길동이라 가정
+
+    console.log(data);
     // 필터 처리
     if (filter !== "전체") {
       data = data.filter((item) => item.group === filter);
@@ -159,9 +47,26 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   }, [filter, sortType]);
 
   return (
-    <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
-      <WideMemberList items={filteredData} />
-    </div>
+    <>
+      <div className="w-[1016px] flex flex-col items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
+        <WideMemberList items={filteredData} />
+      </div>
+      <div className="flex-center">
+        <button
+          type="submit"
+          onClick={() => {
+            setEvaluationProcess(true);
+          }}
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            evaluationProcess
+              ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
+              : "bg-main-100 text-white-100 " //완료하기
+          }  text-body flex-center hover:bg-main-500`}
+        >
+          {evaluationProcess ? "수정하기" : "평가 끝내기"}
+        </button>
+      </div>
+    </>
   );
 };
 

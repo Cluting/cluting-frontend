@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./button/Button";
+import { Link } from "react-router-dom";
 
 interface FitMemberListProps {
   items: Applicant[]; // Applicant 타입의 배열로 변경
@@ -34,63 +35,68 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
         {items.map((item) => {
           const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
           return (
-            <li
-              key={item.id}
-              className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
-            >
-              <div className="text-left w-28">
-                {state === "평가 중" && (
-                  <Button state={state} onClick={() => onDispute?.(item.id)} />
-                )}
-                {item.evaluators?.[0]?.state === "평가 완료" ? (
-                  groupAccess ? (
-                    <button className="text-caption3 text-gray-1000 bg-main-300 px-[15px] py-[4.5px] rounded-[38px]">
-                      수정 가능
+            <Link to={`/recruting/evaluation/${item.id}`} key={item.id}>
+              <li
+                key={item.id}
+                className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
+              >
+                <div className="text-left w-28">
+                  {state === "평가 중" && (
+                    <Button
+                      state={state}
+                      onClick={() => onDispute?.(item.id)}
+                    />
+                  )}
+                  {item.evaluators?.[0]?.state === "평가 완료" ? (
+                    groupAccess ? (
+                      <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
+                        수정 가능
+                      </button>
+                    ) : (
+                      <button className="text-caption3 text-gray-1000 bg-[#BAF3E4] px-3 py-2  rounded-[38px]">
+                        열람 가능
+                      </button>
+                    )
+                  ) : null}
+                </div>
+                <div className="flex flex-col text-left w-28">
+                  <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">
+                    {item.name}
+                  </div>
+                  <div className="text-xs font-Pretendard font-normal text-[#8b8fa4]">
+                    {item.phone}
+                  </div>
+                </div>
+
+                <div className="w-16 text-sm font-semibold text-left font-Pretendard text-gray-1100">
+                  {item.group}
+                </div>
+
+                <div className="w-32 text-sm font-medium text-left font-Pretendard">
+                  {item.isDecisionMode ? (
+                    <button
+                      className="px-3 py-2 rounded-md bg-[#5E2BE8] text-white"
+                      onClick={() => onDecision?.(item.id)}
+                    >
+                      합불 결정하기
                     </button>
+                  ) : item.isPass ? (
+                    <span
+                      className={
+                        item.isPass === true ? "text-[#007AFF]" : "text-red-100"
+                      }
+                    >
+                      {item.isPass === true ? "합격" : "불합격"}
+                    </span>
                   ) : (
-                    <button className="text-caption3 text-gray-1000 bg-[#BAF3E4] px-[15px] py-[4.5px] rounded-[38px]">
-                      열람 가능
-                    </button>
-                  )
-                ) : null}
-              </div>
-              <div className="flex flex-col text-left w-28">
-                <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">
-                  {item.name}
-                </div>
-                <div className="text-xs font-Pretendard font-normal text-[#8b8fa4]">
-                  {item.phone}
-                </div>
-              </div>
-
-              <div className="w-16 text-sm font-semibold text-left font-Pretendard text-gray-1100">
-                {item.group}
-              </div>
-
-              <div className="w-32 text-sm font-medium text-left font-Pretendard">
-                {item.isDecisionMode ? (
-                  <button
-                    className="px-3 py-2 rounded-md bg-[#5E2BE8] text-white"
-                    onClick={() => onDecision?.(item.id)}
-                  >
-                    합불 결정하기
-                  </button>
-                ) : item.isPass ? (
-                  <span
-                    className={
-                      item.isPass === true ? "text-[#007AFF]" : "text-red-100"
-                    }
-                  >
-                    {item.isPass === true ? "합격" : "불합격"}
-                  </span>
-                ) : (
-                  `${item.incomplete} / ${item.all}`
-                )}
-                {/* {item.isDisputed && (
+                    `${item.incomplete} / ${item.all}`
+                  )}
+                  {/* {item.isDisputed && (
                 <span className="ml-2 text-xs text-[#5E2BE8]">이의 반영</span>
               )} */}
-              </div>
-            </li>
+                </div>
+              </li>
+            </Link>
           );
         })}
       </ul>
