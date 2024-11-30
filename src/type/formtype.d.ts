@@ -211,22 +211,32 @@ declare interface CreateApplicationForm {
   multipleApplicationAllowed: boolean;
 }
 
-//3-1 group+admin 배열
-interface GroupDetails {
-  index: number;
-  name: string;
-  documentPass: number;
-  finalPass: number;
-  ideals: string[];
+declare interface Groups {
+  id: number;
+  groupName: string;
+  admins: string[];
 }
 
-declare interface GroupWithAdmin {
+//3-1 평가 기준 설정하기
+declare interface EvaluationCriteria {
   id: number;
-  groupName: GroupDetails; // groupName의 타입을 string에서 GroupDetails로 변경
-  admins: any[]; // 필요에 따라 적절한 타입으로 수정
+  criteria: string;
+  detailCriteria: string[];
+  score: number | undefined;
 }
+
+declare interface DocumentReviewForm {
+  groups: {
+    id: number;
+    groupName: string;
+    admins: string[];
+    criteria: EvaluationCriteria[];
+    maxScore: number | undefined;
+  }[];
+}
+
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
-interface InterviewNumValue {
+declare interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
 }

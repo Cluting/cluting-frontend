@@ -148,7 +148,7 @@ export default function LandingPage() {
             </motion.p>
           </motion.div>
         </div>
-        <Link to="/">
+        <Link to="/main">
           <button className=" py-[14px] px-[50px]  mt-[300px] mb-[140px] button-main-bg hover:bg-main-500 text-title1 rounded-[7px]">
             클루팅 바로가기
           </button>
