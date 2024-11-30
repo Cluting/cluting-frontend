@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
-import { ButtonState } from "../list/types/buttonTypes";
+import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 
 interface DuringEvaluationProps {
   filter: string; // 필터링 기준
@@ -9,7 +9,7 @@ interface DuringEvaluationProps {
 
 interface Member {
   id: string;
-  state: ButtonState;
+  state: string;
   name: string;
   phone: string;
   group: string;
@@ -22,102 +22,20 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  // 목업 데이터 -> API 연결 시 삭제
-  const mockData: Member[] = [
-    {
-      id: "1",
-      state: "평가 중",
-      name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
-      incomplete: 3,
-      all: 5,
-      result: "합격"
-    },
-    {
-      id: "2",
-      state: "이의 제기",
-      name: "윤다인",
-      phone: "010-1234-1234",
-      group: "개발",
-      incomplete: 3,
-      all: 5
-    },
-    {
-      id: "3",
-      state: "평가 중",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 3,
-      all: 5
-    },
-    {
-      id: "4",
-      state: "평가 중",
-      name: "김무무",
-      phone: "010-1234-1234",
-      group: "기획",
-      incomplete: 3,
-      all: 5,
-      result: "불합격"
-    }
-  ];
-
-  const mockData2: Member[] = [
-    {
-      id: "1",
-      state: "수정 가능",
-      name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
-      incomplete: 3,
-      all: 5
-    },
-    {
-      id: "2",
-      state: "이의 제기",
-      name: "윤다인",
-      phone: "010-1234-1234",
-      group: "개발",
-      incomplete: 3,
-      all: 5
-    },
-    {
-      id: "3",
-      state: "수정 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 3,
-      all: 5
-    },
-    {
-      id: "4",
-      state: "열람 가능",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      incomplete: 3,
-      all: 5
-    },
-    {
-      id: "5",
-      state: "열람 가능",
-      name: "김예은",
-      phone: "010-1234-1234",
-      group: "기획",
-      incomplete: 3,
-      all: 5
-    }
-  ];
-
-  const [filteredData1, setFilteredData1] = useState<Member[]>(mockData);
-  const [filteredData2, setFilteredData2] = useState<Member[]>(mockData2);
+  const { applicants } = useApplicantEvaluationStore();
+  const [filteredData, setFilteredData] = useState<Applicant[]>([]);
+  const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
 
   // 첫 번째 데이터
   useEffect(() => {
-    let data = [...mockData];
+    let data = [...applicants];
+
+    // 평가 중 상태를 가진 항목 필터링
+    data = data.filter(
+      (item) =>
+        item.evaluators &&
+        item.evaluators.some((evaluator) => evaluator.state === "평가 중")
+    );
 
     // 필터 처리
     if (filter !== "전체") {
@@ -129,12 +47,22 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
       data.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    setFilteredData1(data);
+    setFilteredData(data);
   }, [filter, sortType]);
 
   // 두 번째 데이터
   useEffect(() => {
-    let data = [...mockData2];
+    let data = [...applicants];
+
+    // 평가 중 상태를 가진 항목 필터링
+    data = data.filter(
+      (item) =>
+        item.evaluators &&
+        item.evaluators.some(
+          (evaluator) =>
+            evaluator.name === "홍길동" && evaluator.state === "평가 완료"
+        )
+    );
 
     // 필터 처리
     if (filter !== "전체") {
@@ -156,7 +84,7 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
           이어서 평가를 완료해 주세요.
         </h2>
         {/* FitMemberList에 필터링된 데이터 전달 */}
-        <FitMemberList items={filteredData1} />
+        <FitMemberList items={filteredData} />
       </div>
 
       <div className="flex flex-col gap-4 w-[476px]">

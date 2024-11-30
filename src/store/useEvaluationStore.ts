@@ -17,8 +17,9 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "평가자A",
+            name: "홍길동",
             state: "평가 전",
+            groupAccess: "개발",
             totalScore: 85,
             criteriaScores: [
               { id: 1, name: "기획력", score: 30 },
@@ -30,6 +31,7 @@ export const useApplicantEvaluationStore =
           {
             name: "평가자B",
             state: "평가 완료",
+            groupAccess: "개발",
             totalScore: 90,
             criteriaScores: [
               { id: 1, name: "기획력", score: 35 },
@@ -51,8 +53,9 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "평가자C",
+            name: "홍길동",
             state: "평가 전",
+            groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
               { id: 1, name: "기획력", score: 28 },
@@ -74,8 +77,9 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "평가자C",
+            name: "홍길동",
             state: "평가 중",
+            groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
               { id: 1, name: "기획력", score: 28 },
@@ -97,8 +101,9 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "평가자C",
+            name: "홍길동",
             state: "평가 중",
+            groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
               { id: 1, name: "기획력", score: 28 },
@@ -120,8 +125,81 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "평가자C",
+            name: "홍길동",
             state: "평가 중",
+            groupAccess: "개발",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
+      },
+      {
+        id: uuidv4(),
+        name: "양성원",
+        phone: "010-5255-5555",
+        group: "개발",
+        incomplete: 3,
+        all: 5,
+        isDisputed: false,
+        isPass: false,
+        evaluators: [
+          {
+            name: "홍길동",
+            state: "평가 완료",
+            groupAccess: "개발",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
+      },
+      {
+        id: uuidv4(),
+        name: "김동현",
+        phone: "010-5255-5555",
+        group: "개발",
+        incomplete: 3,
+        all: 5,
+        isDisputed: false,
+        isPass: false,
+        evaluators: [
+          {
+            name: "홍길동",
+            state: "평가 완료",
+            groupAccess: "개발",
+            totalScore: 78,
+            criteriaScores: [
+              { id: 1, name: "기획력", score: 28 },
+              { id: 2, name: "창의성", score: 20 },
+              { id: 3, name: "협업 능력", score: 30 }
+            ],
+            comment: "협업 능력은 좋으나, 기획력이 부족합니다."
+          }
+        ]
+      },
+      {
+        id: uuidv4(),
+        name: "이은재",
+        phone: "010-5255-5555",
+        group: "개발",
+        incomplete: 3,
+        all: 5,
+        isDisputed: false,
+        isPass: false,
+        evaluators: [
+          {
+            name: "홍길동",
+            state: "평가 완료",
+            groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
               { id: 1, name: "기획력", score: 28 },

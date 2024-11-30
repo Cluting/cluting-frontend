@@ -9,9 +9,10 @@ declare interface Applicant {
   group: string;
   incomplete: number; // 완료 운영진 수
   all: number; //담당 운영진 수
-  isDisputed?: boolean; //이의제기 여부
   isPass?: boolean; //합격 여부
   evaluators?: Evaluator[]; // 평가자에 대한 운영진 정보
+  isDecisionMode?: boolean; //합불 결정하기 버튼 여부
+  isDisputed?: boolean; //이의제기 여부
 }
 
 // 평가 기준
@@ -28,6 +29,7 @@ declare interface Evaluator {
   totalScore: number; // 총점
   criteriaScores: EvaluatorCriteriaScore[]; // 평가 기준별 점수
   comment: string; // 평가자 코멘트
+  groupAccess: string; // 권한을 가지고 있는 그룹명
 }
 // Zustand Store 타입
 declare interface ApplicantEvaluationStatusStore {

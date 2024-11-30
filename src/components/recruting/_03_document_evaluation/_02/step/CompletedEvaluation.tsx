@@ -1,93 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { ButtonState } from "../list/types/buttonTypes";
 import FitMemberList from "../list/FitMemberList";
+import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 interface CompletedEvaluationProps {
   filter: string;
   sortType: string;
 }
 
-interface Member {
-  id: string;
-  state: ButtonState;
-  name: string;
-  phone: string;
-  group: string;
-  result?: "합격" | "불합격";
-  isDecisionMode?: boolean;
-  isDisputed?: boolean;
-}
+// interface Member {
+//   id: string;
+//   state: ButtonState;
+//   name: string;
+//   phone: string;
+//   group: string;
+//   result?: "합격" | "불합격";
+//   isDecisionMode?: boolean;
+//   isDisputed?: boolean;
+// }
 
 const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const mockData: Member[] = [
-    {
-      id: "1",
-      state: "이의 제기중",
-      name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
-      result: "합격",
-      isDecisionMode: false,
-      isDisputed: false
-    },
-    {
-      id: "2",
-      state: "이의 제기",
-      name: "윤다인",
-      phone: "010-1234-1234",
-      group: "개발",
-      result: "합격",
-      isDecisionMode: false,
-      isDisputed: false
-    },
-    {
-      id: "10",
-      state: "이의 제기",
-      name: "최예은",
-      phone: "010-1234-1234",
-      group: "디자인",
-      result: "합격",
-      isDecisionMode: false,
-      isDisputed: false
-    },
-    {
-      id: "4",
-      state: "이의 제기",
-      name: "김무무",
-      phone: "010-1234-1234",
-      group: "기획",
-      result: "합격",
-      isDecisionMode: false,
-      isDisputed: false
-    },
-    {
-      id: "5",
-      state: "이의 제기중",
-      name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
-      result: "불합격",
-      isDecisionMode: false,
-      isDisputed: false
-    }
-  ];
+  const { applicants } = useApplicantEvaluationStore();
 
-  const [members, setMembers] = useState<Member[]>(mockData);
-  const [filteredData1, setFilteredData1] = useState<Member[]>([]);
-  const [filteredData2, setFilteredData2] = useState<Member[]>([]);
+  const [members, setMembers] = useState<Applicant[]>(applicants);
+  const [filteredData, setFilteredData] = useState<Applicant[]>([]);
+  const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
 
   useEffect(() => {
-    const filteredAccepted = members.filter((item) => item.result === "합격");
-    const filteredRejected = members.filter((item) => item.result === "불합격");
+    const filteredAccepted = members.filter((item) => item.isPass === true);
+    const filteredRejected = members.filter((item) => item.isPass === false);
 
-    const sortData = (data: Member[]) =>
+    const sortData = (data: Applicant[]) =>
       sortType === "가나다순"
         ? [...data].sort((a, b) => a.name.localeCompare(b.name))
         : data;
 
-    setFilteredData1(
+    setFilteredData(
       filter === "전체"
         ? sortData(filteredAccepted)
         : sortData(filteredAccepted.filter((item) => item.group === filter))
@@ -137,7 +86,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           결과를 수정하려면 이의를 제기해주세요.
         </h2>
         <FitMemberList
-          items={filteredData1}
+          items={filteredData}
           onDispute={handleDispute}
           onDecision={handleDecision}
         />
