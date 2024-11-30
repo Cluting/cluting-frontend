@@ -35,7 +35,7 @@ export default function DocumentReviewPrepContainer() {
       {
         id: 1,
         groupName: "공통",
-        admins: [],
+        admins: [], //여기에 admins를 다 넣어야 할 것 같긴한딩ㅇ.. How..?
         criteria: [
           {
             id: 1,
