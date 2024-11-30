@@ -18,7 +18,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "김은혜",
       phone: "010-1234-1234",
       group: "개발",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -27,7 +27,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "윤다인",
       phone: "010-1234-1234",
       group: "개발",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -36,7 +36,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -45,7 +45,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -54,7 +54,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -63,7 +63,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -72,7 +72,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -81,7 +81,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -90,7 +90,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -99,7 +99,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -108,7 +108,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -117,7 +117,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -126,7 +126,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     },
     {
@@ -135,7 +135,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       name: "최예은",
       phone: "010-1234-1234",
       group: "디자인",
-      incomplete: 3,
+      incomplete: 5,
       all: 5
     }
   ];
