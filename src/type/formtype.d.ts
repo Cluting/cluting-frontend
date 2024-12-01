@@ -127,34 +127,26 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//공통 인재상(배열로) Form
-declare interface CommonIdealForm {
-  commonIdeal: string;
-  commonIdeals: CommonIdeal[];
-}
-
-//공통 인재상
+//2-2 인재상
 declare interface CommonIdeal {
   id: number;
   text: string;
 }
 
-//그룹별 인재상 Form
-declare interface GroupIdealForm {
-  groupIdeals: {
-    [groupName: string]: string;
-  };
+declare interface CommonIdealForm {
+  commonIdeals: CommonIdeal[];
 }
 
-//그룹별 인재상
-declare interface GroupIdeals {
-  [groupName: string]: {
-    ideals: GroupIdeal[];
-    showInput: boolean;
-    value: string;
-    nextId: number;
-  };
+declare interface GroupIdeal {
+  id: number;
+  text: string;
+  groupName: string;
 }
+
+declare interface GroupIdealForm {
+  groupIdeals: GroupIdeal[];
+}
+
 //임원진 일정 Form
 declare interface AdminsScheduleFormData {
   scheduleData: TimeSlotAdmins;
