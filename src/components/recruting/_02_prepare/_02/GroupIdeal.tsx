@@ -1,6 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { useGroupStore } from "../../../../store/useStore";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 export default function GroupIdeal({
   onFormChange
@@ -8,6 +8,7 @@ export default function GroupIdeal({
   onFormChange?: (data: GroupIdealForm) => void;
 }) {
   const { group: groups } = useGroupStore();
+  const newInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -25,13 +26,27 @@ export default function GroupIdeal({
     mode: "onBlur"
   });
 
-  // 각 그룹별로 독립적인 useFieldArray 생성
   const { fields, append, remove } = useFieldArray({
     control,
     name: "groupIdeals"
   });
 
   const nextId = useRef<number>(2);
+  const lastAddedId = useRef<number | null>(null);
+
+  //새로 추가된 input에 focus 잡기
+  useEffect(() => {
+    if (lastAddedId.current !== null) {
+      const newFieldIndex = fields.findIndex(
+        (field) => field.id === lastAddedId.current
+      );
+      const inputs = document.querySelectorAll('input[name^="groupIdeals"]');
+      if (newFieldIndex !== -1 && inputs[newFieldIndex]) {
+        (inputs[newFieldIndex] as HTMLInputElement).focus();
+      }
+      lastAddedId.current = null;
+    }
+  }, [fields]);
 
   if (groups.length === 0) return null;
 
@@ -39,17 +54,10 @@ export default function GroupIdeal({
     console.log(data);
   });
 
-  // 특정 그룹의 마지막 인덱스 다음에 새 항목을 추가
   const addIdealToGroup = (groupName: string) => {
-    const lastGroupIndex = fields.reduce((lastIndex, field, index) => {
-      return field.groupName === groupName ? index : lastIndex;
-    }, -1);
-
-    append(
-      { id: nextId.current, text: "", groupName },
-      // 해당 그룹의 마지막 아이템 다음 위치에 추가
-      { focusIndex: lastGroupIndex + 1 }
-    );
+    const newId = nextId.current;
+    append({ id: newId, text: "", groupName });
+    lastAddedId.current = newId;
     nextId.current += 1;
   };
 
@@ -64,7 +72,6 @@ export default function GroupIdeal({
 
       <div className="mt-[16px] py-[32px] relative h-auto bg-white-100 rounded-[12px]">
         {groups.map((group) => {
-          // 현재 그룹에 해당하는 필드들만 필터링
           const groupFields = fields.filter(
             (field) => field.groupName === group.name
           );
