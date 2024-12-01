@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
 import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
+import { BUTTON_TEXT } from "../../../../../constants/recruting";
 interface CompletedEvaluationProps {
   filter: string;
   sortType: string;
@@ -87,31 +88,46 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   };
 
   return (
-    <div className="w-[1016px] flex items-start gap-[22px] p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
-      <div className="flex flex-col gap-4 w-[476px]">
-        <h2 className="text-left text-gray-1100 text-title3">
-          결과를 수정하려면 이의를 제기해주세요.
-        </h2>
-        <FitMemberList
-          items={filteredData}
-          state="평가 완료"
-          isEvaluationDone
-          onDispute={handleDispute}
-          onDecision={handleDecision}
-        />
-      </div>
+    <>
+      <div className="w-[1016px] flex items-start gap-[22px] p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
+        <div className="flex flex-col gap-4 w-[476px]">
+          <h2 className="text-left text-gray-1100 text-title3">
+            결과를 수정하려면 이의를 제기해주세요.
+          </h2>
+          <FitMemberList
+            items={filteredData}
+            state="평가 완료"
+            isEvaluationDone
+            onDispute={handleDispute}
+            onDecision={handleDecision}
+          />
+        </div>
 
-      <div className="flex flex-col gap-4 w-[476px]">
-        <h2 className="text-left text-gray-1100 text-title3 h-[24px]"></h2>
-        <FitMemberList
-          items={filteredData2}
-          state="평가 완료"
-          isEvaluationDone
-          onDispute={handleDispute}
-          onDecision={handleDecision}
-        />
+        <div className="flex flex-col gap-4 w-[476px]">
+          <h2 className="text-left text-gray-1100 text-title3 h-[24px]"></h2>
+          <FitMemberList
+            items={filteredData2}
+            state="평가 완료"
+            isEvaluationDone
+            onDispute={handleDispute}
+            onDecision={handleDecision}
+          />
+        </div>
       </div>
-    </div>
+      {/* <div className="flex justify-center">
+        <button
+          type="submit"
+          onClick={handleStepTwoSubmit}
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            steps[2].completed
+              ? "bg-main-400 border border-main-100 text-main-100"
+              : "bg-main-100 text-white-100"
+          } text-body flex-center hover:bg-main-500`}
+        >
+          {steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+        </button>
+      </div> */}
+    </>
   );
 };
 

@@ -101,7 +101,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     mode: "onBlur"
   });
 
-  // 핸들러 함수들
   const handleStepTwoSubmit = () => {
     if (!completedSteps[0]) {
       setStepCompleteModalOpen(true);
