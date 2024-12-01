@@ -5,7 +5,7 @@ import { ModalPortal } from "../../../common/ModalPortal";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import {
   useRecruitmentStepStore,
-  useStepFourStore
+  useStepSixStore
 } from "../../../../store/useStore";
 
 interface previewModalProps {
@@ -57,22 +57,22 @@ export default function PreviewModal({
       onClose();
     }
   };
-
-  // 닫고 4단계 완료 모달
-  const { setStepCompleted } = useStepFourStore();
+  // 닫고 6단계 완료 모달
+  const { setStepCompleted } = useStepSixStore();
   const { completeStep } = useRecruitmentStepStore();
 
   const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
   const handleConfirmStepComplete = () => {
-    completeStep(3); //전체 4단계 완료
-    setStepCompleted(2, true); //4-3 단계 완료
-    setStepCompleteModalOpen(false);
-    onClose();
+    completeStep(5); //전체 6단계 완료
+    setStepCompleted(1, true); //6-2 단계 완료
+    setStepCompleteModalOpen(false); // StepCompleteModal 닫기
+    onClose(); // PreviewModal 닫기
   };
+  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   return (
     <ModalPortal>
-      <div className="modal-style">
+      <div className=" modal-style">
         {/* 합격 전송 알림 */}
         {isSendPassModalVisible && (
           <div className="modal-animation absolute bg-white-100 top-[20px] left-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
@@ -88,7 +88,9 @@ export default function PreviewModal({
         )}
         <div className="modal-animation custom-shadow relative m-[30px] flex flex-col items-center bg-white-100 w-[1000px] h-[640px] rounded-[12px]">
           <div className=" flex items-center mt-[27px] mb-[22px]">
-            <h1 className="text-title3 ">메시지 전송하기</h1>
+            <h1 className="text-title3 ">
+              {isPreview ? "메시지 미리보기" : " 메시지 전송하기"}
+            </h1>
             <img
               onClick={handleClose}
               src="/assets/ic-close.svg"
@@ -155,7 +157,8 @@ export default function PreviewModal({
       {isStepCompleteModalOpen && (
         <StepCompleteModal
           onConfirm={handleConfirmStepComplete}
-          stepIndex={3}
+          onClose={handleCloseStepCompleteModal}
+          stepIndex={5}
         />
       )}
     </ModalPortal>
