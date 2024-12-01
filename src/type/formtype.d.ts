@@ -2,12 +2,13 @@
 declare interface SignupFormValue {
   name: string;
   email?: string;
-  address?: string;
+  location?: string;
   school: string;
-  studentStatus: string;
+  studentStatus: string; //FIX: IsOnLeaver, boolean 값임 수정 필요
   semester: string;
   major: string;
-  minors?: string;
+  doubleMajor?: string;
+  //FIX: 약관 동의 백 요청에 없음
   termsOfService: boolean; // 클루팅 이용약관 동의
   privacyPolicy: boolean; // 개인정보 수집 및 이용 동의
   marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
@@ -210,24 +211,40 @@ declare interface CreateApplicationForm {
   multipleApplicationAllowed: boolean;
 }
 
-//3-1 group+admin 배열
-interface GroupDetails {
-  index: number;
-  name: string;
-  documentPass: number;
-  finalPass: number;
-  ideals: string[];
+declare interface Groups {
+  id: number;
+  groupName: string;
+  admins: string[];
 }
 
-declare interface GroupWithAdmin {
+//3-1 평가 기준 설정하기
+declare interface EvaluationCriteria {
   id: number;
-  groupName: GroupDetails; // groupName의 타입을 string에서 GroupDetails로 변경
-  admins: any[]; // 필요에 따라 적절한 타입으로 수정
+  criteria: string;
+  detailCriteria: string[];
+  score: number | undefined;
 }
+
+declare interface DocumentReviewForm {
+  groups: {
+    id: number;
+    groupName: string;
+    admins: string[];
+    criteria: EvaluationCriteria[];
+    maxScore: number | undefined;
+  }[];
+}
+
 // 운영진 면접 일정 조정 Form - 면접관, 면접자
-interface InterviewNumValue {
+declare interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
+}
+
+// 4-3 합격 불합격 메시지
+declare interface ResultMessageForm {
+  pass: string;
+  fail: string;
 }
 
 //투두

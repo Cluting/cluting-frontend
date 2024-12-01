@@ -51,6 +51,64 @@ export const useStepTwoStore = create<Store>()((set) => ({
     }))
 }));
 
+// 4단계
+export const useStepFourStore = create<Store>()((set) => ({
+  currentStep: 0, // 초기 단계
+  steps: [
+    { id: 0, completed: false, name: "지원자 합불 결과" },
+    { id: 1, completed: false, name: "면접 일정 조절하기" },
+    { id: 2, completed: false, name: "합불 안내 메시지 작성하기" }
+  ],
+
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 현재 단계 설정
+
+  // 단계 완료 상태 변경 메서드
+  setStepCompleted: (stepId: number, completed: boolean) =>
+    set((state) => ({
+      steps: state.steps.map((step) =>
+        step.id === stepId ? { ...step, completed } : step
+      )
+    }))
+}));
+
+//5단계
+export const useStepFiveStore = create<Store>()((set) => ({
+  currentStep: 0, // 초기 단계
+  steps: [
+    { id: 0, completed: false, name: "면접 평가 준비하기" },
+    { id: 1, completed: false, name: "면접 평가하기" }
+  ],
+
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 현재 단계 설정
+
+  // 단계 완료 상태 변경 메서드
+  setStepCompleted: (stepId: number, completed: boolean) =>
+    set((state) => ({
+      steps: state.steps.map((step) =>
+        step.id === stepId ? { ...step, completed } : step
+      )
+    }))
+}));
+
+//6단계
+export const useStepSixStore = create<Store>()((set) => ({
+  currentStep: 0, // 초기 단계
+  steps: [
+    { id: 0, completed: false, name: "지원자 합불 결과" },
+    { id: 1, completed: false, name: "합불 안내 메시지 작성하기" }
+  ],
+
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 현재 단계 설정
+
+  // 단계 완료 상태 변경 메서드
+  setStepCompleted: (stepId: number, completed: boolean) =>
+    set((state) => ({
+      steps: state.steps.map((step) =>
+        step.id === stepId ? { ...step, completed } : step
+      )
+    }))
+}));
+
 // 그룹 설정
 export const useGroupStore = create<GroupStore>()((set) => ({
   group: [], // 초기 그룹 상태
