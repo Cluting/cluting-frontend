@@ -164,6 +164,13 @@ declare interface BaseQuestion {
   type: "서술형 질문" | "객관형 질문";
 }
 
+declare interface QuestionSection {
+  caution: string;
+  questions: Record<string, Question>;
+}
+
+declare type Question = DescriptiveQuestion | MultipleChoiceQuestion;
+
 declare interface DescriptiveQuestion extends BaseQuestion {
   type: "서술형 질문";
   hasWordLimit: boolean;
@@ -179,13 +186,6 @@ declare interface MultipleChoiceQuestion extends BaseQuestion {
     id: string;
     value: string;
   }>;
-}
-
-declare type Question = DescriptiveQuestion | MultipleChoiceQuestion;
-
-declare interface QuestionSection {
-  caution: string;
-  questions: Record<string, Question>;
 }
 
 declare interface CreateApplicationForm {
