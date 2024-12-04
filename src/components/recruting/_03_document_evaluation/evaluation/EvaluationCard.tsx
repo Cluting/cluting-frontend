@@ -8,10 +8,10 @@ export default function EvaluationCard() {
           </div>
           <p className="text-subheadline text-gray-1400">{"파트 적합성"}</p>
         </div>
-        <div className="flex-center gap-[3px] bg-white-100 border border-gray-200 rounded-[5px] px-[10px] py-[5px]">
-          <p className="text-caption3 text-gray-1100 ">{"95"}</p>
+        <button className="flex-center gap-[3px] bg-white-100 border border-gray-200 rounded-[5px] px-[10px] py-[5px] focus-within:border-main-100 focus-within:bg-gray-100 ">
+          <input className="text-caption3 text-gray-1100 w-[20px] focus:outline-none group focus:bg-gray-100" />
           <p className="text-caption2 text-gray-600">/100점</p>
-        </div>
+        </button>
       </div>
 
       <div className="bg-white-100 rounded-1 mb-2 py-[7px] px-[9px] text-[12px] text-left text-[#595959]">
