@@ -25,7 +25,9 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         item.incomplete === item.all &&
         item.evaluators.some(
           (evaluator) =>
-            evaluator.state === "평가 완료" && evaluator.name === "홍길동"
+            evaluator.evaluation.some(
+              (evalItem) => evalItem.state === "평가 완료"
+            ) && evaluator.name === "홍길동"
         )
     );
 

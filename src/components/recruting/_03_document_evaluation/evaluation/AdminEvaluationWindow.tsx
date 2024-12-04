@@ -1,11 +1,15 @@
 import { useRef, useState } from "react";
 import EvaluationCard from "./EvaluationCard";
 import AdminEvaluationList from "./AdminEvaluationList";
+import { useEvaluatorStore } from "../../../../store/useEvaluationStore";
+import { useForm } from "react-hook-form";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
   const [authority, setAuthority] = useState(true); //운영진 권한
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const { evaluator, updateEvaluationState } = useEvaluatorStore();
 
   const handleInput = () => {
     if (textareaRef.current) {
@@ -13,6 +17,12 @@ export default function AdminEvaluationWindow() {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 내용 높이에 맞게 설정
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<documentEvaluationForm>({ mode: "onSubmit" });
 
   return (
     <div className="absolute top-[90px] right-[-420px] z-50 w-[386px] p-[17px] bg-gray-50 rounded-lg border border-gray-200 custom-shadow">
@@ -50,7 +60,7 @@ export default function AdminEvaluationWindow() {
           <section className="w-full mt-10">
             <div className="flex justify-between">
               <div className="flex items-center">
-                <p className="text-title3">{"최예은"}</p>
+                <p className="text-title3">{evaluator.name}</p>
                 <p className="text-subheadline text-[#949494] ml-1">평가자</p>
               </div>
               <div className="flex-center gap-[3px] bg-gray-100 rounded-[5px] pl-[26px] py-[5px] pr-1">

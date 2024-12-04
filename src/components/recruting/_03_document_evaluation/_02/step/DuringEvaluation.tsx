@@ -34,7 +34,9 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
     data = data.filter(
       (item) =>
         item.evaluators &&
-        item.evaluators.some((evaluator) => evaluator.state === "평가 중")
+        item.evaluators.some((evaluator) =>
+          evaluator.evaluation.some((evalItem) => evalItem.state === "평가 중")
+        )
     );
 
     // 필터 처리
@@ -61,7 +63,9 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
         item.evaluators.some(
           (evaluator) =>
             evaluator.name === "홍길동" &&
-            evaluator.state === "평가 완료" &&
+            evaluator.evaluation.some(
+              (evalItem) => evalItem.state === "평가 완료"
+            ) &&
             item.isPass === false
         )
     );

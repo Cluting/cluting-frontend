@@ -50,7 +50,11 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                     />
                   )}
                   {!isEvaluationDone &&
-                  item.evaluators?.[0]?.state === "평가 완료" ? (
+                  item.evaluators?.some((evaluator) =>
+                    evaluator.evaluation.some(
+                      (evalItem) => evalItem.state === "평가 완료"
+                    )
+                  ) ? (
                     groupAccess ? (
                       <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
                         수정 가능
@@ -63,7 +67,11 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                   ) : null}
 
                   {isEvaluationDone &&
-                    item.evaluators?.[0]?.state === "평가 완료" && (
+                    item.evaluators?.some((evaluator) =>
+                      evaluator.evaluation.some(
+                        (evalItem) => evalItem.state === "평가 완료"
+                      )
+                    ) && (
                       <button className="text-caption2 text-main-100 bg-main-300 px-3 py-[6px] rounded-[7px] border border-main-400">
                         이의 제기
                       </button>

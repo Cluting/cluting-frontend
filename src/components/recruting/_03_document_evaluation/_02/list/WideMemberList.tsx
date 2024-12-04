@@ -34,7 +34,8 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
       </ul>
       <ul className="flex flex-col overflow-y-auto">
         {items.map((item) => {
-          const evaluatorState = item.evaluators?.[0]?.state || "평가 전";
+          const evaluatorState =
+            item.evaluators?.[0]?.evaluation?.[0]?.state || "평가 전";
           const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
           return (
             <Link to={`/recruting/evaluation/${item.id}`} key={item.id}>

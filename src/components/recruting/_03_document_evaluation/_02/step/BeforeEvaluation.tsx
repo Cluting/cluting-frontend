@@ -23,7 +23,9 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
         item.evaluators &&
         item.evaluators.some(
           (evaluator) =>
-            evaluator.state === "평가 전" && evaluator.name === "홍길동"
+            evaluator.evaluation.some(
+              (evalItem) => evalItem.state === "평가 전"
+            ) && evaluator.name === "홍길동"
         )
     );
 
