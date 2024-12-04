@@ -4,15 +4,26 @@ import TopSection from "../../../components/recruting/_03_document_evaluation/co
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import { useStepTwoStore } from "../../../store/useStore";
 import DocumentReviewContainer from "../../../components/recruting/_03_document_evaluation/_02/DocumentReviewContainer";
+type StepComponent =
+  | typeof DocumentReviewPrepContainer
+  | typeof DocumentReviewContainer;
 
-const stepComponents = [
+const stepComponents: readonly StepComponent[] = [
   DocumentReviewPrepContainer,
   DocumentReviewContainer
 ] as const;
 
 export default function DocumentEvaluation() {
   const { currentStep } = useStepTwoStore();
+
+  // currentStep 유효성 확인
+  if (currentStep < 0 || currentStep >= stepComponents.length) {
+    console.error(`Invalid currentStep: ${currentStep}`);
+    return <div>Error: Invalid step</div>;
+  }
+
   const CurrentStepComponent = stepComponents[currentStep];
+
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
