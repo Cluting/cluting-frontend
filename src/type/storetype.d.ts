@@ -25,27 +25,6 @@ declare interface RecruitmentStore {
   resetStepCompletion: (step: number) => void; // 특정 단계의 완료 여부를 취소하는 함수
 }
 
-declare interface GroupStore {
-  group: {
-    index: number;
-    name: string;
-    documentPass: number;
-    finalPass: number;
-    ideals: string[]; // 인재상 추가
-  }[];
-  setGroup: (
-    group: {
-      index: number;
-      name: string;
-      documentPass: number;
-      finalPass: number;
-      ideals: string[]; // 인재상 추가
-    }[]
-  ) => void;
-  addGroup: (newGroup: string) => void;
-  removeGroup: (groupToRemove: string) => void;
-}
-
 declare interface InterviewFormatStore {
   interviewer: number;
   interviewee: number;
