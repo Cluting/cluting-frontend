@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { DEFAULT_STEPS } from "../../../constants/recruting";
+import { ALL_ADMINS, DEFAULT_STEPS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 import { PrepareStepRolesFormValues } from "../../../type/type";
 
@@ -91,6 +91,14 @@ export default function PrepareStepRoles() {
     }
   };
 
+  function getAdminNameById(adminId: string): string {
+    if (adminId === "all-admins") {
+      return "모든 운영진"; // 특별 처리
+    }
+    const admin = ALL_ADMINS.find((a) => a.id === adminId);
+    return admin ? admin.name : "알 수 없는 사용자";
+  }
+
   //1단계 완료 여부
   const { completedSteps } = useRecruitmentStepStore();
 
@@ -151,17 +159,20 @@ export default function PrepareStepRoles() {
                     <div className="mt-[29px]">
                       {/* 운영진 목록 */}
                       <div>
-                        {step.admins?.map((admin) => (
+                        {step.admins?.map((adminId) => (
                           <div
-                            key={admin}
+                            key={adminId}
                             className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
                           >
-                            <span className="text-gray-800">{admin}</span>
+                            <span className="text-gray-800">
+                              {" "}
+                              {getAdminNameById(adminId)}
+                            </span>
                             {!step.isFixed && (
                               <img
                                 src="/assets/ic-minusCircle.svg"
                                 alt="운영진 삭제 버튼"
-                                onClick={() => removeAdmin(step.id, admin)}
+                                onClick={() => removeAdmin(step.id, adminId)}
                                 className="absolute right-[19px] cursor-pointer"
                               />
                             )}
