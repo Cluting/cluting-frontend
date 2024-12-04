@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  useGroupStore,
-  useRecruitmentStepStore
-} from "../../../../store/useStore";
+import { useRecruitmentStepStore } from "../../../../store/useStore";
+import { useGroupStore } from "../../../../store/useGroupStore";
 
 // 1 - 계획하기 : 지원자 그룹 짓기
 export default function GroupCreate() {

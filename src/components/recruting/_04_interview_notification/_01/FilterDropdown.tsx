@@ -1,4 +1,4 @@
-import { useGroupStore } from "../../../../store/useStore";
+import { useGroupStore } from "../../../../store/useGroupStore";
 
 interface filterDropdownProps {
   onSelectFilter: (selectedFilter: string) => void;

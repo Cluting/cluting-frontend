@@ -3,7 +3,6 @@ import { ReactElement, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import {
-  useGroupStore,
   useRecruitmentStepStore,
   useStepTwoStore
 } from "../../../../store/useStore";
@@ -11,6 +10,7 @@ import { BUTTON_TEXT } from "../../../../constants/recruting";
 import ApplicantProfile from "./ApplicantProfile";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import QuestionItem from "./QuestionItem"; // 이 부분 추가
+import { useGroupStore } from "../../../../store/useGroupStore";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();

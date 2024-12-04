@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { useGroupStore } from "../../../../store/useStore";
+import { useGroupStore } from "../../../../store/useGroupStore";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";

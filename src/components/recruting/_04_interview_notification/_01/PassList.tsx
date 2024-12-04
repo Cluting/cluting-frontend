@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Applicant } from "../../../../type/type";
-import { useGroupStore } from "../../../../store/useStore";
+import { useGroupStore } from "../../../../store/useGroupStore";
 
 interface passListProps {
   filter: string;
