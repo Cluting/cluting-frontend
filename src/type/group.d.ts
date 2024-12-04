@@ -1,6 +1,6 @@
 //그룹
 declare interface Group {
-  index: number; // 고유 ID
+  id: number; // 고유 ID
   name: string;
   documentPass: number; //서류 합격 인원
   finalPass: number; //최종 합격 인원
@@ -29,7 +29,7 @@ declare interface Criteria {
 // Zustand useGroupStore 타입
 declare interface GroupStore {
   group: {
-    index: number;
+    id: number;
     name: string;
     documentPass: number;
     finalPass: number;
@@ -37,7 +37,7 @@ declare interface GroupStore {
   }[];
   setGroup: (
     group: {
-      index: number;
+      id: number;
       name: string;
       documentPass: number;
       finalPass: number;

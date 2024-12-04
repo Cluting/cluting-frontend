@@ -6,7 +6,7 @@ export const useGroupStore = create<GroupStore>()((set) => ({
 
   setGroup: (
     group: {
-      index: number;
+      id: number;
       name: string;
       documentPass: number;
       finalPass: number;
@@ -19,7 +19,7 @@ export const useGroupStore = create<GroupStore>()((set) => ({
       group: [
         ...state.group,
         {
-          index: state.group.length,
+          id: state.group.length,
           name: newGroup,
           documentPass: 0,
           finalPass: 0,
