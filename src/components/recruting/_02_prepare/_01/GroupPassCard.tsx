@@ -1,5 +1,6 @@
 import { Control, RegisterOptions } from "react-hook-form";
 import NumberSpinner from "./NumberSpinner";
+import { GroupPassCardProps } from "../../../../type/type";
 
 export default function GroupPassCard({
   control,

@@ -3,6 +3,7 @@ import AddAdminDropdown from "./AddAdminDropdown";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { DEFAULT_STEPS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
+import { PrepareStepRolesFormValues } from "../../../type/type";
 
 export default function PrepareStepRoles() {
   const [dropdown, setDropdown] = useState(false);
@@ -25,7 +26,7 @@ export default function PrepareStepRoles() {
   // Form validation function
   const validateSteps = (value: Step[]) => {
     const hasEmptyAdmins = value.some(
-      (step) => !step.isFixed && step.admins.length === 0
+      (step) => !step.isFixed && step.admins?.length === 0
     );
     return !hasEmptyAdmins || "필수 입력 사항입니다";
   };
@@ -46,13 +47,13 @@ export default function PrepareStepRoles() {
     console.log("Form submitted with data:", data.steps);
   };
 
-  const handleAdminSelect = (admin: string) => {
+  const handleAdminSelect = (adminId: string) => {
     setSteps((prevSteps) =>
       prevSteps.map((step) => {
-        if (step.id === currentStepId && !step.admins.includes(admin)) {
+        if (step.id === currentStepId && !step.admins?.includes(adminId)) {
           return {
             ...step,
-            admins: [...step.admins, admin]
+            admins: [...(step.admins || []), adminId]
           };
         }
         return step;
@@ -61,13 +62,13 @@ export default function PrepareStepRoles() {
     setDropdown(false);
   };
 
-  const removeAdmin = (stepId: number, adminToRemove: string) => {
+  const removeAdmin = (stepId: number, adminToRemoveId: string) => {
     setSteps((prevSteps) =>
       prevSteps.map((step) => {
         if (step.id === stepId) {
           return {
             ...step,
-            admins: step.admins.filter((admin) => admin !== adminToRemove)
+            admins: step.admins?.filter((admin) => admin !== adminToRemoveId)
           };
         }
         return step;
@@ -150,7 +151,7 @@ export default function PrepareStepRoles() {
                     <div className="mt-[29px]">
                       {/* 운영진 목록 */}
                       <div>
-                        {step.admins.map((admin) => (
+                        {step.admins?.map((admin) => (
                           <div
                             key={admin}
                             className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
@@ -181,7 +182,7 @@ export default function PrepareStepRoles() {
                           {dropdown && currentStepId === step.id && (
                             <AddAdminDropdown
                               onSelect={handleAdminSelect}
-                              currentAdmins={step.admins}
+                              currentAdmins={step.admins || []} // undefined 방지
                             />
                           )}
                         </button>

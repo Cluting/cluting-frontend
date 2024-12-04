@@ -5,6 +5,7 @@ declare interface Group {
   documentPass: number; //서류 합격 인원
   finalPass: number; //최종 합격 인원
   numRecruit: number; //지원자 수
+  admins?: string[]; //담당 운영진
 }
 
 //그룹 인재상
@@ -30,11 +31,12 @@ declare interface Criteria {
 declare interface GroupStore {
   group: {
     id: number;
-    adminId?: string[]; // 해당 그룹의 운영진 ID
     name: string;
     documentPass: number;
     finalPass: number;
     ideals: string[]; // 인재상 추가
+    documentEvaluationAdmins?: Admin[]; //서류 평가 운영진 ID
+    interviewEvaluationAdmins?: Admin[]; //면접 평가 운영진 ID
   }[];
   setGroup: (
     group: {
@@ -43,6 +45,8 @@ declare interface GroupStore {
       documentPass: number;
       finalPass: number;
       ideals: string[]; // 인재상 추가
+      documentEvaluationAdmins?: Admin[]; //서류 평가 운영진 ID
+      interviewEvaluationAdmins?: Admin[]; //면접 평가 운영진 ID
     }[]
   ) => void;
   addGroup: (newGroup: string) => void;

@@ -33,14 +33,6 @@ declare interface GroupPassCountProps {
   rules?: RegisterOptions;
 }
 
-//단계 설정
-declare interface Step {
-  id: number;
-  name: string;
-  admins: string[];
-  isFixed?: boolean;
-}
-
 declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }

@@ -106,16 +106,50 @@ export const TermsAgreementdata: Term[] = [
 ];
 
 //하드코딩 임시 데이터
-export const ALL_ADMINS = [
-  "최예은",
-  "박시현",
-  "김동현",
-  "윤다인",
-  "곽서연",
-  "양성원",
-  "이은재"
+export const ALL_ADMINS: Admin[] = [
+  {
+    id: "1",
+    name: "최예은",
+    email: "choi@example.com",
+    groupId: undefined
+  },
+  {
+    id: "2",
+    name: "박시현",
+    email: "park@example.com",
+    groupId: undefined
+  },
+  {
+    id: "3",
+    name: "김동현",
+    email: "kim@example.com",
+    groupId: undefined
+  },
+  {
+    id: "4",
+    name: "윤다인",
+    email: "yoon@example.com",
+    groupId: undefined
+  },
+  {
+    id: "5",
+    name: "곽서연",
+    email: "kwak@example.com",
+    groupId: undefined
+  },
+  {
+    id: "6",
+    name: "양성원",
+    email: "yang@example.com",
+    groupId: undefined
+  },
+  {
+    id: "7",
+    name: "이은재",
+    email: "lee@example.com",
+    groupId: undefined
+  }
 ];
-
 export const DEFAULT_STEPS: Step[] = [
   { id: 1, name: "합격 인원 설정하기", completed: false, admins: [] },
   { id: 2, name: "인재상 구축하기", completed: false, admins: [] },
@@ -123,8 +157,8 @@ export const DEFAULT_STEPS: Step[] = [
   {
     id: 4,
     name: "운영진 면접 일정 조율하기",
-    admins: ["모든 운영진"],
     completed: false,
+    admins: ["all-admins"],
     isFixed: true
   },
   { id: 5, name: "지원서 폼 제작", completed: false, admins: [] }

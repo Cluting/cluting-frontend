@@ -1,6 +1,7 @@
 import GroupPassCard from "./GroupPassCard";
 import { useStepTwoStore } from "../../../../store/useStore";
 import { useGroupStore } from "../../../../store/useGroupStore";
+import { GroupPassCountProps } from "../../../../type/type";
 
 export default function GroupPassCount({
   control,

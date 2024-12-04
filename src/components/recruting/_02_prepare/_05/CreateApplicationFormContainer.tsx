@@ -1,5 +1,5 @@
 //2-5 지원서 폼 제작 및 공고 올리기 (컨테이너)
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -11,6 +11,7 @@ import ApplicantProfile from "./ApplicantProfile";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import QuestionItem from "./QuestionItem"; // 이 부분 추가
 import { useGroupStore } from "../../../../store/useGroupStore";
+import { Question, QuestionSection } from "../../../../type/type";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();

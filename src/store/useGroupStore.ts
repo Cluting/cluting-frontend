@@ -11,6 +11,8 @@ export const useGroupStore = create<GroupStore>()((set) => ({
       documentPass: number;
       finalPass: number;
       ideals: string[]; // 인재상 추가
+      documentEvaluationAdmins?: Admin[]; //서류 평가 운영진 ID
+      interviewEvaluationAdmins?: Admin[]; //면접 평가 운영진 ID
     }[]
   ) => set({ group }),
 

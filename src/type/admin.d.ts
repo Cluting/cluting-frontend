@@ -3,7 +3,7 @@ declare interface Admin {
   id: string; //운영진 id
   groupId?: string;
   name: string;
-  email: string;
+  email?: string;
 }
 
 //운영진 일정 Form

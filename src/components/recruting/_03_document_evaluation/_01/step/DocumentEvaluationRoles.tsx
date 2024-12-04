@@ -1,14 +1,66 @@
 // 서류 평가 역할 설정
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useGroupStore } from "../../../../../store/useGroupStore";
 import AddAdminDropdown from "../AddAdminDropdown";
-import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
+import { ReactComponent as IdealIcon } from "../../../../../assets/ic-plus.svg";
+import { useForm } from "react-hook-form";
 
 export default function DocumentEvaluationRoles() {
   const { group } = useGroupStore();
   const [dropdown, setDropdown] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
+  const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
+
+  const {
+    watch,
+    setValue,
+    formState: { errors }
+  } = useForm<DocumentReviewForm>({
+    mode: "onChange"
+  });
+
+  const groups = watch("groups");
+
+  const addGroupForm = useCallback(() => {
+    setValue("groups", [
+      ...groups,
+      {
+        id: groups.length + 1,
+        groupName: "",
+        admins: [],
+        criteria: [
+          {
+            id: 1,
+            criteria: "",
+            detailCriteria: [],
+            score: undefined
+          }
+        ],
+        maxScore: undefined
+      }
+    ]);
+    setSelectedGroupId(groups.length + 1);
+  }, [groups, setValue]);
+
+  const removeAdmin = useCallback(
+    (groupId: number, adminToRemove: string) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      setValue(
+        `groups.${groupIndex}.admins`,
+        groups[groupIndex].admins.filter((admin) => admin !== adminToRemove)
+      );
+    },
+    [groups, setValue]
+  );
+
+  const handleGroupNameChange = useCallback(
+    (groupId: number, newName: string) => {
+      const groupIndex = groups.findIndex((g) => g.id === groupId);
+      setValue(`groups.${groupIndex}.groupName`, newName);
+    },
+    [groups, setValue]
+  );
 
   const handleAdminSelect = useCallback(
     (admin: string, groupId: number) => {
@@ -69,7 +121,7 @@ export default function DocumentEvaluationRoles() {
                       </div>
                       <p>운영자 수</p>
                       <div className="flex-center bg-gray-100 h-[22px] px-[6.74px] py-[3.52px] rounded-[7.35px]">
-                        {groupItem.admins?.length || 0}명
+                        {groupItem.documentEvaluationAdmins?.length || 0}명
                       </div>
                     </div>
                     <input
@@ -82,16 +134,16 @@ export default function DocumentEvaluationRoles() {
                       className="flex-center w-full h-[46px] mt-[7px] py-[12.5px] text-center text-main-100 rounded-[7px] bg-gray-50 border border-gray-200 text-callout outline-none focus:border-main-100"
                     />
                     <div className="mt-4">
-                      {groupItem.admins.map((admin) => (
+                      {groupItem.documentEvaluationAdmins?.map((admin) => (
                         <div
-                          key={admin}
+                          key={admin.id}
                           className="relative flex-center w-full h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
                         >
-                          <span className="text-gray-800">{admin}</span>
+                          <span className="text-gray-800">{admin.name}</span>
                           <img
                             src="/assets/ic-minusCircle.svg"
                             alt="운영진 삭제 버튼"
-                            onClick={() => removeAdmin(groupItem.id, admin)}
+                            onClick={() => removeAdmin(groupItem.id, admin.id)}
                             className="absolute right-[19px] cursor-pointer"
                           />
                         </div>
@@ -112,7 +164,9 @@ export default function DocumentEvaluationRoles() {
                           onSelect={(admin) =>
                             handleAdminSelect(admin, groupItem.id)
                           }
-                          currentAdmins={groupItem.admins}
+                          currentAdmins={
+                            groupItem.documentEvaluationAdmins || []
+                          }
                         />
                       )}
                     </button>

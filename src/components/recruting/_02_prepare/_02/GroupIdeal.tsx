@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useGroupStore } from "../../../../store/useGroupStore";
+import { GroupIdeals } from "../../../../type/type";
 
 export default function GroupIdeal() {
   const { group: groups } = useGroupStore();

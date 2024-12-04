@@ -3,8 +3,25 @@ import {
   UseFormRegister,
   FieldErrors,
   Path,
-  UseFormSetError
+  UseFormSetError,
+  FieldError
 } from "react-hook-form";
+import { MultipleChoiceQuestion, Question } from "../../../../type/type";
+
+interface QuestionError {
+  question?: FieldError;
+}
+
+interface SectionError {
+  questions?: Record<string, QuestionError>;
+}
+
+export interface ErrorType {
+  commonSection?: {
+    questions?: Record<string, QuestionError>;
+  };
+  groupSections?: Record<string, SectionError>;
+}
 
 //fix:이걸 formtype.d.ts 파일로 빼면 에러가 남.. why!!!
 interface QuestionItemProps {
@@ -38,14 +55,16 @@ export default function QuestionItem({
   onAddOption,
   onRemoveOption,
   register,
-  registerPath,
   errors,
+  registerPath,
   isSubmitted,
   setError,
   totalQuestions
 }: QuestionItemProps): ReactElement {
   const [newOption, setNewOption] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const typedErrors = errors as unknown as ErrorType;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,15 +83,16 @@ export default function QuestionItem({
       <div
         className={`w-full h-auto px-[21px] pt-[20px] pb-[13px] bg-gray-100 rounded-[12px] border ${
           totalQuestions === 1 &&
-          errors &&
-          ((section === "common" &&
-            errors.commonSection?.questions?.[question.id]?.question
-              ?.message) ||
-            (section !== "common" &&
-              errors.groupSections?.[section]?.questions?.[question.id]
-                ?.question?.message))
+          typedErrors &&
+          ((
+            section === "common"
+              ? typedErrors.commonSection?.questions?.[question.id]?.question
+                  ?.message
+              : typedErrors.groupSections?.[section]?.questions?.[question.id]
+                  ?.question?.message
+          )
             ? "border-red-100"
-            : "border-gray-300"
+            : "border-gray-300")
         }`}
       >
         <div className="flex justify-between">
@@ -262,20 +282,13 @@ export default function QuestionItem({
       {/*질문 하나일 때 에러 메시지 */}
       {/*//fix: 근데 질문 하나 일 때만 보고 질문 안에 값이 있는지 여부를 못 봄.. 수정해야해*/}
       {totalQuestions === 1 &&
-        errors &&
-        ((section === "common" &&
-          errors.commonSection?.questions?.[question.id]?.question?.message) ||
-          (section !== "common" &&
-            errors.groupSections?.[section]?.questions?.[question.id]?.question
-              ?.message)) && (
-          <p className="text-state-error mt-2">
-            {section === "common"
-              ? errors.commonSection?.questions?.[question.id]?.question
-                  ?.message
-              : errors.groupSections?.[section]?.questions?.[question.id]
-                  ?.question?.message}
-          </p>
-        )}
+        typedErrors &&
+        ((section === "common"
+          ? typedErrors.commonSection?.questions?.[question.id]?.question
+              ?.message
+          : typedErrors.groupSections?.[section]?.questions?.[question.id]
+              ?.question?.message) ||
+          "기본 메시지")}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { PopularClubProps } from "../../../type/type";
+
 export default function PopularClub({
   logoSrc,
   logoAlt,

@@ -1,54 +1,16 @@
 import { useCallback, useMemo, useState } from "react";
 import { useGroupStore } from "../../../../store/useGroupStore";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 import TotalApplicantsCounter from "./step/TotalApplicantsCounter";
 import PassApplicantCounter from "./step/PassApplicantCounter";
 import DocumentEvaluationRoles from "./step/DocumentEvaluationRoles";
+import { useForm } from "react-hook-form";
 
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
-  const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
   const [newDetailCriteria, setNewDetailCriteria] = useState<string>("");
-
-  const defaultGroups = useMemo(() => {
-    const existingGroups =
-      group.length > 0
-        ? group.map((g, index) => ({
-            id: index + 2,
-            groupName: g.name,
-            admins: [],
-            criteria: [
-              {
-                id: 1,
-                criteria: "",
-                detailCriteria: [],
-                score: undefined
-              }
-            ],
-            maxScore: undefined
-          }))
-        : [];
-
-    return [
-      {
-        id: 1,
-        groupName: "공통",
-        admins: [],
-        criteria: [
-          {
-            id: 1,
-            criteria: "",
-            detailCriteria: [],
-            score: undefined
-          }
-        ],
-        maxScore: undefined
-      },
-      ...existingGroups
-    ];
-  }, [group]);
+  const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
 
   const {
     register,
@@ -57,9 +19,6 @@ export default function DocumentReviewPrepContainer() {
     setValue,
     formState: { errors }
   } = useForm<DocumentReviewForm>({
-    defaultValues: {
-      groups: defaultGroups
-    },
     mode: "onChange"
   });
 
@@ -69,27 +28,6 @@ export default function DocumentReviewPrepContainer() {
     () => groups.findIndex((g) => g.id === selectedGroupId),
     [groups, selectedGroupId]
   );
-
-  const addGroupForm = useCallback(() => {
-    setValue("groups", [
-      ...groups,
-      {
-        id: groups.length + 1,
-        groupName: "",
-        admins: [],
-        criteria: [
-          {
-            id: 1,
-            criteria: "",
-            detailCriteria: [],
-            score: undefined
-          }
-        ],
-        maxScore: undefined
-      }
-    ]);
-    setSelectedGroupId(groups.length + 1);
-  }, [groups, setValue]);
 
   const addCriteria = useCallback(
     (groupId: number) => {
@@ -165,25 +103,6 @@ export default function DocumentReviewPrepContainer() {
         `groups.${groupIndex}.criteria.${criteriaIndex}.detailCriteria`,
         currentCriteria.detailCriteria.filter((_, i) => i !== detailIndex)
       );
-    },
-    [groups, setValue]
-  );
-
-  const removeAdmin = useCallback(
-    (groupId: number, adminToRemove: string) => {
-      const groupIndex = groups.findIndex((g) => g.id === groupId);
-      setValue(
-        `groups.${groupIndex}.admins`,
-        groups[groupIndex].admins.filter((admin) => admin !== adminToRemove)
-      );
-    },
-    [groups, setValue]
-  );
-
-  const handleGroupNameChange = useCallback(
-    (groupId: number, newName: string) => {
-      const groupIndex = groups.findIndex((g) => g.id === groupId);
-      setValue(`groups.${groupIndex}.groupName`, newName);
     },
     [groups, setValue]
   );
