@@ -1,4 +1,11 @@
+import InterviewQuestionCountSection from "./sections/InterviewQuestionCountSection";
+
 // 5-2 면접 평가 준비하기(컨테이너)
 export default function PrepareInterviewEvaluationContainer() {
-  return <div>면접 평가 준비하기 (컨테이너)</div>;
+  return (
+    // Conflict :: 다인님 부분과 컨플릭트 날 예정
+    <>
+      <InterviewQuestionCountSection />
+    </>
+  );
 }
