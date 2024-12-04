@@ -4,7 +4,7 @@ interface AddAdminProps {
   isDropdown?: boolean;
 }
 
-const dummyAdmins: AdminUser[] = [
+const dummyAdmins: Admin[] = [
   { id: "1", name: "홍준서", email: "12345678@gmail.com" },
   { id: "2", name: "홍준서", email: "12345678@gmail.com" },
   { id: "3", name: "홍준서", email: "12345678@gmail.com" },

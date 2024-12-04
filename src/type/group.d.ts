@@ -30,6 +30,7 @@ declare interface Criteria {
 declare interface GroupStore {
   group: {
     id: number;
+    adminId?: string[]; // 해당 그룹의 운영진 ID
     name: string;
     documentPass: number;
     finalPass: number;

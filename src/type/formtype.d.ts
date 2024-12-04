@@ -62,17 +62,6 @@ declare interface Term {
   status: string;
 }
 
-//메인 홈 인기 있는 동아리
-declare interface PopularClubProps {
-  logoSrc: string;
-  logoAlt: string;
-  mainImageSrc: string;
-  clubType: string;
-  clubTitleFirst: string;
-  clubTitleSecond: string;
-  tags: string[];
-}
-
 //메인 홈 동아리 리스트
 declare interface ClubCardProps {
   dDay: number;
@@ -94,49 +83,10 @@ declare interface SetAcceptanceCountFormData {
   }[];
 }
 
-declare interface GroupPassCardProps {
-  control: Control<any>;
-  groupIndex: number;
-  groupName: string;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
-declare interface GroupPassCountProps {
-  control: Control<any>;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
-// 운영자 Type
-declare interface AdminUser {
-  id: string;
-  name: string;
-  email: string;
-}
-
-//단계 설정
-declare interface Step {
-  id: number;
-  name: string;
-  admins: string[];
-  isFixed?: boolean;
-}
-
-declare interface PrepareStepRolesFormValues {
-  steps: Step[];
-}
-
-//공통 인재상(배열로) Form
+//공통 인재상 Form
 declare interface CommonIdealForm {
   commonIdeal: string;
   commonIdeals: CommonIdeal[];
-}
-
-//공통 인재상
-declare interface CommonIdeal {
-  id: number;
-  text: string;
 }
 
 //그룹별 인재상 Form
@@ -144,56 +94,6 @@ declare interface GroupIdealForm {
   groupIdeals: {
     [groupName: string]: string;
   };
-}
-
-//그룹별 인재상
-declare interface GroupIdeals {
-  [groupName: string]: {
-    ideals: GroupIdeal[];
-    showInput: boolean;
-    value: string;
-    nextId: number;
-  };
-}
-//임원진 일정 Form
-declare interface AdminsScheduleFormData {
-  scheduleData: TimeSlotAdmins;
-}
-
-//임원진 일정
-declare interface TimeSlotAdmins {
-  [timeSlot: string]: string[];
-}
-
-//2-5
-declare interface BaseQuestion {
-  id: string;
-  question: string;
-  type: "서술형 질문" | "객관형 질문";
-}
-
-declare interface DescriptiveQuestion extends BaseQuestion {
-  type: "서술형 질문";
-  hasWordLimit: boolean;
-  wordLimit: number;
-  options: [];
-}
-
-declare interface MultipleChoiceQuestion extends BaseQuestion {
-  type: "객관형 질문";
-  hasWordLimit?: never; // 객관형은 글자수 제한 사용 안 함
-  wordLimit?: never;
-  options: Array<{
-    id: string;
-    value: string;
-  }>;
-}
-
-declare type Question = DescriptiveQuestion | MultipleChoiceQuestion;
-
-declare interface QuestionSection {
-  caution: string;
-  questions: Record<string, Question>;
 }
 
 declare interface CreateApplicationForm {
@@ -209,12 +109,6 @@ declare interface CreateApplicationForm {
     requirements?: string;
   };
   multipleApplicationAllowed: boolean;
-}
-
-declare interface Groups {
-  id: number;
-  groupName: string;
-  admins: string[];
 }
 
 //3-1 평가 기준 설정하기
@@ -241,7 +135,7 @@ declare interface InterviewNumValue {
   interviewee: number;
 }
 
-// 4-3 합격 불합격 메시지
+// 4-3 합격 불합격 메시지 Form
 declare interface ResultMessageForm {
   pass: string;
   fail: string;
