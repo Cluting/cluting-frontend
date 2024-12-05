@@ -1,5 +1,5 @@
 import Headline from "./headline/Headline";
-import QuestionInput from "./input/QuestionInput";
+import QuestionNumberInput from "./input/QuestionNumberInput";
 
 export default function InterviewQuestionCountSection() {
   const time = 30; // 추후 api로 받을 값
@@ -19,10 +19,14 @@ export default function InterviewQuestionCountSection() {
       </div>
       <div className="px-10 py-8 rounded-2xl bg-white-100 border border-[#D0D4E7]">
         <div className="flex flex-col w-48 gap-5">
-          <QuestionInput label="전체 질문 개수" type="total" bold={true} />
-          <QuestionInput label="공통 질문" type="common" />
-          <QuestionInput label="그룹별 질문" type="group" />
-          <QuestionInput label="지원자 개인 질문" type="individual" />
+          <QuestionNumberInput
+            label="전체 질문 개수"
+            type="total"
+            bold={true}
+          />
+          <QuestionNumberInput label="공통 질문" type="common" />
+          <QuestionNumberInput label="그룹별 질문" type="group" />
+          <QuestionNumberInput label="지원자 개인 질문" type="individual" />
         </div>
       </div>
     </section>
