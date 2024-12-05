@@ -1,4 +1,5 @@
 import CommonInterviewQuestionsSection from "./sections/CommonInterviewQuestionsSection";
+import GroupInterviewQuestionsSection from "./sections/GroupInterviewQuestionsSection";
 import InterviewQuestionCountSection from "./sections/InterviewQuestionCountSection";
 
 // 5-2 면접 평가 준비하기(컨테이너)
@@ -8,6 +9,7 @@ export default function PrepareInterviewEvaluationContainer() {
     <div className="flex flex-col gap-12">
       <InterviewQuestionCountSection />
       <CommonInterviewQuestionsSection />
+      <GroupInterviewQuestionsSection />
     </div>
   );
 }

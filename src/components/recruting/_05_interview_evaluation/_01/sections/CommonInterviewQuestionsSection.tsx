@@ -2,15 +2,13 @@ import Headline from "./headline/Headline";
 import { useQuestionStore } from "../../../../../store/recruiting/_05_interview_evaluation/questionStore";
 import React, { useState } from "react";
 import QuestionInput from "./input/QuestionInput";
+import AddButton from "./button/AddButton";
 
 const CommonInterviewQuestionsSection: React.FC = () => {
   const { questionCounts, setCheckedCount } = useQuestionStore();
   const [questions, setQuestions] = useState<
     { value: string; checked: boolean }[]
   >([{ value: "", checked: false }]);
-
-  console.log(questions);
-  console.log(questionCounts);
 
   const handleAddQuestion = () => {
     setQuestions((prev) => [...prev, { value: "", checked: false }]);
@@ -62,19 +60,7 @@ const CommonInterviewQuestionsSection: React.FC = () => {
               onRemove={() => handleRemoveQuestion(index)} // 빼기 버튼 핸들러
             />
           ))}
-          <button
-            onClick={handleAddQuestion}
-            className="flex gap-2 px-4 py-4 rounded-lg bg-main-300 flex-center"
-          >
-            <img
-              src="/assets/ic-addMain.svg"
-              alt="plus button"
-              className="w-3 h-3"
-            />
-            <span className="font-Pretendard font-semibold text-base text-[#5E2BE8] leading-5 tracking-tight">
-              면접 질문 추가하기
-            </span>
-          </button>
+          <AddButton onClick={handleAddQuestion} label="면접 질문 추가하기" />
         </div>
 
         {/* 에러케이스 처리 */}

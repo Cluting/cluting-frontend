@@ -5,7 +5,7 @@ interface QuestionInputProps {
   number: number; // 질문 번호
   value: string; // 질문 내용
   checked: boolean; // 체크 상태
-  isError: boolean;
+  isError?: boolean;
   onChange: (value: string) => void; // 질문 내용 변경
   onCheck: (checked: boolean) => void; // 체크박스 변경
   onRemove: () => void; // 삭제 핸들러
