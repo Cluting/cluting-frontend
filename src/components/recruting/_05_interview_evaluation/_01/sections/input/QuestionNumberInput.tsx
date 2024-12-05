@@ -21,23 +21,46 @@ const QuestionNumberInput: React.FC<QuestionNumberInputProps> = ({
     setQuestionCounts(type, isNaN(value) ? 0 : value);
   };
 
+  const totalQuestions = questionCounts.total || 0; // 전체 질문 개수
+
   return (
     <div className="flex items-center self-stretch justify-between">
       <label
-        className={`text-base leading-5 tracking-tight ${bold ? "font-bold" : "font-medium"} text-gray-1100 font-Pretendard`}
+        className={`text-base leading-5 tracking-tight ${
+          bold ? "font-bold" : "font-medium"
+        } text-gray-1100 font-Pretendard`}
       >
         {label}
       </label>
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          value={questionCounts[type] || 0}
-          onChange={handleChange}
-          className="w-14 flex flex-center px-2 py-2 bg-white-100 border border-[#D0D4E7] rounded-md text-center text-[#8B8FA4] font-Pretendard font-semibold leading-5 tracking-tighter"
-        />
-        <span className="text-base font-semibold leading-5 tracking-tighter font-Pretendard text-gray-1100">
-          개
-        </span>
+      <div className="flex flex-col gap-1">
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            value={questionCounts[type] || 0}
+            onChange={handleChange}
+            className="w-14 flex flex-center px-2 py-2 bg-white-100 border border-[#D0D4E7] rounded-md text-center text-[#8B8FA4] font-Pretendard font-semibold leading-5 tracking-tighter outline-[#5E2BE8]"
+          />
+          <span className="text-base font-semibold leading-5 tracking-tighter font-Pretendard text-gray-1100">
+            개
+          </span>
+        </div>
+
+        {/* 에러 메시지 */}
+        {type === "total" && totalQuestions === 0 && (
+          <span className="text-xs font-Pretendard font-medium text-[#FF3B3B]">
+            필수 입력 사항입니다.
+          </span>
+        )}
+
+        {/* 디자인 고쳐지면 수정 예정 */}
+        {totalQuestions !==
+          (questionCounts.common || 0) +
+            (questionCounts.group || 0) +
+            (questionCounts.individual || 0) && (
+          <span className="text-xs font-Pretendard font-medium text-[#FF3B3B]">
+            총 질문 개수와 총합을 통일해 주세요.
+          </span>
+        )}
       </div>
     </div>
   );
