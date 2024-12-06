@@ -1,5 +1,6 @@
 import CommonInterviewQuestionsSection from "./sections/CommonInterviewQuestionsSection";
 import GroupInterviewQuestionsSection from "./sections/GroupInterviewQuestionsSection";
+import IndividualInterviewQuestionsSection from "./sections/IndividualInterviewQuestionsSection";
 import InterviewQuestionCountSection from "./sections/InterviewQuestionCountSection";
 
 // 5-2 면접 평가 준비하기(컨테이너)
@@ -10,6 +11,7 @@ export default function PrepareInterviewEvaluationContainer() {
       <InterviewQuestionCountSection />
       <CommonInterviewQuestionsSection />
       <GroupInterviewQuestionsSection />
+      <IndividualInterviewQuestionsSection />
     </div>
   );
 }

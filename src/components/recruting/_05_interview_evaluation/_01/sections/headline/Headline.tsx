@@ -24,7 +24,7 @@ const Headline: React.FC<HeadlineProps> = ({
         {title}
       </h3>
       <div className="tooltip">{hint}</div>
-      {children && <div className="mt-4">{children}</div>}
+      {children && <div className="ml-auto">{children}</div>}
     </div>
   );
 };
