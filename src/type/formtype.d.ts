@@ -217,7 +217,7 @@ declare interface Groups {
   admins: string[];
 }
 
-//3-1 평가 기준 설정하기
+//3-1, 5-1 평가 기준 설정하기
 declare interface EvaluationCriteria {
   id: number;
   criteria: string;
