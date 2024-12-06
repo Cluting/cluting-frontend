@@ -218,7 +218,6 @@ export default function PrepareInterviewEvaluationContainer() {
         </div>
 
         <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
-          {/*todo: 여기 그룹 없을 땐 공통만 나오게ㅜㅜ */}
           {groups.map((groupItem) => (
             <div key={groupItem.id} className="flex items-center gap-[15px] ">
               <p>{groupItem.groupName}</p>
@@ -237,18 +236,21 @@ export default function PrepareInterviewEvaluationContainer() {
             {groups.length === 1 ? (
               <div className="tooltip">
                 면접 평가 시, 그룹을 형성하여 지원자를 나누고, 각 그룹별
-                평가자를 분담 해주세요.
+                평가자를 분담해 주세요.
               </div>
             ) : (
-              <div className="tooltip">여기 툴팁 나중에 수정</div>
+              <div className="tooltip">
+                설정된 그룹에 따라 면접 평가를 진행할 운영진의 역할을
+                분담해주세요.
+              </div>
             )}
           </div>
           <button
             type="button"
-            className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 text-semibold hover:bg-main-100 hover:text-white-100 group"
+            className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 font-semibold hover:bg-main-100 hover:text-white-100 group"
             onClick={addGroupForm}
           >
-            <IdealIcon className="mr-[4.81px]" />
+            <IdealIcon className="mr-[4.81px] " />
             그룹 추가하기
           </button>
         </div>
@@ -330,7 +332,10 @@ export default function PrepareInterviewEvaluationContainer() {
 
         {/* 평가 기준 설정하기 섹션 */}
         <div className="flex mt-[34px]">
-          <p className="section-title">평가 기준 설정하기</p>
+          <p className="section-title">
+            <span className="mr-[0.25em] text-main-100">*</span>평가 기준
+            설정하기
+          </p>
           <div className="tooltip">
             평가 기준을 설정해 주세요. 설정된 내용은 개별 평가 진행 시,
             반영됩니다.

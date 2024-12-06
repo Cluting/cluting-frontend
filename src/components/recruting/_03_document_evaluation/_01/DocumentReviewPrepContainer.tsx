@@ -245,7 +245,7 @@ export default function DocumentReviewPrepContainer() {
           </div>
           <button
             type="button"
-            className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 text-semibold hover:bg-main-100 hover:text-white-100 group"
+            className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 font-semibold hover:bg-main-100 hover:text-white-100 group"
             onClick={addGroupForm}
           >
             <IdealIcon className="mr-[4.81px]" />
