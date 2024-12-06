@@ -12,7 +12,7 @@ export default function EvaluationCriteria({
   selectedGroupId,
   selectedGroupIndex,
   setSelectedGroupId,
-  text,
+  type,
   register,
   setValue,
   errors
@@ -21,7 +21,7 @@ export default function EvaluationCriteria({
   selectedGroupId: number;
   selectedGroupIndex: number;
   setSelectedGroupId: (id: number) => void;
-  text?: string;
+  type?: string;
   register: UseFormRegister<DocumentReviewForm>;
   setValue: UseFormSetValue<DocumentReviewForm>;
   watch: UseFormWatch<DocumentReviewForm>;
@@ -145,10 +145,10 @@ export default function EvaluationCriteria({
             >
               <div className="flex items-center justify-between w-full">
                 <p className="text-gray-800 text-[16px] font-bold underline underline-offset-2">
-                  <Link to="">{text} 질문 다시 보기</Link>
+                  <Link to="">{type} 질문 다시 보기</Link>
                 </p>
                 <label className="flex-center text-gray-800 text-[16px] font-bold">
-                  {text} 만점 점수
+                  {type} 만점 점수
                   <input
                     type="number"
                     min="0"
@@ -253,7 +253,7 @@ export default function EvaluationCriteria({
 
                                 return (
                                   totalScore <= (group.maxScore || 0) ||
-                                  `${text} 만점 점수를 초과했어요. 다시 배점을 조율해 주세요.`
+                                  `${type} 만점 점수를 초과했어요. 다시 배점을 조율해 주세요.`
                                 );
                               }
                             }
