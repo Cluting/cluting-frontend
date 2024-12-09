@@ -107,7 +107,7 @@ export default function EvaluationCriteria({
   );
 
   return (
-    <>
+    <div>
       <div className="flex mt-[34px]">
         <p className="section-title">
           <span className="mr-[0.25em] text-main-100">*</span>평가 기준 설정하기
@@ -380,6 +380,6 @@ export default function EvaluationCriteria({
             </div>
           )
       )}
-    </>
+    </div>
   );
 }
