@@ -18,7 +18,7 @@ export default function InterviewQuestionCountSection() {
         </span>
       </div>
       <div className="px-10 py-8 rounded-2xl bg-white-100 border border-[#D0D4E7]">
-        <div className="flex flex-col w-48 gap-5">
+        <div className="flex flex-col w-2/5 gap-5">
           <QuestionNumberInput
             label="전체 질문 개수"
             type="total"
