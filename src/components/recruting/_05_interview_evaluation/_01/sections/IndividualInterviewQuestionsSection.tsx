@@ -2,6 +2,8 @@ import { useState } from "react";
 import Dropdown from "./dropdown/Dropdown";
 import Headline from "./headline/Headline";
 import ProgressBar from "./processBar/ProcessBar";
+import ApplicantList from "./list/ApplicantList";
+import { v4 as uuidv4 } from "uuid";
 
 export default function IndividualInterviewQuestionsSection() {
   const [filter, setFilter] = useState("전체");
@@ -9,18 +11,87 @@ export default function IndividualInterviewQuestionsSection() {
 
   const steps = ["작성 전", "작성 중", "작성 완료"];
 
+  const applicantsMockUp = [
+    {
+      id: uuidv4(),
+      name: "김은혜",
+      phone: "010-1234-1234",
+      group: "개발",
+      status: "작성 전"
+    },
+    {
+      id: uuidv4(),
+      name: "곽서연",
+      phone: "010-1234-1234",
+      group: "개발",
+      status: "작성 중"
+    },
+    {
+      id: uuidv4(),
+      name: "박시현",
+      phone: "010-1234-1234",
+      group: "기획",
+      status: "작성 완료"
+    },
+    {
+      id: uuidv4(),
+      name: "김동현",
+      phone: "010-1234-1234",
+      group: "개발",
+      status: "작성 전"
+    },
+    {
+      id: uuidv4(),
+      name: "양성원",
+      phone: "010-1234-1234",
+      group: "개발",
+      status: "작성 완료"
+    },
+    {
+      id: uuidv4(),
+      name: "윤다인",
+      phone: "010-1234-1234",
+      group: "개발",
+      status: "작성 중"
+    }
+  ];
+
+  const filteredApplicants = applicantsMockUp.filter(
+    (applicant) =>
+      (filter === "전체" || applicant.group === filter) &&
+      applicant.status === steps[currentStep]
+  );
+
   const renderStepComponents = () => {
     switch (currentStep) {
       case 0:
-        return null;
+        return (
+          <ApplicantList
+            applicants={filteredApplicants}
+            onCreateQuestion={handleCreateQuestion}
+          />
+        );
       case 1:
-        return null;
+        return (
+          <ApplicantList
+            applicants={filteredApplicants}
+            onCreateQuestion={handleCreateQuestion}
+          />
+        );
       case 2:
-        return null;
-
+        return (
+          <ApplicantList
+            applicants={filteredApplicants}
+            onCreateQuestion={handleCreateQuestion}
+          />
+        );
       default:
         return null;
     }
+  };
+
+  const handleCreateQuestion = (id: string) => {
+    alert("질문 생성 버튼");
   };
 
   return (
@@ -33,7 +104,7 @@ export default function IndividualInterviewQuestionsSection() {
         {/* 기획 확정 안나서 추후 수정 예정 */}
         <button>권한자 보기</button>
       </Headline>
-      <div className="flex flex-col gap-2 p-4 bg-white-100 border border-[#D9D4E7] rounded-2xl">
+      <div className="flex flex-col gap-4 p-4 bg-white-100 border border-[#D9D4E7] rounded-2xl">
         <div className="flex flex-col gap-3">
           <Dropdown
             label="필터 : "
@@ -47,6 +118,7 @@ export default function IndividualInterviewQuestionsSection() {
             onStepClick={(stepIndex) => setCurrentStep(stepIndex)}
           />
         </div>
+        {renderStepComponents()}
       </div>
     </div>
   );
