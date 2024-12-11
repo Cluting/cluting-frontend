@@ -38,7 +38,7 @@ const ApplicantItem: React.FC<ApplicantItemProps> = ({
       <div className="w-32 text-sm font-medium text-left font-Pretendard">
         <button
           onClick={() => onCreateQuestion(applicant.id)}
-          className="flex w-20 h-8 ml-auto text-xs font-medium border rounded-lg flex-center bg-main-300 border-main-400 font-Pretendard"
+          className="flex w-20 h-8 ml-auto text-xs font-medium border rounded-lg flex-center bg-main-300 border-main-400 font-Pretendard text-[#5E2BE8]"
         >
           질문 만들기
         </button>
