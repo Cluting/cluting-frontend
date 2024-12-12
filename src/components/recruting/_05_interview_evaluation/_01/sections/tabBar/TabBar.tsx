@@ -11,6 +11,7 @@ const TabBar: React.FC<TabBarProps> = ({ tabs, currentTab, onTabClick }) => {
     <div className="flex">
       {tabs.map((tab) => (
         <button
+          type="button"
           key={tab}
           onClick={() => onTabClick(tab)}
           className={`w-40 px-9 py-2 rounded-t-xl font-Pretendard font-semibold ${

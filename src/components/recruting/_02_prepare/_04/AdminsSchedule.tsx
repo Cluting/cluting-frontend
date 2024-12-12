@@ -24,7 +24,8 @@ export default function AdminsSchedule() {
     interviewStartTime,
     interviewEndTime,
     interviewStartDate,
-    interviewEndDate
+    interviewEndDate,
+    interviewer
   } = useInterviewStore();
   const [currentDate, setCurrentDate] = useState<Date>(
     new Date(interviewStartDate)
@@ -72,7 +73,7 @@ export default function AdminsSchedule() {
       return;
     }
 
-    if (currentAdmins.length >= 2) return;
+    if (currentAdmins.length >= interviewer) return;
 
     const updatedAdmins = {
       ...timeSlotAdmins,
@@ -100,7 +101,7 @@ export default function AdminsSchedule() {
   const validateScheduleData = (value: TimeSlotAdmins) => {
     // 선택된 모든 시간대에서 면접관이 2명인지 확인
     const hasIncompleteSlot = Object.values(value).some(
-      (admins) => admins.length < 2
+      (admins) => admins.length < interviewer
     );
     return Object.keys(value).length === 0 || hasIncompleteSlot
       ? "필수 선택 사항입니다"
@@ -132,8 +133,8 @@ export default function AdminsSchedule() {
         <div>
           <div className="mt-[16px] h-auto pt-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
             <p className="text-main-100 text-caption3 text-left">
-              면접에 들어갈 2명을 선택해 주세요. 2명이 가능한 시간을 이후에
-              지원자들이 선택할 수 있습니다.
+              면접에 들어갈 {interviewer}명을 선택해 주세요. {interviewer}명이
+              가능한 시간을 이후에 지원자들이 선택할 수 있습니다.
             </p>
             <div
               className={`mt-3 border  rounded-[12px] bg-[#FBFBFF]
@@ -181,7 +182,7 @@ export default function AdminsSchedule() {
                     {/*시간*/}
                     <div
                       className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
-                          ${getSelectedAdminCount(timeSlot) >= 2 ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2`}
+                          ${getSelectedAdminCount(timeSlot) >= interviewer ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2`}
                     >
                       {timeSlot}
                     </div>
@@ -192,7 +193,7 @@ export default function AdminsSchedule() {
                         type="button"
                         onClick={() => handleAdminSelect(timeSlot, admin)}
                         disabled={
-                          getSelectedAdminCount(timeSlot) >= 2 &&
+                          getSelectedAdminCount(timeSlot) >= interviewer &&
                           !isAdminSelectedForTimeSlot(timeSlot, admin)
                         }
                         className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]
@@ -212,8 +213,6 @@ export default function AdminsSchedule() {
               </p>
             )}
           </div>
-
-          {/* <button type="submit">임시 제출 버튼</button> */}
         </div>
       </div>
     </form>

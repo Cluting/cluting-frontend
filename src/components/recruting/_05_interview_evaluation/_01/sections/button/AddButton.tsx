@@ -8,6 +8,7 @@ interface AddButtonProps {
 const AddButton: React.FC<AddButtonProps> = ({ onClick, label }) => {
   return (
     <button
+      type="button"
       onClick={onClick}
       className="flex gap-2 px-4 py-4 rounded-lg bg-main-300 flex-center"
     >

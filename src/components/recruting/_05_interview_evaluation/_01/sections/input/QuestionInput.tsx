@@ -35,7 +35,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
           placeholder="질문을 작성해 주세요."
           className={`w-[46rem] px-4 py-2 border rounded-lg bg-white-100 outline-[#5E2BE8] ${isError && !checked ? "border-red-100" : "border-[#D0D4E7]"}`}
         />
-        <button onClick={onRemove} className="px-2 py-1">
+        <button type="button" onClick={onRemove} className="px-2 py-1">
           <img src="/assets/ic-minusCircleGray600.svg" alt="빼기 버튼" />
         </button>
       </div>
