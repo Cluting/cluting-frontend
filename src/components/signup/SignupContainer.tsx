@@ -7,10 +7,12 @@ import { DevTool } from "@hookform/devtools";
 import { ERROR_MESSAGES } from "../../constants/recruting";
 import { useMutation } from "@tanstack/react-query";
 import { postSignup } from "./services/User";
+import { useNavigate } from "react-router-dom";
 
 interface SignupProps {
   isSocialSignup: boolean; // 소셜 회원가입 여부
 }
+
 export default function SignupContainer({ isSocialSignup }: SignupProps) {
   const {
     register,
@@ -21,14 +23,16 @@ export default function SignupContainer({ isSocialSignup }: SignupProps) {
     control // DevTool에서 필요
   } = useForm<SignupFormValue>({ mode: "onBlur" });
 
+  const navigate = useNavigate();
+
   // Mutation 설정
   const mutation = useMutation(postSignup, {
     onSuccess: (data) => {
-      alert("회원가입 성공!");
+      navigate("/login");
       console.log(data); // 성공 데이터 처리
     },
     onError: (error: any) => {
-      alert(`회원가입 실패: ${error.message}`);
+      alert(`회원가입에 실패하였습니다`);
     }
   });
 
@@ -130,16 +134,22 @@ export default function SignupContainer({ isSocialSignup }: SignupProps) {
               <p className="text-state-error">{ERROR_MESSAGES.required}</p>
             )}
 
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={handleConfirmPasswordChange}
-              placeholder="비밀번호 확인"
-              className="bg-white-100 w-[404px] h-[56px] mt-4 rounded-[8px] border border-gray-200 text-body pl-[14px] focus:outline-none focus:border-main-100"
-            />
-            {passwordError && (
-              <p className="text-state-error">{passwordError}</p>
-            )}
+            <div className="relative">
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                placeholder="비밀번호 확인"
+                className="bg-white-100 w-[404px] h-[56px] mt-4 pl-[28px] rounded-[8px] border border-gray-200 text-body  focus:outline-none focus:border-main-100"
+              />
+              <span className="absolute left-3 top-[35px]">
+                <span className="text-main-100">* </span>
+              </span>
+
+              {passwordError && (
+                <p className="text-state-error">{passwordError}</p>
+              )}
+            </div>
           </section>
         )}
         <section className="flex flex-col text-left mb-10">
@@ -163,6 +173,7 @@ export default function SignupContainer({ isSocialSignup }: SignupProps) {
             name="phone"
             register={register}
             type="tel"
+            maxLength={11}
             placeholder="휴대폰 번호"
             required
             error={errors.phone}
