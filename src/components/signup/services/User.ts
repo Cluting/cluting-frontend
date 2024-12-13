@@ -12,9 +12,9 @@ export async function getMe() {
 }
 
 // GET: 로그인
-export async function getSignin() {
+export async function getSignin(signinData: LoginFormValue) {
   try {
-    const { data } = await Instance.get("/useSr/sign-in");
+    const { data } = await Instance.post("/user/sign-in", signinData);
     return data;
   } catch (error) {
     console.error("로그인 실패:", error);
