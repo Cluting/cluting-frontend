@@ -5,17 +5,39 @@ import TermsAgreement from "./TermsAgreement";
 import { useForm, useWatch } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { ERROR_MESSAGES } from "../../constants/recruting";
+import { useMutation } from "@tanstack/react-query";
+import { postSignup } from "./services/User";
 
-export default function SignupContainer() {
+interface SignupProps {
+  isSocialSignup: boolean; // 소셜 회원가입 여부
+}
+export default function SignupContainer({ isSocialSignup }: SignupProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
     control // DevTool에서 필요
   } = useForm<SignupFormValue>({ mode: "onBlur" });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  // Mutation 설정
+  const mutation = useMutation(postSignup, {
+    onSuccess: (data) => {
+      alert("회원가입 성공!");
+      console.log(data); // 성공 데이터 처리
+    },
+    onError: (error: any) => {
+      alert(`회원가입 실패: ${error.message}`);
+    }
+  });
+
+  // Form 제출 핸들러
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+    mutation.mutate(data); // postSignup 호출
+  });
+
   const [studentStatus, setStudentStatus] = useState(false); //휴학 여부 드롭다운
   const [semester, setSemester] = useState(false); //학기 선택 드롭다운
 
@@ -24,16 +46,22 @@ export default function SignupContainer() {
 
   // 드롭다운에서 선택된 값을 설정
   const handleStatusSelect = (status: string) => {
+    let statusValue = "";
+    if (status === "재학") {
+      statusValue = "ENROLLED"; // 재학 시 ENROLLED 값 저장
+    } else if (status === "휴학") {
+      statusValue = "LEAVE"; // 휴학 시 LEAVE 값 저장
+    }
     setSelectedStatus(status);
-    setValue("studentStatus", status);
+    setValue("studentStatus", statusValue); // 폼에 값 저장
     setStudentStatus(false); // 드롭다운 닫기
   };
 
-  const handleSemesterSelect = (semester: string) => {
-    setSelectedSemester(semester);
-    setValue("semester", semester);
-    setSemesterExplain(""); // 학기 선택 시 설명 텍스트 숨기기
-    setSemester(false); // 드롭다운 닫기
+  const handleSemesterSelect = (description: string, value?: string) => {
+    setSelectedSemester(description);
+    setValue("semester", value ?? "");
+    setSemesterExplain("");
+    setSemester(false);
   };
 
   //재학 여부에 따른 안내
@@ -51,12 +79,69 @@ export default function SignupContainer() {
       setSemesterExplain("휴학 이전에 수료한 마지막 학기를 선택해 주세요");
     }
   }, [studentStatusText]);
+
+  //비밀번호 확인
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const password = watch("password");
+
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+
+    if (value !== password) {
+      setPasswordError("비밀번호가 일치하지 않습니다.");
+    } else {
+      setPasswordError("");
+    }
+  };
   return (
     <>
       <form
         onSubmit={onSubmit}
         className="custom-shadow w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
       >
+        {!isSocialSignup && (
+          <section className="flex flex-col text-left mb-10">
+            <Input
+              name="email"
+              register={register}
+              type="email"
+              placeholder="이메일"
+              required
+              error={errors.email}
+            />
+            {errors.email && (
+              <p className="text-state-error">{ERROR_MESSAGES.required}</p>
+            )}
+
+            <Input
+              name="password"
+              register={register}
+              type="password"
+              placeholder="비밀번호"
+              required
+              error={errors.password}
+            />
+            {errors.password && (
+              <p className="text-state-error">{ERROR_MESSAGES.required}</p>
+            )}
+
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              placeholder="비밀번호 확인"
+              className="bg-white-100 w-[404px] h-[56px] mt-4 rounded-[8px] border border-gray-200 text-body pl-[14px] focus:outline-none focus:border-main-100"
+            />
+            {passwordError && (
+              <p className="text-state-error">{passwordError}</p>
+            )}
+          </section>
+        )}
         <section className="flex flex-col text-left mb-10">
           <p className="text-title3 text-gray-900">인적사항</p>
           <p className="text-caption1 text-gray-700 mt-[7px]">
@@ -73,17 +158,19 @@ export default function SignupContainer() {
           {errors.name && (
             <p className="text-state-error"> {ERROR_MESSAGES.required}</p>
           )}
+
           <Input
-            name="email"
+            name="phone"
             register={register}
-            type="email"
-            placeholder="이메일"
+            type="tel"
+            placeholder="휴대폰 번호"
             required
-            error={errors.email}
+            error={errors.phone}
           />
-          {errors.email && (
-            <p className="text-state-error">{ERROR_MESSAGES.required}</p>
+          {errors.phone && (
+            <p className="text-state-error"> {ERROR_MESSAGES.required}</p>
           )}
+
           <Input
             name="location"
             register={register}
@@ -191,7 +278,7 @@ export default function SignupContainer() {
           type="submit"
           className="bg-main-100 hover:bg-main-500 text-white-100 w-[404px] h-[70px] rounded-[8px] text-body mt-[15px] border border-gray-700 "
         >
-          회원가입
+          {mutation.isLoading ? "처리 중..." : "회원가입"}
         </button>
       </form>
       <DevTool control={control} />

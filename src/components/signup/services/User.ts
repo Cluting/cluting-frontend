@@ -1,4 +1,4 @@
-import { Instance } from "./AxiosInstance";
+import { Instance } from "../../../services/AxiosInstance";
 
 // GET: 유저 본인 정보 조회
 export async function getMe() {
@@ -14,7 +14,7 @@ export async function getMe() {
 // GET: 로그인
 export async function getSignin() {
   try {
-    const { data } = await Instance.get("/user/sign-in");
+    const { data } = await Instance.get("/useSr/sign-in");
     return data;
   } catch (error) {
     console.error("로그인 실패:", error);

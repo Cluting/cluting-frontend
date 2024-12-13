@@ -53,14 +53,14 @@ export const studentStatusList = [
   { id: 2, description: "휴학" }
 ];
 export const semesterList = [
-  { id: 1, description: "1학년 1학기" },
-  { id: 2, description: "1학년 2학기" },
-  { id: 3, description: "2학년 1학기" },
-  { id: 4, description: "2학년 2학기" },
-  { id: 5, description: "3학년 1학기" },
-  { id: 6, description: "3학년 2학기" },
-  { id: 7, description: "4학년 1학기" },
-  { id: 8, description: "4학년 2학기" }
+  { id: 1, description: "1학년 1학기", value: "S1_1" },
+  { id: 2, description: "1학년 2학기", value: "S1_2" },
+  { id: 3, description: "2학년 1학기", value: "S2_1" },
+  { id: 4, description: "2학년 2학기", value: "S2_2" },
+  { id: 5, description: "3학년 1학기", value: "S3_1" },
+  { id: 6, description: "3학년 2학기", value: "S3_2" },
+  { id: 7, description: "4학년 1학기", value: "S4_1" },
+  { id: 8, description: "4학년 2학기", value: "S4_2" }
 ];
 export const clubTypeList = [
   { id: 1, description: "교내" },
