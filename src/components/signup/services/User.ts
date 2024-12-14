@@ -15,6 +15,9 @@ export async function getMe() {
 export async function getSignin(signinData: LoginFormValue) {
   try {
     const { data } = await Instance.post("/user/sign-in", signinData);
+    const { accessToken, refreshToken } = data.accessToken;
+    localStorage.setItem("access_token", accessToken);
+    localStorage.setItem("refresh_token", refreshToken);
     return data;
   } catch (error) {
     console.error("로그인 실패:", error);

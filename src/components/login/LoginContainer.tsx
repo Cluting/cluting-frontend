@@ -3,13 +3,14 @@ import Input from "../common/Input";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { getSignin } from "../signup/services/User";
+import { useEffect } from "react";
 
 export default function LoginContainer() {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm<LoginFormValue>({
     mode: "onChange"
   });
 
-  const navigate = useNavigate();
   // Mutation 설정
   const mutation = useMutation(getSignin, {
     onSuccess: (data) => {
