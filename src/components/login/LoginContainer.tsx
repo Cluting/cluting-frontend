@@ -3,7 +3,7 @@ import Input from "../common/Input";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { getSignin } from "../signup/services/User";
-import { useEffect } from "react";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function LoginContainer() {
   const navigate = useNavigate();
@@ -12,10 +12,12 @@ export default function LoginContainer() {
   });
 
   // Mutation 설정
+  const { setLogin } = useAuthStore();
   const mutation = useMutation(getSignin, {
     onSuccess: (data) => {
+      // setLogin(true); // 로그인 전역 상태 업데이트
       navigate("/main");
-      console.log(data); // 성공 데이터 처리
+      console.log("로그인 성공", data); // 성공 데이터 처리
     },
     onError: (error: any) => {
       alert(`로그인에 실패하였습니다`);
@@ -24,7 +26,6 @@ export default function LoginContainer() {
 
   // Form 제출 핸들러
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
     mutation.mutate(data); // postSignup 호출
   });
 

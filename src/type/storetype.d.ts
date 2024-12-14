@@ -1,5 +1,11 @@
 //zustand 단계 Type
 
+// 로그인 여부 store 타입
+declare interface AuthState {
+  isLogin: boolean;
+  setLogin: (state: boolean) => void;
+}
+
 declare interface Step {
   id: number;
   name: string;
