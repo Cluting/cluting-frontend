@@ -102,6 +102,11 @@
     @apply flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left;
   }
 
+  /*input 타입 number시 버튼 없애기*/
+  .button-none {
+    @apply [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none outline-none;
+  }
+
   /*hover 애니메이션*/
   .hover-animation {
     @apply hover:scale-105 transform transition-transform duration-200 ease-out;

@@ -20,22 +20,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const titleRef = useRef<HTMLInputElement>(null);
   const commonCautionRef = useRef<HTMLTextAreaElement>(null);
 
-  //지원 그룹
-  const [applyGroupSelect, setApplyGroupSelect] = useState<string[]>([]);
-
-  const applyGroup = (groupName: string) => {
-    setApplyGroupSelect((prev) => {
-      const newSelected = prev.includes(groupName)
-        ? prev.filter((name) => name !== groupName)
-        : [...prev, groupName];
-
-      // form 값 업데이트
-      setValue("applyGroups", newSelected);
-
-      return newSelected;
-    });
-  };
-
   //그룹별 질문 - 지원 그룹 상태 관리
   const [selectedGroup, setSelectedGroup] = useState<string>(
     group[0]?.name || ""
@@ -104,7 +88,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
   } = useForm<CreateApplicationForm>({
     defaultValues: {
       title: "",
-      applyGroups: [],
       commonSection: {
         caution: "",
         questions: commonQuestions
@@ -443,19 +426,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
             <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
               <div className="flex items-left gap-[11px]">
                 {group.map((groupName) => (
-                  <button
-                    key={groupName.name}
-                    type="button"
-                    className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout
-                    ${
-                      applyGroupSelect.includes(groupName.name)
-                        ? "bg-main-100 text-white-100 border-main-100"
-                        : "bg-white-100 text-[#43454F] border-gray-300 hover:bg-main-100 hover:text-white-100"
-                    }`}
-                    onClick={() => applyGroup(groupName.name)}
-                  >
+                  <div className="flex-center w-[225px] h-[50px] border rounded-[11px] bg-gray-100 text-callout">
                     {groupName.name}
-                  </button>
+                  </div>
                 ))}
               </div>
 

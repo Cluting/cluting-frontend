@@ -110,14 +110,6 @@ export default function PrepareStepRoles() {
             모집 준비하기의 세부 단계에 따른 역할을 분담해 주세요.
           </div>
         </div>
-
-        {/* <button
-          type="button"
-          className="w-[118px] h-[38px] flex-center bg-main-300 border border-main-400 rounded-[7px] text-caption3 text-main-100 hover:bg-main-100 hover:text-white-100 hover:border-main-100"
-          onClick={() => setNewStepName(" ")}
-        >
-          + 단계 추가
-        </button> */}
       </div>
       <div className="pl-[47px] pr-[48px]">
         <div
@@ -220,16 +212,6 @@ export default function PrepareStepRoles() {
           <p className="text-state-error ">{errors.steps.message}</p>
         )}
       </div>
-
-      {/* 제출 버튼
-      <div className="flex justify-end mt-6 mr-[48px]">
-        <button
-          type="submit"
-          className="px-6 py-2 bg-main-100 text-white-100 rounded-[7px] hover:bg-main-200"
-        >
-          저장하기
-        </button>
-      </div> */}
     </form>
   );
 }
