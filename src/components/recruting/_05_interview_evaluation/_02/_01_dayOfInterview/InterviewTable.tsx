@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface InterviewTable {
+interface InterviewGroup {
   category: string;
   interviewees: string[];
   interviewers: string[];
@@ -9,201 +9,76 @@ interface InterviewTable {
   isAnswered: boolean;
 }
 
-interface TimeGroup {
+interface TimeSlot {
   time: string;
   timeGroupId: number;
-  groups: InterviewTable[];
+  InterviewStatus: string;
+  groups: InterviewGroup[];
 }
 
 export default function InterviewTable() {
   const navigate = useNavigate();
 
-  const [timeGroups, setTimeGroups] = useState<TimeGroup[]>([]); // 시간과 그룹 데이터를 저장
+  const [timeSlots, TimeSlot] = useState<TimeSlot[]>([]); // 시간과 그룹 데이터를 저장
 
   useEffect(() => {
     // JSON 데이터 불러오기
     fetch("/interviewAnswerTable.json")
       .then((response) => response.json())
-      .then((data: TimeGroup[]) => setTimeGroups(data))
+      .then((data: TimeSlot[]) => TimeSlot(data))
       .catch((error) => console.error("JSON 오류:", error));
+
+    console.log(timeSlots);
   }, []);
 
   return (
-    <div className="w-full">
-      <table className="w-full bg-white-100  ">
-        <thead className="w-full bg-[#F4F4F4] border border-[#D6D7DA] text-[16px] text-[#7E7E7E]">
-          <tr>
-            <th className="py-[11px] w-[57px]">시간대 </th>
-            <th className="py-[11px] w-[100px] row-span-6">면접 그룹</th>
-            <th className="py-[11px] w-[100px]"></th>
-            <th className="py-[11px] w-[100px] "></th>
-            <th className="py-[11px] w-[100px]"></th>
-            <th className="py-[11px] w-[100px] "></th>
-            <th className="py-[11px] w-[100px]"></th>
-          </tr>
-        </thead>
+    <div className="w-full text-caption3">
+      <div className="w-full h-min-[593px] h-[593px] bg-white-100 rounded-lg custom-shadow">
+        <ul className="flex w-full bg-main-300 border border-[#D6D7DA] text-[16px] text-[#7E7E7E] font-semibold rounded-t-lg">
+          <li className="py-[11px] w-[57px] ml-[20px]">시간대 </li>
+          <li className="py-[11px] w-[100px] ml-[28px]">면접 그룹</li>
+        </ul>
 
-        <thead className="w-full text-[16px] text-[#7E7E7E]">
-          <tr>
-            <th className="py-[11px] w-[57px]"> </th>
-            <th className="py-[11px] w-[100px] row-span-2">기획</th>
-            <th className="py-[11px] w-[100px]"></th>
-            <th className="py-[11px] w-[100px] row-span-2">개발</th>
-            <th className="py-[11px] w-[100px]"></th>
-            <th className="py-[11px] w-[100px] row-span-2">디자인</th>
-            <th className="py-[11px] w-[100px]"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="h-[32px] group">
-            <td>
-              <div className="h-[32px] bg-gray-100 rounded-[4.82px] text-gray-1100 flex-center my-[11px] ml-[11px] py-[6px] px-[21px] text-subheadline  hover:text-main-100">
-                11:00 AM
-              </div>
-            </td>
+        <div className="flex flex-col mt-[18px]">
+          {timeSlots.map((timeSlot) => (
+            <div className="flex">
+              <ul>
+                <li className="flex items-center ml-[20px] my-[10px]">
+                  <div
+                    className={`py-[6px] px-[12px] rounded-md ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
+                  >
+                    {timeSlot?.time}
+                  </div>
 
-            <td className="border-r border-gray-300">
-              <div className="text-[13.2px] "> 박시현/최예은</div>
-            </td>
-            <td>
-              <div className="relative">
-                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
-                  <div className="py-[5px] px-2">김민지</div>
-                  <div className="py-[5px] px-2">이태준</div>
-                </div>
-                {/* {!group.isAnswered && (
-                      <button
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
+                  {timeSlot.groups.map((group) => (
+                    <div className="flex items-center mx-[33px] ]">
+                      <div className="text-gray-1100 py-[8px] px-[11px] ">
+                        {group.interviewers.join("/")}
+                      </div>
+                      <div
+                        className={`text-gray-1100 py-[8px] px-[11px] rounded-md bg-gray-100 border border-gray-200 ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
                       >
-                        답변 기록하기
-                      </button>
-                    )} */}
-              </div>
-            </td>
-
-            <td className="border-r border-gray-300">
-              <div className="text-[13.2px] "> 박시현/최예은</div>
-            </td>
-            <td>
-              <div className="relative">
-                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
-                  <div className="py-[5px] px-2">김민지</div>
-                  <div className="py-[5px] px-2">이태준</div>
-                </div>
-                {/* {!group.isAnswered && (
-                      <button
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                      >
-                        답변 기록하기
-                      </button>
-                    )} */}
-              </div>
-            </td>
-
-            <td className="border-r border-gray-300">
-              <div className="text-[13.2px] "> 박시현/최예은</div>
-            </td>
-            <td>
-              <div className="relative">
-                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
-                  <div className="py-[5px] px-2">김민지</div>
-                  <div className="py-[5px] px-2">이태준</div>
-                </div>
-                {/* {!group.isAnswered && (
-                      <button
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                      >
-                        답변 기록하기
-                      </button>
-                    )} */}
-              </div>
-            </td>
-          </tr>
-
-          <tr className="h-[32px] group">
-            <td>
-              <div className="h-[32px] bg-gray-100 rounded-[4.82px] text-gray-1100 flex-center my-[11px] ml-[11px] py-[6px] px-[21px] text-subheadline  hover:text-main-100">
-                11:00 AM
-              </div>
-            </td>
-
-            <td className="border-r border-gray-300">
-              <div className="text-[13.2px] "> 박시현/최예은</div>
-            </td>
-            <td>
-              <div className="relative">
-                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
-                  <div className="py-[5px] px-2">김민지</div>
-                  <div className="py-[5px] px-2">이태준</div>
-                </div>
-                {/* {!group.isAnswered && (
-                      <button
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                      >
-                        답변 기록하기
-                      </button>
-                    )} */}
-              </div>
-            </td>
-
-            <td className="border-r border-gray-300">
-              <div className="text-[13.2px] "> 박시현/최예은</div>
-            </td>
-            <td>
-              <div className="relative">
-                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
-                  <div className="py-[5px] px-2">김민지</div>
-                  <div className="py-[5px] px-2">이태준</div>
-                </div>
-                {/* {!group.isAnswered && (
-                      <button
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                      >
-                        답변 기록하기
-                      </button>
-                    )} */}
-              </div>
-            </td>
-
-            <td className="border-r border-gray-300">
-              <div className="text-[13.2px] "> 박시현/최예은</div>
-            </td>
-            <td>
-              <div className="relative">
-                <div className="text-gray-900 text-callout rounded-lg px-[10px] py-[5px] flex">
-                  <div className="py-[5px] px-2">김민지</div>
-                  <div className="py-[5px] px-2">이태준</div>
-                </div>
-                {/* {!group.isAnswered && (
-                      <button
-                        onClick={() => {
-                          navigate("/");
-                        }}
-                        className="absolute top-2 left-0 hidden group-hover:inline-block button-main-bg text-[13.2px] text-capiton3 rounded-[6px] px-7 py-2"
-                      >
-                        답변 기록하기
-                      </button>
-                    )} */}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                        {timeSlot.InterviewStatus === "InProgress" ? (
+                          <div className="relative">
+                            <p className="group cursor-pointer">
+                              {group.interviewees.join("/")}
+                            </p>
+                            <button className="absolute top-0 left-0 w-full h-full bg-transparent text-main-100 hidden group-hover:block">
+                              답변 기록하기
+                            </button>
+                          </div>
+                        ) : (
+                          <p>{group.interviewees.join("/")}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </li>
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

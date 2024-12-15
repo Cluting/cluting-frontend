@@ -28,7 +28,7 @@ export default function DayOfInterviewContainer() {
 
   return (
     <div className="w-full ">
-      <section className="flex text-title1 mt-8 mb-5">
+      <section className="w-fit flex text-title3 mt-8 mb-5 bg-white-100 text-gray-1100 rounded-xl py-[14px] px-[26px]">
         {/* 이전 날짜 버튼 */}
         {currentDate > new Date(interviewStartDate) && (
           <button type="button" onClick={goToPreviousDate}>
