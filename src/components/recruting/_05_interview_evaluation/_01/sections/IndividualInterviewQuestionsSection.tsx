@@ -111,6 +111,7 @@ export default function IndividualInterviewQuestionsSection() {
       >
         {/* 기획 확정 안나서 추후 수정 예정 */}
         <button
+          type="button"
           onClick={toggleModal}
           className="text-base font-medium underline font-Pretendard text-[#646775]"
         >
