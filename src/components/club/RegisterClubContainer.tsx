@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import UploadProfile from "../signup/UploadProfile";
-import Input from "./Input";
+
 import SignupDropdown from "../signup/SignupDropdown";
 import ClubKeyword from "../signup/ClubKeyword";
-import Textarea from "./Textarea";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { postClub } from "../../services/Club";
+
+import { useMutation } from "@tanstack/react-query";
+import { postClub } from "./service/Club";
+import Input from "../common/Input";
+import Textarea from "../common/Textarea";
 
 export default function RegisterClubContainer() {
   const {
@@ -17,7 +19,7 @@ export default function RegisterClubContainer() {
     formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
-  const { mutate, isLoading, isError, isSuccess } = useMutation(postClub, {
+  const { mutate } = useMutation(postClub, {
     onSuccess: () => {
       console.log("동아리가 성공적으로 등록되었습니다!");
     },
@@ -26,6 +28,7 @@ export default function RegisterClubContainer() {
     }
   });
   const onSubmit = (data: RegisterClubFormValue) => {
+    console.log("제출 데이터", data);
     mutate(data);
   };
 
@@ -36,15 +39,18 @@ export default function RegisterClubContainer() {
   const [selectedClubCategory, setSelectedClubCategory] = useState(""); // 선택한 동아리 분야
 
   const handleTypeSelect = (type: string) => {
-    setSelectedClubType(type);
-    setValue("type", type); // 폼 상태 업데이트
-    setClubType(!clubType); // 드롭다운을 닫음
+    const typeValue =
+      type === "교내" ? "INTERNAL" : type === "연합" ? "EXTERNAL" : "";
+
+    setSelectedClubType(type); // 선택된 타입(표시용)
+    setValue("type", typeValue); // 변환된 값으로 폼 상태 업데이트
+    setClubType(!clubType); // 드롭다운 닫기
   };
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedClubCategory(category);
-    setValue("category", category); // 폼 상태 업데이트
-    setClubCategory(!clubCategory); // 드롭다운을 닫음
+  const handleCategorySelect = (category: string, value?: string) => {
+    setSelectedClubCategory(category); // 선택된 카테고리(표시용)
+    setValue("category", value ?? ""); // 변환된 값으로 폼 상태 업데이트
+    setClubCategory(!clubCategory); // 드롭다운 닫기
   };
 
   return (
