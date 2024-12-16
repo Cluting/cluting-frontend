@@ -19,6 +19,7 @@ import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
 import ApplicantHome from "./pages/Applicant/ApplicantHome";
 import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
+import PublicRoute from "./components/common/PublicRoute";
 
 export default function App() {
   return (
@@ -29,8 +30,22 @@ export default function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/main" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
             <Route path="/register_club" element={<RegisterClub />} />
             <Route path="recruting">
               <Route path="home" element={<RecrutingHome />} />

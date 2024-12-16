@@ -9,6 +9,7 @@ import {
 interface InputProps<T extends FieldValues> {
   name: Path<T>;
   register: UseFormRegister<T>;
+  validation?: object;
   type: React.HTMLInputTypeAttribute;
   value?: string | number;
   placeholder?: string;
@@ -23,6 +24,7 @@ interface InputProps<T extends FieldValues> {
 export default function Input<T extends FieldValues>({
   name,
   register,
+  validation,
   type,
   value,
   placeholder,
@@ -39,7 +41,8 @@ export default function Input<T extends FieldValues>({
     <div className="relative">
       <input
         {...register(name, {
-          required: required ? "필수 입력 사항입니다." : false
+          required: required ? "필수 입력 사항입니다." : false,
+          ...validation // 추가된 validation 규칙 적용
         })}
         type={type}
         placeholder={placeholder}

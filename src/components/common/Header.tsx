@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import AdminProfileDropdown from "./AdminProfileDropdown";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function Header() {
-  const [isLogin, setIsLogin] = useState(true);
+  const { isLogin } = useAuthStore();
   const [isLoginPage, setIsLoginPage] = useState(false); // 로그인/회원가입 페이지 여부
   const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
 
@@ -66,7 +67,15 @@ export default function Header() {
               )}
             </>
           ) : (
-            <Link to={"/login"}>로그인 / 회원가입</Link>
+            <div className="text-gray-300">
+              <Link to={"/login"} className="hover:text-gray-500">
+                로그인
+              </Link>
+              /
+              <Link to={"/signup"} className="hover:text-gray-500">
+                회원가입
+              </Link>
+            </div>
           )}
         </div>
       )}
