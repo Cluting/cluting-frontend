@@ -18,6 +18,7 @@ import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
 import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
 import ApplicantHome from "./pages/Applicant/ApplicantHome";
+import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
 
 export default function App() {
   return (
@@ -62,9 +63,17 @@ export default function App() {
               {/* 기본 프로필 */}
               <Route path="profile" element={<ApplicantProfile />} />
               {/* 공고 리스트 */}
-              <Route path="announcement" element={<AnnouncementList />} />
+              <Route path="announcement/:menu" element={<AnnouncementList />} />
+              <Route
+                path="announcement/:menu/detail"
+                element={<ApplicantHistoryDetail />}
+              />
               {/* 나의 지원 기록 */}
-              <Route path="applications" element={<ApplicantHistory />} />
+              <Route path="applications/:menu" element={<ApplicantHistory />} />
+              <Route
+                path="applications/:menu/detail"
+                element={<ApplicantHistoryDetail />}
+              />
             </Route>
           </Routes>
         </div>
