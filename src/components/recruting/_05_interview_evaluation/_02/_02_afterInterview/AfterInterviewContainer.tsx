@@ -26,7 +26,7 @@ export default function AfterInterviewContainer() {
   const [filter, setFilter] = useState("전체");
   const [sortType, setSortType] = useState("가나다순");
   return (
-    <div className="flex flex-col gap-5 mt-6">
+    <div className="flex flex-col mt-6">
       <div className="flex flex-col gap-3">
         <div className="flex gap-3">
           <Dropdown
