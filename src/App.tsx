@@ -14,6 +14,11 @@ import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
 import ApplicantDocument from "./pages/Recruting/document/ApplicantDocument";
+import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
+import AnnouncementList from "./pages/Applicant/AnnouncementList";
+import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
+import ApplicantHome from "./pages/Applicant/ApplicantHome";
+import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
 import PublicRoute from "./components/common/PublicRoute";
 
 export default function App() {
@@ -65,6 +70,25 @@ export default function App() {
                 element={<ApplicantDocument />}
               />
               <Route path="06_final_selection" element={<FinalSelection />} />
+            </Route>
+
+            <Route path="applicant">
+              {/* 지원자 홈 */}
+              <Route path="home" element={<ApplicantHome />} />
+              {/* 기본 프로필 */}
+              <Route path="profile" element={<ApplicantProfile />} />
+              {/* 공고 리스트 */}
+              <Route path="announcement/:menu" element={<AnnouncementList />} />
+              <Route
+                path="announcement/:menu/detail"
+                element={<ApplicantHistoryDetail />}
+              />
+              {/* 나의 지원 기록 */}
+              <Route path="applications/:menu" element={<ApplicantHistory />} />
+              <Route
+                path="applications/:menu/detail"
+                element={<ApplicantHistoryDetail />}
+              />
             </Route>
           </Routes>
         </div>
