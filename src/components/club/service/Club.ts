@@ -36,7 +36,21 @@ export async function getPopularClub() {
 // POST: 동아리 등록
 export async function postClub(clubData: RegisterClubFormValue) {
   try {
-    const { data } = await Instance.post("/club/register", clubData);
+    // FormData 객체 생성
+    const formData = new FormData();
+
+    // FormData에 데이터 추가
+    formData.append("name", clubData.name);
+    formData.append("description", clubData.description);
+    formData.append("category", clubData.category);
+    formData.append("type", clubData.type);
+
+    // keywords는 배열이므로 각각 추가
+    clubData.keyword.forEach((item) => {
+      formData.append("keyword", item);
+    });
+
+    const { data } = await Instance.post("/club/register", formData);
     return data;
   } catch (error) {
     console.error("동아리 등록 실패:", error);
