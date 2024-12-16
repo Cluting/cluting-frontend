@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminProfileDropdown from "./AdminProfileDropdown";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -7,6 +7,11 @@ export default function Header() {
   const { isLogin } = useAuthStore();
   const [isLoginPage, setIsLoginPage] = useState(false); // 로그인/회원가입 페이지 여부
   const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
+
+  useEffect(() => {
+    // 상태 변경을 감지해 디버깅하거나 추가 작업 수행
+    console.log("로그인 상태 변경:", isLogin);
+  }, [isLogin]);
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
