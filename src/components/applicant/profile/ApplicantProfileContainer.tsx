@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import ProfileContainer from "./ProfileContainer";
-import PortfolioContainer from "./PortfolioContainer";
+import ProfileContainer from "./profile_container/ProfileContainer";
+import PortfolioContainer from "./profile_container/PortfolioContainer";
 
 // 기본 프로필 설정
 export default function ApplicantProfileContainer() {
