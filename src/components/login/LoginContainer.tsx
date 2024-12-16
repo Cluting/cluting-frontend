@@ -15,7 +15,7 @@ export default function LoginContainer() {
   const { setLogin } = useAuthStore();
   const mutation = useMutation(getSignin, {
     onSuccess: (data) => {
-      // setLogin(true); // 로그인 전역 상태 업데이트
+      setLogin(true); // 로그인 전역 상태 업데이트
       navigate("/main");
       console.log("로그인 성공", data); // 성공 데이터 처리
     },
