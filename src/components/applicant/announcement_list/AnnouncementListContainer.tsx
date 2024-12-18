@@ -22,25 +22,25 @@ export default function AnnouncementListContainer() {
           <div className="w-full ml-1 flex items-center gap-0">
             <button
               onClick={() => setMenu("inProgress")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${menu === "inProgress" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-headline ${menu === "inProgress" ? "bg-main-100 text-white-100" : "bg-main-300 text-main-100"} `}
             >
               지원 중인 동아리
             </button>
             <button
               onClick={() => setMenu("applied")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${menu === "applied" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
+              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-headline ${menu === "applied" ? "bg-main-100 text-white-100" : "bg-main-300 text-main-100"}`}
             >
               지원한 동아리
             </button>
             <button
               onClick={() => setMenu("bookmark")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${menu === "bookmark" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-headline ${menu === "bookmark" ? "bg-main-100 text-white-100" : "bg-main-300 text-main-100"} `}
             >
               스크랩한 동아리
             </button>
             <button
               onClick={() => setMenu("recent")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${menu === "recent" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-headline ${menu === "recent" ? "bg-main-100 text-white-100" : "bg-main-300 text-main-100"} `}
             >
               최근 본 동아리
             </button>
