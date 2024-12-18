@@ -83,6 +83,7 @@ declare interface ClubCardProps {
   title: string;
   clubName: string;
   tags: string[];
+  isLarge?: boolean; //크기 변환 prop
 }
 
 // 합격 인원 설정 Form

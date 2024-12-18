@@ -122,6 +122,7 @@ export default function ClubCardList() {
           title={club.title}
           clubName={club.clubName}
           tags={club.tags}
+          isLarge={true}
         />
       ))}
     </div>
