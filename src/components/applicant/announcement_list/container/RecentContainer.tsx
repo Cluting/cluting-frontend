@@ -86,7 +86,7 @@ export default function RecentContainer() {
     }
   ];
   return (
-    <div className="w-full min-h-[774px] bg-white-100">
+    <div className="w-full min-h-[630px] bg-white-100">
       <div className="grid grid-cols-3 gap-8">
         {clubsData.map((club, index) => (
           <ClubCard
