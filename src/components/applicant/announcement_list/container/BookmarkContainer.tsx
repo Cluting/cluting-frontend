@@ -1,9 +1,11 @@
 //스크랩한 동아리
 import ClubCard from "../../../recruting/home/ClubCard";
+import { v4 as uuidv4 } from "uuid";
 
 export default function BookmarkContainer() {
   const clubsData = [
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/1.svg",
       logoSrc: "/assets/home/main/1Logo.svg",
@@ -13,6 +15,7 @@ export default function BookmarkContainer() {
       tags: ["문화예술", "밴드", "인디"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/1.svg",
       logoSrc: "/assets/home/main/1Logo.svg",
@@ -22,6 +25,7 @@ export default function BookmarkContainer() {
       tags: ["문화예술", "밴드", "인디"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/11.svg",
       logoSrc: "/assets/home/main/11Logo.svg",
@@ -31,6 +35,7 @@ export default function BookmarkContainer() {
       tags: ["스키", "스노우보드", "겨울"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/11.svg",
       logoSrc: "/assets/home/main/11Logo.svg",
@@ -40,6 +45,7 @@ export default function BookmarkContainer() {
       tags: ["스키", "스노우보드", "겨울"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/11.svg",
       logoSrc: "/assets/home/main/11Logo.svg",
@@ -49,6 +55,7 @@ export default function BookmarkContainer() {
       tags: ["스키", "스노우보드", "겨울"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/11.svg",
       logoSrc: "/assets/home/main/11Logo.svg",
@@ -63,7 +70,8 @@ export default function BookmarkContainer() {
       <div className="grid grid-cols-3 gap-8">
         {clubsData.map((club, index) => (
           <ClubCard
-            key={index}
+            id={club.id}
+            key={club.id}
             dDay={club.dDay}
             clubImg={club.clubImg}
             logoSrc={club.logoSrc}

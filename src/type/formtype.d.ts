@@ -76,6 +76,7 @@ declare interface PopularClubProps {
 
 //메인 홈 동아리 리스트
 declare interface ClubCardProps {
+  id: string;
   dDay: number;
   clubImg: string;
   logoSrc: string;

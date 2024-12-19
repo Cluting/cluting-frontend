@@ -1,4 +1,5 @@
 export default function ClubCard({
+  id,
   dDay,
   clubImg,
   logoSrc,
