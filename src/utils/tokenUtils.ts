@@ -1,4 +1,4 @@
-export const decodeToken = (token: string): Record<string, any> | null => {
+const decodeToken = (token: string): Record<string, any> | null => {
   try {
     const base64Payload = token.split(".")[1];
     return JSON.parse(atob(base64Payload));

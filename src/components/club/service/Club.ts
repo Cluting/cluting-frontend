@@ -47,32 +47,38 @@ export async function postClub(clubData: RegisterClubFormValue) {
           description: clubData.description,
           category: clubData.category,
           type: clubData.type,
-          keyword: clubData.keyword
+          keyword: JSON.stringify(clubData.keyword) // 배열을 JSON 문자열로 변환
         })
       ],
       { type: "application/json" }
     );
     formData.append("clubCreateRequestDto", clubCreateRequestDtoBlob);
 
-    // profile은 파일이므로 Blob으로 감싸서 추가
-    if (clubData.profile) {
+    // profile은 파일 객체로 추가
+    if (clubData.profile && clubData.profile instanceof File) {
       formData.append("profile", clubData.profile, clubData.profile.name);
+    } else {
+      console.warn("Invalid profile file:", clubData.profile);
     }
 
+    // FormData 출력 (디버깅 용도)
     formData.forEach((value, key) => {
-      console.log(key, value);
+      console.log(`FormData - ${key}:`, value);
     });
 
     // API 호출
     const { data } = await Instance.post("/club/register", formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data", // FormData를 처리하도록 설정
         Accept: "application/json"
       }
     });
+
+    // 성공 응답 반환
     return data;
-  } catch (error) {
-    console.error("동아리 등록 실패:", error);
+  } catch (error: any) {
+    // 에러 로깅
+    console.error("동아리 등록 실패:", error.response?.data || error.message);
     throw error;
   }
 }
