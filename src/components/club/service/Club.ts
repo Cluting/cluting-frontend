@@ -39,26 +39,35 @@ export async function postClub(clubData: RegisterClubFormValue) {
     // FormData 객체 생성
     const formData = new FormData();
 
-    // FormData에 데이터 추가
-    formData.append("name", clubData.name);
-    formData.append("description", clubData.description);
-    formData.append("category", clubData.category);
-    formData.append("type", clubData.type);
+    // clubCreateRequestDto를 Blob 객체로 변환하여 추가
+    const clubCreateRequestDtoBlob = new Blob(
+      [
+        JSON.stringify({
+          name: clubData.name,
+          description: clubData.description,
+          category: clubData.category,
+          type: clubData.type,
+          keyword: clubData.keyword
+        })
+      ],
+      { type: "application/json" }
+    );
+    formData.append("clubCreateRequestDto", clubCreateRequestDtoBlob);
 
-    // profile은 파일이므로 formData에 추가
+    // profile은 파일이므로 Blob으로 감싸서 추가
     if (clubData.profile) {
-      formData.append("profile", clubData.profile); // clubData.profile이 파일이어야 함
+      formData.append("profile", clubData.profile, clubData.profile.name);
     }
 
-    // keywords는 배열이므로 각각 추가
-    clubData.keyword.forEach((item) => {
-      formData.append("keyword", item);
+    formData.forEach((value, key) => {
+      console.log(key, value);
     });
 
     // API 호출
-    const { data } = await Instance.post("/club/register", clubData, {
+    const { data } = await Instance.post("/club/register", formData, {
       headers: {
-        "Content-Type": "multipart/form-data" // 명시적으로 Content-Type 설정
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json"
       }
     });
     return data;
