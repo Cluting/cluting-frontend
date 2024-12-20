@@ -19,7 +19,7 @@ import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
 import ApplicantHome from "./pages/Applicant/ApplicantHome";
 import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
-import PublicRoute from "./components/common/PublicRoute";
+import PublicRoute from "./components/login/PublicRoute";
 
 export default function App() {
   return (
