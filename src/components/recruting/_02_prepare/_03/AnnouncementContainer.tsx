@@ -6,7 +6,7 @@ import AnnouncementContent from "./AnnouncementContent";
 import AnnouncementDetails from "./AnnouncementDetails";
 
 export default function AnnouncementContainer() {
-  //현재 스텝 완료 여부 (전역 상태)
+  //현재 단계 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
   return (
     <div className=" mb-[147px]">
@@ -22,7 +22,6 @@ export default function AnnouncementContainer() {
         <AnnouncementDetails />
         <div className="flex items-center mx-8 my-4">
           <h1 className="section-title">
-            {" "}
             <span className="text-main-100 mr-[0.25em]">* </span>본문 작성
           </h1>
           <div className=" ml-3 tooltip ">

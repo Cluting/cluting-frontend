@@ -18,8 +18,6 @@ const AnnouncementContent: React.FC = () => {
     }
   };
 
-  //FIX: onInput 리렌더링 문제 고민해보기, 디바운싱 고민해서 적용
-
   return (
     <div className="relative ">
       <textarea

@@ -33,38 +33,36 @@ export default function Header() {
           />
           {isLogin ? (
             <>
-              {isLogin && (
-                <>
-                  <img
-                    src="/assets/ic-notice.svg"
-                    alt="알림"
-                    className="w-[35px] h-[35px] mx-4"
-                  />
+              <>
+                <img
+                  src="/assets/ic-notice.svg"
+                  alt="알림"
+                  className="w-[35px] h-[35px] mx-4"
+                />
+                <img
+                  src="/assets/ic-profile.svg"
+                  alt="개인 계정 프로필"
+                  className="w-[35px] h-[35px] mx-3"
+                />
+                <button
+                  className="relative flex items-center"
+                  onClick={() => {
+                    setAdminProfile(!adminProfile);
+                  }}
+                >
                   <img
                     src="/assets/ic-profile.svg"
-                    alt="개인 계정 프로필"
+                    alt="운영자 계정 프로필"
                     className="w-[35px] h-[35px] mx-3"
                   />
-                  <button
-                    className="relative flex items-center"
-                    onClick={() => {
-                      setAdminProfile(!adminProfile);
-                    }}
-                  >
-                    <img
-                      src="/assets/ic-profile.svg"
-                      alt="운영자 계정 프로필"
-                      className="w-[35px] h-[35px] mx-3"
-                    />
-                    <img
-                      src="/assets/ic-dropdown.svg"
-                      alt="운영자 계정 프로필 드롭다운"
-                      className="w-[10px] h-[10px]"
-                    />
-                    {adminProfile && <AdminProfileDropdown />}
-                  </button>
-                </>
-              )}
+                  <img
+                    src="/assets/ic-dropdown.svg"
+                    alt="운영자 계정 프로필 드롭다운"
+                    className="w-[10px] h-[10px]"
+                  />
+                  {adminProfile && <AdminProfileDropdown />}
+                </button>
+              </>
             </>
           ) : (
             <div className="text-gray-300">
