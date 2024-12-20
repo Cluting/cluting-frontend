@@ -66,19 +66,20 @@ export default function InterviewTable() {
                     </div>
 
                     {timeSlot.groups.map((group) => (
-                      <div className="flex items-center mx-[33px] ]">
+                      <div className="flex items-center mx-[33px]">
                         <div className="text-gray-1100 py-[8px] px-[11px] ">
                           {group.interviewers.join("/")}
                         </div>
+
                         <div
                           className={`text-gray-1100 py-[8px] px-[11px] rounded-md bg-gray-100 border border-gray-200 ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
                         >
                           {timeSlot.InterviewStatus === "InProgress" ? (
-                            <div className="relative">
-                              <p className="group cursor-pointer">
+                            <div className="relative group p-0">
+                              <p className="cursor-pointer group-hover:opacity-0 transition-opacity">
                                 {group.interviewees.join("/")}
                               </p>
-                              <button className="absolute top-0 left-0 w-full h-full bg-transparent text-main-100 hidden group-hover:block">
+                              <button className="text-center absolute w-[100px]  top-[-8px] left-[-12px] rounded-md py-2 px-[11px] bg-main-100 text-white-100 opacity-0 group-hover:opacity-100 transition-opacity">
                                 답변 기록하기
                               </button>
                             </div>
