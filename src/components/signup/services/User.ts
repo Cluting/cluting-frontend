@@ -1,4 +1,4 @@
-import { Instance } from "./AxiosInstance";
+import { Instance } from "../../../services/AxiosInstance";
 
 // GET: 유저 본인 정보 조회
 export async function getMe() {
@@ -12,9 +12,12 @@ export async function getMe() {
 }
 
 // GET: 로그인
-export async function getSignin() {
+export async function getSignin(signinData: LoginFormValue) {
   try {
-    const { data } = await Instance.get("/user/sign-in");
+    const { data } = await Instance.post("/user/sign-in", signinData);
+    const { accessToken, refreshToken } = data.accessToken;
+    localStorage.setItem("access_token", accessToken);
+    localStorage.setItem("refresh_token", refreshToken);
     return data;
   } catch (error) {
     console.error("로그인 실패:", error);
