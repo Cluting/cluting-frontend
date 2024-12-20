@@ -9,7 +9,7 @@ import IndividualQuestionWindow from "../../../components/recruting/_05_intervie
 
 //3 - 리크루팅 : 서류 평가하기 단계
 export default function ApplicantDocument() {
-  const [view, setView] = useState("application"); // 초기 상태는 "application"
+  const [view, setView] = useState("application");
   // 현재 경로 가져오기
   const location = useLocation();
 
