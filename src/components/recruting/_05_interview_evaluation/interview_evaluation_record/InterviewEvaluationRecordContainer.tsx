@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import UserProfile from "../../document/UserProfile";
 import QuestionAnswer from "./QuestionAnswer";
+import AdminEvaluationWindow from "../../_03_document_evaluation/evaluation/AdminEvaluationWindow";
 
 export default function InterviewEvaluationRecordContainer() {
   return (
-    <div className="w-full h-full flex-col items-center ">
-      <div className="flex items-center gap-2 mb-10">
+    <div className="w-fit h-full flex-col items-center relative ">
+      <div className="flex items-center gap-2 mb-10 ">
         <Link to="/recruting/05_interview_evaluation">
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
         </Link>
@@ -22,6 +23,7 @@ export default function InterviewEvaluationRecordContainer() {
           <QuestionAnswer type="individual" />
         </div>
       </section>
+      <AdminEvaluationWindow />
     </div>
   );
 }
