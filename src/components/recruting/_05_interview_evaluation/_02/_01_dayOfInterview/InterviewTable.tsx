@@ -31,52 +31,68 @@ export default function InterviewTable() {
     console.log(timeSlots);
   }, []);
 
+  const categories = ["기획", "개발", "디자인", "마케팅"];
+  //FIX: 백엔드 데이터 형식에 맞춰 수정 예정
+
   return (
-    <div className="w-full text-caption3">
-      <div className="w-full h-min-[593px] h-[593px] bg-white-100 rounded-lg custom-shadow">
-        <ul className="flex w-full bg-main-300 border border-[#D6D7DA] text-[16px] text-[#7E7E7E] font-semibold rounded-t-lg">
+    <div className="w-full min-w-[1000px] text-caption3 ">
+      <div className="w-full h-min-[593px] h-[593px] bg-white-100 rounded-lg custom-shadow overflow-x-scroll">
+        <ul className="flex w-full min-w-max  bg-main-300 border border-[#D6D7DA] text-[16px] text-[#7E7E7E] font-semibold rounded-t-lg">
           <li className="py-[11px] w-[57px] ml-[20px]">시간대 </li>
           <li className="py-[11px] w-[100px] ml-[28px]">면접 그룹</li>
         </ul>
 
-        <div className="flex flex-col mt-[18px]">
-          {timeSlots.map((timeSlot) => (
-            <div className="flex">
-              <ul>
-                <li className="flex items-center ml-[20px] my-[10px]">
-                  <div
-                    className={`py-[6px] px-[12px] rounded-md ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
-                  >
-                    {timeSlot?.time}
-                  </div>
+        <div className="overflow-x-scroll h-full overflow-y-scroll">
+          <ul className="flex gap-8 ml-[120px] mt-4 min-w-max">
+            {categories.map((category, index) => (
+              <li
+                key={index}
+                className="bg-gray-100 border border-gray-200 text-gray-1100 text-caption3 py-2 w-[221px] rounded-md text-center"
+              >
+                {category}
+              </li>
+            ))}
+          </ul>
 
-                  {timeSlot.groups.map((group) => (
-                    <div className="flex items-center mx-[33px] ]">
-                      <div className="text-gray-1100 py-[8px] px-[11px] ">
-                        {group.interviewers.join("/")}
-                      </div>
-                      <div
-                        className={`text-gray-1100 py-[8px] px-[11px] rounded-md bg-gray-100 border border-gray-200 ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
-                      >
-                        {timeSlot.InterviewStatus === "InProgress" ? (
-                          <div className="relative">
-                            <p className="group cursor-pointer">
-                              {group.interviewees.join("/")}
-                            </p>
-                            <button className="absolute top-0 left-0 w-full h-full bg-transparent text-main-100 hidden group-hover:block">
-                              답변 기록하기
-                            </button>
-                          </div>
-                        ) : (
-                          <p>{group.interviewees.join("/")}</p>
-                        )}
-                      </div>
+          <div className="flex flex-col mt-[18px] min-w-max">
+            {timeSlots.map((timeSlot) => (
+              <div className="flex">
+                <ul>
+                  <li className="flex items-center ml-[20px] my-[10px]">
+                    <div
+                      className={`py-[6px] px-[12px] rounded-md ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
+                    >
+                      {timeSlot?.time}
                     </div>
-                  ))}
-                </li>
-              </ul>
-            </div>
-          ))}
+
+                    {timeSlot.groups.map((group) => (
+                      <div className="flex items-center mx-[33px] ]">
+                        <div className="text-gray-1100 py-[8px] px-[11px] ">
+                          {group.interviewers.join("/")}
+                        </div>
+                        <div
+                          className={`text-gray-1100 py-[8px] px-[11px] rounded-md bg-gray-100 border border-gray-200 ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
+                        >
+                          {timeSlot.InterviewStatus === "InProgress" ? (
+                            <div className="relative">
+                              <p className="group cursor-pointer">
+                                {group.interviewees.join("/")}
+                              </p>
+                              <button className="absolute top-0 left-0 w-full h-full bg-transparent text-main-100 hidden group-hover:block">
+                                답변 기록하기
+                              </button>
+                            </div>
+                          ) : (
+                            <p>{group.interviewees.join("/")}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </li>
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
