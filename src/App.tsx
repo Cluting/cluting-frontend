@@ -70,7 +70,10 @@ export default function App() {
                 path="individual_question"
                 element={<ApplicantDocument />}
               />
-              <Route path="answer_record" element={<AnswerRecord />} />
+              <Route
+                path="answer_record/:intervieweeName"
+                element={<AnswerRecord />}
+              />
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>
 

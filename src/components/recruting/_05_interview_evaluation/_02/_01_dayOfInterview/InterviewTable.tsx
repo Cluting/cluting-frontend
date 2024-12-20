@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface InterviewGroup {
   category: string;
@@ -79,9 +79,14 @@ export default function InterviewTable() {
                               <p className="cursor-pointer group-hover:opacity-0 transition-opacity">
                                 {group.interviewees.join("/")}
                               </p>
-                              <button className="text-center absolute w-[100px]  top-[-8px] left-[-12px] rounded-md py-2 px-[11px] bg-main-100 text-white-100 opacity-0 group-hover:opacity-100 transition-opacity">
-                                답변 기록하기
-                              </button>
+                              <Link
+                                to={`/recruting/answer_record/${encodeURIComponent(group.interviewees.join("/"))}`}
+                                className="block w-full h-full"
+                              >
+                                <button className="text-center absolute w-[100px]  top-[-8px] left-[-12px] rounded-md py-2 px-[11px] bg-main-100 text-white-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  답변 기록하기
+                                </button>
+                              </Link>
                             </div>
                           ) : (
                             <p>{group.interviewees.join("/")}</p>
