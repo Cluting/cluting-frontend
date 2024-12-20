@@ -1,6 +1,10 @@
 import { useForm } from "react-hook-form";
 import Input from "../../../../common/Input";
 import { useEffect } from "react";
+import {
+  semesterList,
+  studentStatusList
+} from "../../../../../constants/recruting";
 
 // 학력 사항
 interface EducationInfoForm {
@@ -22,13 +26,21 @@ export default function EducationInfo({ user }: EducationInfoProps) {
     formState: { errors }
   } = useForm<EducationInfoForm>({ mode: "onChange" });
 
+  const statusDescription =
+    studentStatusList.find((status) => status?.value === user?.studentStatus)
+      ?.description || "";
+  const semesterDescription =
+    semesterList.find((semester) => {
+      semester?.value === user?.semester;
+    })?.description || "";
+
   useEffect(() => {
     if (user) {
       setValue("school", user.school || "");
       setValue("major", user.major || "");
       setValue("doubleMajor", user.doubleMajor || "");
-      setValue("studentStatus", user.studentStatus || "");
-      setValue("semester", user.semester || "");
+      setValue("studentStatus", statusDescription || "");
+      setValue("semester", semesterDescription || "");
     }
   }, [user, setValue]);
 

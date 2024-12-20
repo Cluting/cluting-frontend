@@ -49,8 +49,8 @@ export const ERROR_MESSAGES = {
 };
 
 export const studentStatusList = [
-  { id: 1, description: "재학" },
-  { id: 2, description: "휴학" }
+  { id: 1, description: "재학", value: "ENROLLED" },
+  { id: 2, description: "휴학", value: "LEAVE" }
 ];
 export const semesterList = [
   { id: 1, description: "1학년 1학기", value: "S1_1" },
