@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import UserProfile from "../../document/UserProfile";
+import QuestionContainer from "./QuestionContainer";
 
 export default function InterviewEvaluationRecordContainer() {
   return (
-    <div className="w-full h-full flex-col ">
+    <div className="w-full h-full flex-col items-center ">
       <div className="flex items-center gap-2 mb-10">
         <Link to="/recruting/05_interview_evaluation">
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
@@ -12,6 +14,10 @@ export default function InterviewEvaluationRecordContainer() {
         </p>
         <p className="text-title3 text-gray-800 mt-1">{"기획"}</p>
       </div>
+      <section className="relative w-[829px] ">
+        <UserProfile />
+        <QuestionContainer />
+      </section>
     </div>
   );
 }
