@@ -37,14 +37,9 @@ export default function LoginContainer() {
       >
         <div className="flex items-center gap-2">
           <img
-            src="/assets/logo/ic-logoIcon.svg"
+            src="/assets/logo/ic-logo-black.svg"
             alt="로고 아이콘"
-            className="w-[37px] h-[36px] "
-          />
-          <img
-            src="/assets/logo/ic-logoTitle.svg"
-            alt="로고 타이틀"
-            className="w-[140px] h-[58px]"
+            className="w-[200px] h-[40px] "
           />
         </div>
         <p className="text-title3 mt-[27px]">
