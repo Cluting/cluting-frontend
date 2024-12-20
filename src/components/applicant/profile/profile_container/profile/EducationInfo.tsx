@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import Input from "../../../../common/Input";
+import { useEffect } from "react";
 
 // 학력 사항
 interface EducationInfoForm {
@@ -10,14 +11,29 @@ interface EducationInfoForm {
   semester: string; // 학기
 }
 
-export default function EducationInfo() {
+interface EducationInfoProps {
+  user: User;
+}
+
+export default function EducationInfo({ user }: EducationInfoProps) {
   const {
     register,
+    setValue,
     formState: { errors }
   } = useForm<EducationInfoForm>({ mode: "onChange" });
 
+  useEffect(() => {
+    if (user) {
+      setValue("school", user.school || "");
+      setValue("major", user.major || "");
+      setValue("doubleMajor", user.doubleMajor || "");
+      setValue("studentStatus", user.studentStatus || "");
+      setValue("semester", user.semester || "");
+    }
+  }, [user, setValue]);
+
   return (
-    <div className="text-left">
+    <div className="text-left text-gray-1100">
       <h1 className="text-title2 text-gray-800">학력 사항</h1>
       <div className="grid grid-cols-[4fr,6fr] gap-4 items-center">
         <p className="text-headline text-gray-500">학교</p>
