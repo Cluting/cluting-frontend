@@ -65,7 +65,7 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
             <div className="w-32 text-sm font-medium text-left font-Pretendard">
               {item.isDecisionMode ? (
                 <button
-                  className="px-3 py-2 rounded-md bg-[#5E2BE8] text-white"
+                  className="px-3 py-2 rounded-md bg-[#5E2BE8] text-white-100"
                   onClick={() => onDecision?.(item.id)}
                 >
                   합불 결정하기

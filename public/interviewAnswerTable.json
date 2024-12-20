@@ -1,0 +1,86 @@
+[
+  {
+    "time": "10:00 AM",
+    "timeGroupId": 1,
+    "InterviewStatus": "Complete",
+    "groups": [
+      {
+        "category": "기획",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["김민지", "이태준"],
+        "interviewersId": 1,
+        "isAnswered": false
+      },
+      {
+        "category": "개발",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["김민지", "이태준"],
+        "interviewersId": 2,
+        "isAnswered": false
+      },
+      {
+        "category": "디자인",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["박시현", "박시현"],
+        "interviewersId": 3,
+        "isAnswered": false
+      }
+    ]
+  },
+  {
+    "time": "11:00 AM",
+    "timeGroupId": 2,
+    "InterviewStatus": "InProgress",
+    "groups": [
+      {
+        "category": "기획",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["김민지", "이태준"],
+        "interviewersId": 1,
+        "isAnswered": false
+      },
+      {
+        "category": "개발",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["김민지", "이태준"],
+        "interviewersId": 2,
+        "isAnswered": false
+      },
+      {
+        "category": "디자인",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["박시현", "박시현"],
+        "interviewersId": 3,
+        "isAnswered": false
+      }
+    ]
+  },
+  {
+    "time": "01:00 PM",
+    "timeGroupId": 3,
+    "InterviewStatus": "Before",
+    "groups": [
+      {
+        "category": "기획",
+        "interviewees": ["이민주", "최수영"],
+        "interviewers": ["이현수", "정세영"],
+        "interviewersId": 4,
+        "isAnswered": true
+      },
+      {
+        "category": "개발",
+        "interviewees": ["이민주", "최수영"],
+        "interviewers": ["이현수", "정세영"],
+        "interviewersId": 5,
+        "isAnswered": false
+      },
+      {
+        "category": "디자인",
+        "interviewees": ["이민주", "최수영"],
+        "interviewers": ["이현수", "정세영"],
+        "interviewersId": 6,
+        "isAnswered": false
+      }
+    ]
+  }
+]

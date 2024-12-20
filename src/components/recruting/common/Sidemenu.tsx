@@ -70,7 +70,8 @@ export default function Sidemenu() {
     //평가 페이지일 경우
     if (
       location.pathname === "/recruting/evaluation" ||
-      location.pathname === "/recruting/individual_question"
+      location.pathname === "/recruting/individual_question" ||
+      location.pathname === "/recruting/answer_record"
     ) {
       setEvaluationVersion(true);
       setSidemenuClose(true);
