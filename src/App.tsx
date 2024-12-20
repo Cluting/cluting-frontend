@@ -21,6 +21,7 @@ import ApplicantHome from "./pages/Applicant/ApplicantHome";
 import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
 import PublicRoute from "./components/common/PublicRoute";
 import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
+import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
 
 export default function App() {
   return (
@@ -66,13 +67,20 @@ export default function App() {
                 path="05_interview_evaluation"
                 element={<InterviewEvaluation />}
               />
+              {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question"
                 element={<ApplicantDocument />}
               />
+              {/* (면접) 답변 기록하기 */}
               <Route
                 path="answer_record/:intervieweeName"
                 element={<AnswerRecord />}
+              />
+              {/* 면접 평가하기 */}
+              <Route
+                path="interview_evaluation_record"
+                element={<InterviewEvaluationRecord />}
               />
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>

@@ -72,7 +72,8 @@ export default function Sidemenu() {
     if (
       location.pathname === "/recruting/evaluation" ||
       location.pathname === "/recruting/individual_question" ||
-      location.pathname.startsWith("/recruting/answer_record")
+      location.pathname.startsWith("/recruting/answer_record") ||
+      location.pathname.startsWith("/recruting/interview_evaluation_record")
     ) {
       setEvaluationVersion(true);
       setSidemenuClose(true);
