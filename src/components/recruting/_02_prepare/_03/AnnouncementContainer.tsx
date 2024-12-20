@@ -5,10 +5,28 @@ import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
 import AnnouncementContent from "./AnnouncementContent";
 import AnnouncementDetails from "./AnnouncementDetails";
+import { useMutation } from "@tanstack/react-query";
+import { postPrepare3 } from "../service/Step2";
+
+// 리크루팅 아이디 (하드코딩)
+const RECRUIT_ID = 1;
 
 export default function AnnouncementContainer() {
   //현재 단계 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
+
+  // Mutation 설정
+  const mutation = useMutation(
+    (data: AnnouncementForm) => postPrepare3(RECRUIT_ID, data),
+    {
+      onSuccess: (data) => {
+        console.log("등록 성공", data); // 성공 데이터 처리
+      },
+      onError: (error: any) => {
+        alert(`모집하기3 등록에에 실패하였습니다`);
+      }
+    }
+  );
 
   //Form 제출
   const methods = useForm<AnnouncementForm>();
@@ -16,6 +34,7 @@ export default function AnnouncementContainer() {
 
   const onSubmit = (data: AnnouncementForm) => {
     console.log(data);
+    mutation.mutate(data);
   };
 
   return (
