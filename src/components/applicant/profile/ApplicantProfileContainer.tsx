@@ -15,9 +15,9 @@ export default function ApplicantProfileContainer() {
   };
 
   return (
-    <div className="w-full h-screen flex-center bg-gray-100">
+    <div className="w-full h-full flex-center bg-gray-100">
       <div className="flex flex-col items-start ">
-        <h1>기본 프로필 설정</h1>
+        <h1 className="text-title2 mb-4">기본 프로필 설정</h1>
 
         <section>
           <div className="w-full ml-1 flex items-center gap-0">
@@ -34,7 +34,7 @@ export default function ApplicantProfileContainer() {
               포트폴리오
             </button>
           </div>
-          <div className="mt-4 w-full p-4 bg-white border rounded">
+          <div className="w-[1015px] bg-white border rounded-md">
             {currentMenu === "profile" && <ProfileContainer />}
             {currentMenu === "portfolio" && <PortfolioContainer />}
           </div>
