@@ -1,26 +1,23 @@
 //2-3 공고 작성
 
 import { useRef } from "react";
-import { useForm } from "react-hook-form";
 import useImageUpload from "../../../../hooks/useImageUpload";
+import { useFormContext } from "react-hook-form";
 
 export default function AnnouncementDetails() {
   const { previewUrl, handleImageChange } = useImageUpload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const {
+    register,
+    watch,
+    formState: { errors },
+    getValues
+  } = useFormContext();
+
   const handleClick = () => {
     fileInputRef.current?.click(); // 클릭 시 파일 선택 창 열기
   };
-
-  //Form 제출
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    watch
-  } = useForm<AnnouncementForm>({ mode: "onBlur" });
-  const onSubmit = handleSubmit((data) => console.log(data));
 
   //date 값
   const recruitmentStart = watch("recruitmentStartDate");
@@ -30,10 +27,7 @@ export default function AnnouncementDetails() {
   const activityStart = watch("activityStart");
   const activityEnd = watch("activityEnd");
   return (
-    <form
-      onSubmit={onSubmit}
-      className=" flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left"
-    >
+    <div className=" flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left">
       <label className="mt-6 announcement-title">포스터 업로드</label>
       <button
         type="button"
@@ -83,8 +77,8 @@ export default function AnnouncementDetails() {
         placeholder="ex) 환경 동아리 OO 7기 동아리원 모집"
         className={`input-background input-style ${errors.title ? "border-red-100" : ""}`}
       />
-      {errors.title && (
-        <p className="text-state-error">{errors.title.message}</p>
+      {errors?.title && (
+        <p className="text-state-error">{errors?.title?.message?.toString()}</p>
       )}
 
       <label className="mt-6 announcement-title">
@@ -117,7 +111,6 @@ export default function AnnouncementDetails() {
           {...register("recruitmentEndDate", {
             required: "필수 선택 사항입니다.",
             validate: (value) => {
-              const recruitmentStart = getValues("recruitmentStartDate");
               return (
                 !recruitmentStart ||
                 new Date(value) >= new Date(recruitmentStart) ||
@@ -143,7 +136,9 @@ export default function AnnouncementDetails() {
         )}
       </div>
       {errors.recruitmentEndDate && (
-        <p className="text-state-error">{errors.recruitmentEndDate.message}</p>
+        <p className="text-state-error">
+          {errors.recruitmentEndDate.message?.toString()}
+        </p>
       )}
 
       <div className="mt-6 relative">
@@ -171,7 +166,7 @@ export default function AnnouncementDetails() {
         )}
         {errors.documentResultDate && (
           <p className="text-state-error">
-            {errors.documentResultDate.message}
+            {errors.documentResultDate.message?.toString()}
           </p>
         )}
       </div>
@@ -200,7 +195,9 @@ export default function AnnouncementDetails() {
           </span>
         )}
         {errors.finalResultDate && (
-          <p className="text-state-error">{errors.finalResultDate.message}</p>
+          <p className="text-state-error">
+            {errors.finalResultDate.message?.toString()}
+          </p>
         )}
       </div>
 
@@ -225,8 +222,10 @@ export default function AnnouncementDetails() {
           alt="불러오기"
           className="absolute top-11 left-5 w-[24px] h-[24px] "
         />
-        {errors.recruitmentNumber && (
-          <p className="text-state-error">{errors.recruitmentNumber.message}</p>
+        {errors?.recruitmentNumber && (
+          <p className="text-state-error">
+            {errors?.recruitmentNumber?.message?.toString()}
+          </p>
         )}
       </div>
 
@@ -282,7 +281,9 @@ export default function AnnouncementDetails() {
         )}
       </div>
       {errors.activityEnd && (
-        <p className="text-state-error">{errors.activityEnd.message}</p>
+        <p className="text-state-error">
+          {errors?.activityEnd?.message?.toString()}
+        </p>
       )}
 
       <div className="mt-6 relative">
@@ -331,15 +332,6 @@ export default function AnnouncementDetails() {
           className="absolute top-11 left-5 w-[22px] h-[22px] "
         />
       </div>
-
-      <button
-        type="submit"
-        onClick={() => {
-          onSubmit();
-        }}
-      >
-        form 제출 테스트
-      </button>
-    </form>
+    </div>
   );
 }
