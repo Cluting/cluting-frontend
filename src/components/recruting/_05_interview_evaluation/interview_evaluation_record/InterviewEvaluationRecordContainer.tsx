@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import UserProfile from "../../document/UserProfile";
-import QuestionContainer from "./QuestionContainer";
+import QuestionAnswer from "./QuestionAnswer";
 
 export default function InterviewEvaluationRecordContainer() {
   return (
@@ -16,7 +16,11 @@ export default function InterviewEvaluationRecordContainer() {
       </div>
       <section className="relative w-[829px] ">
         <UserProfile />
-        <QuestionContainer />
+        <div className="mt-5">
+          <QuestionAnswer type="common" />
+          <QuestionAnswer type="part" />
+          <QuestionAnswer type="individual" />
+        </div>
       </section>
     </div>
   );
