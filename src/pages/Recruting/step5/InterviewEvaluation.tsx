@@ -19,7 +19,7 @@ export default function InterviewEvaluation() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="w-[1016px] pl-8  mb-[143px]">
+      <div className="flex flex-col gap-7 w-[1016px] pl-8 mb-[143px]">
         <TopSection />
         <CurrentStepComponent />
       </div>
