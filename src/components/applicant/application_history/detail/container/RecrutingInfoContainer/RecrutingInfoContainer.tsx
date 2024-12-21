@@ -2,8 +2,8 @@ import Chart from "./Chart";
 
 export default function RecrutingInfoContainer() {
   return (
-    <div className="w-full min-h-[1062px] px-7 py-[26px]">
-      <div className="w-[390px] px-[19px] py-[17px] bg-gray-50 border border-gray-200 rounded-lg">
+    <div className="relative w-full min-h-[1062px] px-7 py-[26px]">
+      <div className="absolute right-7 w-[390px] px-[19px] py-[17px] bg-gray-50 border border-gray-200 rounded-lg">
         <div className="mb-[30px]">
           <p className="mb-[14px] font-bold text-gray-800 text-left">
             평균 점수
