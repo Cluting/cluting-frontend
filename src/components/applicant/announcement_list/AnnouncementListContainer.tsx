@@ -45,7 +45,7 @@ export default function AnnouncementListContainer() {
               최근 본 동아리
             </button>
           </div>
-          <div className="w-[1015px] py-[39px] px-12 bg-white-100 rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
+          <div className="w-[1015px] px-12 py-10 bg-white-100 rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
             {menu === "inProgress" && <InProgressContainer />}
             {menu === "applied" && <AppliedContainer />}
             {menu === "bookmark" && <BookmarkContainer />}

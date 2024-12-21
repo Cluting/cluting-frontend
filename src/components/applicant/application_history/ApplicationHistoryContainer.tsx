@@ -12,7 +12,7 @@ export default function ApplicationHistoryContainer() {
   };
 
   return (
-    <div className="w-full h-screen  bg-gray-100">
+    <div className="w-full h-screen bg-gray-100">
       <div className="ml-[34.38px] mt-7 flex flex-col items-start ">
         <h1 className="text-title2 font-bold mb-4">나의 지원 기록</h1>
 
@@ -31,7 +31,7 @@ export default function ApplicationHistoryContainer() {
               불합격한 동아리
             </button>
           </div>
-          <div className="w-[1015px] p-4 bg-white-100 border rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
+          <div className="w-[1015px] px-12 py-10 bg-white-100  rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
             {menu === "pass" && <PassClubContainer />}
             {menu === "fail" && <FailClubContainer />}
           </div>

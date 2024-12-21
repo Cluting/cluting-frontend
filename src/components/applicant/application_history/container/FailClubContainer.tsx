@@ -1,8 +1,12 @@
 //불합격한 동아리
 import ClubCard from "../../../recruting/home/ClubCard";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function FailClubContainer() {
+  const { menu } = useParams();
+  const navigate = useNavigate();
+
   const clubsData = [
     {
       id: uuidv4(),
@@ -35,21 +39,31 @@ export default function FailClubContainer() {
       tags: ["문화예술", "밴드", "인디"]
     }
   ];
+
+  const handleCardClick = (clubId: string) => {
+    navigate(`/applicant/applications/${menu}/detail`);
+  };
+
   return (
     <div className="w-full min-h-[630px] bg-white-100">
       <div className="grid grid-cols-3 gap-8">
         {clubsData.map((club, index) => (
-          <ClubCard
-            id={club.id}
+          <div
             key={club.id}
-            dDay={club.dDay}
-            clubImg={club.clubImg}
-            logoSrc={club.logoSrc}
-            logoAlt={club.logoAlt}
-            title={club.title}
-            clubName={club.clubName}
-            tags={club.tags}
-          />
+            onClick={() => handleCardClick(club.id)}
+            className="cursor-pointer"
+          >
+            <ClubCard
+              id={club.id}
+              dDay={club.dDay}
+              clubImg={club.clubImg}
+              logoSrc={club.logoSrc}
+              logoAlt={club.logoAlt}
+              title={club.title}
+              clubName={club.clubName}
+              tags={club.tags}
+            />
+          </div>
         ))}
       </div>
     </div>
