@@ -117,7 +117,7 @@ export default function Chart() {
     <div>
       <div className="absolute inset-0">
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
+          <PieChart className="[&_.recharts-sector:focus]:outline-none">
             <Pie
               data={gradeData}
               cx="30%"
