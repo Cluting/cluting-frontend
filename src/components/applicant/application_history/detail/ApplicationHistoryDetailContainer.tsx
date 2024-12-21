@@ -1,8 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import MyDocumentContainer from "./container/UserProfileCard/MyDocumentContainer";
 import MyPortfolioContainer from "./container/MyPortfolioContainer";
-import RecrutingInfoContainer from "./container/RecrutingInfoContainer";
-
+import RecrutingInfoContainer from "./container/RecrutingInfoContainer/RecrutingInfoContainer";
+import ClubInfo from "./ClubInfo";
 // 나의 지원 기록 상세
 export default function ApplicationHistoryDetailContainer() {
   const navigate = useNavigate();
@@ -19,24 +19,7 @@ export default function ApplicationHistoryDetailContainer() {
     <div className="w-full h-screen mt-[28px] ml-[52px] bg-gray-100">
       <div className="flex flex-col items-start">
         <div>
-          <div className="flex-center px-[15px] py-[10px] bg-main-300 rounded-[10px]">
-            <div className="relative flex-center mr-3 w-[54px] h-[54px] rounded-full bg-main-400">
-              <img
-                src="/assets/home/banner/popularClub2Logo.svg"
-                alt="동아리 로고"
-                className="flex-center w-[42px] h-[42px] rounded-full object-cover"
-              />
-            </div>
-            <p className="text-body font-semibold mr-[19px]">
-              IT 서비스 동아리 잇타(7기)
-            </p>
-            <p className="mr-[19px] text-[14px] text-gray-600 font-semibold">
-              지원 일자: 2024.02.13
-            </p>
-            <p className="w-[46px] h-[25px] bg-white-100 rounded-[5px] text-[#007AFF] font-semibold">
-              합격
-            </p>
-          </div>
+          <ClubInfo />
         </div>
         <section>
           <div className="mt-[28px] w-full flex items-center gap-0">
