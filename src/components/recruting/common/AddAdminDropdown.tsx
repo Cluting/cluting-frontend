@@ -1,4 +1,4 @@
-import { ALL_ADMINS } from "../../../../constants/recruting";
+import { ALL_ADMINS } from "../../../constants/recruting";
 
 interface AddAdminDropdownProps {
   onSelect: (admin: string) => void; // 운영진 선택시 호출될 함수

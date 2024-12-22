@@ -25,7 +25,7 @@ export default function App() {
   return (
     <div className="App">
       <Header />
-      <div className="relative bg-white-100 h-full w-full">
+      <div className="relative w-full h-full bg-white-100">
         <div className="relative bg-white-100 h-full w-full pt-[55px]">
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -69,6 +69,7 @@ export default function App() {
                 path="individual_question"
                 element={<ApplicantDocument />}
               />
+              {/* <Route path="answer_record" element={<AnswerRecord />} /> */}
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>
 

@@ -1,0 +1,84 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+interface InterviewGroup {
+  category: string;
+  interviewees: string[];
+  interviewers: string[];
+  interviewersId: number;
+  isAnswered: boolean;
+}
+
+interface TimeSlot {
+  time: string;
+  timeGroupId: number;
+  InterviewStatus: string;
+  groups: InterviewGroup[];
+}
+
+export default function InterviewTable() {
+  const navigate = useNavigate();
+
+  const [timeSlots, TimeSlot] = useState<TimeSlot[]>([]); // 시간과 그룹 데이터를 저장
+
+  useEffect(() => {
+    // JSON 데이터 불러오기
+    fetch("/interviewAnswerTable.json")
+      .then((response) => response.json())
+      .then((data: TimeSlot[]) => TimeSlot(data))
+      .catch((error) => console.error("JSON 오류:", error));
+
+    console.log(timeSlots);
+  }, []);
+
+  return (
+    <div className="w-full text-caption3">
+      <div className="w-full h-min-[593px] h-[593px] bg-white-100 rounded-lg custom-shadow">
+        <ul className="flex w-full bg-main-300 border border-[#D6D7DA] text-[16px] text-[#7E7E7E] font-semibold rounded-t-lg">
+          <li className="py-[11px] w-[57px] ml-[20px]">시간대 </li>
+          <li className="py-[11px] w-[100px] ml-[28px]">면접 그룹</li>
+        </ul>
+
+        <div className="flex flex-col mt-[18px]">
+          {timeSlots.map((timeSlot) => (
+            <div className="flex">
+              <ul>
+                <li className="flex items-center ml-[20px] my-[10px]">
+                  <div
+                    className={`py-[6px] px-[12px] rounded-md ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
+                  >
+                    {timeSlot?.time}
+                  </div>
+
+                  {timeSlot.groups.map((group) => (
+                    <div className="flex items-center mx-[33px] ]">
+                      <div className="text-gray-1100 py-[8px] px-[11px] ">
+                        {group.interviewers.join("/")}
+                      </div>
+                      <div
+                        className={`text-gray-1100 py-[8px] px-[11px] rounded-md bg-gray-100 border border-gray-200 ${timeSlot.InterviewStatus === "Complete" ? "bg-gray-200 text-gray-600" : timeSlot.InterviewStatus === "InProgress" ? "bg-gray-150 text-main-100" : "bg-gray-100"}`}
+                      >
+                        {timeSlot.InterviewStatus === "InProgress" ? (
+                          <div className="relative">
+                            <p className="group cursor-pointer">
+                              {group.interviewees.join("/")}
+                            </p>
+                            <button className="absolute top-0 left-0 w-full h-full bg-transparent text-main-100 hidden group-hover:block">
+                              답변 기록하기
+                            </button>
+                          </div>
+                        ) : (
+                          <p>{group.interviewees.join("/")}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </li>
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

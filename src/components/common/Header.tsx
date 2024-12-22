@@ -15,7 +15,7 @@ export default function Header() {
           <img
             src="/assets/logo/ic-logoIcon.svg"
             alt="로고 아이콘"
-            className="w-[20px] h-[23px] "
+            className="w-[40px] h-[40px] "
           />
           <img
             src="/assets/logo/ic-logoTitle.svg"
