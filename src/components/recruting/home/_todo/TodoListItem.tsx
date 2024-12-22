@@ -5,7 +5,7 @@ export default function TodoListItem({
   onToggle,
   onRemove
 }: TodoListItemProps) {
-  const { id, text, checked } = todo;
+  const { id, content, status } = todo;
 
   return (
     <div className="p-3 flex items-center group">
@@ -21,7 +21,7 @@ export default function TodoListItem({
           />
 
           {/* 호버 상태일 때 */}
-          {!checked && (
+          {!status && (
             <>
               <img
                 src="/assets/ic-checkbox.svg"
@@ -36,7 +36,7 @@ export default function TodoListItem({
             </>
           )}
 
-          {checked && (
+          {status && (
             <>
               <img
                 src="/assets/ic-checkbox.svg"
@@ -51,8 +51,8 @@ export default function TodoListItem({
             </>
           )}
         </div>
-        <div className={cn("ml-2 flex-1", { "line-through": checked })}>
-          {text}
+        <div className={cn("ml-2 flex-1", { "line-through": status })}>
+          {content}
         </div>
         <img
           src="/assets/ic-minusCircleGray600.svg"

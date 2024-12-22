@@ -247,8 +247,8 @@ declare interface TodoInsertProps {
 
 declare interface Todo {
   id: number;
-  text: string;
-  checked: boolean;
+  content: string;
+  status: boolean;
 }
 
 declare interface TodoListProps {
