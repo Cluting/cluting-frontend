@@ -1,6 +1,10 @@
 import cn from "classnames";
 
-export default function TodoListItem({ todo, onToggle }: TodoListItemProps) {
+export default function TodoListItem({
+  todo,
+  onToggle,
+  onRemove
+}: TodoListItemProps) {
   const { id, text, checked } = todo;
 
   return (
@@ -50,6 +54,11 @@ export default function TodoListItem({ todo, onToggle }: TodoListItemProps) {
         <div className={cn("ml-2 flex-1", { "line-through": checked })}>
           {text}
         </div>
+        <img
+          src="/assets/ic-minusCircleGray600.svg"
+          onClick={() => onRemove(id)}
+          className="w-4"
+        />
       </div>
     </div>
   );

@@ -16,6 +16,13 @@ export default function TodoTemplate() {
     nextId.current += 1;
   }, []);
 
+  const onRemove = useCallback(
+    (id: number) => {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    },
+    [todos]
+  );
+
   const onToggle = useCallback((id: number) => {
     setTodos((todos) =>
       todos.map((todo) =>
@@ -31,13 +38,21 @@ export default function TodoTemplate() {
     <div className="w-[585px] h-[340.88] bg-[#F2F2F7] px-[9px] py-[13px] pb-[20.88px] mx-auto rounded-xl overflow-hidden relative flex">
       <div className="w-1/2 flex flex-col justify-between ">
         <div className="h-[265px] overflow-auto">
-          <TodoList todos={incompleteTodos} onToggle={onToggle} />
+          <TodoList
+            todos={incompleteTodos}
+            onToggle={onToggle}
+            onRemove={onRemove}
+          />
         </div>
         <TodoInsert onInsert={onInsert} />
       </div>
       <div className="w-1/2">
         <div className="h-[307px] overflow-auto">
-          <TodoList todos={completedTodos} onToggle={onToggle} />
+          <TodoList
+            todos={completedTodos}
+            onToggle={onToggle}
+            onRemove={onRemove}
+          />
         </div>
       </div>
     </div>

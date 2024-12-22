@@ -254,9 +254,11 @@ declare interface Todo {
 declare interface TodoListProps {
   todos: Todo[];
   onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
 }
 
 interface TodoListItemProps {
   todo: Todo;
   onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
 }
