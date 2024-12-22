@@ -6,15 +6,15 @@ export async function getTodos() {
     const { data } = await Instance.get("/todo");
     return data;
   } catch (error) {
-    console.error("TODO 완료 상태 변경 실패:", error);
+    console.error("TODO 조회 실패:", error);
     throw error;
   }
 }
 
 //POST: 투두 생성
-export async function createTodo(todoId: Todo) {
+export async function createTodo(todoData: any) {
   try {
-    const { data } = await Instance.post("/todo", todoId);
+    const { data } = await Instance.post("/todo", todoData);
     return data;
   } catch (error) {
     console.error("TODO 생성 실패:", error);
@@ -23,9 +23,9 @@ export async function createTodo(todoId: Todo) {
 }
 
 //DELETE: 투두 삭제
-export async function deleteTodo(todoId: Todo) {
+export async function deleteTodo(todoId: string) {
   try {
-    const { data } = await Instance.get(`/todo/${todoId}`);
+    const { data } = await Instance.delete(`/todo/${todoId}`);
     return data;
   } catch (error) {
     console.error("TODO 삭제 실패:", error);
@@ -37,9 +37,9 @@ export async function deleteTodo(todoId: Todo) {
 // export async function deleteTodo(todoData: Todo) {}
 
 //PATCH: 투두 완료 상태 변경
-export async function updateTodoStatus(todoId: Todo) {
+export async function updateTodoStatus(todoId: string) {
   try {
-    const { data } = await Instance.get(`/todo/status/${todoId}`);
+    const { data } = await Instance.patch(`/todo/status/${todoId}`);
     return data;
   } catch (error) {
     console.error("TODO 완료 상태 변경 실패:", error);

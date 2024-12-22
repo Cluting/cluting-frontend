@@ -1,29 +1,63 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoList from "./TodoList";
+import {
+  getTodos,
+  createTodo,
+  deleteTodo,
+  updateTodoStatus
+} from "./service/todo";
 
 export default function TodoTemplate() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const nextId = useRef<number>(0);
 
-  const onInsert = useCallback((content: string) => {
-    const todo: Todo = {
-      id: nextId.current,
-      content,
-      status: false
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const fetchedTodos = await getTodos();
+      setTodos(fetchedTodos);
     };
-    setTodos((todos) => todos.concat(todo));
-    nextId.current += 1;
+
+    fetchTodos();
   }, []);
 
-  const onRemove = useCallback(
-    (id: number) => {
-      setTodos(todos.filter((todo) => todo.id !== id));
-    },
-    [todos]
-  );
+  // const onInsert = useCallback((content: string) => {
+  //   const todo: Todo = {
+  //     id: nextId.current,
+  //     content,
+  //     status: false
+  //   };
+  //   setTodos((todos) => todos.concat(todo));
+  //   nextId.current += 1;
+  // }, []);
 
-  const onToggle = useCallback((id: number) => {
+  const onInsert = useCallback(async (content: string) => {
+    const newTodo = await createTodo({ content, status: false });
+    setTodos((todos) => [...todos, { ...newTodo, id: newTodo.id }]);
+  }, []);
+
+  // const onRemove = useCallback(
+  //   (id: number) => {
+  //     setTodos(todos.filter((todo) => todo.id !== id));
+  //   },
+  //   [todos]
+  // );
+
+  const onRemove = useCallback(async (id: number) => {
+    await deleteTodo(id.toString());
+    setTodos((todos) => todos.filter((todo) => todo.id !== id));
+  }, []);
+
+  // const onToggle = useCallback((id: number) => {
+  //   setTodos((todos) =>
+  //     todos.map((todo) =>
+  //       todo.id === id ? { ...todo, status: !todo.status } : todo
+  //     )
+  //   );
+  // }, []);
+
+  const onToggle = useCallback(async (id: number) => {
+    await updateTodoStatus(id.toString());
     setTodos((todos) =>
       todos.map((todo) =>
         todo.id === id ? { ...todo, status: !todo.status } : todo
