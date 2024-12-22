@@ -37,7 +37,7 @@ export default function TodoTemplate() {
   return (
     <div className="w-[585px] h-[340.88] bg-[#F2F2F7] px-[9px] py-[13px] pb-[20.88px] mx-auto rounded-xl overflow-hidden relative flex">
       <div className="w-1/2 flex flex-col justify-between ">
-        <div className="h-[265px] overflow-auto">
+        <div className="h-[265px] overflow-auto border-r-4">
           <TodoList
             todos={incompleteTodos}
             onToggle={onToggle}

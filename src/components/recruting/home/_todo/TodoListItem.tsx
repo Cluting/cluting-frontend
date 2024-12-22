@@ -8,7 +8,7 @@ export default function TodoListItem({
   const { id, text, checked } = todo;
 
   return (
-    <div className="pt-[0] pr-[7px] pb-[18px] pl-[10px] flex items-center group">
+    <div className="p-3 flex items-center group">
       <div
         className="cursor-pointer flex-1 flex items-center text-left text-[13px]"
         onClick={() => onToggle(id)}
