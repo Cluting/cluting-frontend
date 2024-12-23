@@ -1,7 +1,7 @@
 //운영진 추가 모달
 
 import { useState } from "react";
-import { ModalPortal } from "../../common/ModalPortal";
+import { ModalPortal } from "../../../common/ModalPortal";
 
 type AddAdminModalProps = {
   onClose: () => void;

@@ -47,3 +47,14 @@ export async function postClub(clubData: RegisterClubFormValue) {
     throw error;
   }
 }
+
+// PUT: 동아리 리크루팅 시작 API
+export async function startClubRecruiting(clubId: number) {
+  try {
+    const { data } = await Instance.put(`/club/start/${clubId}`);
+    return data;
+  } catch (error) {
+    console.error("동아리 리크루팅 시작 실패:", error);
+    throw error;
+  }
+}

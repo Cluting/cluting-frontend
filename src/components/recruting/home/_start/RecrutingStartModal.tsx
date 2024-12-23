@@ -1,12 +1,12 @@
 //리크루팅 시작하기 모달
 
 import { useForm } from "react-hook-form";
-import { ModalPortal } from "../../common/ModalPortal";
-import { ERROR_MESSAGES } from "../../../constants/recruting";
+import { ModalPortal } from "../../../common/ModalPortal";
+import { ERROR_MESSAGES } from "../../../../constants/recruting";
 import {
   useRecruitmentSessionStore,
   useRecruitmentStartStore
-} from "../../../store/useStore";
+} from "../../../../store/useStore";
 
 type RecrutingStartModalProps = {
   onClose: () => void;

@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import PopularClub from "./PopularClub";
-import { getPopularClub } from "../../club/service/Club";
-import { clubCategoryList } from "../../../constants/recruting";
-import LoadingSpinner from "../common/LoadingSpinner";
+import { getPopularClub } from "../../../club/service/Club";
+import { clubCategoryList } from "../../../../constants/recruting";
+import LoadingSpinner from "../../common/LoadingSpinner";
 
 function mapClubDataToPopularClubProps(club: ClubData): PopularClubProps {
   const categoryDescription =
