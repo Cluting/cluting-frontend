@@ -9,7 +9,7 @@ import IndividualQuestionWindow from "../../../components/recruting/_05_intervie
 
 //3 - 리크루팅 : 서류 평가하기 단계
 export default function ApplicantDocument() {
-  const [view, setView] = useState("application"); // 초기 상태는 "application"
+  const [view, setView] = useState("application");
   // 현재 경로 가져오기
   const location = useLocation();
 
@@ -19,7 +19,6 @@ export default function ApplicantDocument() {
         <Sidemenu />
       </div>
       <div className="z-[0] flex-center absolute top-50 left-28">
-        {/* TODO: 뒤로가기 버튼 추가 , 링크 연결 */}
         <p className="text-title1">김민지</p>
         <p className="text-gray-800 text-title3 ml-[5px]">기획</p>
       </div>

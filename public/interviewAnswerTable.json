@@ -24,6 +24,13 @@
         "interviewers": ["박시현", "박시현"],
         "interviewersId": 3,
         "isAnswered": false
+      },
+      {
+        "category": "마케팅",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["박시현", "박시현"],
+        "interviewersId": 3,
+        "isAnswered": false
       }
     ]
   },
@@ -48,6 +55,13 @@
       },
       {
         "category": "디자인",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["박시현", "박시현"],
+        "interviewersId": 3,
+        "isAnswered": false
+      },
+      {
+        "category": "마케팅",
         "interviewees": ["박시현", "최예은"],
         "interviewers": ["박시현", "박시현"],
         "interviewersId": 3,
@@ -79,6 +93,13 @@
         "interviewees": ["이민주", "최수영"],
         "interviewers": ["이현수", "정세영"],
         "interviewersId": 6,
+        "isAnswered": false
+      },
+      {
+        "category": "마케팅",
+        "interviewees": ["박시현", "최예은"],
+        "interviewers": ["박시현", "박시현"],
+        "interviewersId": 3,
         "isAnswered": false
       }
     ]
