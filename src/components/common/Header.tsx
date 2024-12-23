@@ -15,7 +15,7 @@ export default function Header() {
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
-      <Link to="/">
+      <Link to="/main">
         <div className="flex items-center gap-2">
           <img
             src="/assets/logo/ic-logoIcon.svg"

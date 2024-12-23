@@ -26,6 +26,7 @@ export default function MainBanner() {
     getPopularClub
   );
 
+  console.log(clubsData);
   if (isLoading) return <LoadingSpinner />;
 
   return (

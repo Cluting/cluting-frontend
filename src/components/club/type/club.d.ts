@@ -15,6 +15,14 @@ declare interface Recruit {
   interviewDuration: number;
 }
 
+// 동아리 (Club) 전역 상태
+declare interface ClubStore {
+  clubId: number | null;
+  clubName: string;
+  setClubId: (id: number) => void;
+  setClubName: (name: string) => void;
+}
+
 declare interface ClubData {
   id: number;
   recruits: Recruit[];
