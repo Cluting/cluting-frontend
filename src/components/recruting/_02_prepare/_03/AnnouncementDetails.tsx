@@ -29,6 +29,7 @@ export default function AnnouncementDetails() {
   const finalResultAnnouncementDate = watch("finalResultAnnouncementDate");
   const activityStart = watch("activityStart");
   const activityEnd = watch("activityEnd");
+
   return (
     <form
       onSubmit={onSubmit}
