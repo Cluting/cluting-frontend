@@ -12,6 +12,8 @@ import Textarea from "../common/Textarea";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterClubContainer() {
+  const navigate = useNavigate();
+
   const {
     watch,
     register,
@@ -20,10 +22,8 @@ export default function RegisterClubContainer() {
     formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
-  const navigate = useNavigate();
-
   const { mutate } = useMutation(postClub, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       console.log("동아리가 성공적으로 등록되었습니다!");
       navigate("/main");
     },

@@ -19,8 +19,7 @@ declare interface Recruit {
 declare interface ClubStore {
   clubId: number | null;
   clubName: string;
-  setClubId: (id: number) => void;
-  setClubName: (name: string) => void;
+  setClubInfo: (id: number, name: string) => void;
 }
 
 declare interface ClubData {

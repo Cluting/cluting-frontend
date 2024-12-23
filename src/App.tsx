@@ -48,7 +48,7 @@ export default function App() {
             />
             <Route path="/register_club" element={<RegisterClub />} />
             <Route path="recruting">
-              <Route path="home" element={<RecrutingHome />} />
+              <Route path="home/:clubId" element={<RecrutingHome />} />
               {/* 수정된 경로 */}
               <Route path="01_plan" element={<RecrutingPlan />} />
               <Route path="02_prepare" element={<RecrutingPrepare />} />
