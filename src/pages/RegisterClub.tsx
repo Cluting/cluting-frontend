@@ -1,4 +1,4 @@
-import RegisterClubContainer from "../components/common/RegisterClubContainer";
+import RegisterClubContainer from "../components/club/RegisterClubContainer";
 
 export default function RegisterClub() {
   return (
