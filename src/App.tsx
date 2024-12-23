@@ -19,7 +19,6 @@ import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
 import ApplicantHome from "./pages/Applicant/ApplicantHome";
 import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
-import PublicRoute from "./components/common/PublicRoute";
 import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
 import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
 import PublicRoute from "./components/login/PublicRoute";
