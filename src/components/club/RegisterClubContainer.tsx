@@ -60,7 +60,7 @@ export default function RegisterClubContainer() {
     >
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
-        <UploadProfile name="profile" register={register} setValue={setValue} />
+        {/* <UploadProfile name="profile" register={register} setValue={setValue} /> */}
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 mt-4 mb-8" />

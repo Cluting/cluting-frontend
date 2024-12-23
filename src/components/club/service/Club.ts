@@ -36,43 +36,8 @@ export async function getPopularClub() {
 // POST: 동아리 등록
 export async function postClub(clubData: RegisterClubFormValue) {
   try {
-    // FormData 객체 생성
-    const formData = new FormData();
-
-    // clubCreateRequestDto를 Blob 객체로 변환하여 추가
-    const clubCreateRequestDtoBlob = new Blob(
-      [
-        JSON.stringify({
-          name: clubData.name,
-          description: clubData.description,
-          category: clubData.category,
-          type: clubData.type,
-          keyword: JSON.stringify(clubData.keyword) // 배열을 JSON 문자열로 변환
-        })
-      ],
-      { type: "application/json" }
-    );
-    formData.append("clubCreateRequestDto", clubCreateRequestDtoBlob);
-
-    // profile은 파일 객체로 추가
-    if (clubData.profile && clubData.profile instanceof File) {
-      formData.append("profile", clubData.profile, clubData.profile.name);
-    } else {
-      console.warn("Invalid profile file:", clubData.profile);
-    }
-
-    // FormData 출력 (디버깅 용도)
-    formData.forEach((value, key) => {
-      console.log(`FormData - ${key}:`, value);
-    });
-
     // API 호출
-    const { data } = await Instance.post("/club/register", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data", // FormData를 처리하도록 설정
-        Accept: "application/json"
-      }
-    });
+    const { data } = await Instance.post("/club/register", clubData);
 
     // 성공 응답 반환
     return data;
