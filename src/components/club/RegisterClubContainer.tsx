@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { postClub } from "./service/Club";
 import Input from "../common/Input";
 import Textarea from "../common/Textarea";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterClubContainer() {
   const {
@@ -19,9 +20,12 @@ export default function RegisterClubContainer() {
     formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
+  const navigate = useNavigate();
+
   const { mutate } = useMutation(postClub, {
     onSuccess: () => {
       console.log("동아리가 성공적으로 등록되었습니다!");
+      navigate("/main");
     },
     onError: (error) => {
       console.error("동아리 등록 중 오류 발생:", error);
