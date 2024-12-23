@@ -18,14 +18,9 @@ export default function Header() {
       <Link to="/main">
         <div className="flex items-center gap-2">
           <img
-            src="/assets/logo/ic-logoIcon.svg"
+            src="/assets/logo/ic-logo.svg"
             alt="로고 아이콘"
-            className="w-[40px] h-[40px] "
-          />
-          <img
-            src="/assets/logo/ic-logoTitle.svg"
-            alt="로고 타이틀"
-            className="w-[80px] h-[33px]"
+            className="w-[120px] h-[40px] "
           />
         </div>
       </Link>

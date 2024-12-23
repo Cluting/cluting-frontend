@@ -1,4 +1,4 @@
-//5 - 답변 기록 페이지
+//5 - 답변 기록
 import AnswerRecordContainer from "../../../components/recruting/_05_interview_evaluation/answer_record/AnswerRecordContainer";
 import Sidemenu from "../../../components/recruting/common/Sidemenu";
 
