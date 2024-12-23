@@ -10,9 +10,9 @@ function mapClubDataToPopularClubProps(club: ClubData): PopularClubProps {
       ?.description || "기타";
 
   return {
-    logoSrc: club.profile || "/assets/default-logo.svg",
+    logoSrc: club.profile || "/assets/ic-add.svg",
     logoAlt: `${club.name} 로고`,
-    mainImageSrc: club.recruits[0]?.image || "/assets/default-image.svg",
+    mainImageSrc: club.recruits[0]?.image || "/assets/home/profile-default.png",
     clubType: club.type === "INTERNAL" ? "교내" : "연합",
     clubTitleFirst: categoryDescription,
     clubTitleSecond: club.name,
@@ -26,11 +26,7 @@ export default function MainBanner() {
     getPopularClub
   );
 
-  console.log(clubsData);
-
-  // TODO: 로딩, 에러 처리
   if (isLoading) return <LoadingSpinner />;
-  // if (error) return <div>Error fetching popular clubs</div>;
 
   return (
     <div className="relative w-full h-[378px]">
