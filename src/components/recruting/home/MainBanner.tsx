@@ -1,35 +1,36 @@
+import { useQuery } from "@tanstack/react-query";
 import PopularClub from "./PopularClub";
+import { getPopularClub } from "../../club/service/Club";
+import { clubCategoryList } from "../../../constants/recruting";
+import LoadingSpinner from "../common/LoadingSpinner";
+
+function mapClubDataToPopularClubProps(club: ClubData): PopularClubProps {
+  const categoryDescription =
+    clubCategoryList.find((category) => category.value === club.category)
+      ?.description || "기타";
+
+  return {
+    logoSrc: club.profile || "/assets/default-logo.svg",
+    logoAlt: `${club.name} 로고`,
+    mainImageSrc: club.recruits[0]?.image || "/assets/default-image.svg",
+    clubType: club.type === "INTERNAL" ? "교내" : "연합",
+    clubTitleFirst: categoryDescription,
+    clubTitleSecond: club.name,
+    tags: club.keyword
+  };
+}
 
 export default function MainBanner() {
-  const clubsData = [
-    {
-      logoSrc: "assets/home/banner/popularClub1Logo.svg",
-      logoAlt: "요술랭 로고",
-      mainImageSrc: "assets/home/banner/popularClub1.svg",
-      clubType: "연합",
-      clubTitleFirst: "대학 연합",
-      clubTitleSecond: "요리 동아리 요슐랭",
-      tags: ["이색", "요리", "친목"]
-    },
-    {
-      logoSrc: "assets/home/banner/popularClub2Logo.svg",
-      logoAlt: "잇타 로고",
-      mainImageSrc: "assets/home/banner/popularClub2.svg",
-      clubType: "연합",
-      clubTitleFirst: "IT 서비스",
-      clubTitleSecond: "동아리 잇타",
-      tags: ["IT", "프로그래밍", "서비스기획"]
-    },
-    {
-      logoSrc: "assets/home/banner/popularClub3Logo.svg",
-      logoAlt: "세번째 동아리 로고",
-      mainImageSrc: "assets/home/banner/popularClub3.svg",
-      clubType: "교내",
-      clubTitleFirst: "데이터 기반",
-      clubTitleSecond: "UX 학회 UXO",
-      tags: ["UX", "데이터분석", "서비스"]
-    }
-  ];
+  const { data: clubsData, isLoading } = useQuery<ClubData[]>(
+    ["popularClubs"],
+    getPopularClub
+  );
+
+  console.log(clubsData);
+
+  // TODO: 로딩, 에러 처리
+  if (isLoading) return <LoadingSpinner />;
+  // if (error) return <div>Error fetching popular clubs</div>;
 
   return (
     <div className="relative w-full h-[378px]">
@@ -47,18 +48,15 @@ export default function MainBanner() {
       </div>
 
       <div className="absolute right-[150px] top-[85.5px] flex gap-[25.36px]">
-        {clubsData.map((club, index) => (
-          <PopularClub
-            key={index}
-            logoSrc={club.logoSrc}
-            logoAlt={club.logoAlt}
-            mainImageSrc={club.mainImageSrc}
-            clubType={club.clubType}
-            clubTitleFirst={club.clubTitleFirst}
-            clubTitleSecond={club.clubTitleSecond}
-            tags={club.tags}
-          />
-        ))}
+        {clubsData &&
+          clubsData
+            .slice(0, 3)
+            .map((club) => (
+              <PopularClub
+                key={club.id}
+                {...mapClubDataToPopularClubProps(club)}
+              />
+            ))}
       </div>
     </div>
   );
