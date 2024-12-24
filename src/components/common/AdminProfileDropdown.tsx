@@ -1,8 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
-import { getClub } from "../club/service/Club";
+import { getClub, getClubRecruitingList } from "../club/service/Club";
+import { useQuery } from "@tanstack/react-query";
 
 export default function AdminProfileDropdown() {
   const navigate = useNavigate();
+
+  const { data: clubsData, isLoading } = useQuery(
+    ["clubList"],
+    getClubRecruitingList
+  );
 
   // FIX: useQuery로 수정
   const fetchClub = (clubId: number) => {
@@ -26,12 +32,32 @@ export default function AdminProfileDropdown() {
             className="w-[35px] h-[35px] mx-3"
           />
           <div className="flex flex-col text-left mx-3">
-            <p className="text-body text-gray-900">잇타</p>
+            <p className="text-body text-gray-900">잇타 (예시 데이터)</p>
             <p className="text-caption text-gray-900">
               IT 서비스 동아리 / 연합
             </p>
           </div>
         </li>
+
+        {clubsData &&
+          clubsData.length > 0 &&
+          clubsData.map((club: ClubData) => (
+            <li
+              key={club.id}
+              className="dropdown-list"
+              onClick={() => handleClick(club.id)}
+            >
+              <img
+                src="/assets/ic-profile.svg"
+                alt="프로필"
+                className="w-[35px] h-[35px] mx-3"
+              />
+              <div className="flex flex-col text-left mx-3">
+                <p className="text-body text-gray-900">{club.name}</p>
+                <p className="text-caption text-gray-900">{club.description}</p>
+              </div>
+            </li>
+          ))}
 
         <Link to="/register_club" className="dropdown-list">
           <img

@@ -33,6 +33,17 @@ export async function getPopularClub() {
   }
 }
 
+// GET: 로그인 된 사용자가 가입한 동아리 중에 리크루팅 중인 동아리 목록 조회 API
+export async function getClubRecruitingList() {
+  try {
+    const { data } = await Instance.get(`/club/user/recruiting`);
+    return data;
+  } catch (error) {
+    console.error("리크루팅 중인 동아리 목록 조회 실패:", error);
+    throw error;
+  }
+}
+
 // POST: 동아리 등록
 export async function postClub(clubData: RegisterClubFormValue) {
   try {
