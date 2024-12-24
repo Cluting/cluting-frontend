@@ -43,3 +43,15 @@ declare interface PopularClubProps {
   clubTitleSecond: string;
   tags: string[];
 }
+
+// 동아리 ID에 대한 운영진
+declare interface ClubUser {
+  id: number;
+  userId: number;
+  clubId: number;
+  name: string;
+  email: string;
+  role: string;
+  permissionLevel: string;
+  generation: number;
+}
