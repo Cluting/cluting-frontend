@@ -1,34 +1,11 @@
-//자체 회원가입 From
-declare interface SignupFormValue {
-  name: string; // 사용자 이름
-  email: string; // 이메일 주소
-  password: string; // 비밀번호
-  phone: string; // 전화번호
-  location: string; // 지역 정보
-  school: string; // 학교 이름
-  studentStatus: string; // 학생 상태 (예: "ENROLLED" | "GRADUATED" | "LEAVE")
-  semester: string; // 학기 정보 (예:  "S1_1" | "S1_2" | "S2_1" | "S2_2")
-  major: string; // 주 전공
-  doubleMajor?: string; // 복수 전공 (선택 사항)
-  termsOfService: boolean; // 서비스 약관 동의 여부
-  privacyPolicy: boolean; // 개인정보 처리방침 동의 여부
-  marketingConsent: boolean; // 마케팅 활용 동의 여부
-}
-
-//로그인 Form
-declare interface LoginFormValue {
-  email: string;
-  password: string;
-}
-
 //동아리 등록 Form
 declare interface RegisterClubFormValue {
-  clubImage: FileList;
-  clubName: string;
-  clubType: string;
-  clubCategory: string;
-  keywords: string[];
-  clubDescription: string;
+  name: string;
+  description: string;
+  category: string; // (예: "CULTURE", "PHYSICAL", "STARTUP", "LANGUAGE", "SOCIAL", "TECHNOLOGY", "SERVICE", "ACADEMIC", "ELSE")
+  type: string; // (예: "INTERNAL", "EXTERNAL")
+  keyword: string[];
+  profile?: File | null;
 }
 
 //리크루팅 시작하기 모달 Form
