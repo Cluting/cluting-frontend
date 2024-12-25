@@ -12,7 +12,7 @@ export async function getTodos() {
 }
 
 //POST: 투두 생성
-export async function createTodo(todoData: any) {
+export async function createTodo(todoData: { content: string }) {
   try {
     const { data } = await Instance.post("/todo", todoData);
     return data;

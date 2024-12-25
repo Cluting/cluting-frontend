@@ -228,6 +228,10 @@ declare interface Todo {
   status: boolean;
 }
 
+declare interface TodoRequest {
+  content: string;
+}
+
 declare interface TodoListProps {
   todos: Todo[];
   onToggle: (id: number) => void;

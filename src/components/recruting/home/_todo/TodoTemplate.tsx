@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoList from "./TodoList";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   getTodos,
   createTodo,
@@ -9,31 +10,37 @@ import {
 } from "./service/todo";
 
 export default function TodoTemplate() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo>();
   const nextId = useRef<number>(0);
 
-  useEffect(() => {
-    const fetchTodos = async () => {
-      const fetchedTodos = await getTodos();
-      setTodos(fetchedTodos);
-    };
+  //get
+  const { data: todo } = useQuery(["todo"], getTodos, {
+    onError: (error) => {
+      console.error("todo 조회 실패:", error);
+    }
+  });
 
-    fetchTodos();
-  }, []);
-
-  // const onInsert = useCallback((content: string) => {
-  //   const todo: Todo = {
-  //     id: nextId.current,
-  //     content,
-  //     status: false
-  //   };
-  //   setTodos((todos) => todos.concat(todo));
-  //   nextId.current += 1;
-  // }, []);
+  //post
+  const { mutate } = useMutation(createTodo, {
+    onSuccess: () => {
+      console.log("todo 성공적으로 등록되었습니다!");
+    },
+    onError: (error) => {
+      console.error("todo 생성 중 오류 발생:", error);
+    }
+  });
 
   const onInsert = useCallback(async (content: string) => {
-    const newTodo = await createTodo({ content, status: false });
-    setTodos((todos) => [...todos, { ...newTodo, id: newTodo.id }]);
+    try {
+      const newTodo: TodoRequest = {
+        content
+      };
+      const { data }: { data: Todo } = await mutate(newTodo);
+
+      // setTodos((prev) => [...prev, data]);
+    } catch (error) {
+      console.error("TODO 추가 실패:", error);
+    }
   }, []);
 
   // const onRemove = useCallback(
