@@ -14,7 +14,7 @@ export default function SetAcceptanceCountContainer() {
     formState: { errors, touchedFields }
   } = useForm<SetAcceptanceCountFormData>({
     defaultValues: {
-      documentPassTotal: 0,
+      totalDocumentPassCount: 0,
       finalPassTotal: 0,
       groups: [
         { documentPass: 0, finalPass: 0 },
@@ -22,53 +22,34 @@ export default function SetAcceptanceCountContainer() {
         { documentPass: 0, finalPass: 0 }
       ]
     },
-    mode: "onTouched",
+    mode: "onBlur",
     reValidateMode: "onSubmit"
   });
 
-  const documentPassTotal = watch("documentPassTotal");
+  const totalDocumentPassCount = watch("totalDocumentPassCount");
   const finalPassTotal = watch("finalPassTotal");
   const groups = watch("groups");
 
   useEffect(() => {
-    if (touchedFields.groups && Array.isArray(groups)) {
-      const touchedGroupFields = touchedFields.groups as {
-        documentPass?: boolean;
-        finalPass?: boolean;
-      }[];
-
-      groups.forEach((_, index) => {
-        if (touchedGroupFields[index]?.documentPass) {
-          trigger(`groups.${index}.documentPass`);
+    const validateFields = async () => {
+      if (Array.isArray(groups)) {
+        await trigger("totalDocumentPassCount");
+        for (let i = 0; i < groups.length; i++) {
+          await trigger(`groups.${i}.documentPass`);
         }
-        if (touchedGroupFields[index]?.finalPass) {
-          trigger(`groups.${index}.finalPass`);
+        await trigger("finalPassTotal");
+        for (let i = 0; i < groups.length; i++) {
+          await trigger(`groups.${i}.finalPass`);
         }
-      });
-
-      if (touchedFields.documentPassTotal) {
-        trigger("documentPassTotal");
       }
+    };
 
-      if (finalPassTotal > 0) {
-        groups.forEach((_, index) => {
-          trigger(`groups.${index}.finalPass`);
-        });
-      }
-
-      if (documentPassTotal > 0) {
-        groups.forEach((_, index) => {
-          trigger(`groups.${index}.documentPass`);
-        });
-      }
-    }
+    validateFields();
   }, [
-    documentPassTotal,
+    totalDocumentPassCount,
     finalPassTotal,
-    touchedFields.groups,
     groups,
     trigger,
-    touchedFields.documentPassTotal,
     groups.reduce((sum, group) => sum + (group.documentPass || 0), 0),
     groups.reduce((sum, group) => sum + (group.finalPass || 0), 0)
   ]);
@@ -76,7 +57,7 @@ export default function SetAcceptanceCountContainer() {
   const validateForm = {
     required: "필수 입력 사항입니다.",
     documentPassCheck: (value: number) => {
-      if (!touchedFields.documentPassTotal) return true;
+      if (!touchedFields.totalDocumentPassCount) return true;
       if (!value) return "필수 입력 사항입니다.";
       if (value < finalPassTotal) {
         return "최종 합격 인원보다 적어요. 최종 합격 인원보다 많은 수로 조정해 주세요.";
@@ -84,21 +65,21 @@ export default function SetAcceptanceCountContainer() {
       return true;
     },
     groupDocumentPassCheck: (value: number) => {
-      if (!value) return "필수 입력 사항입니다.";
       if (!touchedFields.groups) return true;
+      if (!value) return "필수 입력 사항입니다.";
 
       const groupTotalDocumentPass = groups.reduce(
         (sum, group) => sum + (group.documentPass || 0),
         0
       );
-      if (groupTotalDocumentPass !== documentPassTotal) {
+      if (groupTotalDocumentPass !== totalDocumentPassCount) {
         return "전체 서류 합격 인원 수에 맞춰 설정해주세요.";
       }
       return true;
     },
     groupFinalPassCheck: (value: number, index: number) => {
-      if (!value) return "필수 입력 사항입니다.";
       if (!touchedFields.groups) return true;
+      if (!value) return "필수 입력 사항입니다.";
 
       const groupTotalFinalPass = groups.reduce(
         (sum, group) => sum + (group.finalPass || 0),
@@ -115,7 +96,7 @@ export default function SetAcceptanceCountContainer() {
 
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
-      await trigger("documentPassTotal");
+      await trigger("totalDocumentPassCount");
       await trigger("finalPassTotal");
       await trigger();
       // 모든 그룹 필드 validation
@@ -136,7 +117,7 @@ export default function SetAcceptanceCountContainer() {
         0
       );
 
-      if (groupTotalDocumentPass !== data.documentPassTotal) {
+      if (groupTotalDocumentPass !== data.totalDocumentPassCount) {
         return;
       }
 
@@ -174,15 +155,15 @@ export default function SetAcceptanceCountContainer() {
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
                 className={`flex-center relative w-[157px] h-[41px] rounded-[7px] bg-white-100 border ${
-                  errors.documentPassTotal
+                  errors.totalDocumentPassCount
                     ? "border-red-100"
                     : "border-gray-400"
                 }`}
               >
                 <NumberSpinner
                   control={control}
-                  name="documentPassTotal"
-                  error={errors.documentPassTotal?.message}
+                  name="totalDocumentPassCount"
+                  error={errors.totalDocumentPassCount?.message}
                   rules={{
                     validate: validateForm.documentPassCheck
                   }}
@@ -190,9 +171,9 @@ export default function SetAcceptanceCountContainer() {
               </div>
               <p className="section-title pl-[11px]">명</p>
             </div>
-            {errors.documentPassTotal && (
+            {errors.totalDocumentPassCount && (
               <p className="absolute top-[70px] left-[32px] text-red-100 font-medium text-[11px]">
-                {errors.documentPassTotal.message}
+                {errors.totalDocumentPassCount.message}
               </p>
             )}
           </div>
