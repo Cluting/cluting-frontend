@@ -65,10 +65,11 @@ declare interface ClubCardProps {
 // 합격 인원 설정 Form
 declare interface SetAcceptanceCountFormData {
   totalDocumentPassCount: number;
-  finalPassTotal: number;
-  groups: {
-    documentPass: number;
-    finalPass: number;
+  totalFinalPassCount: number;
+  groupInfos: {
+    groupName: string;
+    documentPassCount: number;
+    finalPassCount: number;
   }[];
 }
 
