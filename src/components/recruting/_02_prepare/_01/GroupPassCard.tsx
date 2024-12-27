@@ -1,7 +1,6 @@
-import { Control, RegisterOptions } from "react-hook-form";
 import NumberSpinner from "./NumberSpinner";
 
-export default function GroupPassCard({
+export function GroupPassCard({
   control,
   groupIndex,
   groupName,
@@ -11,6 +10,11 @@ export default function GroupPassCard({
   return (
     <div className="w-[259px] h-[333px] rounded-[12px] bg-[#F2F2F7]">
       <div className="pt-[13px] flex-center">
+        <input
+          type="hidden"
+          {...control.register(`groupInfos.${groupIndex}.groupName`)}
+          value={groupName}
+        />
         <div className="flex-center w-[229px] h-[50px] bg-gray-200 rounded-[11px] border border-gray-400 text-[16px] text-gray-850 font-semibold">
           {groupName}
         </div>
@@ -37,7 +41,6 @@ export default function GroupPassCard({
                 rules={rules.documentPassCount}
               />
             </div>
-            {/*에러처리 */}
             {errors?.groupInfos?.[groupIndex]?.documentPassCount && (
               <p className="absolute left-0 top-[42px] text-red-100 font-medium text-[11px]">
                 {errors.groupInfos[groupIndex].documentPassCount.message}
@@ -72,7 +75,6 @@ export default function GroupPassCard({
                 rules={rules.finalPassCount}
               />
             </div>
-            {/*에러처리 */}
             {errors?.groupInfos?.[groupIndex]?.finalPassCount && (
               <p className="absolute left-0 top-[42px] text-red-100 font-medium text-[11px]">
                 {errors.groupInfos[groupIndex].finalPassCount.message}

@@ -77,16 +77,23 @@ declare interface GroupPassCardProps {
   control: Control<any>;
   groupIndex: number;
   groupName: string;
-  errors?: any;
-  rules?: RegisterOptions;
+  errors: any;
+  rules: {
+    groupName?: any;
+    documentPassCount?: any;
+    finalPassCount?: any;
+  };
 }
 
 declare interface GroupPassCountProps {
   control: Control<any>;
-  errors?: any;
-  rules?: RegisterOptions;
+  errors: any;
+  rules: {
+    groupName?: any;
+    documentPassCount?: any;
+    finalPassCount?: any;
+  };
 }
-
 // 운영자 Type
 declare interface AdminUser {
   id: string;
