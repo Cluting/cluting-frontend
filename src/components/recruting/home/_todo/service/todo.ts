@@ -11,10 +11,16 @@ export async function getTodos() {
   }
 }
 
-//POST: 투두 생성
+// POST: TODO 생성 함수
 export async function createTodo(todoData: { content: string }) {
   try {
-    const { data } = await Instance.post("/todo", todoData);
+    const token = localStorage.getItem("access_token");
+    console.log(todoData);
+    const { data } = await Instance.post("/todo", todoData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     return data;
   } catch (error) {
     console.error("TODO 생성 실패:", error);
