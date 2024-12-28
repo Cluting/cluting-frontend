@@ -17,18 +17,18 @@ declare interface RecrutingStartFormValue {
 //공고 작성 Form
 declare interface AnnouncementForm {
   title: string;
-  recruitmentStart: Date;
-  recruitmentEnd: Date;
-  announcementDate: Date;
-  finalResultAnnouncementDate: Date;
-  recruitsCount: number;
+  recruitmentStartDate: Date;
+  recruitmentEndDate: Date;
+  documentResultDate: Date;
+  finalResultDate: Date;
+  recruitmentNumber: number;
   activityStart: Date;
   activityEnd: Date;
   activityDay: string;
   activityTime: string;
   clubFee: string;
-  posterImage?: File;
   content: string;
+  imageUrl?: File;
 }
 
 //이용 약관 Form Type
