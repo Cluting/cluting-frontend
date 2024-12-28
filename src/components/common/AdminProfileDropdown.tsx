@@ -10,7 +10,6 @@ export default function AdminProfileDropdown() {
     getClubRecruitingList
   );
 
-  // FIX: useQuery로 수정
   const fetchClub = (clubId: number) => {
     return getClub(clubId).then((data) => {
       console.log(data);

@@ -9,8 +9,8 @@ declare interface RegisterClubFormValue {
 
 //리크루팅 시작하기 모달 Form
 declare interface RecrutingStartFormValue {
-  sessionNumber: string;
-  interviewType: string;
+  generation: number;
+  isInterview: boolean;
 }
 
 //공고 작성 Form

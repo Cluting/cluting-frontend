@@ -7,6 +7,9 @@ import {
   useRecruitmentSessionStore,
   useRecruitmentStartStore
 } from "../../../../store/useStore";
+import { useMutation } from "@tanstack/react-query";
+import { startClubRecruiting } from "../../../club/service/Club";
+import { useParams } from "react-router-dom";
 
 type RecrutingStartModalProps = {
   onClose: () => void;
@@ -22,17 +25,38 @@ export default function RecrutingStartModal({
     watch
   } = useForm<RecrutingStartFormValue>({ mode: "onChange" });
 
-  const selectedInterviewType = watch("interviewType");
+  const params = useParams<{ clubId: string }>();
+  const clubId = params.clubId ? parseInt(params.clubId, 10) : undefined;
+  const selectedInterviewType = watch("isInterview");
+  console.log(selectedInterviewType);
   const { setSessionNumber } = useRecruitmentSessionStore();
   const { startRecruiting } = useRecruitmentStartStore();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
-    setSessionNumber(data.sessionNumber); // 동아리 기수 Store에 반영
-    startRecruiting(); //리크루팅 프로세스 시작 여부 Store에 반영
-    window.scrollTo(0, 0);
-    onClose(); // 폼 제출 후 모달 닫기
-  });
+  const { mutate } = useMutation(
+    (data: { clubId: number; clubData: RecrutingStartFormValue }) =>
+      startClubRecruiting(data.clubId, data.clubData),
+    {
+      onSuccess: (data) => {
+        console.log("리크루팅이 성공적으로 시작되었습니다!");
+        setSessionNumber(data.generation); // 동아리 기수 Store에 반영
+        startRecruiting(); //리크루팅 프로세스 시작 여부 Store에 반영
+        window.scrollTo(0, 0);
+        onClose(); // 폼 제출 후 모달 닫기
+        // navigate("/main");
+      },
+      onError: (error) => {
+        console.error("리크루팅 시작 중 오류 발생:", error);
+      }
+    }
+  );
+  const onSubmit = (data: RecrutingStartFormValue) => {
+    if (clubId === undefined) {
+      console.error("Club ID is undefined");
+      return;
+    }
+    mutate({ clubId, clubData: data });
+    console.log("제출 데이터", data);
+  };
 
   return (
     <ModalPortal>
@@ -52,7 +76,7 @@ export default function RecrutingStartModal({
           <hr className="w-full py- border border-gray-200 " />
 
           <form
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col items-center mt-[35px]"
           >
             <p className="text-callout">
@@ -60,12 +84,12 @@ export default function RecrutingStartModal({
               주세요.
             </p>
             <input
-              {...register("sessionNumber", { required: true })}
+              {...register("generation", { required: true })}
               type="text"
-              placeholder="1기"
+              placeholder="1"
               className="w-[257px] h-[42px] mt-[17px] rounded-[7px] input-background text-center text-gray-600 text-headline"
             />
-            {errors?.sessionNumber?.type === "required" && (
+            {errors?.generation?.type === "required" && (
               <p className="text-state-error">{ERROR_MESSAGES.required}</p>
             )}
 
@@ -79,14 +103,14 @@ export default function RecrutingStartModal({
             <div className="flex gap-5 mt-[17px] text-center">
               <label className="flex items-center cursor-pointer">
                 <input
-                  {...register("interviewType", { required: true })}
+                  {...register("isInterview", { required: true })}
                   type="radio"
-                  value="서류(1차)"
+                  value="false"
                   className="hidden" // 라디오 버튼 숨기기
                 />
                 <span
                   className={`w-[180px] h-[43px] text-gray-900 text-headline p-2  rounded-[7px] input-background hover:bg-gray-100 ${
-                    selectedInterviewType === "서류(1차)"
+                    selectedInterviewType === false
                       ? "bg-main-300 border-main-400"
                       : ""
                   } `}
@@ -96,14 +120,14 @@ export default function RecrutingStartModal({
               </label>
               <label className="flex items-center cursor-pointer">
                 <input
-                  {...register("interviewType", { required: true })}
+                  {...register("isInterview", { required: true })}
                   type="radio"
-                  value="서류(1차) + 면접(2차)"
+                  value="true"
                   className="hidden" // 라디오 버튼 숨기기
                 />
                 <span
                   className={`w-[180px] h-[43px] text-gray-900 text-headline p-2  rounded-[7px] input-background hover:bg-gray-100 ${
-                    selectedInterviewType === "서류(1차) + 면접(2차)"
+                    selectedInterviewType === true
                       ? "bg-main-300 border-main-400"
                       : ""
                   } `}
@@ -112,7 +136,7 @@ export default function RecrutingStartModal({
                 </span>
               </label>
             </div>
-            {errors?.interviewType?.type === "required" && (
+            {errors?.isInterview?.type === "required" && (
               <p className="text-state-error">{ERROR_MESSAGES.required}</p>
             )}
 

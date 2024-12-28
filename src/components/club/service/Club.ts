@@ -6,7 +6,7 @@ export async function getClub(clubId: number) {
     const { data } = await Instance.get(`/club/${clubId}`);
     return data;
   } catch (error) {
-    console.error("유저 본인 정보 조회:", error);
+    console.error(" ID로 동아리 단일 조회:", error);
     throw error;
   }
 }
@@ -17,7 +17,7 @@ export async function getUserClub() {
     const { data } = await Instance.get("/club/user");
     return data;
   } catch (error) {
-    console.error("유저 본인 정보 조회:", error);
+    console.error("로그인 된 사용자가 가입한 동아리 목록 조회:", error);
     throw error;
   }
 }
@@ -28,7 +28,7 @@ export async function getPopularClub() {
     const { data } = await Instance.get("/club/popular");
     return data;
   } catch (error) {
-    console.error("유저 본인 정보 조회:", error);
+    console.error("가장 인기 있는 동아리 조회 (홈 화면):", error);
     throw error;
   }
 }
@@ -39,7 +39,10 @@ export async function getClubRecruitingList() {
     const { data } = await Instance.get(`/club/user/recruiting`);
     return data;
   } catch (error) {
-    console.error("리크루팅 중인 동아리 목록 조회 실패:", error);
+    console.error(
+      "로그인 된 사용자가 가입한 동아리 중에 리크루팅 중인 동아리 목록 조회 :",
+      error
+    );
     throw error;
   }
 }
@@ -59,10 +62,24 @@ export async function postClub(clubData: RegisterClubFormValue) {
   }
 }
 
-// PUT: 동아리 리크루팅 시작 API
-export async function startClubRecruiting(clubId: number) {
+// POST: 동아리 리크루팅 시작(기수+타입 저장) API
+export async function startClubRecruiting(
+  clubId: number,
+  clubData: RecrutingStartFormValue
+) {
   try {
-    const { data } = await Instance.put(`/club/start/${clubId}`);
+    const formattedData = {
+      generation: Number(clubData.generation),
+      isInterview: clubData.isInterview === true
+    };
+
+    console.log(clubId);
+    console.log(formattedData);
+
+    const { data } = await Instance.post(
+      `/club/start/${clubId}`,
+      formattedData
+    );
     return data;
   } catch (error) {
     console.error("동아리 리크루팅 시작 실패:", error);
