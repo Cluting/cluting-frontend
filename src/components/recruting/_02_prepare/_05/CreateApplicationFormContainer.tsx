@@ -11,17 +11,13 @@ import {
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import ApplicantProfile from "./ApplicantProfile";
 import StepCompleteModal from "../../common/StepCompleteModal";
-import QuestionItem from "./QuestionItem"; // 이 부분 추가
+import QuestionItem from "./QuestionItem";
 import InterviewTimeSelector from "./InterviewTimeSelector";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
-
-  const { interviewStartTime, interviewEndTime } = useInterviewStore();
-  const titleRef = useRef<HTMLInputElement>(null);
-  const commonCautionRef = useRef<HTMLTextAreaElement>(null);
 
   //그룹별 질문 - 지원 그룹 상태 관리
   const [selectedGroup, setSelectedGroup] = useState<string>(
@@ -33,23 +29,18 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const createInitialQuestion = (
     type: "서술형 질문" | "객관형 질문" = "서술형 질문"
   ): Question => {
-    if (type === "서술형 질문") {
-      return {
-        id: uuidv4(),
-        type: "서술형 질문",
-        question: "",
-        hasWordLimit: false,
-        wordLimit: 500,
-        options: []
-      };
-    } else {
-      return {
-        id: uuidv4(),
-        type: "객관형 질문",
-        question: "",
-        options: []
-      };
-    }
+    return {
+      id: uuidv4(),
+      type,
+      question: "",
+      content: [],
+      ...(type === "서술형 질문"
+        ? {
+            hasWordLimit: false,
+            wordLimit: 500
+          }
+        : {})
+    };
   };
 
   // 질문 상태 관리
@@ -96,15 +87,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
         questions: commonQuestions
       },
       groupSections: groupQuestions,
-      portfolio: {
-        enabled: false
-      },
-      multipleApplicationAllowed: false
+      isPortfolioRequired: false
     },
     mode: "onBlur"
   });
 
-  // 핸들러 함수들
   const handleStepTwoSubmit = () => {
     if (!completedSteps[0]) {
       setStepCompleteModalOpen(true);
@@ -119,9 +106,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
     setStepCompleteModalOpen(false);
   };
 
-  const handleGroupClick = (groupName: string) => setSelectedGroup(groupName);
+  const handleGroupClick = (partName: string) => setSelectedGroup(partName);
 
-  // 질문 관리 함수들
   const addQuestion = (section: "common" | string) => {
     const newQuestion = createInitialQuestion();
 
@@ -187,24 +173,18 @@ export default function CreateApplicationFormContainer(): ReactElement {
     const createNewQuestion = (oldQuestion: Question): Question => {
       const baseQuestion = {
         id: questionId,
-        question: oldQuestion.question
+        question: oldQuestion.question,
+        type: newType,
+        content: []
       };
 
-      if (newType === "서술형 질문") {
-        return {
-          ...baseQuestion,
-          type: "서술형 질문",
-          hasWordLimit: false,
-          wordLimit: 500,
-          options: []
-        };
-      } else {
-        return {
-          ...baseQuestion,
-          type: "객관형 질문",
-          options: []
-        };
-      }
+      return newType === "서술형 질문"
+        ? {
+            ...baseQuestion,
+            hasWordLimit: false,
+            wordLimit: 500
+          }
+        : baseQuestion;
     };
 
     if (section === "common") {
@@ -253,10 +233,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
         const updatedQuestion = {
           ...question,
-          options: [...question.options, newOption]
+          content: [...question.content, newOption]
         };
 
-        // form 값도 업데이트
         setValue(`commonSection.questions.${questionId}`, updatedQuestion);
 
         return {
@@ -272,10 +251,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
         const updatedQuestion = {
           ...question,
-          options: [...question.options, newOption]
+          content: [...question.content, newOption]
         };
 
-        // form 값도 업데이트
         setValue(
           `groupSections.${section}.questions.${questionId}`,
           updatedQuestion
@@ -298,7 +276,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const removeOption = (
     section: "common" | string,
     questionId: string,
-    optionId: string
+    contentId: string
   ) => {
     if (section === "common") {
       setCommonQuestions((prev) => {
@@ -307,10 +285,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
         const updatedQuestion = {
           ...question,
-          options: question.options.filter((opt) => opt.id !== optionId)
+          content: question.content.filter((cnt) => cnt.id !== contentId)
         };
 
-        // form 값도 업데이트
         setValue(`commonSection.questions.${questionId}`, updatedQuestion);
 
         return {
@@ -326,10 +303,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
         const updatedQuestion = {
           ...question,
-          options: question.options.filter((opt) => opt.id !== optionId)
+          content: question.content.filter((cnt) => cnt.id !== contentId)
         };
 
-        // form 값도 업데이트
         setValue(
           `groupSections.${section}.questions.${questionId}`,
           updatedQuestion
@@ -349,7 +325,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
   };
 
-  // Submit 핸들러
   const onSubmit = async (data: CreateApplicationForm) => {
     try {
       if (Object.keys(data.commonSection.questions).length === 0) {
@@ -361,11 +336,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
       }
 
       if (group.length > 0) {
-        for (const groupName of group.map((g) => g.name)) {
+        for (const partName of group.map((g) => g.name)) {
           if (
-            Object.keys(data.groupSections[groupName].questions).length === 0
+            Object.keys(data.groupSections[partName].questions).length === 0
           ) {
-            setError(`groupSections.${groupName}`, {
+            setError(`groupSections.${partName}`, {
               type: "manual",
               message: "각 그룹별로 최소 한 개의 질문이 필요합니다."
             });
@@ -428,9 +403,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </div>
             <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
               <div className="flex items-left gap-[11px]">
-                {group.map((groupName) => (
+                {group.map((partName) => (
                   <div className="flex-center w-[225px] h-[50px] border rounded-[11px] bg-gray-100 text-callout">
-                    {groupName.name}
+                    {partName.name}
                   </div>
                 ))}
               </div>
@@ -439,7 +414,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 <input
                   type="checkbox"
                   className=" peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                  {...register("multipleApplicationAllowed")}
+                  // {...register("isPortfolioRequired")}
                 />
                 <img
                   src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
@@ -540,18 +515,18 @@ export default function CreateApplicationFormContainer(): ReactElement {
               {/* 그룹 선택 */}
               <p className="text-title3 text-gray-1100 text-left">지원 그룹</p>
               <div className="flex items-left mt-[11px] gap-[11px]">
-                {group.map((groupName) => (
+                {group.map((partName) => (
                   <button
-                    key={groupName.name}
+                    key={partName.name}
                     type="button"
                     className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout ${
-                      selectedGroup === groupName.name
+                      selectedGroup === partName.name
                         ? "bg-main-100 text-white-100 border-main-100"
                         : "bg-white-100 text-[#43454F] border-gray-300 hover:bg-main-100 hover:text-white-100"
                     }`}
-                    onClick={() => handleGroupClick(groupName.name)}
+                    onClick={() => handleGroupClick(partName.name)}
                   >
-                    {groupName.name}
+                    {partName.name}
                   </button>
                 ))}
               </div>
@@ -633,18 +608,19 @@ export default function CreateApplicationFormContainer(): ReactElement {
               <input
                 type="checkbox"
                 className="peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                {...register("portfolio.enabled")}
+                // {...register("portfolio.enabled")}
+                {...register("isPortfolioRequired")}
               />
               <img
-                src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
+                src="/assets/ic-check.svg"
                 alt=""
-                className="absolute left-[3px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
+                className="absolute left-[2.5px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
               />
               포트폴리오 받기
             </label>
           </div>
           <div className="flex-center w-full min-h-[207px] mt-[12px] bg-white-100 rounded-[12px]">
-            {watch("portfolio.enabled") && (
+            {watch("isPortfolioRequired") && (
               <div className="tooltip">
                 이후 지원자의 저장된 포트폴리오를 불러옵니다.
               </div>

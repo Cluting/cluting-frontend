@@ -1,19 +1,36 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGroupStore } from "../../../../store/useStore";
 
+interface GroupIdeal {
+  id: number;
+  text: string;
+}
+
+interface GroupIdeals {
+  [groupName: string]: {
+    confirmedIdeals: GroupIdeal[];
+    showInput: boolean;
+  };
+}
+
+interface GroupIdealForm {
+  groupIdeals: {
+    [key: string]: string;
+  };
+}
+
 export default function GroupIdeal() {
   const { group: groups } = useGroupStore();
+  const nextIdRef = useRef<{ [key: string]: number }>({});
 
   const [groupIdeals, setGroupIdeals] = useState<GroupIdeals>(() => {
     return groups.reduce(
       (acc, group) => ({
         ...acc,
         [group.name]: {
-          ideals: [],
-          showInput: true,
-          value: "",
-          nextId: 1
+          confirmedIdeals: [],
+          showInput: true
         }
       }),
       {}
@@ -23,53 +40,72 @@ export default function GroupIdeal() {
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { errors }
   } = useForm<GroupIdealForm>({
     mode: "onBlur"
   });
 
-  //그룹 없을 시 렌더링 되지 않도록 처리
   if (groups.length === 0) return null;
 
-  const onInsert = (groupName: string, e: React.FormEvent) => {
-    e.preventDefault();
+  const handleKeyPress = (e: React.KeyboardEvent, groupName: string) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const currentValue = getValues(`groupIdeals.${groupName}`);
+
+      if (currentValue && currentValue.trim()) {
+        if (!nextIdRef.current[groupName]) {
+          nextIdRef.current[groupName] = 1;
+        }
+
+        const newIdeal = {
+          id: nextIdRef.current[groupName],
+          text: currentValue.trim()
+        };
+
+        setGroupIdeals((prev) => ({
+          ...prev,
+          [groupName]: {
+            ...prev[groupName],
+            confirmedIdeals: [...prev[groupName].confirmedIdeals, newIdeal],
+            showInput: false
+          }
+        }));
+
+        nextIdRef.current[groupName] += 1;
+        setValue(`groupIdeals.${groupName}`, "");
+      }
+    }
+  };
+
+  const handleRemove = (groupName: string, id: number) => {
+    setGroupIdeals((prev) => ({
+      ...prev,
+      [groupName]: {
+        ...prev[groupName],
+        confirmedIdeals: prev[groupName].confirmedIdeals.filter(
+          (ideal) => ideal.id !== id
+        )
+      }
+    }));
+  };
+
+  const handleAddIdeal = (groupName: string) => {
     const currentGroup = groupIdeals[groupName];
-
-    if (currentGroup.value.trim()) {
-      const ideal = {
-        id: currentGroup.nextId,
-        text: currentGroup.value
-      };
-
+    if (currentGroup.confirmedIdeals.length > 0) {
       setGroupIdeals((prev) => ({
         ...prev,
         [groupName]: {
           ...prev[groupName],
-          ideals: [...prev[groupName].ideals, ideal],
-          value: "",
-          showInput: false,
-          nextId: prev[groupName].nextId + 1
+          showInput: true
         }
       }));
     }
   };
 
-  const onRemove = (groupName: string, id: number) => {
-    setGroupIdeals((prev) => ({
-      ...prev,
-      [groupName]: {
-        ...prev[groupName],
-        ideals: prev[groupName].ideals.filter((ideal) => ideal.id !== id)
-      }
-    }));
-  };
-
-  const onSubmit = handleSubmit((data) => {
-    console.log({ groupIdeals });
-  });
-
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit((data) => console.log(data))}>
       <div className="flex">
         <p className="section-title">
           <span className="mr-[0.25em] text-main-100">*</span> 그룹 별 인재상
@@ -88,8 +124,7 @@ export default function GroupIdeal() {
             </p>
 
             <div className="px-[14px]">
-              {/* 인재상 목록 */}
-              {groupIdeals[group.name].ideals.map((ideal) => (
+              {groupIdeals[group.name].confirmedIdeals.map((ideal) => (
                 <div
                   key={ideal.id}
                   className="mt-[14px] py-[11px] pl-[21px] pr-[53px] bg-white-100 rounded-[8px] border border-gray-500 text-[15px] font-medium flex justify-between items-center"
@@ -97,8 +132,8 @@ export default function GroupIdeal() {
                   <span className="text-gray-1100">{ideal.text}</span>
                   <button
                     type="button"
-                    onClick={() => onRemove(group.name, ideal.id)}
-                    className="flex-center bg-gray-100 rounded-full w-4 h-4 text-gray-500 hover:text-red-500"
+                    onClick={() => handleRemove(group.name, ideal.id)}
+                    className="flex-center bg-gray-100 rounded-full w-4 h-4 text-gray-500"
                   >
                     -
                   </button>
@@ -106,57 +141,37 @@ export default function GroupIdeal() {
               ))}
             </div>
 
-            {/* 인재상 입력 */}
             <div className="px-[14px]">
               {groupIdeals[group.name].showInput && (
-                <input
-                  {...register(`groupIdeals.${group.name}`, {
-                    required: "필수 입력 사항입니다."
-                  })}
-                  className={`w-full mt-[14px] py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
-                    errors.groupIdeals?.[group.name] &&
-                    groupIdeals[group.name].ideals.length === 0
-                      ? "border-red-100"
-                      : "border-gray-500"
-                  }`}
-                  type="text"
-                  value={groupIdeals[group.name].value}
-                  onChange={(e) =>
-                    setGroupIdeals((prev) => ({
-                      ...prev,
-                      [group.name]: {
-                        ...prev[group.name],
-                        value: e.target.value
-                      }
-                    }))
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      onInsert(group.name, e);
-                    }
-                  }}
-                  placeholder="인재상을 작성해 주세요."
-                />
+                <>
+                  <input
+                    {...register(`groupIdeals.${group.name}`, {
+                      required:
+                        groupIdeals[group.name].confirmedIdeals.length === 0
+                          ? "필수 입력 사항입니다."
+                          : false
+                    })}
+                    onKeyPress={(e) => handleKeyPress(e, group.name)}
+                    className={`w-full mt-[14px] py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
+                      errors.groupIdeals?.[group.name] &&
+                      groupIdeals[group.name].confirmedIdeals.length === 0
+                        ? "border-red-100"
+                        : "border-gray-500"
+                    }`}
+                    placeholder="인재상을 작성해 주세요."
+                  />
+                  {errors.groupIdeals?.[group.name] &&
+                    groupIdeals[group.name].confirmedIdeals.length === 0 && (
+                      <p className="text-state-error">
+                        {errors.groupIdeals?.[group.name]?.message}
+                      </p>
+                    )}
+                </>
               )}
-              {/* {errors.groupIdeals?.[group.name] &&
-                groupIdeals[group.name].ideals.length === 0 && (
-                  <p className="text-state-error">
-                    {errors.groupIdeals?.[group.name]?.message}
-                  </p>
-                )} */}
 
               <button
                 type="button"
-                onClick={() =>
-                  setGroupIdeals((prev) => ({
-                    ...prev,
-                    [group.name]: {
-                      ...prev[group.name],
-                      showInput: true
-                    }
-                  }))
-                }
+                onClick={() => handleAddIdeal(group.name)}
                 className="w-full mt-[14px] mb-[17px] py-[11px] px-[14.55px] bg-gray-100 rounded-[8px] border border-gray-500 outline-none text-[15px] font-semibold text-left text-gray-700"
               >
                 + 인재상 추가하기
@@ -165,13 +180,6 @@ export default function GroupIdeal() {
           </div>
         ))}
       </div>
-
-      {/* <button
-        type="submit"
-        className="mt-8 px-6 py-2 bg-main-100 text-white rounded-lg hover:bg-main-200"
-      >
-        제출하기
-      </button> */}
     </form>
   );
 }

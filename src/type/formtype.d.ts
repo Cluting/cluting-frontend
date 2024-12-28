@@ -113,34 +113,19 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//공통 인재상(배열로) Form
+//2-2 공통 인재상 Form
 declare interface CommonIdealForm {
-  commonIdeal: string;
-  commonIdeals: CommonIdeal[];
+  commonIdeals: {
+    text: string;
+  }[];
 }
-
-//공통 인재상
-declare interface CommonIdeal {
-  id: number;
-  text: string;
-}
-
 //그룹별 인재상 Form
 declare interface GroupIdealForm {
   groupIdeals: {
-    [groupName: string]: string;
+    [key: string]: string;
   };
 }
 
-//그룹별 인재상
-declare interface GroupIdeals {
-  [groupName: string]: {
-    ideals: GroupIdeal[];
-    showInput: boolean;
-    value: string;
-    nextId: number;
-  };
-}
 //임원진 일정 Form
 declare interface AdminsScheduleFormData {
   scheduleData: TimeSlotAdmins;
@@ -151,51 +136,54 @@ declare interface TimeSlotAdmins {
   [timeSlot: string]: string[];
 }
 
-//2-5
-declare interface BaseQuestion {
+// //2-5 공통 옵션 타입
+interface QuestionOption {
+  id: string;
+  value: string;
+}
+
+// 기본 질문 타입
+interface Question {
   id: string;
   question: string;
   type: "서술형 질문" | "객관형 질문";
+  content: QuestionOption[]; // 서술형은 빈 배열, 객관형은 옵션 배열
+  hasWordLimit?: boolean;
+  wordLimit?: number;
 }
 
-declare interface DescriptiveQuestion extends BaseQuestion {
-  type: "서술형 질문";
-  hasWordLimit: boolean;
-  wordLimit: number;
-  options: [];
-}
-
-declare interface MultipleChoiceQuestion extends BaseQuestion {
-  type: "객관형 질문";
-  hasWordLimit?: never; // 객관형은 글자수 제한 사용 안 함
-  wordLimit?: never;
-  options: Array<{
-    id: string;
-    value: string;
-  }>;
-}
-
-declare type Question = DescriptiveQuestion | MultipleChoiceQuestion;
-
-declare interface QuestionSection {
+interface QuestionSection {
   caution: string;
-  questions: Record<string, Question>;
+  questions: {
+    [key: string]: Question;
+  };
 }
 
-declare interface CreateApplicationForm {
+//2-5 폼 타입
+interface CreateApplicationForm {
   title: string;
-  applyGroups: string[];
-  commonSection: {
-    caution: string;
-    questions: Record<string, Question>;
+  commonSection: QuestionSection;
+  groupSections: {
+    [partName: string]: QuestionSection;
   };
-  groupSections: Record<string, QuestionSection>;
-  portfolio: {
-    enabled: boolean;
-    requirements?: string;
-  };
-  multipleApplicationAllowed: boolean;
+  isPortfolioRequired: boolean;
 }
+
+//이걸로 수정해야함
+// interface CreateApplicationForm {
+//   title: string;
+//   partQuestions: [
+//     {
+//       partName: string;
+//       caution: string;
+//       questions: [
+//         content: string,
+//         isRequired: boolean //필수 답변 여부
+//       ];
+//     }
+//   ];
+//   isPortfolioRequired: boolean;
+// }
 
 declare interface Groups {
   id: number;
@@ -221,7 +209,7 @@ declare interface DocumentReviewForm {
   }[];
 }
 
-// 운영진 면접 일정 조정 Form - 면접관, 면접자
+// 2-4 운영진 면접 일정 조정 Form - 면접관, 면접자
 declare interface InterviewNumValue {
   interviewer: number;
   interviewee: number;

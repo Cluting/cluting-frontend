@@ -20,7 +20,7 @@ interface QuestionItemProps {
   onRemoveOption: (
     section: string,
     questionId: string,
-    optionId: string
+    contentId: string
   ) => void;
   register: UseFormRegister<CreateApplicationForm>;
   registerPath: string;
@@ -211,27 +211,31 @@ export default function QuestionItem({
         ) : (
           <div>
             <ul className="mt-[13px]">
-              {(question as MultipleChoiceQuestion).options.map((option) => (
-                <li key={option.id} className="flex items-center mb-[13px]">
-                  <img
-                    src="/assets/ic-emptyCheck.svg"
-                    alt="빈 체크박스"
-                    className="mr-[13px]"
-                  />
-                  <div className="flex items-center pl-[13px] w-[584px] h-auto pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1">
-                    {option.value}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onRemoveOption(section, question.id, option.id)
-                    }
-                    className="flex-center ml-[-30px] w-[16px] h-[16px] mr-[13px]"
-                  >
-                    <img src="/assets/ic-questionMinus.svg" alt="선택지 삭제" />
-                  </button>
-                </li>
-              ))}
+              {question.type === "객관형 질문" &&
+                question.content.map((content) => (
+                  <li key={content.id} className="flex items-center mb-[13px]">
+                    <img
+                      src="/assets/ic-emptyCheck.svg"
+                      alt="빈 체크박스"
+                      className="mr-[13px]"
+                    />
+                    <div className="flex items-center pl-[13px] w-[584px] h-auto pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1">
+                      {content.value}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        onRemoveOption(section, question.id, content.id)
+                      }
+                      className="flex-center ml-[-30px] w-[16px] h-[16px] mr-[13px]"
+                    >
+                      <img
+                        src="/assets/ic-questionMinus.svg"
+                        alt="선택지 삭제"
+                      />
+                    </button>
+                  </li>
+                ))}
             </ul>
 
             <div className="flex items-center mt-[13px]">
