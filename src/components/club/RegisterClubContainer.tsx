@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import UploadProfile from "../signup/UploadProfile";
-
 import SignupDropdown from "../signup/SignupDropdown";
 import ClubKeyword from "../signup/ClubKeyword";
-
 import { useMutation } from "@tanstack/react-query";
 import { postClub } from "./service/Club";
 import Input from "../common/Input";
 import Textarea from "../common/Textarea";
 import { useNavigate } from "react-router-dom";
+import UploadClubProfile from "../signup/UploadClubProfile";
 
 export default function RegisterClubContainer() {
   const navigate = useNavigate();
-
+  const [clubId, setClubId] = useState(1);
   const {
     watch,
     register,
@@ -22,6 +20,7 @@ export default function RegisterClubContainer() {
     formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
+  // 동아리 등록
   const { mutate } = useMutation(postClub, {
     onSuccess: (data) => {
       console.log("동아리가 성공적으로 등록되었습니다!");
@@ -31,6 +30,7 @@ export default function RegisterClubContainer() {
       console.error("동아리 등록 중 오류 발생:", error);
     }
   });
+
   const onSubmit = (data: RegisterClubFormValue) => {
     console.log("제출 데이터", data);
     mutate(data);
@@ -64,7 +64,7 @@ export default function RegisterClubContainer() {
     >
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
-        {/* <UploadProfile name="profile" register={register} setValue={setValue} /> */}
+        <UploadClubProfile clubId={clubId} />
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 mt-4 mb-8" />

@@ -1,18 +1,23 @@
+import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import { FieldValues, UseFormRegister, Path } from "react-hook-form";
+import { postClubImage } from "../club/service/Club";
 
-interface InputProps<T extends FieldValues> {
-  name: Path<T>;
-  register: UseFormRegister<T>;
-  setValue: (name: Path<T>, value: File) => void; // setValue에 FileList 타입 추가
+interface UploadClubProfileProps {
+  clubId: number;
 }
-export default function UploadProfile<T extends FieldValues>({
-  name,
-  register,
-  setValue
-}: InputProps<T>) {
+
+export default function UploadClubProfile({ clubId }: UploadClubProfileProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null); // 미리보기 URL 상태
+
+  const mutation = useMutation((file: File) => postClubImage(clubId, file), {
+    onSuccess: () => {
+      console.log("프로필 이미지가 성공적으로 업로드되었습니다.");
+    },
+    onError: (error) => {
+      console.error("프로필 이미지 업로드 중 오류 발생:", error);
+    }
+  });
 
   const handleClick = () => {
     fileInputRef.current?.click(); // 클릭 시 파일 선택 창 열기
@@ -23,13 +28,12 @@ export default function UploadProfile<T extends FieldValues>({
     if (fileList && fileList.length > 0) {
       const file = fileList[0]; // 선택된 파일 가져오기
 
-      setValue(name, file); // 선택된 파일 객체를 폼 필드에 등록
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string); // 미리보기 URL 설정
       };
       reader.readAsDataURL(file); // 파일 읽기
+      mutation.mutate(file);
     }
   };
 
@@ -58,7 +62,6 @@ export default function UploadProfile<T extends FieldValues>({
         className="absolute w-[34px] h-[34px] bottom-0 right-0"
       />
       <input
-        {...register(name)} // React Hook Form 등록
         ref={fileInputRef}
         type="file"
         accept="image/*"

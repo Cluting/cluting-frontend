@@ -62,6 +62,34 @@ export async function postClub(clubData: RegisterClubFormValue) {
   }
 }
 
+// POST: 동아리 프로필 사진 등록 API
+export async function postClubImage(clubId: number, profile: File) {
+  try {
+    const formData = new FormData();
+    formData.append("profile", profile);
+
+    const response = await Instance.put(
+      `/club/register/image/${clubId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    // 성공 시 true 반환
+    return response.status === 200 || response.status === 204;
+  } catch (error: any) {
+    // 에러 로깅
+    console.error(
+      "동아리 프로필 사진 등록 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
 // POST: 동아리 리크루팅 시작(기수+타입 저장) API
 export async function startClubRecruiting(
   clubId: number,
