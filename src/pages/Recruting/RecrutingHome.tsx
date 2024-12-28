@@ -9,6 +9,7 @@ import RecruitmentStep from "../../components/recruting/common/RecruitmentStep";
 import RecruitingCalender from "../../components/recruting/home/RecruitingCalendar";
 import { useRecruitmentStartStore } from "../../store/useStore";
 import AddAdminModal from "../../components/recruting/home/_admin/AddAdminModal";
+import AcceptAdminModal from "../../components/recruting/home/_admin/AcceptAdminModal";
 
 export default function RecrutingHome() {
   const { isRecruitingStarted } = useRecruitmentStartStore();
@@ -61,7 +62,7 @@ export default function RecrutingHome() {
                 <AddAdmin />
               </section>
               {isAddAdminModalOpen && (
-                <AddAdminModal onClose={handleAddAdminCloseModal} />
+                <AcceptAdminModal onClose={handleAddAdminCloseModal} />
               )}
               <section className="w-min">
                 <p className="text-headline text-left mb-7">개인 TODO</p>
