@@ -34,24 +34,29 @@ export default function TodoTemplate() {
   //   }
   // });
 
-  const createTodoMutation = useMutation(createTodo, {
-    onSuccess: (newTodo: TodoItem) => {
-      setTodos((prevTodos) => {
-        const key = "additionalProp1"; // 기본 키 사용 (필요 시 변경)
-        return {
-          ...prevTodos,
-          [key]: [...(prevTodos[key] || []), newTodo]
-        };
-      });
-    },
-    onError: (error) => {
-      console.error("TODO 생성 중 오류 발생:", error);
+  const createTodoMutation = useMutation(
+    (content: string) => createTodo(content),
+    {
+      onSuccess: (newTodo: TodoItem) => {
+        setTodos((prevTodos) => {
+          const key = Object.keys(prevTodos)[0] || "additionalProp1";
+          return {
+            ...prevTodos,
+            [key]: [...(prevTodos[key] || []), newTodo]
+          };
+        });
+      },
+      onError: (error) => {
+        console.error("TODO 생성 중 오류 발생:", error);
+      }
     }
-  });
-
-  const onInsert = useCallback((content: string) => {
-    createTodoMutation.mutate({ content });
-  }, []);
+  );
+  const onInsert = useCallback(
+    (content: string) => {
+      createTodoMutation.mutate(content);
+    },
+    [createTodoMutation]
+  );
 
   const onRemove = useCallback(async (id: number, key: string) => {
     await deleteTodo(id.toString());
