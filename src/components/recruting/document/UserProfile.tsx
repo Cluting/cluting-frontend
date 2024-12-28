@@ -1,4 +1,4 @@
-//3 - 리크루팅 : 서류 평가하기 단계 기본 프로필
+//3 - 리크루팅 : 서류 평가하기 단계 기본 프로필, 5- 면접 평가하기
 export default function UserProfile() {
   return (
     <div className="flex flex-col items-start h-full pt-6 bg-gray-100">

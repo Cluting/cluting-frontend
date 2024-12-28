@@ -6,7 +6,7 @@ export default function ApplicantProfile() {
         <p className="section-title">지원자 기본 프로필</p>
         <div className="tooltip">지원자의 기본 프로필을 불러옵니다.</div>
       </div>
-      <div className="mt-[12px] h-auto pt-[23px] pt-[29px] px-[30px] pb-[29px] bg-white-100 rounded-[12px]">
+      <div className="mt-[12px] h-auto py-[24px] px-[30px] bg-white-100 rounded-[12px]">
         <div className="text-subheadline">
           <p className="text-left text-gray-700">인적 사항</p>
           <div className="flex w-full h-[207px] mt-3 pt-[22px] pb-[23px] pl-[24.08px] bg-[#FBFBFF] rounded-[12px] border border-gray-300">

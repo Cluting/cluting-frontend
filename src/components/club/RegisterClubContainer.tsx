@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import UploadProfile from "../signup/UploadProfile";
-import Input from "./Input";
+
 import SignupDropdown from "../signup/SignupDropdown";
 import ClubKeyword from "../signup/ClubKeyword";
-import Textarea from "./Textarea";
+
+import { useMutation } from "@tanstack/react-query";
+import { postClub } from "./service/Club";
+import Input from "../common/Input";
+import Textarea from "../common/Textarea";
 
 export default function RegisterClubContainer() {
   const {
@@ -15,10 +19,17 @@ export default function RegisterClubContainer() {
     formState: { errors }
   } = useForm<RegisterClubFormValue>({ mode: "onChange" });
 
-  const methods = useForm<RegisterClubFormValue>({ mode: "onChange" });
-
-  const onSubmit = (e: React.FormEvent) => {
-    handleSubmit((data) => console.log(data))(e);
+  const { mutate } = useMutation(postClub, {
+    onSuccess: () => {
+      console.log("동아리가 성공적으로 등록되었습니다!");
+    },
+    onError: (error) => {
+      console.error("동아리 등록 중 오류 발생:", error);
+    }
+  });
+  const onSubmit = (data: RegisterClubFormValue) => {
+    console.log("제출 데이터", data);
+    mutate(data);
   };
 
   //드롭다운
@@ -28,29 +39,28 @@ export default function RegisterClubContainer() {
   const [selectedClubCategory, setSelectedClubCategory] = useState(""); // 선택한 동아리 분야
 
   const handleTypeSelect = (type: string) => {
-    setSelectedClubType(type);
-    setValue("clubType", type); // 폼 상태 업데이트
-    setClubType(!clubType); // 드롭다운을 닫음
+    const typeValue =
+      type === "교내" ? "INTERNAL" : type === "연합" ? "EXTERNAL" : "";
+
+    setSelectedClubType(type); // 선택된 타입(표시용)
+    setValue("type", typeValue); // 변환된 값으로 폼 상태 업데이트
+    setClubType(!clubType); // 드롭다운 닫기
   };
 
-  const handleCategorySelect = (category: string) => {
-    setSelectedClubCategory(category);
-    setValue("clubCategory", category); // 폼 상태 업데이트
-    setClubCategory(!clubCategory); // 드롭다운을 닫음
+  const handleCategorySelect = (category: string, value?: string) => {
+    setSelectedClubCategory(category); // 선택된 카테고리(표시용)
+    setValue("category", value ?? ""); // 변환된 값으로 폼 상태 업데이트
+    setClubCategory(!clubCategory); // 드롭다운 닫기
   };
 
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="w-[680px] py-20 mb-40 rounded-[14px] border-[#D6D7DA] bg-white-100 flex flex-col items-center"
     >
       <section className="flex flex-col items-center text-left mb-10">
         <p className="text-title3 text-gray-900">프로필 사진</p>
-        <UploadProfile
-          name="clubImage"
-          register={register}
-          setValue={setValue}
-        />
+        <UploadProfile name="profile" register={register} setValue={setValue} />
       </section>
 
       <hr className="w-[400px] py- border border-gray-200 mt-4 mb-8" />
@@ -58,7 +68,7 @@ export default function RegisterClubContainer() {
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">기본 정보</p>
         <Input
-          name="clubName"
+          name="name"
           register={register}
           type="text"
           placeholder="동아리 이름"
@@ -66,7 +76,7 @@ export default function RegisterClubContainer() {
         />
         <div className="relative">
           <Input
-            name="clubType"
+            name="type"
             register={register}
             value={selectedClubType}
             type="text"
@@ -82,7 +92,7 @@ export default function RegisterClubContainer() {
         </div>
         <div className="relative">
           <Input
-            name="clubCategory"
+            name="category"
             register={register}
             value={selectedClubCategory}
             type="text"
@@ -112,7 +122,7 @@ export default function RegisterClubContainer() {
       <section className="flex flex-col text-left my-10">
         <p className="text-title3 text-gray-900">동아리 소개</p>
         <Textarea
-          name="clubDescription"
+          name="description"
           register={register}
           maxLength={3000}
           placeholder="동아리 소개글을 작성해 주세요."

@@ -19,13 +19,15 @@ import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
 import ApplicantHome from "./pages/Applicant/ApplicantHome";
 import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
-import PublicRoute from "./components/common/PublicRoute";
+import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
+import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
+import PublicRoute from "./components/login/PublicRoute";
 
 export default function App() {
   return (
     <div className="App">
       <Header />
-      <div className="relative bg-white-100 h-full w-full">
+      <div className="relative w-full h-full bg-white-100">
         <div className="relative bg-white-100 h-full w-full pt-[55px]">
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -65,9 +67,21 @@ export default function App() {
                 path="05_interview_evaluation"
                 element={<InterviewEvaluation />}
               />
+              {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question"
                 element={<ApplicantDocument />}
+              />
+              {/* <Route path="answer_record" element={<AnswerRecord />} /> */}
+              {/* (면접) 답변 기록하기 */}
+              <Route
+                path="answer_record/:intervieweeName"
+                element={<AnswerRecord />}
+              />
+              {/* 면접 평가하기 */}
+              <Route
+                path="interview_evaluation_record"
+                element={<InterviewEvaluationRecord />}
               />
               <Route path="06_final_selection" element={<FinalSelection />} />
             </Route>
