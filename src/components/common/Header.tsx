@@ -20,7 +20,7 @@ export default function Header() {
           <img
             src="/assets/logo/ic-logo.svg"
             alt="로고 아이콘"
-            className="w-[120px] h-[40px] "
+            className="w-[90px] h-[40px] "
           />
         </div>
       </Link>
@@ -38,7 +38,7 @@ export default function Header() {
                   <img
                     src="/assets/ic-notice.svg"
                     alt="알림"
-                    className="w-[35px] h-[35px] mx-4"
+                    className="w-[24px] h-[24px] mx-4"
                   />
                   <img
                     src="/assets/ic-profile.svg"
