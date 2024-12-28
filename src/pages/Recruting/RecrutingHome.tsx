@@ -62,7 +62,7 @@ export default function RecrutingHome() {
                 <AddAdmin />
               </section>
               {isAddAdminModalOpen && (
-                <AcceptAdminModal onClose={handleAddAdminCloseModal} />
+                <AddAdminModal onClose={handleAddAdminCloseModal} />
               )}
               <section className="w-min">
                 <p className="text-headline text-left mb-7">개인 TODO</p>
