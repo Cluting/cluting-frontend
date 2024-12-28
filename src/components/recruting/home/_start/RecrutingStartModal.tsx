@@ -9,7 +9,7 @@ import {
 } from "../../../../store/useStore";
 import { useMutation } from "@tanstack/react-query";
 import { startClubRecruiting } from "../../../club/service/Club";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type RecrutingStartModalProps = {
   onClose: () => void;
@@ -25,6 +25,7 @@ export default function RecrutingStartModal({
     watch
   } = useForm<RecrutingStartFormValue>({ mode: "onChange" });
 
+  const navigate = useNavigate();
   const params = useParams<{ clubId: string }>();
   const clubId = params.clubId ? parseInt(params.clubId, 10) : undefined;
   const selectedInterviewType = watch("isInterview");
@@ -42,7 +43,7 @@ export default function RecrutingStartModal({
         startRecruiting(); //리크루팅 프로세스 시작 여부 Store에 반영
         window.scrollTo(0, 0);
         onClose(); // 폼 제출 후 모달 닫기
-        // navigate("/main");
+        navigate("/recruting/01_plan");
       },
       onError: (error) => {
         console.error("리크루팅 시작 중 오류 발생:", error);
