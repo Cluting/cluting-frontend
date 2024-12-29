@@ -24,15 +24,16 @@ export default function TodoTemplate() {
   const [todos, setTodos] = useState<TodosResponse>({});
   const nextId = useRef<number>(0);
 
-  // // API에서 투두 데이터 가져오기
-  // const { data: todoData } = useQuery(["todo"], getTodos, {
-  //   onSuccess: (data) => {
-  //     setTodos(data);
-  //   },
-  //   onError: (error) => {
-  //     console.error("TODO 조회 실패:", error);
-  //   }
-  // });
+  // API에서 투두 데이터 가져오기
+  const { data: todoData } = useQuery(["todos"], getTodos, {
+    onSuccess: (data) => {
+      console.log("투두 목록", data);
+      setTodos(data);
+    },
+    onError: (error) => {
+      console.error("TODO 조회 실패:", error);
+    }
+  });
 
   const createTodoMutation = useMutation(
     (content: string) => createTodo(content),
@@ -77,12 +78,17 @@ export default function TodoTemplate() {
   }, []);
 
   // 완료된 투두와 미완료 투두 분리
-  const incompleteTodos: TodoItem[] = Object.values(todos)
-    .flat()
-    .filter((todo) => !todo.status);
-  const completedTodos: TodoItem[] = Object.values(todos)
-    .flat()
-    .filter((todo) => todo.status);
+  const incompleteTodos: TodoItem[] = todoData
+    ? (Object.values(todoData).flat() as TodoItem[]).filter(
+        (todo) => !todo.status
+      )
+    : [];
+
+  const completedTodos: TodoItem[] = todoData
+    ? (Object.values(todoData).flat() as TodoItem[]).filter(
+        (todo) => todo.status
+      )
+    : [];
 
   return (
     <div className="w-[585px] h-[340.88] bg-[#F2F2F7] px-[9px] py-[13px] pb-[20.88px] mx-auto rounded-xl overflow-hidden relative flex">
