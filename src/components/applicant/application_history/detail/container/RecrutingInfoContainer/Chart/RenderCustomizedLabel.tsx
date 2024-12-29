@@ -1,4 +1,4 @@
-import { RADIAN } from "../../../../../../constants/recruting";
+import { RADIAN } from "../../../../../../../constants/recruting";
 
 interface CustomizedLabelProps {
   cx: number;

@@ -1,4 +1,4 @@
-import { CHARTS_COLORS } from "../../../../../../constants/recruting";
+import { CHARTS_COLORS } from "../../../../../../../constants/recruting";
 
 interface GradeData {
   name: string;

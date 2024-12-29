@@ -1,5 +1,5 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { CHARTS_COLORS } from "../../../../../../constants/recruting";
+import { CHARTS_COLORS } from "../../../../../../../constants/recruting";
 import RenderCustomizedLabel from "./RenderCustomizedLabel";
 import CustomLegend from "./CustomLegend";
 
