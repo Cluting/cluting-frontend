@@ -149,3 +149,5 @@ export const CALENDAR_COLORS = [
   "#5856D6",
   "#af52de"
 ];
+export const CHARTS_COLORS = ["#3E0CC4", "#5E2BE8", "#9572F5", "#CAC8FF"];
+export const RADIAN = Math.PI / 180;
