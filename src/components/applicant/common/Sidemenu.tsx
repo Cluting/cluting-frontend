@@ -1,7 +1,16 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getMe } from "../../signup/services/User";
 
 export default function Sidemenu() {
+  const { data: user } = useQuery(["me"], getMe, {
+    onError: (error) => {
+      console.error("유저 본인 정보 조회 실패:", error);
+    }
+  });
+  console.log(user);
+
   // 반응형
   const [sidemenuClose, setSidemenuClose] = useState(false);
   const handleResize = () => {
@@ -40,9 +49,9 @@ export default function Sidemenu() {
         <div className="text-left ml-4">
           {!sidemenuClose && (
             <>
-              <p className="text-body">김민지</p>
+              <p className="text-body">{user ? user.name : "-"}</p>
               <p className="text-gray-900 text-caption1 mt-[5px]">
-                abcd@naver.com
+                {user ? user.email : "로그인이 필요합니다"}
               </p>
             </>
           )}
