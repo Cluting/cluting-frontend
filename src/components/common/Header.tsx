@@ -20,7 +20,7 @@ export default function Header() {
           <img
             src="/assets/logo/ic-logo.svg"
             alt="로고 아이콘"
-            className="w-[90px] h-[40px] "
+            className="w-[72px] h-[21px] "
           />
         </div>
       </Link>
