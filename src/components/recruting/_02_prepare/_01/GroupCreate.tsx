@@ -67,7 +67,7 @@ export default function GroupCreate() {
       }  w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]`}
     >
       <div className="flex items-center ml-8 my-4">
-        <h1 className="text-callout">지원자 그룹 짓기</h1>
+        <h1 className="section-title">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">
           동아리가 파트로 구분된다면 ex) 기획/디자인/홍보팀 등으로 그룹화해
           주세요
