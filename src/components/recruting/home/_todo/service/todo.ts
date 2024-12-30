@@ -22,9 +22,7 @@ export async function createTodo(content: string) {
       //
       {
         headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-          Accept: "*/*"
+          Authorization: `Bearer ${token}`
         }
       }
     );

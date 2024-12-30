@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoList from "./TodoList";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getTodos,
   createTodo,
@@ -24,6 +24,8 @@ export default function TodoTemplate() {
   const [todos, setTodos] = useState<TodosResponse>({});
   const nextId = useRef<number>(0);
 
+  const queryClient = useQueryClient();
+
   // API에서 투두 데이터 가져오기
   const { data: todoData } = useQuery(["todos"], getTodos, {
     onSuccess: (data) => {
@@ -40,6 +42,7 @@ export default function TodoTemplate() {
     {
       onSuccess: (newTodo: TodoItem) => {
         setTodos((prevTodos) => {
+          queryClient.invalidateQueries(["todos"]);
           const key = Object.keys(prevTodos)[0] || "additionalProp1";
           return {
             ...prevTodos,
