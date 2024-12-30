@@ -42,25 +42,26 @@ export default function RecrutingCalenderPicker() {
   );
   const [editMode, setEditMode] = useState(false);
 
-  const [recruitSchedules, setRecruitSchedules] = useState({
-    stage1Start: "",
-    stage1End: "",
-    stage2Start: "",
-    stage2End: "",
-    stage3Start: "",
-    stage3End: "",
-    stage4Start: "",
-    stage4End: "",
-    stage5Start: "",
-    stage5End: "",
-    stage6Start: "",
-    stage6End: "",
-    stage7Start: "",
-    stage7End: "",
-    stage8Start: "",
-    stage8End: ""
-  });
-
+  const [recruitSchedules, setRecruitSchedules] = useState([
+    {
+      stage1Start: "",
+      stage1End: "",
+      stage2Start: "",
+      stage2End: "",
+      stage3Start: "",
+      stage3End: "",
+      stage4Start: "",
+      stage4End: "",
+      stage5Start: "",
+      stage5End: "",
+      stage6Start: "",
+      stage6End: "",
+      stage7Start: "",
+      stage7End: "",
+      stage8Start: "",
+      stage8End: ""
+    }
+  ]);
   // 날짜 선택 시 이벤트 추가 함수
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     const title = currrentTitle;
@@ -69,9 +70,8 @@ export default function RecrutingCalenderPicker() {
     const backgroundColor =
       CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length];
 
-    calendarApi.unselect(); // 선택 해제
+    calendarApi.unselect();
 
-    // 이미 존재하는 제목인지 확인
     const isDuplicateTitle = events.some((event) => event.title === title);
 
     if (title && !isDuplicateTitle) {
@@ -81,22 +81,24 @@ export default function RecrutingCalenderPicker() {
         start: selectInfo.startStr,
         end: addDays(new Date(selectInfo.endStr), 0)
           .toISOString()
-          .split("T")[0], // 종료 날짜에 하루 더하기
+          .split("T")[0],
         allDay: selectInfo.allDay,
         backgroundColor: backgroundColor
       };
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
-      setCompletedTitles((prevTitles) => [...prevTitles, title]); // 완료된 제목에 추가
 
-      // 각 단계에 대한 일정 저장
+      setEvents((prevEvents) => [...prevEvents, newEvent]);
+      setCompletedTitles((prevTitles) => [...prevTitles, title]);
+
       const stageNumber = CALENDAR_ITEMS.indexOf(title) + 1;
-      setRecruitSchedules((prev) => ({
-        ...prev,
-        [`stage${stageNumber}Start`]: selectInfo.startStr,
-        [`stage${stageNumber}End`]: addDays(new Date(selectInfo.endStr), 0)
-          .toISOString()
-          .split("T")[0]
-      }));
+      setRecruitSchedules((prev) => [
+        {
+          ...prev[0],
+          [`stage${stageNumber}Start`]: selectInfo.startStr,
+          [`stage${stageNumber}End`]: addDays(new Date(selectInfo.endStr), 0)
+            .toISOString()
+            .split("T")[0]
+        }
+      ]);
 
       setInstructionMessage("");
       // title이 '면접 기간'인 경우에만 전역 상태에 시작, 종료 날짜 저장

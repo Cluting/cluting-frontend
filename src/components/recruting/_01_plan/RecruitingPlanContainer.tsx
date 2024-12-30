@@ -6,37 +6,9 @@ import GroupCreate from "../_02_prepare/_01/GroupCreate";
 import { BUTTON_TEXT } from "../../../constants/recruting";
 import StepCompleteModal from "../common/StepCompleteModal";
 import { FormProvider, useForm } from "react-hook-form";
-
-interface PrepStage {
-  stageName: string;
-  stageOrder: number;
-  clubUserIds: number[];
-}
-
-interface RecruitSchedule {
-  stage1Start: string;
-  stage1End: string;
-  stage2Start: string;
-  stage2End: string;
-  stage3Start: string;
-  stage3End: string;
-  stage4Start: string;
-  stage4End: string;
-  stage5Start: string;
-  stage5End: string;
-  stage6Start: string;
-  stage6End: string;
-  stage7Start: string;
-  stage7End: string;
-  stage8Start: string;
-  stage8End: string;
-}
-
-interface PrepareStepRolesFormValues {
-  prepStages: PrepStage[];
-  recruitSchedules: RecruitSchedule;
-  applicantGroups: string[];
-}
+import { PrepareStepRolesFormValues, PrepStage } from "./type/Prep";
+import { useMutation } from "@tanstack/react-query";
+import { postStepPlan } from "./service/Prep";
 
 export default function RecruitingPlanContainer() {
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -60,12 +32,33 @@ export default function RecruitingPlanContainer() {
 
   const handlePrepStagesSubmit = (prepStages: PrepStage[]) => {
     console.log("Submitted prepStages:", prepStages);
-    setValue("prepStages", prepStages);
+    setValue("prepStages" as any, prepStages);
   };
+
+  // 계획하기 API
+
+  const stepPlanMutation = useMutation(
+    ({
+      recruitId,
+      planningData
+    }: {
+      recruitId: number;
+      planningData: PrepareStepRolesFormValues;
+    }) => postStepPlan(recruitId, planningData),
+    {
+      onSuccess: (data) => {
+        console.log("계획하기 단계가 성공적으로 등록되었습니다!");
+      },
+      onError: (error) => {
+        console.error("계획하기 단계 오류 발생:", error);
+      }
+    }
+  );
   const onSubmit = (data: PrepareStepRolesFormValues) => {
     console.log("API 제출 데이터:", data);
-    // 여기에 실제 API 호출 로직을 추가하세요
+    stepPlanMutation.mutate({ recruitId: 1, planningData: data });
   };
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
