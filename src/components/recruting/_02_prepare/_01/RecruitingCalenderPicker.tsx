@@ -10,6 +10,7 @@ import {
 } from "../../../../constants/recruting";
 import { useInterviewStore } from "../../../../store/useStore";
 import { addDays } from "date-fns";
+import { useFormContext } from "react-hook-form";
 
 interface CalendarEvent {
   id: string;
@@ -175,13 +176,15 @@ export default function RecrutingCalenderPicker() {
     setInstructionMessage(null);
   };
 
+  const { setValue } = useFormContext();
+
   const checkAllStagesSelected = () => {
     const allStagesSelected = CALENDAR_ITEMS.every((item) =>
       completedTitles.includes(item)
     );
     if (allStagesSelected) {
       console.log("recruitSchedules:", recruitSchedules);
-      // 여기에서 recruitSchedules를 원하는 대로 처리할 수 있습니다 (예: API로 전송)
+      setValue("recruitSchedules", recruitSchedules);
     }
   };
 

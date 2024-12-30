@@ -5,7 +5,13 @@ import { ALL_ADMINS, DEFAULT_STEPS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 import { AdminPlan } from "../../../type/type";
 
-export default function PrepareStepRoles() {
+interface PrepareStepRolesProps {
+  onPrepStagesSubmit: (prepStages: any) => void;
+}
+
+export default function PrepareStepRoles({
+  onPrepStagesSubmit
+}: PrepareStepRolesProps) {
   const [dropdown, setDropdown] = useState(false);
   const [steps, setSteps] = useState(DEFAULT_STEPS);
   const [currentStepId, setCurrentStepId] = useState<number>(1);
@@ -28,7 +34,6 @@ export default function PrepareStepRoles() {
     mode: "onSubmit"
   });
 
-  // Form validation function
   const validateSteps = (value: Step[]) => {
     const hasEmptyAdmins = value.some(
       (step) => !step.isFixed && step.admins.length === 0
@@ -46,15 +51,13 @@ export default function PrepareStepRoles() {
     });
   }, [register]);
 
-  const onSubmit: SubmitHandler<PrepareStepRolesFormValues> = (data) => {
-    //TODO: API 제출용 데이터
+  const onSubmit: SubmitHandler<PrepareStepRolesFormValues> = (data, event) => {
+    event?.preventDefault();
     const prepStages = data.steps.map((step, index) => {
       let clubUserIds;
       if (step.id === 4) {
-        // 4번째 단계일 경우 모든 운영진의 ID를 포함
         clubUserIds = ALL_ADMINS.map((admin) => admin.id);
       } else {
-        // 다른 단계의 경우 선택된 운영진 ID를 사용
         clubUserIds = step.admins;
       }
 
@@ -64,7 +67,10 @@ export default function PrepareStepRoles() {
         clubUserIds: clubUserIds
       };
     });
+
+    onPrepStagesSubmit(prepStages);
   };
+  const handleFormSubmit = handleSubmit(onSubmit);
 
   const handleAdminSelect = (admin: AdminPlan) => {
     setSteps((prevSteps) =>
@@ -100,12 +106,10 @@ export default function PrepareStepRoles() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
       className={`${
         completedSteps[0] ? "pointer-events-none" : ""
       } w-full h-auto mt-[34px] ml-8 pt-[22px] pb-[38px] bg-white-100 rounded-[12px]`}
     >
-      <button type="submit">제출 테스트</button>
       <div className="ml-[22px] mr-[39px] flex justify-between">
         <div className="flex">
           <p className="section-title">
@@ -116,6 +120,15 @@ export default function PrepareStepRoles() {
             모집 준비하기의 세부 단계에 따른 역할을 분담해 주세요.
           </div>
         </div>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault(); // 기본 동작 방지
+            handleFormSubmit(e); // React Hook Form 처리
+          }}
+        >
+          완료
+        </button>
       </div>
       <div className="pl-[47px] pr-[48px]">
         <div
