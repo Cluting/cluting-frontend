@@ -1,7 +1,9 @@
 import ClubCard from "./ClubCard";
+import { v4 as uuidv4 } from "uuid";
 export default function ClubCardList() {
   const clubsData = [
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/1.svg",
       logoSrc: "/assets/home/main/1Logo.svg",
@@ -11,6 +13,7 @@ export default function ClubCardList() {
       tags: ["문화예술", "밴드", "인디"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/2.svg",
       logoSrc: "/assets/home/main/2Logo.svg",
@@ -20,6 +23,7 @@ export default function ClubCardList() {
       tags: ["맛집", "연합", "미식"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/3.svg",
       logoSrc: "/assets/home/main/3Logo.svg",
@@ -29,6 +33,7 @@ export default function ClubCardList() {
       tags: ["밴드", "기타", "대학생"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/4.svg",
       logoSrc: "/assets/home/main/4Logo.svg",
@@ -38,6 +43,7 @@ export default function ClubCardList() {
       tags: ["연합", "봉사", "대학생"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/5.svg",
       logoSrc: "/assets/home/main/5Logo.svg",
@@ -47,6 +53,7 @@ export default function ClubCardList() {
       tags: ["댄스", "공연", "실용댄스"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/6.svg",
       logoSrc: "/assets/home/main/6Logo.svg",
@@ -56,6 +63,7 @@ export default function ClubCardList() {
       tags: ["일본어", "어학", "교류"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/7.svg",
       logoSrc: "/assets/home/main/7Logo.svg",
@@ -65,6 +73,7 @@ export default function ClubCardList() {
       tags: ["IT", "개발", "기획"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/8.svg",
       logoSrc: "/assets/home/main/8Logo.svg",
@@ -74,6 +83,7 @@ export default function ClubCardList() {
       tags: ["IT", "개발", "서비스기획"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/9.svg",
       logoSrc: "/assets/home/main/9Logo.svg",
@@ -83,6 +93,7 @@ export default function ClubCardList() {
       tags: ["게임", "프로젝트", "개발"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/10.svg",
       logoSrc: "/assets/home/main/10Logo.svg",
@@ -92,6 +103,7 @@ export default function ClubCardList() {
       tags: ["디자인", "그래픽", "전시"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/11.svg",
       logoSrc: "/assets/home/main/11Logo.svg",
@@ -101,6 +113,7 @@ export default function ClubCardList() {
       tags: ["스키", "스노우보드", "겨울"]
     },
     {
+      id: uuidv4(),
       dDay: 3,
       clubImg: "/assets/home/main/12.svg",
       logoSrc: "/assets/home/main/12Logo.svg",
@@ -114,7 +127,8 @@ export default function ClubCardList() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[53px]">
       {clubsData.map((club, index) => (
         <ClubCard
-          key={index}
+          id={club.id}
+          key={club.id}
           dDay={club.dDay}
           clubImg={club.clubImg}
           logoSrc={club.logoSrc}
@@ -122,6 +136,7 @@ export default function ClubCardList() {
           title={club.title}
           clubName={club.clubName}
           tags={club.tags}
+          isLarge={true}
         />
       ))}
     </div>

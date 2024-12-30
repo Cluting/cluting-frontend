@@ -72,8 +72,8 @@ declare interface InterviewFormatStore {
 
 //동아리 기수
 declare interface RecruitmentSessionStore {
-  sessionNumber: string; // 현재 기수
-  setSessionNumber: (session: string) => void; // 기수를 설정하는 함수
+  sessionNumber: number; // 현재 기수
+  setSessionNumber: (session: number) => void; // 기수를 설정하는 함수
 }
 
 //리크루팅 시작 여부
