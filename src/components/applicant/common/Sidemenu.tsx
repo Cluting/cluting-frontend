@@ -1,17 +1,51 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Sidemenu() {
+  // 반응형
+  const [sidemenuClose, setSidemenuClose] = useState(false);
+  const handleResize = () => {
+    if (window.innerWidth <= 1200) {
+      setSidemenuClose(true);
+    } else {
+      setSidemenuClose(false);
+    }
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div className="relative rounded-[28px] bg-white-100 custom-shadow w-[300px] px-5 h-[916px]  py-[26px] transition-all">
-      <section className="flex items-center w-full h-[86px] bg-gray-100 boreder border-main-300 px-[18px] rounded-[14px] transition-all">
+    <div
+      className={`relative rounded-[28px] bg-white-100 custom-shadow ${
+        sidemenuClose ? "w-[80px] px-2" : "w-[300px] px-5"
+      } h-[916px]  py-[26px] transition-all`}
+    >
+      <section
+        className={` ${
+          sidemenuClose ? "flex-center pl-4" : "flex items-center px-[18px]"
+        }  w-full h-[86px] bg-gray-100 boreder border-main-300  rounded-[14px] transition-all`}
+      >
         <img
           src="/assets/ic-profile.svg"
           alt="지원자 프로필"
+          onClick={() => setSidemenuClose(!sidemenuClose)}
           className="w-[50px] h-[50px] "
         />
         <div className="text-left ml-4">
-          <p className="text-body">김민지</p>
-          <p className="text-gray-900 text-caption1 mt-[5px]">abcd@naver.com</p>
+          {!sidemenuClose && (
+            <>
+              <p className="text-body">김민지</p>
+              <p className="text-gray-900 text-caption1 mt-[5px]">
+                abcd@naver.com
+              </p>
+            </>
+          )}
         </div>
       </section>
 
@@ -23,7 +57,7 @@ export default function Sidemenu() {
               alt="프로필 홈"
               className="w-6 h-6 mr-[10px]"
             />
-            프로필 홈
+            {!sidemenuClose && "프로필 홈"}
           </button>
         </Link>
 
@@ -33,7 +67,7 @@ export default function Sidemenu() {
             alt="계정 설정"
             className="w-6 h-6 mr-[10px]"
           />
-          계정 설정
+          {!sidemenuClose && "계정 설정"}
         </button>
       </section>
 
@@ -51,7 +85,7 @@ export default function Sidemenu() {
             src="/assets/sidemenu/ic-saveProfile-main.svg"
             className=" w-6 h-6 mx-3 hidden group-hover:block"
           />
-          <p>기본 프로필 저장</p>
+          {!sidemenuClose && <p>기본 프로필 저장</p>}
         </Link>
 
         <Link
@@ -67,7 +101,7 @@ export default function Sidemenu() {
             src="/assets/sidemenu/ic-announcementList-main.svg"
             className=" w-6 h-6 mx-3 hidden group-hover:block"
           />
-          <p>공고 리스트</p>
+          {!sidemenuClose && <p>공고 리스트</p>}
         </Link>
 
         <Link
@@ -82,7 +116,7 @@ export default function Sidemenu() {
             src="/assets/sidemenu/ic-myHistory-main.svg"
             className=" w-5 h-5 mx-3 hidden group-hover:block"
           />
-          <p>나의 지원 기록</p>
+          {!sidemenuClose && <p>나의 지원 기록</p>}
         </Link>
       </section>
     </div>
