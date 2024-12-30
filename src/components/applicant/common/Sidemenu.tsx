@@ -1,7 +1,4 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as SaveProfile } from "../../../assets/ic-saveProfile.svg";
-import { ReactComponent as AnnouncementList } from "../../../assets/ic-announcementList.svg";
-import { ReactComponent as MyHistory } from "../../../assets/ic-myHistory.svg";
 
 export default function Sidemenu() {
   return (
@@ -40,22 +37,53 @@ export default function Sidemenu() {
         </button>
       </section>
 
-      <section className="text-gray-600 text-subheadline">
-        <p className="my-[26px] text-left">리크루팅 단계</p>
-        <div className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 ">
-          <SaveProfile className=" w-6 h-6 mx-3" />
+      <section className="text-gray-600 text-subheadline border-t border-t-1 my-5">
+        <Link
+          to={"/applicant/profile"}
+          className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 group"
+        >
+          <img
+            src="/assets/sidemenu/ic-saveProfile.svg"
+            className=" w-6 h-6 mx-3 group-hover:hidden"
+          />
+
+          <img
+            src="/assets/sidemenu/ic-saveProfile-main.svg"
+            className=" w-6 h-6 mx-3 hidden group-hover:block"
+          />
           <p>기본 프로필 저장</p>
-        </div>
+        </Link>
 
-        <div className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 ">
-          <AnnouncementList className="w-6 h-6 mx-3" />
+        <Link
+          to={"/applicant/announcement/:menu"}
+          className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 group"
+        >
+          <img
+            src="/assets/sidemenu/ic-announcementList.svg"
+            className=" w-6 h-6 mx-3 group-hover:hidden"
+          />
+
+          <img
+            src="/assets/sidemenu/ic-announcementList-main.svg"
+            className=" w-6 h-6 mx-3 hidden group-hover:block"
+          />
           <p>공고 리스트</p>
-        </div>
+        </Link>
 
-        <div className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900">
-          <MyHistory className="w-5 h-5 mx-3" />
+        <Link
+          to={"/applicant/applications/:menu"}
+          className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 group"
+        >
+          <img
+            src="/assets/sidemenu/ic-myHistory.svg"
+            className=" w-5 h-5 mx-3 group-hover:hidden"
+          />
+          <img
+            src="/assets/sidemenu/ic-myHistory-main.svg"
+            className=" w-5 h-5 mx-3 hidden group-hover:block"
+          />
           <p>나의 지원 기록</p>
-        </div>
+        </Link>
       </section>
     </div>
   );
