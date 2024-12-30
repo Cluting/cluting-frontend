@@ -52,6 +52,7 @@ declare interface PopularClubProps {
 
 //메인 홈 동아리 리스트
 declare interface ClubCardProps {
+  id: string;
   dDay: number;
   clubImg: string;
   logoSrc: string;
@@ -59,6 +60,7 @@ declare interface ClubCardProps {
   title: string;
   clubName: string;
   tags: string[];
+  isLarge?: boolean; //크기 변환 prop
 }
 
 // 합격 인원 설정 Form
