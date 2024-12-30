@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
 import AddAdminDropdown from "./AddAdminDropdown";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { DEFAULT_STEPS } from "../../../constants/recruting";
+import { ALL_ADMINS, DEFAULT_STEPS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
+import { AdminPlan } from "../../../type/type";
 
 export default function PrepareStepRoles() {
   const [dropdown, setDropdown] = useState(false);
   const [steps, setSteps] = useState(DEFAULT_STEPS);
   const [currentStepId, setCurrentStepId] = useState<number>(1);
-  const [newStepName, setNewStepName] = useState("");
+
+  const getAdminNameById = (adminId: number, stepId: number): string => {
+    if (stepId === 4) return "모든 운영진";
+    const admin = ALL_ADMINS.find((admin) => admin.id === adminId);
+    return admin ? admin.name : `Unknown (ID: ${adminId})`;
+  };
 
   const {
     register,
@@ -19,7 +25,7 @@ export default function PrepareStepRoles() {
     defaultValues: {
       steps: DEFAULT_STEPS
     },
-    mode: "onSubmit" // 저장하기 버튼 클릭 시에만 validation
+    mode: "onSubmit"
   });
 
   // Form validation function
@@ -30,12 +36,10 @@ export default function PrepareStepRoles() {
     return !hasEmptyAdmins || "필수 입력 사항입니다";
   };
 
-  // steps 상태가 변경될 때마다 form 값을 업데이트
   useEffect(() => {
     setValue("steps", steps, {});
   }, [steps, setValue]);
 
-  // Register steps field with validation
   useEffect(() => {
     register("steps", {
       validate: validateSteps
@@ -43,16 +47,32 @@ export default function PrepareStepRoles() {
   }, [register]);
 
   const onSubmit: SubmitHandler<PrepareStepRolesFormValues> = (data) => {
-    console.log("Form submitted with data:", data.steps);
+    //TODO: API 제출용 데이터
+    const prepStages = data.steps.map((step, index) => {
+      let clubUserIds;
+      if (step.id === 4) {
+        // 4번째 단계일 경우 모든 운영진의 ID를 포함
+        clubUserIds = ALL_ADMINS.map((admin) => admin.id);
+      } else {
+        // 다른 단계의 경우 선택된 운영진 ID를 사용
+        clubUserIds = step.admins;
+      }
+
+      return {
+        stageName: step.name,
+        stageOrder: index + 1,
+        clubUserIds: clubUserIds
+      };
+    });
   };
 
-  const handleAdminSelect = (admin: string) => {
+  const handleAdminSelect = (admin: AdminPlan) => {
     setSteps((prevSteps) =>
       prevSteps.map((step) => {
-        if (step.id === currentStepId && !step.admins.includes(admin)) {
+        if (step.id === currentStepId && !step.admins.includes(admin.id)) {
           return {
             ...step,
-            admins: [...step.admins, admin]
+            admins: [...step.admins, admin.id]
           };
         }
         return step;
@@ -75,21 +95,6 @@ export default function PrepareStepRoles() {
     );
   };
 
-  const handleAddStep = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && newStepName.trim()) {
-      setSteps([
-        ...steps,
-        {
-          id: steps.length + 1,
-          name: newStepName.trim(),
-          completed: false,
-          admins: []
-        }
-      ]);
-      setNewStepName("");
-    }
-  };
-
   //1단계 완료 여부
   const { completedSteps } = useRecruitmentStepStore();
 
@@ -100,6 +105,7 @@ export default function PrepareStepRoles() {
         completedSteps[0] ? "pointer-events-none" : ""
       } w-full h-auto mt-[34px] ml-8 pt-[22px] pb-[38px] bg-white-100 rounded-[12px]`}
     >
+      <button type="submit">제출 테스트</button>
       <div className="ml-[22px] mr-[39px] flex justify-between">
         <div className="flex">
           <p className="section-title">
@@ -116,7 +122,6 @@ export default function PrepareStepRoles() {
           className={`mt-8 w-full h-auto rounded-[10px] bg-gray-100 border ${errors.steps ? "border-red-100" : "border-gray-300"}`}
         >
           <div className="flex">
-            {/* 왼쪽 열 */}
             <div className="bg-main-300 border-r border-gray-400 rounded-l-[10px] flex flex-col">
               <div className="flex-center w-[63.89px] h-[103.8px] border-b border-gray-400 text-gray-1100 text-caption1">
                 <p>
@@ -150,22 +155,25 @@ export default function PrepareStepRoles() {
                     <div className="mt-[29px]">
                       {/* 운영진 목록 */}
                       <div>
-                        {step.admins.map((admin) => (
-                          <div
-                            key={admin}
-                            className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
-                          >
-                            <span className="text-gray-800">{admin}</span>
-                            {!step.isFixed && (
-                              <img
-                                src="/assets/ic-minusCircle.svg"
-                                alt="운영진 삭제 버튼"
-                                onClick={() => removeAdmin(step.id, admin)}
-                                className="absolute right-[19px] cursor-pointer"
-                              />
-                            )}
-                          </div>
-                        ))}
+                        {step.admins.map((admin) => {
+                          const adminName = getAdminNameById(admin, step.id);
+                          return (
+                            <div
+                              key={admin}
+                              className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
+                            >
+                              <span className="text-gray-800">{adminName}</span>
+                              {!step.isFixed && (
+                                <img
+                                  src="/assets/ic-minusCircle.svg"
+                                  alt="운영진 삭제 버튼"
+                                  onClick={() => removeAdmin(step.id, admin)}
+                                  className="absolute right-[19px] cursor-pointer"
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                       {/* 운영진 추가 버튼 */}
                       {!step.isFixed && (
@@ -189,21 +197,6 @@ export default function PrepareStepRoles() {
                     </div>
                   </div>
                 ))}
-
-                {/* 새로운 단계 추가 UI */}
-                {newStepName !== "" && (
-                  <div className="w-[139px] min-h-[329px] mr-[25px]">
-                    <input
-                      type="text"
-                      value={newStepName}
-                      onChange={(e) => setNewStepName(e.target.value)}
-                      onKeyDown={handleAddStep}
-                      placeholder="단계 이름 입력 후 Enter"
-                      className="w-[139px] h-[66px] px-[21px] bg-gray-200 rounded-[12px] text-caption1 border-2 border-main-100 outline-none"
-                      autoFocus
-                    />
-                  </div>
-                )}
               </div>
             </div>
           </div>

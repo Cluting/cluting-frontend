@@ -98,7 +98,7 @@ declare interface AdminUser {
 declare interface Step {
   id: number;
   name: string;
-  admins: string[];
+  admins: AdminPlan[];
   isFixed?: boolean;
 }
 
