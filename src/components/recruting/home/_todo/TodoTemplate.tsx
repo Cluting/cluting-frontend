@@ -9,7 +9,6 @@ import {
   updateTodoStatus
 } from "./service/todo";
 
-// 타입 정의
 type TodoItem = {
   id: number;
   content: string;
@@ -55,6 +54,7 @@ export default function TodoTemplate() {
       }
     }
   );
+
   const onInsert = useCallback(
     (content: string) => {
       createTodoMutation.mutate(content);
@@ -62,23 +62,56 @@ export default function TodoTemplate() {
     [createTodoMutation]
   );
 
-  const onRemove = useCallback(async (id: number, key: string) => {
-    await deleteTodo(id.toString());
-    setTodos((prevTodos) => ({
-      ...prevTodos,
-      [key]: prevTodos[key].filter((todo) => todo.id !== id)
-    }));
-  }, []);
+  const deleteTodoMutation = useMutation((id: number) => deleteTodo(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todos"]);
+    },
+    onError: (error) => {
+      console.error("TODO 삭제 중 오류 발생:", error);
+    }
+  });
 
-  const onToggle = useCallback(async (id: number, key: string) => {
-    await updateTodoStatus(id.toString());
-    setTodos((prevTodos) => ({
-      ...prevTodos,
-      [key]: prevTodos[key].map((todo) =>
-        todo.id === id ? { ...todo, status: !todo.status } : todo
-      )
-    }));
-  }, []);
+  const onRemove = useCallback(
+    (id: number, key: string) => {
+      deleteTodoMutation.mutate(id, {
+        onSuccess: () => {
+          setTodos((prevTodos) => ({
+            ...prevTodos,
+            [key]: prevTodos[key].filter((todo) => todo.id !== id)
+          }));
+        }
+      });
+    },
+    [deleteTodoMutation]
+  );
+
+  const updateTodoStatusMutation = useMutation(
+    (id: number) => updateTodoStatus(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["todos"]);
+      },
+      onError: (error) => {
+        console.error("TODO 상태 변경 중 오류 발생:", error);
+      }
+    }
+  );
+
+  const onToggle = useCallback(
+    (id: number, key: string) => {
+      updateTodoStatusMutation.mutate(id, {
+        onSuccess: () => {
+          setTodos((prevTodos) => ({
+            ...prevTodos,
+            [key]: prevTodos[key].map((todo) =>
+              todo.id === id ? { ...todo, status: !todo.status } : todo
+            )
+          }));
+        }
+      });
+    },
+    [updateTodoStatusMutation]
+  );
 
   // 완료된 투두와 미완료 투두 분리
   const incompleteTodos: TodoItem[] = todoData
