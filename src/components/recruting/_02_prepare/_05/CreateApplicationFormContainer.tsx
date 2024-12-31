@@ -13,10 +13,27 @@ import QuestionItem from "./QuestionItem";
 import InterviewTimeSelector from "./InterviewTimeSelector";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
+import { useMutation } from "@tanstack/react-query";
+import { postCreateForm } from "./service/CreateApplicationForm";
+
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
+
+  const createFormMutation = useMutation(
+    (data: { formData: CreateApplicationForm; recruitId: number }) =>
+      postCreateForm(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("폼 생성 성공:", data);
+        handleStepTwoSubmit();
+      },
+      onError: (error) => {
+        console.error("폼 생성 실패:", error);
+      }
+    }
+  );
 
   // 선택된 그룹 상태 관리
   const [selectedGroup, setSelectedGroup] = useState<string>(
@@ -208,11 +225,15 @@ export default function CreateApplicationFormContainer(): ReactElement {
           questions: part.questions.map(({ id, ...question }) => question)
         }))
       };
-
-      console.log(submitData);
-      handleStepTwoSubmit();
-    } catch (error) {
-      console.error(error);
+      console.log("제출 데이터:", JSON.stringify(submitData, null, 2));
+      // console.log(submitData);
+      // handleStepTwoSubmit();
+      //todo: 이건 어디서 받아오는걸까
+      const recruitId = 1; //todo: 일단 임시로
+      createFormMutation.mutate({ formData: submitData, recruitId });
+    } catch (error: any) {
+      console.error("폼 제출 중 에러", error);
+      console.log("에러 응답:", error.response?.data);
     }
   };
 
