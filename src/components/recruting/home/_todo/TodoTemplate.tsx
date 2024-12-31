@@ -62,14 +62,17 @@ export default function TodoTemplate() {
     [createTodoMutation]
   );
 
-  const deleteTodoMutation = useMutation((id: number) => deleteTodo(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["todos"]);
-    },
-    onError: (error) => {
-      console.error("TODO 삭제 중 오류 발생:", error);
+  const deleteTodoMutation = useMutation(
+    (id: number) => deleteTodo(Number(id)),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["todos"]);
+      },
+      onError: (error) => {
+        console.error("TODO 삭제 중 오류 발생:", error);
+      }
     }
-  });
+  );
 
   const onRemove = useCallback(
     (id: number, key: string) => {
