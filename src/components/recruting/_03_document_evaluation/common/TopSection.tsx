@@ -4,7 +4,7 @@ import {
   useRecruitmentStepStore,
   useStepTwoStore
 } from "../../../../store/useStore";
-import AddAdmin from "../../home/AddAdmin";
+import AddAdmin from "../../home/_admin/AddAdmin";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep } = useStepTwoStore();

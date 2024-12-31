@@ -1,7 +1,7 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import TodoInsert from "./TodoInsert";
 import TodoList from "./TodoList";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getTodos,
   createTodo,
@@ -9,71 +9,122 @@ import {
   updateTodoStatus
 } from "./service/todo";
 
+type TodoItem = {
+  id: number;
+  content: string;
+  status: boolean;
+};
+
+type TodosResponse = {
+  [key: string]: TodoItem[];
+};
+
 export default function TodoTemplate() {
-  const [todos, setTodos] = useState<Todo>();
+  const [todos, setTodos] = useState<TodosResponse>({});
   const nextId = useRef<number>(0);
 
-  //get
-  const { data: todo } = useQuery(["todo"], getTodos, {
-    onError: (error) => {
-      console.error("todo 조회 실패:", error);
-    }
-  });
+  const queryClient = useQueryClient();
 
-  //post
-  const { mutate } = useMutation(createTodo, {
-    onSuccess: () => {
-      console.log("todo 성공적으로 등록되었습니다!");
+  // API에서 투두 데이터 가져오기
+  const { data: todoData } = useQuery(["todos"], getTodos, {
+    onSuccess: (data) => {
+      console.log("투두 목록", data);
+      setTodos(data);
     },
     onError: (error) => {
-      console.error("todo 생성 중 오류 발생:", error);
+      console.error("TODO 조회 실패:", error);
     }
   });
 
-  const onInsert = useCallback(async (content: string) => {
-    try {
-      const newTodo: TodoRequest = {
-        content
-      };
-      const { data }: { data: Todo } = await mutate(newTodo);
-
-      // setTodos((prev) => [...prev, data]);
-    } catch (error) {
-      console.error("TODO 추가 실패:", error);
+  const createTodoMutation = useMutation(
+    (content: string) => createTodo(content),
+    {
+      onSuccess: (newTodo: TodoItem) => {
+        setTodos((prevTodos) => {
+          queryClient.invalidateQueries(["todos"]);
+          const key = Object.keys(prevTodos)[0] || "additionalProp1";
+          return {
+            ...prevTodos,
+            [key]: [...(prevTodos[key] || []), newTodo]
+          };
+        });
+      },
+      onError: (error) => {
+        console.error("TODO 생성 중 오류 발생:", error);
+      }
     }
-  }, []);
+  );
 
-  // const onRemove = useCallback(
-  //   (id: number) => {
-  //     setTodos(todos.filter((todo) => todo.id !== id));
-  //   },
-  //   [todos]
-  // );
+  const onInsert = useCallback(
+    (content: string) => {
+      createTodoMutation.mutate(content);
+    },
+    [createTodoMutation]
+  );
 
-  const onRemove = useCallback(async (id: number) => {
-    await deleteTodo(id.toString());
-    setTodos((todos) => todos.filter((todo) => todo.id !== id));
-  }, []);
+  const deleteTodoMutation = useMutation((id: number) => deleteTodo(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todos"]);
+    },
+    onError: (error) => {
+      console.error("TODO 삭제 중 오류 발생:", error);
+    }
+  });
 
-  // const onToggle = useCallback((id: number) => {
-  //   setTodos((todos) =>
-  //     todos.map((todo) =>
-  //       todo.id === id ? { ...todo, status: !todo.status } : todo
-  //     )
-  //   );
-  // }, []);
+  const onRemove = useCallback(
+    (id: number, key: string) => {
+      deleteTodoMutation.mutate(id, {
+        onSuccess: () => {
+          setTodos((prevTodos) => ({
+            ...prevTodos,
+            [key]: prevTodos[key].filter((todo) => todo.id !== id)
+          }));
+        }
+      });
+    },
+    [deleteTodoMutation]
+  );
 
-  const onToggle = useCallback(async (id: number) => {
-    await updateTodoStatus(id.toString());
-    setTodos((todos) =>
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, status: !todo.status } : todo
+  const updateTodoStatusMutation = useMutation(
+    (id: number) => updateTodoStatus(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["todos"]);
+      },
+      onError: (error) => {
+        console.error("TODO 상태 변경 중 오류 발생:", error);
+      }
+    }
+  );
+
+  const onToggle = useCallback(
+    (id: number, key: string) => {
+      updateTodoStatusMutation.mutate(id, {
+        onSuccess: () => {
+          setTodos((prevTodos) => ({
+            ...prevTodos,
+            [key]: prevTodos[key].map((todo) =>
+              todo.id === id ? { ...todo, status: !todo.status } : todo
+            )
+          }));
+        }
+      });
+    },
+    [updateTodoStatusMutation]
+  );
+
+  // 완료된 투두와 미완료 투두 분리
+  const incompleteTodos: TodoItem[] = todoData
+    ? (Object.values(todoData).flat() as TodoItem[]).filter(
+        (todo) => !todo.status
       )
-    );
-  }, []);
+    : [];
 
-  const incompleteTodos = todos.filter((todo) => !todo.status);
-  const completedTodos = todos.filter((todo) => todo.status);
+  const completedTodos: TodoItem[] = todoData
+    ? (Object.values(todoData).flat() as TodoItem[]).filter(
+        (todo) => todo.status
+      )
+    : [];
 
   return (
     <div className="w-[585px] h-[340.88] bg-[#F2F2F7] px-[9px] py-[13px] pb-[20.88px] mx-auto rounded-xl overflow-hidden relative flex">
@@ -81,8 +132,8 @@ export default function TodoTemplate() {
         <div className="h-[265px] overflow-auto border-r-4">
           <TodoList
             todos={incompleteTodos}
-            onToggle={onToggle}
-            onRemove={onRemove}
+            onToggle={(id) => onToggle(id, "additionalProp1")} // 기본 키 지정
+            onRemove={(id) => onRemove(id, "additionalProp1")}
           />
         </div>
         <TodoInsert onInsert={onInsert} />
@@ -91,8 +142,8 @@ export default function TodoTemplate() {
         <div className="h-[307px] overflow-auto">
           <TodoList
             todos={completedTodos}
-            onToggle={onToggle}
-            onRemove={onRemove}
+            onToggle={(id) => onToggle(id, "additionalProp1")}
+            onRemove={(id) => onRemove(id, "additionalProp1")}
           />
         </div>
       </div>
