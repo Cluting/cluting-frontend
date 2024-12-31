@@ -30,13 +30,7 @@ export default function QuestionItem({
         question.objects
       );
     }
-  }, [
-    question.questionType,
-    question.objects,
-    setValue,
-    partIndex,
-    questionIndex
-  ]);
+  }, [question.questionType, setValue, partIndex, questionIndex]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -60,11 +54,18 @@ export default function QuestionItem({
     `partQuestions.${partIndex}.questions.${questionIndex}.questionType` as const;
   const registerObjects =
     `partQuestions.${partIndex}.questions.${questionIndex}.objects` as const;
+  const registerMultiSelect =
+    `partQuestions.${partIndex}.questions.${questionIndex}.multiSelect` as const;
 
   // 질문 타입 변경 핸들러
+  //fix: 폼 데이터의 타입 변경 시 이전 필드들이 완전히 제거되지 않음
   const handleTypeChange = (newType: "OBJECT" | "SUBJECTIVE") => {
     onTypeChange(partName, question.id!, newType);
+
     setValue(registerQuestionType, newType);
+    setValue(registerContent, ""); //질문 input 초기화
+    setNewOption(""); //객관식 input 초기화
+
     if (newType === "OBJECT") {
       setValue(registerObjects, []);
     }
@@ -147,6 +148,7 @@ export default function QuestionItem({
               {isDropdownOpen && (
                 <div className="absolute z-50 w-full mt-1 px-2 py-2 bg-white-100 border border-gray-200 rounded-[8px] animate-dropdown">
                   <button
+                    type="button"
                     className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
                     onClick={() => {
                       handleTypeChange("SUBJECTIVE");
@@ -156,6 +158,7 @@ export default function QuestionItem({
                     서술형 질문
                   </button>
                   <button
+                    type="button"
                     className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
                     onClick={() => {
                       handleTypeChange("OBJECT");
@@ -205,7 +208,7 @@ export default function QuestionItem({
                     min="0"
                     className="flex-center w-[66px] h-[26px] ml-[7px] px-[9px] py-[5px] rounded-[6px] border border-gray-400 outline-none text-caption2 focus:border-main-100"
                     {...register(registerWordLimit, {
-                      valueAsNumber: true,
+                      valueAsNumber: true, //슛자 타입으로 변환
                       min: 1
                     })}
                   />
@@ -223,7 +226,7 @@ export default function QuestionItem({
                     alt="빈 체크박스"
                     className="mr-[13px]"
                   />
-                  <div className="flex items-center pl-[13px] w-[584px] h-auto pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1">
+                  <div className="flex items-center pl-[13px] w-[504px] h-auto pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1">
                     {option}
                   </div>
                   <button
@@ -257,6 +260,21 @@ export default function QuestionItem({
                   }
                 }}
               />
+            </div>
+            <div className="flex-center justify-end mt-[10px]">
+              <label className="relative flex items-center">
+                <input
+                  type="checkbox"
+                  className="peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                  {...register(registerMultiSelect)}
+                />
+                <img
+                  src="/assets/ic-check.svg"
+                  alt=""
+                  className="absolute left-[2.5px] top-[7px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
+                />
+                <span>복수 선택</span>
+              </label>
             </div>
           </div>
         )}

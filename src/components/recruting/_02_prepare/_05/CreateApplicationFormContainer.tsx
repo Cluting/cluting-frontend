@@ -191,7 +191,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   const onSubmit = async (data: CreateApplicationForm) => {
     try {
-      // Validation
       const commonPart = data.partQuestions.find((p) => p.partName === "공통");
       if (!commonPart || commonPart.questions.length === 0) {
         setError("partQuestions", {
@@ -270,9 +269,10 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 <input
                   type="checkbox"
                   className=" peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                  {...register("multiApply")}
                 />
                 <img
-                  src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
+                  src="/assets/ic-check.svg"
                   alt=""
                   className="absolute left-[3px] top-[5px] w-[11px] h-[11px] pointer-events-none opacity-0 peer-checked:opacity-100"
                 />
@@ -348,19 +348,22 @@ export default function CreateApplicationFormContainer(): ReactElement {
         </div>
 
         {/* 그룹별 질문 섹션 */}
-        {selectedGroup && (
-          <div className=" w-full mt-[58px]">
+        {group.length > 0 && (
+          <div className="w-full mt-[58px]">
             <div className="flex">
               <p className="section-title">
                 <span className="mr-[0.25em] text-main-100">*</span>그룹별 질문
               </p>
               <div className="tooltip">각 그룹별 질문을 작성해 주세요.</div>
             </div>
+
+            {/* 그룹 선택 탭 */}
             <div className="flex">
               {group.map((partName) => (
                 <button
                   key={partName.name}
                   type="button"
+                  onClick={() => handleGroupClick(partName.name)}
                   className={`flex-center mt-3 w-[162px] min-h-[43px] rounded-t-[11px] border border-b-0 text-callout ${
                     selectedGroup === partName.name
                       ? "bg-main-100 text-white-100 border-main-100"
@@ -372,62 +375,59 @@ export default function CreateApplicationFormContainer(): ReactElement {
               ))}
             </div>
 
-            {group.map((partName) => (
-              <div
-                key={partName.name}
-                className="h-auto px-9 py-[28px] bg-white-100 rounded-[12px]"
-              >
-                <p className="mb-[15px] text-title3 text-gray-1100 text-left">
-                  '{selectedGroup}' 그룹 질문 관련 주의 사항
-                </p>
+            {/* 선택된 그룹의 질문 섹션 */}
+            <div className="h-auto px-9 py-[28px] bg-white-100 rounded-[12px]">
+              <p className="mb-[15px] text-title3 text-gray-1100 text-left">
+                '{selectedGroup}' 그룹 질문 관련 주의 사항
+              </p>
 
-                <input
-                  type="text"
-                  placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
-                  className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
-                  {...register(
-                    `partQuestions.${questions.findIndex((p) => p.partName === selectedGroup)}.caution`
-                  )}
-                />
-                <hr className="flex-center my-[42px]" />
+              <input
+                key={`${selectedGroup}-caution`}
+                type="text"
+                placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
+                className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
+                {...register(
+                  `partQuestions.${questions.findIndex((p) => p.partName === selectedGroup)}.caution`
+                )}
+              />
+              <hr className="flex-center my-[42px]" />
 
-                <p className="mb-[20px] text-title3 text-gray-1100 text-left">
-                  공통 질문 추가하기
-                </p>
-                <div className="space-y-4">
-                  {questions
-                    .find((p) => p.partName === selectedGroup)
-                    ?.questions.map((question, index) => (
-                      <QuestionItem
-                        key={question.id}
-                        question={question}
-                        partName={selectedGroup}
-                        questionIndex={index}
-                        partIndex={questions.findIndex(
-                          (p) => p.partName === selectedGroup
-                        )}
-                        onTypeChange={handleQuestionTypeChange}
-                        onDelete={deleteQuestion}
-                        onAddOption={handleAddOption}
-                        onRemoveOption={handleRemoveOption}
-                        register={register}
-                        errors={errors}
-                        isSubmitted={isSubmitted}
-                        setValue={setValue}
-                        watch={watch}
-                      />
-                    ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => addQuestion(selectedGroup)}
-                  className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-callout text-main-100 hover:bg-main-100 hover:text-white-100"
-                >
-                  <IdealIcon className="mr-2" />
-                  질문 추가하기
-                </button>
+              <p className="mb-[20px] text-title3 text-gray-1100 text-left">
+                그룹별 질문 추가하기
+              </p>
+              <div className="space-y-4">
+                {questions
+                  .find((p) => p.partName === selectedGroup)
+                  ?.questions.map((question, index) => (
+                    <QuestionItem
+                      key={question.id}
+                      question={question}
+                      partName={selectedGroup}
+                      questionIndex={index}
+                      partIndex={questions.findIndex(
+                        (p) => p.partName === selectedGroup
+                      )}
+                      onTypeChange={handleQuestionTypeChange}
+                      onDelete={deleteQuestion}
+                      onAddOption={handleAddOption}
+                      onRemoveOption={handleRemoveOption}
+                      register={register}
+                      errors={errors}
+                      isSubmitted={isSubmitted}
+                      setValue={setValue}
+                      watch={watch}
+                    />
+                  ))}
               </div>
-            ))}
+              <button
+                type="button"
+                onClick={() => addQuestion(selectedGroup)}
+                className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-callout text-main-100 hover:bg-main-100 hover:text-white-100"
+              >
+                <IdealIcon className="mr-2" />
+                질문 추가하기
+              </button>
+            </div>
           </div>
         )}
 

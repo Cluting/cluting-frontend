@@ -29,12 +29,13 @@ interface QuestionOption {
 
 // 기본 질문 타입
 interface Question {
-  id?: string; // 프론트엔드에서 사용할 ID
+  id?: string;
   content: string; //질문
   questionType: "OBJECT" | "SUBJECTIVE";
   objects?: string[]; //객관식 선택지
   hasWordLimit?: boolean; //주관식 글자수 제한 여부
   wordLimit?: number; //주관식 글자수 제한
+  multiSelect?: boolean; //객관식 중복 선택 여부
 }
 
 interface PartQuestion {
@@ -46,6 +47,7 @@ interface PartQuestion {
 //2-5 전체 폼 타입
 interface CreateApplicationForm {
   title: string;
+  multiApply: boolean;
   partQuestions: PartQuestion[]; //파트별 질문 (공통 질문 포함)
   isPortfolioRequired: boolean;
 }
