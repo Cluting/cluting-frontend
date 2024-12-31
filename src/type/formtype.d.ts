@@ -140,52 +140,31 @@ declare interface TimeSlotAdmins {
 
 // //2-5 공통 옵션 타입
 interface QuestionOption {
-  id: string;
   value: string;
 }
 
 // 기본 질문 타입
 interface Question {
-  id: string;
-  question: string;
-  type: "서술형 질문" | "객관형 질문";
-  content: QuestionOption[]; // 서술형은 빈 배열, 객관형은 옵션 배열
-  hasWordLimit?: boolean;
-  wordLimit?: number;
+  id?: string; // 프론트엔드에서 사용할 ID
+  content: string; //질문
+  questionType: "OBJECT" | "SUBJECTIVE";
+  objects?: string[]; //객관식 선택지
+  hasWordLimit?: boolean; //주관식 글자수 제한 여부
+  wordLimit?: number; //주관식 글자수 제한
 }
 
-interface QuestionSection {
-  caution: string;
-  questions: {
-    [key: string]: Question;
-  };
+interface PartQuestion {
+  partName: string;
+  caution: string; // 주의사항
+  questions: Question[]; // 질문 목록
 }
 
-//2-5 폼 타입
+//2-5 전체 폼 타입
 interface CreateApplicationForm {
   title: string;
-  commonSection: QuestionSection;
-  groupSections: {
-    [partName: string]: QuestionSection;
-  };
+  partQuestions: PartQuestion[]; //파트별 질문 (공통 질문 포함)
   isPortfolioRequired: boolean;
 }
-
-//이걸로 수정해야함
-// interface CreateApplicationForm {
-//   title: string;
-//   partQuestions: [
-//     {
-//       partName: string;
-//       caution: string;
-//       questions: [
-//         content: string,
-//         isRequired: boolean //필수 답변 여부
-//       ];
-//     }
-//   ];
-//   isPortfolioRequired: boolean;
-// }
 
 declare interface Groups {
   id: number;
