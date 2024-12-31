@@ -1,7 +1,7 @@
 import { Instance } from "../../../../../services/AxiosInstance";
 
 //POST: 지원서 폼 제작하기
-export async function postCreateForm(
+export async function postPrepare5(
   createFormData: CreateApplicationForm,
   recruitId: number
 ) {

@@ -14,7 +14,7 @@ import InterviewTimeSelector from "./InterviewTimeSelector";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
 import { useMutation } from "@tanstack/react-query";
-import { postCreateForm } from "./service/CreateApplicationForm";
+import { postPrepare5 } from "./service/Step5";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
@@ -23,7 +23,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   const createFormMutation = useMutation(
     (data: { formData: CreateApplicationForm; recruitId: number }) =>
-      postCreateForm(data.formData, data.recruitId),
+      postPrepare5(data.formData, data.recruitId),
     {
       onSuccess: (data) => {
         console.log("폼 생성 성공:", data);
@@ -228,7 +228,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
       console.log("제출 데이터:", JSON.stringify(submitData, null, 2));
       // console.log(submitData);
       // handleStepTwoSubmit();
-      //todo: 이건 어디서 받아오는걸까
+
       const recruitId = 1; //todo: 일단 임시로
       createFormMutation.mutate({ formData: submitData, recruitId });
     } catch (error: any) {

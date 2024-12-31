@@ -4,8 +4,23 @@ import GroupPassCount from "./GroupPassCount";
 import NumberSpinner from "./NumberSpinner";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
+import { useMutation } from "@tanstack/react-query";
+import { postPrepare1 } from "./service/Step1";
 
 export default function SetAcceptanceCountContainer() {
+  const mutation = useMutation(
+    (data: { formData: SetAcceptanceCountFormData; recruitId: number }) =>
+      postPrepare1(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("등록 성공", data); // 성공 데이터 처리
+      },
+      onError: (error: any) => {
+        console.error(`모집하기1 등록에 실패하였습니다`, error);
+      }
+    }
+  );
+
   const {
     control,
     handleSubmit,
@@ -119,6 +134,9 @@ export default function SetAcceptanceCountContainer() {
 
       console.log("제출된 데이터:", data);
       setStepCompleted(0, true);
+
+      const recruitId = 1; //todo: 일단 임시로
+      mutation.mutate({ formData: data, recruitId });
     } catch (error) {
       console.error("제출 중 에러 발생:", error);
     }
