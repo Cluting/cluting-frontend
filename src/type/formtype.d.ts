@@ -5,13 +5,12 @@ declare interface RegisterClubFormValue {
   category: string; // (예: "CULTURE", "PHYSICAL", "STARTUP", "LANGUAGE", "SOCIAL", "TECHNOLOGY", "SERVICE", "ACADEMIC", "ELSE")
   type: string; // (예: "INTERNAL", "EXTERNAL")
   keyword: string[];
-  profile?: File | null;
 }
 
 //리크루팅 시작하기 모달 Form
 declare interface RecrutingStartFormValue {
-  sessionNumber: string;
-  interviewType: string;
+  generation: number;
+  isInterview: boolean;
 }
 
 //공고 작성 Form

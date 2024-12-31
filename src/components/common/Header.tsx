@@ -15,12 +15,12 @@ export default function Header() {
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
-      <Link to="/">
+      <Link to="/main">
         <div className="flex items-center gap-2">
           <img
             src="/assets/logo/ic-logo.svg"
             alt="로고 아이콘"
-            className="w-[120px] h-[40px] "
+            className="w-[72px] h-[21px] "
           />
         </div>
       </Link>
@@ -38,7 +38,7 @@ export default function Header() {
                   <img
                     src="/assets/ic-notice.svg"
                     alt="알림"
-                    className="w-[35px] h-[35px] mx-4"
+                    className="w-[24px] h-[24px] mx-4"
                   />
                   <img
                     src="/assets/ic-profile.svg"

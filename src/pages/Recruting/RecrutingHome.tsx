@@ -1,14 +1,15 @@
 //리크루팅 홈
 
-import { useEffect, useState } from "react";
-import RecrutingStartModal from "../../components/recruting/home/RecrutingStartModal";
+import { useState } from "react";
+import RecrutingStartModal from "../../components/recruting/home/_start/RecrutingStartModal";
 import TodoTemplate from "../../components/recruting/home/_todo/TodoTemplate";
-import AddAdmin from "../../components/recruting/home/AddAdmin";
-import AddAdminModal from "../../components/recruting/home/AddAdminModal";
+import AddAdmin from "../../components/recruting/home/_admin/AddAdmin";
 import Sidemenu from "../../components/recruting/common/Sidemenu";
 import RecruitmentStep from "../../components/recruting/common/RecruitmentStep";
 import RecruitingCalender from "../../components/recruting/home/RecruitingCalendar";
 import { useRecruitmentStartStore } from "../../store/useStore";
+import AddAdminModal from "../../components/recruting/home/_admin/AddAdminModal";
+import AcceptAdminModal from "../../components/recruting/home/_admin/AcceptAdminModal";
 
 export default function RecrutingHome() {
   const { isRecruitingStarted } = useRecruitmentStartStore();

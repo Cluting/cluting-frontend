@@ -1,7 +1,8 @@
 //불합격한 동아리
-import ClubCard from "../../../recruting/home/ClubCard";
+
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate, useParams } from "react-router-dom";
+import ClubCard from "../../../recruting/home/_main/ClubCard";
 
 export default function FailClubContainer() {
   const { menu } = useParams();

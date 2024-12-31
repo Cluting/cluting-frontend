@@ -173,8 +173,8 @@ export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
 // 기수 설정 Store
 export const useRecruitmentSessionStore = create<RecruitmentSessionStore>()(
   (set) => ({
-    sessionNumber: "", // 현재 기수
-    setSessionNumber: (session: string) => set({ sessionNumber: session }) // 기수 설정
+    sessionNumber: 0, // 현재 기수
+    setSessionNumber: (session: number) => set({ sessionNumber: session }) // 기수 설정
   })
 );
 
