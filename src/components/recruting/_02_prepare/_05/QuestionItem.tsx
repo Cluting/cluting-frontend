@@ -1,35 +1,5 @@
 //QuestionItem.tsx
 import { ReactElement, useState, useEffect } from "react";
-import {
-  UseFormRegister,
-  FieldErrors,
-  UseFormSetValue,
-  UseFormWatch
-} from "react-hook-form";
-
-interface QuestionItemProps {
-  question: Question;
-  partName: string;
-  questionIndex: number;
-  onTypeChange: (
-    partName: string,
-    questionId: string,
-    newType: "OBJECT" | "SUBJECTIVE"
-  ) => void;
-  onDelete: (partName: string, questionId: string) => void;
-  onAddOption: (partName: string, questionId: string, value: string) => void;
-  onRemoveOption: (
-    partName: string,
-    questionId: string,
-    optionIndex: number
-  ) => void;
-  register: UseFormRegister<CreateApplicationForm>;
-  setValue: UseFormSetValue<CreateApplicationForm>;
-  watch: UseFormWatch<CreateApplicationForm>;
-  errors?: FieldErrors<CreateApplicationForm>;
-  isSubmitted: boolean;
-  partIndex: number;
-}
 
 export default function QuestionItem({
   question,
@@ -50,7 +20,6 @@ export default function QuestionItem({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // questionType과 objects를 폼에 등록
     setValue(
       `partQuestions.${partIndex}.questions.${questionIndex}.questionType`,
       question.questionType
@@ -126,7 +95,6 @@ export default function QuestionItem({
             : "border-gray-300"
         }`}
       >
-        {/* 기존 JSX와 동일하게 유지하되, 이벤트 핸들러만 수정 */}
         <div className="flex justify-between">
           <div className="flex">
             <textarea

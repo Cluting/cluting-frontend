@@ -244,6 +244,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
               <p className="text-state-error">{String(errors.title.message)}</p>
             )}
           </div>
+
+          <ApplicantProfile />
         </div>
 
         {/* 지원 그룹 */}
