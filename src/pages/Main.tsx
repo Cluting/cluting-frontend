@@ -11,7 +11,7 @@ export default function Main() {
   }, []);
   return (
     <div>
-      <div className="relative top-[-2px] w-full h-[378px] bg-[#E2E3E5] ">
+      <div className="relative top-[-2px] w-full  ">
         <MainBanner />
       </div>
 
