@@ -47,7 +47,7 @@ interface PartQuestion {
 //2-5 전체 폼 타입
 interface CreateApplicationForm {
   title: string;
-  multiApply: boolean;
+  multiApply: boolean; //다중 지원 가능 여부
   partQuestions: PartQuestion[]; //파트별 질문 (공통 질문 포함)
   isPortfolioRequired: boolean;
 }
