@@ -26,6 +26,7 @@ export default function AnnouncementDetails() {
   const finalResultDate = watch("finalResultDate");
   const activityStart = watch("activityStart");
   const activityEnd = watch("activityEnd");
+
   return (
     <div className=" flex flex-col bg-white-100 py-6 mx-8 mb-9 px-10 rounded-[12px] w-full text-left">
       <label className="mt-6 announcement-title">포스터 업로드</label>

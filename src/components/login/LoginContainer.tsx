@@ -18,6 +18,7 @@ export default function LoginContainer() {
       setLogin(true); // 로그인 전역 상태 업데이트
       navigate("/main");
       console.log("로그인 성공", data); // 성공 데이터 처리
+      localStorage.setItem("access_token", data.accessToken); // 로컬 스토리지 액세스 토큰 등록
     },
     onError: (error: any) => {
       alert(`로그인에 실패하였습니다`);
@@ -37,14 +38,9 @@ export default function LoginContainer() {
       >
         <div className="flex items-center gap-2">
           <img
-            src="/assets/logo/ic-logoIcon.svg"
+            src="/assets/logo/ic-logo-black.svg"
             alt="로고 아이콘"
-            className="w-[37px] h-[36px] "
-          />
-          <img
-            src="/assets/logo/ic-logoTitle.svg"
-            alt="로고 타이틀"
-            className="w-[140px] h-[58px]"
+            className="w-[200px] h-[40px] "
           />
         </div>
         <p className="text-title3 mt-[27px]">
