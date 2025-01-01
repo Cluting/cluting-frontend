@@ -33,6 +33,7 @@ export default function RoleSettings({
         <div className="flex items-center">
           <p className="section-title">{type} 평가 역할 설정</p>
           {groups.length === 1 ? (
+            // 공통 그룹만 있는 경우
             <div className="tooltip">
               {type} 평가 시, 그룹을 형성하여 지원자를 나누고, 각 그룹별
               평가자를 분담해 주세요.
@@ -45,14 +46,20 @@ export default function RoleSettings({
             </div>
           )}
         </div>
-        <button
-          type="button"
-          className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 font-semibold hover:bg-main-100 hover:text-white-100 group"
-          onClick={addGroupForm}
-        >
-          <IdealIcon className="mr-[4.81px]" />
-          그룹 추가하기
-        </button>
+        {groups ? (
+          <div>
+            <button
+              type="button"
+              className="flex-center w-[150.93] h-[48.6px] pl-[24.54px] pr-[17.93px] py-[18.23px] bg-main-300 border border-main-400 rounded-[8.95px] text-main-100 font-semibold hover:bg-main-100 hover:text-white-100 group"
+              onClick={addGroupForm}
+            >
+              <IdealIcon className="mr-[4.81px]" />
+              그룹 추가하기
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="w-full min-h-[318px] mt-[10px] pt-[18px] pb-[29px] px-[36px] bg-white-100 border border-[#D6D7DA] rounded-[21px]">
@@ -68,7 +75,7 @@ export default function RoleSettings({
               (groupItem) =>
                 groupItem.id !== 1 && (
                   <div key={groupItem.id} className="max-w-[286px]">
-                    <div className="flex text-[12.25px] font-semibold gap-[8.33px] text-[#5C6067]">
+                    <div className="flex items-center text-[12.25px] font-semibold gap-[8.33px] text-[#5C6067]">
                       <p>지원자 수</p>
                       <div className="flex-center bg-gray-100 h-[22px] px-[6.74px] py-[3.52px] rounded-[7.35px]">
                         23명

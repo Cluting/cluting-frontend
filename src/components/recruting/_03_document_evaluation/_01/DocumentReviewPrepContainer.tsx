@@ -33,7 +33,7 @@ export default function DocumentReviewPrepContainer() {
       {
         id: 1,
         groupName: "공통",
-        admins: [], //여기에 admins를 다 넣어야 할 것 같긴한딩ㅇ.. How..?
+        admins: [], //todo: 여기에 admins를 다 넣어야 할 것 같긴한딩ㅇ.. How..?
         criteria: [
           {
             id: 1,
@@ -148,50 +148,56 @@ export default function DocumentReviewPrepContainer() {
     <form className="w-full" onSubmit={onSubmit}>
       <div className="ml-8 w-full mt-[34px]">
         {/* 전체 지원자 수 섹션 */}
-        <div className="flex">
-          <p className="section-title">전체 지원자 수</p>
-          <div className="tooltip">
-            우리 동아리에 지원한 전체 지원자 수를 보여드립니다.
+        <div>
+          <div className="flex">
+            <p className="section-title">전체 지원자 수</p>
+            <div className="tooltip">
+              우리 동아리에 지원한 전체 지원자 수를 보여드립니다.
+            </div>
+          </div>
+
+          <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
+            {groups.map((groupItem) => (
+              <div key={groupItem.id} className="flex items-center gap-[15px] ">
+                <p>{groupItem.groupName}</p>
+                <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                  175명
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
-          {groups.map((groupItem) => (
-            <div key={groupItem.id} className="flex items-center gap-[15px] ">
-              <p>{groupItem.groupName}</p>
-              <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
-                175명
-              </div>
-            </div>
-          ))}
+        <div className="mt-[35px]">
+          <RoleSettings
+            groups={groups}
+            dropdown={dropdown}
+            currentId={currentId}
+            setValue={setValue}
+            setDropdown={setDropdown}
+            setCurrentId={setCurrentId}
+            addGroupForm={addGroupForm}
+            handleAdminSelect={handleAdminSelect}
+            removeAdmin={removeAdmin}
+            handleGroupNameChange={handleGroupNameChange}
+            type="서류"
+          />
         </div>
 
-        <RoleSettings
-          groups={groups}
-          dropdown={dropdown}
-          currentId={currentId}
-          setValue={setValue}
-          setDropdown={setDropdown}
-          setCurrentId={setCurrentId}
-          addGroupForm={addGroupForm}
-          handleAdminSelect={handleAdminSelect}
-          removeAdmin={removeAdmin}
-          handleGroupNameChange={handleGroupNameChange}
-          type="서류"
-        />
-
         {/* 평가 기준 설정하기 섹션 */}
-        <EvaluationCriteria
-          groups={groups}
-          selectedGroupId={selectedGroupId}
-          selectedGroupIndex={selectedGroupIndex}
-          setSelectedGroupId={setSelectedGroupId}
-          type="서류"
-          register={register}
-          setValue={setValue}
-          watch={watch}
-          errors={errors}
-        />
+        <div className="mt-[66px]">
+          <EvaluationCriteria
+            groups={groups}
+            selectedGroupId={selectedGroupId}
+            selectedGroupIndex={selectedGroupIndex}
+            setSelectedGroupId={setSelectedGroupId}
+            type="서류"
+            register={register}
+            setValue={setValue}
+            watch={watch}
+            errors={errors}
+          />
+        </div>
       </div>
     </form>
   );
