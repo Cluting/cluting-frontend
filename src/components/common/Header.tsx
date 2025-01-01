@@ -29,7 +29,7 @@ export default function Header() {
           <img
             src="/assets/ic-search.svg"
             alt="검색"
-            className="w-[35px] h-[35px] mx-4"
+            className="w-[30px] h-[30px] mx-4"
           />
           {isLogin ? (
             <>
