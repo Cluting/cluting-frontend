@@ -22,6 +22,7 @@ import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
 import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
 import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
 import PublicRoute from "./components/login/PublicRoute";
+import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 
 export default function App() {
   return (
@@ -49,8 +50,9 @@ export default function App() {
               }
             />
             <Route path="/register_club" element={<RegisterClub />} />
+            <Route path="/admin/invite" element={<AdminInvite />} />
             <Route path="recruting">
-              <Route path="home" element={<RecrutingHome />} />
+              <Route path="home/:clubId" element={<RecrutingHome />} />
               {/* 수정된 경로 */}
               <Route path="01_plan" element={<RecrutingPlan />} />
               <Route path="02_prepare" element={<RecrutingPrepare />} />

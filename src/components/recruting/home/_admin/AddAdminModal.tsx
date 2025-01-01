@@ -1,7 +1,10 @@
 //운영진 추가 모달
 
 import { useState } from "react";
-import { ModalPortal } from "../../common/ModalPortal";
+import { ModalPortal } from "../../../common/ModalPortal";
+import { useMutation } from "@tanstack/react-query";
+import { postAdminInvite } from "./service/Admin";
+import { useParams } from "react-router-dom";
 
 type AddAdminModalProps = {
   onClose: () => void;
@@ -9,11 +12,39 @@ type AddAdminModalProps = {
 
 export default function AddAdminModal({ onClose }: AddAdminModalProps) {
   const [isCopied, setIsCopied] = useState(false);
+  const [inviteLink, setInviteLink] = useState("");
+
+  const params = useParams<{ clubId: string }>();
+  const clubId = params.clubId ? parseInt(params.clubId, 10) : undefined;
+
+  const mutation = useMutation(
+    () => {
+      if (clubId === undefined) {
+        throw new Error("Club ID is undefined");
+      }
+      return postAdminInvite(clubId);
+    },
+    {
+      onSuccess: (data) => {
+        // 백엔드 URL을 프론트엔드 URL로 변환
+        const frontendBaseUrl = "http://localhost:3000";
+        const token = new URL(data).searchParams.get("token");
+        const frontendInviteLink = `${frontendBaseUrl}/admin/invite?token=${token}`;
+
+        setInviteLink(frontendInviteLink);
+        console.log("초대 링크 생성 완료", frontendInviteLink);
+        navigator.clipboard.writeText(frontendInviteLink);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      },
+      onError: (error) => {
+        console.error("운영진 초대 링크 생성 중 오류 발생:", error);
+      }
+    }
+  );
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("http://localhost:3000/recruting/home"); //FIX: 복사할 링크 수정 필요
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000); // 2초 후 알림 모달 닫기
+    mutation.mutate();
   };
 
   return (

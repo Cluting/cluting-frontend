@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { STEP2_ITEMS } from "../../../constants/recruting";
 import { useStepTwoStore } from "../../../store/useStore";
-import AddAdmin from "../home/AddAdmin";
+import AddAdmin from "../home/_admin/AddAdmin";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep, steps } = useStepTwoStore();

@@ -5,13 +5,12 @@ declare interface RegisterClubFormValue {
   category: string; // (예: "CULTURE", "PHYSICAL", "STARTUP", "LANGUAGE", "SOCIAL", "TECHNOLOGY", "SERVICE", "ACADEMIC", "ELSE")
   type: string; // (예: "INTERNAL", "EXTERNAL")
   keyword: string[];
-  profile?: File | null;
 }
 
 //리크루팅 시작하기 모달 Form
 declare interface RecrutingStartFormValue {
-  sessionNumber: string;
-  interviewType: string;
+  generation: number;
+  isInterview: boolean;
 }
 
 //공고 작성 Form
@@ -53,6 +52,7 @@ declare interface PopularClubProps {
 
 //메인 홈 동아리 리스트
 declare interface ClubCardProps {
+  id: string;
   dDay: number;
   clubImg: string;
   logoSrc: string;
@@ -60,6 +60,7 @@ declare interface ClubCardProps {
   title: string;
   clubName: string;
   tags: string[];
+  isLarge?: boolean; //크기 변환 prop
 }
 
 // 합격 인원 설정 Form
