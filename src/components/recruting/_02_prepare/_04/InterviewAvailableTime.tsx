@@ -29,8 +29,10 @@ const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
 const generateTimeSlots = (start: Date, end: Date): string[] => {
   const times: string[] = [];
   const current = new Date(start);
+  const endTime = new Date(end);
+  endTime.setMinutes(endTime.getMinutes() + 30); // 종료 시간을 30분 연장
 
-  while (current <= end) {
+  while (current <= endTime) {
     const hours = current.getHours();
     const minutes = current.getMinutes();
     const timeString = `${hours % 12 || 12}:${minutes === 0 ? "00" : "30"} ${
@@ -45,7 +47,6 @@ const generateTimeSlots = (start: Date, end: Date): string[] => {
 
   return times;
 };
-
 export default function InterviewAvailableTime() {
   const {
     isTimeSet,
