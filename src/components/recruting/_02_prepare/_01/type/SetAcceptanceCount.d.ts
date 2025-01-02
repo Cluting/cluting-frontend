@@ -2,7 +2,7 @@
 declare interface SetAcceptanceCountFormData {
   totalDocumentPassCount: number;
   totalFinalPassCount: number;
-  groupInfos: {
+  groupInfos?: {
     groupName: string;
     documentPassCount: number;
     finalPassCount: number;

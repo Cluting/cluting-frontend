@@ -72,11 +72,14 @@ export default function SetAcceptanceCountContainer() {
       return true;
     },
     groupNameCheck: (value: string) => {
+      if (!touchedFields.groupInfos) return true;
       if (!value?.trim()) return "필수 입력 사항입니다.";
       return true;
     },
     groupDocumentPassCheck: (value: number) => {
       if (!touchedFields.groupInfos) return true;
+      if (!groupInfos || groupInfos.length === 0) return true;
+
       if (value === undefined || value === null || value === 0)
         return "필수 입력 사항입니다.";
 
@@ -91,6 +94,8 @@ export default function SetAcceptanceCountContainer() {
     },
     groupFinalPassCheck: (value: number) => {
       if (!touchedFields.groupInfos) return true;
+      if (!groupInfos || groupInfos.length === 0) return true;
+
       if (value === undefined || value === null || value === 0)
         return "필수 입력 사항입니다.";
 
@@ -115,21 +120,24 @@ export default function SetAcceptanceCountContainer() {
       // validation 결과 확인
       if (Object.keys(errors).length > 0) return;
 
-      const groupTotalDocumentPass = data.groupInfos?.reduce(
-        (sum, group) => sum + (group.documentPassCount || 0),
-        0
-      );
-      const groupTotalFinalPass = data.groupInfos?.reduce(
-        (sum, group) => sum + (group.finalPassCount || 0),
-        0
-      );
+      // 그룹이 있을 때만 합계 검증
+      if (data.groupInfos && data.groupInfos.length > 0) {
+        const groupTotalDocumentPass = data.groupInfos.reduce(
+          (sum, group) => sum + (group.documentPassCount || 0),
+          0
+        );
+        const groupTotalFinalPass = data.groupInfos.reduce(
+          (sum, group) => sum + (group.finalPassCount || 0),
+          0
+        );
 
-      if (groupTotalDocumentPass !== data.totalDocumentPassCount) {
-        return;
-      }
+        if (groupTotalDocumentPass !== data.totalDocumentPassCount) {
+          return;
+        }
 
-      if (groupTotalFinalPass !== data.totalFinalPassCount) {
-        return;
+        if (groupTotalFinalPass !== data.totalFinalPassCount) {
+          return;
+        }
       }
 
       console.log("제출된 데이터:", data);
