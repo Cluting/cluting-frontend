@@ -12,7 +12,7 @@ export const Instance = axios.create({
 Instance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    // const originalRequest = error.config;
 
     // // 액세스 토큰이 만료된 경우 (401 에러)
     // if (error.response.status === 401 && !originalRequest._retry) {

@@ -8,6 +8,8 @@ import { useStepTwoStore } from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { FormProvider, useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { postPrepare4InterviewSetup } from "../service/Step2";
+import { useMutation } from "@tanstack/react-query";
 
 //2-4 운영진 면접 일정 조정 (컨테이너)
 export default function ScheduleInterviewsContainer() {
@@ -24,22 +26,52 @@ export default function ScheduleInterviewsContainer() {
 
   const { watch, handleSubmit } = methods;
 
+  //FIX: 하드 코딩
+  const RECRUIT_ID = 1;
+  const mutation = useMutation(
+    (data: InterviewSetup) =>
+      postPrepare4InterviewSetup(Number(RECRUIT_ID), data),
+    {
+      onSuccess: (data) => {
+        console.log("모집하기(4) 인터뷰어, 인터뷰이, 기간 API 연결 성공", data);
+        // 성공 시 추가 작업 (예: 알림 표시, 페이지 이동 등)
+      },
+      onError: (error: any) => {
+        console.error("API 호출 실패:", error);
+        alert(`면접 일정 설정에 실패했습니다: ${error.message}`);
+      }
+    }
+  );
+
   const onSubmit = (data: InterviewSetup) => {
-    console.log("제출", data);
+    const submissionData = {
+      ...data,
+      interviewDuration: Number(data.interviewDuration)
+    };
+    console.log("제출", submissionData);
+    mutation.mutate(submissionData);
   };
 
   useEffect(() => {
-    const subscription = watch((value) => {
-      console.log("Form values changed:", value); // 디버깅용
+    const subscription = watch((value, { name, type }) => {
       if (
-        Number(value.interviewer) > 0 &&
-        Number(value.interviewee) > 0 &&
-        Number(value.interviewDuration) > 0
+        name === "interviewer" ||
+        name === "interviewee" ||
+        name === "interviewDuration"
       ) {
-        console.log("Submitting form..."); // 디버깅용
-        handleSubmit(onSubmit)();
+        const { interviewer, interviewee, interviewDuration } = value;
+
+        if (
+          Number(interviewer) > 0 &&
+          Number(interviewee) > 0 &&
+          Number(interviewDuration) > 0
+        ) {
+          console.log("조건 만족, 폼 제출 중...");
+          handleSubmit(onSubmit)();
+        }
       }
     });
+
     return () => subscription.unsubscribe();
   }, [watch, handleSubmit, onSubmit]);
 

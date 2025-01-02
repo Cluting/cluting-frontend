@@ -17,9 +17,16 @@ export async function postPrepare4InterviewSetup(
   data: InterviewSetup
 ) {
   try {
+    console.log(data);
     const response = await Instance.post(
       `/plan/stage4/${recruitId}/interview-setup`,
-      data
+      data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "*/*"
+        }
+      }
     );
     console.log("성공:", response.data);
   } catch (error) {
