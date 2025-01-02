@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useInterviewStore } from "../../../../store/useStore";
 import CustomSelect from "./CustomSelect";
-import { useFormContext } from "react-hook-form";
 
 function formatDateWithDay(date: Date | null): string {
   if (!date) return "";
@@ -14,12 +13,8 @@ function formatDateWithDay(date: Date | null): string {
   return `${month}.${day}(${dayOfWeek})`;
 }
 
-interface TimeSlotProps {
-  interviewDuration: number;
-}
-
 // 3 - 면접 진행 시간대 선택
-export default function TimeSlot({ interviewDuration }: TimeSlotProps) {
+export default function TimeSlot() {
   const {
     interviewStartDate,
     interviewEndDate,
@@ -86,7 +81,7 @@ export default function TimeSlot({ interviewDuration }: TimeSlotProps) {
   // 시간 옵션 생성 함수
   const generateTimeOptions = (): string[] => {
     const options: string[] = [];
-    const interval = interviewDuration === 30 ? 30 : 60;
+    const interval = 60;
     const totalMinutes = 24 * 60;
 
     for (let minutes = 0; minutes < totalMinutes; minutes += interval) {

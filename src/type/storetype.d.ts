@@ -55,6 +55,7 @@ declare interface GroupStore {
 declare interface InterviewFormatStore {
   interviewer: number;
   interviewee: number;
+  interviewDuration: number;
   interviewStartDate: Date; // 면접 시작 날짜
   interviewEndDate: Date; // 면접 종료 날짜
   interviewStartTime: Date; // 면접 시작 시간
@@ -63,6 +64,7 @@ declare interface InterviewFormatStore {
 
   setInterviewer: (id: number) => void;
   setInterviewee: (id: number) => void;
+  setInterviewDuration: (time: number) => void;
   setInterviewStartTime: (time: Date) => void;
   setInterviewEndTime: (time: Date) => void;
   setInterviewStartDate: (date: Date) => void;

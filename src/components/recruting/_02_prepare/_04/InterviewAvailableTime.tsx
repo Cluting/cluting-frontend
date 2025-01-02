@@ -153,9 +153,17 @@ export default function InterviewAvailableTime() {
                     return (
                       <td
                         key={key}
-                        className={`p-2 border cursor-pointer h-[20px]w-[77.85px] min-w-[77.85px] max-w-[77.85px] ${
-                          selectedSlots[key] ? "bg-main-100" : "bg-main-300"
-                        } ${index % 2 === 1 ? "border-b border-gray-700 border-r-0 border-l-0" : "border border-gray-400 "} border border-gray-400 border-r-[1px] border-r-gray-400 `}
+                        className={`
+                          p-2 
+                          cursor-pointer 
+                          h-[20px] w-[77.85px] min-w-[77.85px] max-w-[77.85px] 
+                          ${selectedSlots[key] ? "bg-main-100" : "bg-main-300"}
+                          ${
+                            index % 2 === 1
+                              ? "border-t-0 border-r-0 border-l-0 border-b-[2px] border-gray-700"
+                              : "border-t border-r-0 border-l-0 border-b border-gray-400"
+                          }
+                        `}
                         onMouseDown={() => handleMouseDown(day.date, time)}
                         onMouseEnter={() => handleMouseEnter(day.date, time)}
                       ></td>

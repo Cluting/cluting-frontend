@@ -77,7 +77,7 @@ export default function ScheduleInterviewsContainer() {
             하루 중 언제부터 언제까지 면접을 진행하실 건가요?
           </div>
         </div>
-        <TimeSlot interviewDuration={60} />
+        <TimeSlot />
 
         <div className="flex items-center mx-8 my-4 ">
           <h1 className="section-title">

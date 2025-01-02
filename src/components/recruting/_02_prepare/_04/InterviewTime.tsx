@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 
 // 2 - 면접 시간 설정하기
 export default function InterviewTime() {
-  const { register } = useFormContext();
+  const { register, watch } = useFormContext();
 
   return (
     <div className="section-background ">
