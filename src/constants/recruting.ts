@@ -49,33 +49,33 @@ export const ERROR_MESSAGES = {
 };
 
 export const studentStatusList = [
-  { id: 1, description: "재학" },
-  { id: 2, description: "휴학" }
+  { id: 1, description: "재학", value: "ENROLLED" },
+  { id: 2, description: "휴학", value: "LEAVE" }
 ];
 export const semesterList = [
-  { id: 1, description: "1학년 1학기" },
-  { id: 2, description: "1학년 2학기" },
-  { id: 3, description: "2학년 1학기" },
-  { id: 4, description: "2학년 2학기" },
-  { id: 5, description: "3학년 1학기" },
-  { id: 6, description: "3학년 2학기" },
-  { id: 7, description: "4학년 1학기" },
-  { id: 8, description: "4학년 2학기" }
+  { id: 1, description: "1학년 1학기", value: "S1_1" },
+  { id: 2, description: "1학년 2학기", value: "S1_2" },
+  { id: 3, description: "2학년 1학기", value: "S2_1" },
+  { id: 4, description: "2학년 2학기", value: "S2_2" },
+  { id: 5, description: "3학년 1학기", value: "S3_1" },
+  { id: 6, description: "3학년 2학기", value: "S3_2" },
+  { id: 7, description: "4학년 1학기", value: "S4_1" },
+  { id: 8, description: "4학년 2학기", value: "S4_2" }
 ];
 export const clubTypeList = [
-  { id: 1, description: "교내" },
-  { id: 2, description: "연합" }
+  { id: 1, description: "교내", value: "INTERNAL" },
+  { id: 2, description: "연합", value: "EXTERNAL" }
 ];
+
 export const clubCategoryList = [
-  { id: 1, description: "전체" },
-  { id: 2, description: "문화 / 예술 / 공연" },
-  { id: 3, description: "봉사 / 사회 활동" },
-  { id: 4, description: "학술 / 교양" },
-  { id: 5, description: "창업 / 취업" },
-  { id: 6, description: "어학" },
-  { id: 7, description: "체육" },
-  { id: 8, description: "친목" },
-  { id: 9, description: "기타" }
+  { id: 1, description: "문화 / 예술 / 공연", value: "CULTURE" },
+  { id: 2, description: "봉사 / 사회 활동", value: "SOCIAL" },
+  { id: 3, description: "학술 / 교양", value: "TECHNOLOGY" },
+  { id: 4, description: "창업 / 취업", value: "STARTUP" },
+  { id: 5, description: "어학", value: "LANGUAGE" },
+  { id: 6, description: "체육", value: "PHYSICAL" },
+  { id: 7, description: "친목", value: "SOCIAL" },
+  { id: 8, description: "기타", value: "ELSE" }
 ];
 
 export const TermsAgreementdata: Term[] = [
@@ -149,3 +149,5 @@ export const CALENDAR_COLORS = [
   "#5856D6",
   "#af52de"
 ];
+export const CHARTS_COLORS = ["#3E0CC4", "#5E2BE8", "#9572F5", "#CAC8FF"];
+export const RADIAN = Math.PI / 180;

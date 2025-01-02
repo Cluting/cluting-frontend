@@ -1,5 +1,11 @@
 //zustand 단계 Type
 
+// 로그인 여부 store 타입
+declare interface AuthState {
+  isLogin: boolean;
+  setLogin: (state: boolean) => void;
+}
+
 declare interface Step {
   id: number;
   name: string;
@@ -66,8 +72,8 @@ declare interface InterviewFormatStore {
 
 //동아리 기수
 declare interface RecruitmentSessionStore {
-  sessionNumber: string; // 현재 기수
-  setSessionNumber: (session: string) => void; // 기수를 설정하는 함수
+  sessionNumber: number; // 현재 기수
+  setSessionNumber: (session: number) => void; // 기수를 설정하는 함수
 }
 
 //리크루팅 시작 여부

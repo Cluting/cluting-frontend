@@ -1,39 +1,16 @@
-//회원가입 From
-declare interface SignupFormValue {
-  name: string;
-  email?: string;
-  location?: string;
-  school: string;
-  studentStatus: string; //FIX: IsOnLeaver, boolean 값임 수정 필요
-  semester: string;
-  major: string;
-  doubleMajor?: string;
-  //FIX: 약관 동의 백 요청에 없음
-  termsOfService: boolean; // 클루팅 이용약관 동의
-  privacyPolicy: boolean; // 개인정보 수집 및 이용 동의
-  marketingConsent?: boolean; // 마케팅 이벤트 메일 수신 동의
-}
-
-//로그인 Form
-declare interface LoginFormValue {
-  email: string;
-  password: string;
-}
-
 //동아리 등록 Form
 declare interface RegisterClubFormValue {
-  clubImage: FileList;
-  clubName: string;
-  clubType: string;
-  clubCategory: string;
-  keywords: string[];
-  clubDescription: string;
+  name: string;
+  description: string;
+  category: string; // (예: "CULTURE", "PHYSICAL", "STARTUP", "LANGUAGE", "SOCIAL", "TECHNOLOGY", "SERVICE", "ACADEMIC", "ELSE")
+  type: string; // (예: "INTERNAL", "EXTERNAL")
+  keyword: string[];
 }
 
 //리크루팅 시작하기 모달 Form
 declare interface RecrutingStartFormValue {
-  sessionNumber: string;
-  interviewType: string;
+  generation: number;
+  isInterview: boolean;
 }
 
 //공고 작성 Form
@@ -75,6 +52,7 @@ declare interface PopularClubProps {
 
 //메인 홈 동아리 리스트
 declare interface ClubCardProps {
+  id: string;
   dDay: number;
   clubImg: string;
   logoSrc: string;
@@ -82,6 +60,7 @@ declare interface ClubCardProps {
   title: string;
   clubName: string;
   tags: string[];
+  isLarge?: boolean; //크기 변환 prop
 }
 
 // 합격 인원 설정 Form
@@ -217,7 +196,7 @@ declare interface Groups {
   admins: string[];
 }
 
-//3-1 평가 기준 설정하기
+//3-1, 5-1 평가 기준 설정하기
 declare interface EvaluationCriteria {
   id: number;
   criteria: string;

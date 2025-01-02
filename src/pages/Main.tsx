@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import ClubCardList from "../components/recruting/home/ClubCardList";
-import MainBanner from "../components/recruting/home/MainBanner";
-import MainCategory from "../components/recruting/home/MainCategory";
-import Paging from "../components/recruting/home/Paging";
+import ClubCardList from "../components/recruting/home/_main/ClubCardList";
+import MainBanner from "../components/recruting/home/_main/MainBanner";
+import Paging from "../components/recruting/home/_main/Paging";
+import MainCategory from "../components/recruting/home/_main/MainCategory";
 
 export default function Main() {
   // 페이지 로드 시 가장 위로 스크롤 이동

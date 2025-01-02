@@ -10,7 +10,7 @@ interface DropdownProps {
   semester?: boolean;
   clubType?: boolean;
   clubCategory?: boolean;
-  onSelect: (description: string) => void;
+  onSelect: (description: string, value?: string) => void;
 }
 
 export default function SignupDropdown({
@@ -38,7 +38,7 @@ export default function SignupDropdown({
             <li
               key={semester.id}
               className="signup-dropdown-list text-gray-900 my-2"
-              onClick={() => onSelect(semester.description)} // 선택 시 onSelect 호출
+              onClick={() => onSelect(semester.description, semester.value)}
             >
               {semester.description}
             </li>
@@ -48,7 +48,7 @@ export default function SignupDropdown({
             <li
               key={clubType.id}
               className="signup-dropdown-list text-gray-900 my-2"
-              onClick={() => onSelect(clubType.description)} // 선택 시 onSelect 호출
+              onClick={() => onSelect(clubType.description, clubType.value)}
             >
               {clubType.description}
             </li>
@@ -58,7 +58,9 @@ export default function SignupDropdown({
             <li
               key={clubCategory.id}
               className="signup-dropdown-list text-gray-900 my-2"
-              onClick={() => onSelect(clubCategory.description)} // 선택 시 onSelect 호출
+              onClick={() =>
+                onSelect(clubCategory.description, clubCategory.value)
+              }
             >
               {clubCategory.description}
             </li>

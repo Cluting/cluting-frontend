@@ -5,18 +5,21 @@ import { v4 as uuidv4 } from "uuid";
 import {
   useGroupStore,
   useRecruitmentStepStore,
-  useStepTwoStore
+  useStepTwoStore,
+  useInterviewStore
 } from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import ApplicantProfile from "./ApplicantProfile";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import QuestionItem from "./QuestionItem"; // 이 부분 추가
+import InterviewTimeSelector from "./InterviewTimeSelector";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
+  const { interviewStartTime, interviewEndTime } = useInterviewStore();
   const titleRef = useRef<HTMLInputElement>(null);
   const commonCautionRef = useRef<HTMLTextAreaElement>(null);
 
@@ -649,54 +652,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
         </div>
 
         {/*면접 시간 선택 */}
-        <div className="ml-8 w-full mt-[58px] mb-[50px]">
-          <div className="flex items-center">
-            <p className="section-title">면접 시간 선택</p>
-            <div className="tooltip">
-              앞서 정해진 면접 일정을 바탕으로, 지원자들이 면접 시간을
-              선택합니다.
-            </div>
-          </div>
-          <div className="w-full mt-[12px] px-[30px] py-[20.5px] bg-white-100 rounded-[12px]">
-            <div className="flex flex-col gap-[12px] py-[28px] px-[26px] bg-[#FBFBFF] rounded-[12px] border border-gray-300 text-caption1 text--gray-1100">
-              {/*이렇게 한 묶음 */}
-              <div className="flex">
-                <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
-                  12일 화요일
-                </div>
-                <div className="flex gap-[7px]">
-                  <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
-                    10:00
-                  </div>
-                  <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
-                    10:00
-                  </div>
-                  <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
-                    10:00
-                  </div>
-                </div>
-              </div>
-              {/*이렇게 한 묶음 */}
-              <div className="flex ">
-                <div className="flex-center mr-[13px] w-[88px] h-[28px] bg-gray-200 border border-[#E5E5EA] rounded-[6px]">
-                  12일 화요일
-                </div>
-                <div className="flex gap-[7px]">
-                  <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
-                    10:00
-                  </div>
-                  <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
-                    10:00
-                  </div>
-                  <div className="flex-center w-[78px] h-[28px] bg-white-100 border border-[#E5E5EA] rounded-[6px]">
-                    10:00
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <InterviewTimeSelector />
       </div>
+
       {/* 하단 버튼 */}
       <div className="flex justify-center">
         <button

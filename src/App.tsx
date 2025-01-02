@@ -13,22 +13,47 @@ import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
+import ApplicantDocument from "./pages/Recruting/document/ApplicantDocument";
+import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
+import AnnouncementList from "./pages/Applicant/AnnouncementList";
+import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
+import ApplicantHome from "./pages/Applicant/ApplicantHome";
+import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
+import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
+import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
+import PublicRoute from "./components/login/PublicRoute";
+import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
 
 export default function App() {
   return (
     <div className="App">
       <Header />
-      <div className="relative bg-white-100 h-full w-full">
+      <div className="relative w-full h-full bg-white-100">
         <div className="relative bg-white-100 h-full w-full pt-[55px]">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/main" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <PublicRoute>
+                  <SignUp />
+                </PublicRoute>
+              }
+            />
             <Route path="/register_club" element={<RegisterClub />} />
+            <Route path="/admin/invite" element={<AdminInvite />} />
             <Route path="recruting">
-              <Route path="home" element={<RecrutingHome />} />
+              <Route path="home/:clubId" element={<RecrutingHome />} />
               {/* 수정된 경로 */}
               <Route path="01_plan" element={<RecrutingPlan />} />
               <Route path="02_prepare" element={<RecrutingPrepare />} />
@@ -48,11 +73,42 @@ export default function App() {
                 path="05_interview_evaluation"
                 element={<InterviewEvaluation />}
               />
+              {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question"
                 element={<ApplicantDocument />}
               />
+              {/* <Route path="answer_record" element={<AnswerRecord />} /> */}
+              {/* (면접) 답변 기록하기 */}
+              <Route
+                path="answer_record/:intervieweeName"
+                element={<AnswerRecord />}
+              />
+              {/* 면접 평가하기 */}
+              <Route
+                path="interview_evaluation_record"
+                element={<InterviewEvaluationRecord />}
+              />
               <Route path="06_final_selection" element={<FinalSelection />} />
+            </Route>
+
+            <Route path="applicant">
+              {/* 지원자 홈 */}
+              <Route path="home" element={<ApplicantHome />} />
+              {/* 기본 프로필 */}
+              <Route path="profile" element={<ApplicantProfile />} />
+              {/* 공고 리스트 */}
+              <Route path="announcement/:menu" element={<AnnouncementList />} />
+              <Route
+                path="announcement/:menu/detail"
+                element={<ApplicantHistoryDetail />}
+              />
+              {/* 나의 지원 기록 */}
+              <Route path="applications/:menu" element={<ApplicantHistory />} />
+              <Route
+                path="applications/:menu/detail"
+                element={<ApplicantHistoryDetail />}
+              />
             </Route>
           </Routes>
         </div>

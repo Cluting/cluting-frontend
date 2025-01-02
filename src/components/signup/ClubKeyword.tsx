@@ -22,9 +22,7 @@ export default function ClubKeyword({
   const [isActive, setIsActive] = useState(false);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeywordItem(e.target.value);
-    e.target.value && watch("keywords")
-      ? setIsActive(false)
-      : setIsActive(true);
+    e.target.value && watch("keyword") ? setIsActive(false) : setIsActive(true);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -33,7 +31,7 @@ export default function ClubKeyword({
       // 키워드 수가 5개 미만일 경우만 추가
       if (keywords.length < 5) {
         const newKeywords = [...keywords, keywordItem];
-        setValue("keywords", newKeywords); // register된 필드 업데이트
+        setValue("keyword", newKeywords); // register된 필드 업데이트
         setKeywords(newKeywords);
         setKeywordItem(""); // 입력 후 입력 필드를 비웁니다
       }
@@ -44,7 +42,7 @@ export default function ClubKeyword({
     setKeywords((prevKeywords) =>
       prevKeywords.filter((keyword) => keyword !== keywordToDelete)
     );
-    setValue("keywords", keywords);
+    setValue("keyword", keywords);
   };
 
   return (
@@ -73,7 +71,7 @@ export default function ClubKeyword({
           {keywords.map((keyword) => (
             <li
               key={keyword}
-              {...register("keywords")}
+              {...register("keyword")}
               className="flex-center w-auto h-min bg-white-100 rounded-[10px] px-[15px] py-[8px] rounded-[15px] mb-1 gap-2.5"
             >
               {keyword}

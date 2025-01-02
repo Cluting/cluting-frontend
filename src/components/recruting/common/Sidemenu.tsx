@@ -65,13 +65,15 @@ export default function Sidemenu() {
   useEffect(() => {
     // 초기 설정
     handleResize();
-
     // 리사이즈 이벤트 리스너 등록
     window.addEventListener("resize", handleResize);
-    //평가 페이지일 경우
+    //평가 페이지, 개인 질문, 답변 기록 페이지의 경우 사이드메뉴 닫힌 게 기본이도록 설정
     if (
+      location.pathname === "/recruting/evaluation" ||
       location.pathname === `/recruting/evaluation/${id}` ||
-      location.pathname === "/recruting/individual_question"
+      location.pathname === "/recruting/individual_question" ||
+      location.pathname.startsWith("/recruting/answer_record") ||
+      location.pathname.startsWith("/recruting/interview_evaluation_record")
     ) {
       setEvaluationVersion(true);
       setSidemenuClose(true);
@@ -158,7 +160,7 @@ export default function Sidemenu() {
                 onClick={() => navigateToPage(index)}
               >
                 <div
-                  className={`flex-center w-[33px] h-[30px] bg-gray-100 border ${isActive ? "border-0 bg-main-100 text-white-100" : "border-gray-500"} group-hover:border-gray-900 rounded-[8px]`}
+                  className={`flex-center w-[33px] h-[30px] bg-gray-100 border ${isActive ? "border-0 bg-main-100 text-white-100" : "border-gray-500"} group-hover:border-gray-900 rounded-lg`}
                 >
                   {index + 1}
                 </div>

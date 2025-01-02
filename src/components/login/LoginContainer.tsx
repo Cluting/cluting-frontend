@@ -1,16 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../common/Input";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { getSignin } from "../signup/services/User";
+import { useAuthStore } from "../../store/useAuthStore";
 
 export default function LoginContainer() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues
-  } = useForm<LoginFormValue>({ mode: "onChange" });
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<LoginFormValue>({
+    mode: "onChange"
+  });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  // Mutation 설정
+  const { setLogin } = useAuthStore();
+  const mutation = useMutation(getSignin, {
+    onSuccess: (data) => {
+      setLogin(true); // 로그인 전역 상태 업데이트
+      navigate("/main");
+      console.log("로그인 성공", data); // 성공 데이터 처리
+      localStorage.setItem("access_token", data.accessToken); // 로컬 스토리지 액세스 토큰 등록
+      localStorage.setItem("refresh_token", data.refreshToken);
+    },
+    onError: (error: any) => {
+      alert(`로그인에 실패하였습니다`);
+    }
+  });
+
+  // Form 제출 핸들러
+  const onSubmit = handleSubmit((data) => {
+    mutation.mutate(data); // postSignup 호출
+  });
 
   return (
     <>
@@ -20,14 +39,9 @@ export default function LoginContainer() {
       >
         <div className="flex items-center gap-2">
           <img
-            src="/assets/logo/ic-logoIcon-black.svg"
+            src="/assets/logo/ic-logo-black.svg"
             alt="로고 아이콘"
-            className="w-[37px] h-[36px] "
-          />
-          <img
-            src="/assets/logo/ic-logoTitle-black.svg"
-            alt="로고 타이틀"
-            className="w-[140px] h-[58px]"
+            className="w-[200px] h-[40px] "
           />
         </div>
         <p className="text-title3 mt-[27px]">
