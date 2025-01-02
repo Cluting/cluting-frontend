@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useInterviewStore } from "../../../../store/useStore";
 
 // 인터뷰 날짜 타입 정의
@@ -64,6 +64,11 @@ export default function InterviewAvailableTime() {
   }>({});
   const [isDragging, setIsDragging] = useState(false);
 
+  const [isSelectTime, setIsSelectTime] = useState(false);
+  const handleButtonClick = () => {
+    setIsSelectTime(!isSelectTime);
+  };
+
   const handleMouseDown = (day: string, time: string) => {
     const key = `${day}-${time}`;
     setSelectedSlots((prev) => {
@@ -95,11 +100,15 @@ export default function InterviewAvailableTime() {
     setIsDragging(false);
   };
 
+  const hasSelectedSlots = useMemo(() => {
+    return Object.values(selectedSlots).some((value) => value);
+  }, [selectedSlots]);
+
   return (
-    <div className="section-background flex flex-wrap space-y-4 ">
+    <div className="section-background flex items-center flex-wrap space-y-4 ">
       {/* 시간표 렌더링 (표 안) */}
       <section
-        className="overflow-auto scrollbar-hidden w-[963px] h-auto relative border border-gray-300 rounded-[12px] py-[27px] px-4"
+        className="overflow-auto scrollbar-hidden w-[940px] h-auto relative border border-gray-300 rounded-[12px] py-[27px] px-4"
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
@@ -158,6 +167,20 @@ export default function InterviewAvailableTime() {
           </table>
         )}
       </section>
+      <button
+        onClick={handleButtonClick}
+        disabled={!hasSelectedSlots}
+        className={`rounded-lg text-subheadline w-fit py-2 px-6 
+        ${
+          isSelectTime
+            ? "bg-main-300 text-main-100 border border-main-400"
+            : "bg-gray-300 text-white-100 hover:bg-main-100 hover:text-white-100"
+        }
+        ${hasSelectedSlots && !isSelectTime && "bg-main-500 text-white-100"}
+          `}
+      >
+        {isSelectTime ? "수정하기" : "선택 완료"}
+      </button>
     </div>
   );
 }
