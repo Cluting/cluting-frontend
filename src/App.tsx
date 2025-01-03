@@ -22,6 +22,7 @@ import ApplicantHistoryDetail from "./pages/Applicant/ApplicantHistoryDetail";
 import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
 import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
 import PublicRoute from "./components/login/PublicRoute";
+import AnnouncementListDetail from "./pages/Applicant/AnnouncementListDetail";
 
 export default function App() {
   return (
@@ -95,7 +96,7 @@ export default function App() {
               <Route path="announcement/:menu" element={<AnnouncementList />} />
               <Route
                 path="announcement/:menu/detail"
-                element={<ApplicantHistoryDetail />}
+                element={<AnnouncementListDetail />}
               />
               {/* 나의 지원 기록 */}
               <Route path="applications/:menu" element={<ApplicantHistory />} />
