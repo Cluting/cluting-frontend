@@ -82,17 +82,14 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//2-2 공통 인재상 Form
-declare interface CommonIdealForm {
-  commonIdeals: {
-    text: string;
-  }[];
+//2-2 Form
+interface PartIdeal {
+  partName: string;
+  content: string[];
 }
-//그룹별 인재상 Form
-declare interface GroupIdealForm {
-  groupIdeals: {
-    [key: string]: string;
-  };
+
+interface IdealForm {
+  partIdeals: PartIdeal[];
 }
 
 //임원진 일정 Form
