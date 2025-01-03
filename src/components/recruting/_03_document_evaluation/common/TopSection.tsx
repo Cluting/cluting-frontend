@@ -5,6 +5,7 @@ import {
   useStepTwoStore
 } from "../../../../store/useStore";
 import AddAdmin from "../../home/_admin/AddAdmin";
+import { useNavigate } from "react-router-dom";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep } = useStepTwoStore();
@@ -12,6 +13,7 @@ export default function TopSection() {
     useRecruitmentStepStore(); //전체 스텝
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAdmin, setShowAdmin] = useState(false); //권한자 보기 드롭다운
+  const navigate = useNavigate();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -23,6 +25,8 @@ export default function TopSection() {
 
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
+    const paths = ["docPrep", "doc"];
+    navigate(`/recruting/03_document_evaluation/${paths[index]}`);
   };
 
   return (

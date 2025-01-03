@@ -6,12 +6,20 @@ import RoleSettings from "../../common/RoleSetting";
 import { useMutation } from "@tanstack/react-query";
 import { postDocPre } from "../service/Step3";
 import { ALL_ADMINS_WITH_ID } from "../../../../constants/recruting";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
   const [dropdown, setDropdown] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
+
+  const { doc } = useParams();
+  const navigate = useNavigate();
+
+  const setUrl = (doc: "docPrep") => {
+    navigate(`/applicant/applications/${doc}`);
+  };
 
   const defaultGroups = useMemo(() => {
     const existingGroups =
@@ -150,6 +158,7 @@ export default function DocumentReviewPrepContainer() {
     {
       onSuccess: () => {
         console.log("서류 평가 준비하기 설정이 성공적으로 저장되었습니다.");
+        navigate("/recruting/03_document_evaluation/doc");
       },
       onError: (error) => {
         console.error("서류 평가 준비하기 설정 저장 중 오류 발생:", error);

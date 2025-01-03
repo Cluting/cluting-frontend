@@ -5,7 +5,6 @@ import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import FinalSelection from "./pages/Recruting/step6/FinalSelection";
-import DocumentEvaluation from "./pages/Recruting/step3/DocumentEvaluation";
 import InterviewNotification from "./pages/Recruting/step4/InterviewNotification";
 import InterviewEvaluation from "./pages/Recruting/step5/InterviewEvaluation";
 import RecrutingPrepare from "./pages/Recruting/step2/RecrutingPrepare";
@@ -23,6 +22,8 @@ import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluati
 import PublicRoute from "./components/login/PublicRoute";
 import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
+import DocumentEval from "./pages/Recruting/step3/DocumentEval";
+import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
 
 export default function App() {
   return (
@@ -56,10 +57,10 @@ export default function App() {
               {/* 수정된 경로 */}
               <Route path="01_plan" element={<RecrutingPlan />} />
               <Route path="02_prepare" element={<RecrutingPrepare />} />
-              <Route
-                path="03_document_evaluation"
-                element={<DocumentEvaluation />}
-              />
+              <Route path="03_document_evaluation">
+                <Route path="docPrep" element={<DocumentPrep />} />
+                <Route path="doc" element={<DocumentEval />} />
+              </Route>
               <Route
                 path="/recruting/evaluation/:id"
                 element={<ApplicantDocument />}
