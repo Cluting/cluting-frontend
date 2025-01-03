@@ -64,30 +64,32 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   });
 
   useEffect(() => {
-    let data = [...applicants];
+    if (user) {
+      let data = [...applicants];
 
-    // 평가 완료 상태를 가진 항목 필터링
-    data = data.filter(
-      (item) =>
-        item.evaluators &&
-        item.incomplete === item.all &&
-        item.evaluators.some(
-          (evaluator) =>
-            evaluator.state === "평가 완료" && evaluator.name === user.name
-        )
-    );
+      // 평가 완료 상태를 가진 항목 필터링
+      data = data.filter(
+        (item) =>
+          item.evaluators &&
+          item.incomplete === item.all &&
+          item.evaluators.some(
+            (evaluator) =>
+              evaluator.state === "평가 완료" && evaluator.name === user.name
+          )
+      );
 
-    // 필터 처리
-    if (filter !== "전체") {
-      data = data.filter((item) => item.group === filter);
+      // 필터 처리
+      if (filter !== "전체") {
+        data = data.filter((item) => item.group === filter);
+      }
+
+      // 정렬 처리
+      if (sortType === "가나다순") {
+        data.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      setFilteredData(data);
     }
-
-    // 정렬 처리
-    if (sortType === "가나다순") {
-      data.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    setFilteredData(data);
   }, [filter, sortType]);
 
   return (

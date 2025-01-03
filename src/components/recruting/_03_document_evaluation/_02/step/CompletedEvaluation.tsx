@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
 import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
-import { BUTTON_TEXT } from "../../../../../constants/recruting";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { postDocComplete } from "../../service/Step3";
 import { getMe } from "../../../../signup/services/User";
+import {
+  useRecruitmentStepStore,
+  useStepThreeStore
+} from "../../../../../store/useStore";
+import StepCompleteModal from "../../../common/StepCompleteModal";
+import { BUTTON_TEXT } from "../../../../../constants/recruting";
+
 interface CompletedEvaluationProps {
   filter: string;
   sortType: string;
@@ -65,42 +71,42 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
 
   useEffect(() => {
     // 평가 완료 상태 데이터 필터링
-    const completedMembers = members.filter(
-      (item) =>
-        item.evaluators &&
-        item.incomplete === item.all &&
-        item.evaluators.some(
-          (evaluator) =>
-            evaluator.state === "평가 완료" && evaluator.name === user.name
-        )
-    );
+    if (user) {
+      const completedMembers = members.filter(
+        (item) =>
+          item.evaluators &&
+          item.incomplete === item.all &&
+          item.evaluators.some(
+            (evaluator) =>
+              evaluator.state === "평가 완료" && evaluator.name === user.name
+          )
+      );
 
-    //FIX: 현재 운영진의 이름이 홍길동이라 가정
+      // 합격자와 불합격자 분리
+      const filteredAccepted = completedMembers.filter(
+        (item) => item.isPass === true
+      );
+      const filteredRejected = completedMembers.filter(
+        (item) => item.isPass === false
+      );
 
-    // 합격자와 불합격자 분리
-    const filteredAccepted = completedMembers.filter(
-      (item) => item.isPass === true
-    );
-    const filteredRejected = completedMembers.filter(
-      (item) => item.isPass === false
-    );
+      const sortData = (data: Applicant[]) =>
+        sortType === "가나다순"
+          ? [...data].sort((a, b) => a.name.localeCompare(b.name))
+          : data;
 
-    const sortData = (data: Applicant[]) =>
-      sortType === "가나다순"
-        ? [...data].sort((a, b) => a.name.localeCompare(b.name))
-        : data;
+      setFilteredData(
+        filter === "전체"
+          ? sortData(filteredAccepted)
+          : sortData(filteredAccepted.filter((item) => item.group === filter))
+      );
 
-    setFilteredData(
-      filter === "전체"
-        ? sortData(filteredAccepted)
-        : sortData(filteredAccepted.filter((item) => item.group === filter))
-    );
-
-    setFilteredData2(
-      filter === "전체"
-        ? sortData(filteredRejected)
-        : sortData(filteredRejected.filter((item) => item.group === filter))
-    );
+      setFilteredData2(
+        filter === "전체"
+          ? sortData(filteredRejected)
+          : sortData(filteredRejected.filter((item) => item.group === filter))
+      );
+    }
   }, [filter, sortType, members]);
 
   const handleDispute = (id: string) => {
@@ -133,6 +139,25 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
     );
   };
 
+  const { completedSteps, completeStep } = useRecruitmentStepStore();
+  const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
+
+  const { setStepCompleted, steps } = useStepThreeStore();
+
+  const handleStepThreeSubmit = () => {
+    if (!completedSteps[0]) {
+      setStepCompleteModalOpen(true);
+    }
+  };
+
+  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
+
+  const handleConfirmStepComplete = () => {
+    completeStep(2);
+    setStepCompleted(1, true);
+    setStepCompleteModalOpen(false);
+  };
+
   return (
     <>
       <div className="w-[1016px] flex items-start gap-[22px] p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
@@ -160,19 +185,26 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           />
         </div>
       </div>
-      {/* <div className="flex justify-center">
+      <div className="flex justify-center">
         <button
           type="submit"
-          onClick={handleStepTwoSubmit}
+          onClick={handleStepThreeSubmit}
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            steps[2].completed
+            steps[1].completed
               ? "bg-main-400 border border-main-100 text-main-100"
               : "bg-main-100 text-white-100"
           } text-body flex-center hover:bg-main-500`}
         >
-          {steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+          {steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
         </button>
-      </div> */}
+      </div>
+      {isStepCompleteModalOpen && (
+        <StepCompleteModal
+          onClose={handleCloseStepCompleteModal}
+          onConfirm={handleConfirmStepComplete}
+          stepIndex={2}
+        />
+      )}
     </>
   );
 };

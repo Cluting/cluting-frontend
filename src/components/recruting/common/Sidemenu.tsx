@@ -122,7 +122,7 @@ export default function Sidemenu() {
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <Link to={"/recruting/home"}>
+        <Link to={"/recruting/home/1"}>
           <button
             className={`flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] ${
               sidemenuClose ? "pl-0" : "pl-3"

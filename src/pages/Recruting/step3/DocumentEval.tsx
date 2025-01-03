@@ -7,7 +7,7 @@ export default function DocumentEval() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="w-[1016px] mb-[143px]">
+      <div className="w-[1016px] mb-[400px]">
         <TopSection />
         <DocumentReviewContainer />
       </div>

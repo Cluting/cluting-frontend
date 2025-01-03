@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStepFiveStore } from "../../../../store/useStore";
 import { STEP5_ITEMS } from "../../../../constants/recruting";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,17 @@ import { useNavigate } from "react-router-dom";
 export default function TopSection() {
   const { currentStep, setCurrentStep, steps } = useStepFiveStore();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const paths = [
+      "/recruting/05_interview_evaluation/interviewPrep",
+      "/recruting/05_interview_evaluation/interview"
+    ];
+    const index = paths.findIndex((path) => location.pathname.includes(path));
+    if (index !== -1) {
+      setCurrentStep(index);
+    }
+  }, [location.pathname, setCurrentStep]);
 
   const navigate = useNavigate();
 

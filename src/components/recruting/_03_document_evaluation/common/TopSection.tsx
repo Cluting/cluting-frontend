@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { STEP3_ITEMS } from "../../../../constants/recruting";
 import {
   useRecruitmentStepStore,
@@ -14,6 +14,17 @@ export default function TopSection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAdmin, setShowAdmin] = useState(false); //권한자 보기 드롭다운
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const paths = [
+      "/recruting/03_document_evaluation/docPrep",
+      "/recruting/03_document_evaluation/doc"
+    ];
+    const index = paths.findIndex((path) => location.pathname.includes(path));
+    if (index !== -1) {
+      setCurrentStep(index);
+    }
+  }, [location.pathname, setCurrentStep]);
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);

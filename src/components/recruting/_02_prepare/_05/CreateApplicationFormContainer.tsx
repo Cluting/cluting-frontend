@@ -83,7 +83,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     register,
     handleSubmit,
     watch,
-    trigger,
     formState: { errors, isSubmitted },
     setValue,
     getValues,
