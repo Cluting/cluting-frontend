@@ -5,10 +5,12 @@ import Sidemenu from "../../../components/recruting/common/Sidemenu";
 import { useStepTwoStore } from "../../../store/useStore";
 import DocumentReviewContainer from "../../../components/recruting/_03_document_evaluation/_02/DocumentReviewContainer";
 
-const stepComponents = [
+type StepComponent = React.FC;
+
+const stepComponents: StepComponent[] = [
   DocumentReviewPrepContainer,
   DocumentReviewContainer
-] as const;
+];
 
 export default function DocumentEvaluation() {
   const { currentStep } = useStepTwoStore();
