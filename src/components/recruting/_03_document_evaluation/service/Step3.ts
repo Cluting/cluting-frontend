@@ -66,7 +66,7 @@ export async function postDocEvaluation(
 ) {
   try {
     const { data } = await Instance.post(
-      `/eval/doc/${recruitId}/before`,
+      `/eval/doc/${recruitId}/${applicationId}/doc-evalute`,
       DocEvaluationData
     );
     return data;
