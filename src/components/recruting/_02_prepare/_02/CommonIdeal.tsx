@@ -39,7 +39,7 @@ export default function CommonIdeal() {
         <p className="section-title">
           <span className="mr-[0.25em] text-main-100">*</span> 공통 인재상
         </p>
-        <div className="tooltip">각 그룹별 인재상을 작성해 주세요.</div>
+        <div className="tooltip">공통 인재상을 작성해 주세요.</div>
       </div>
 
       <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px]">
