@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
 import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { postDocComplete } from "../../service/Step3";
+import { getMe } from "../../../../signup/services/User";
 interface CompletedEvaluationProps {
   filter: string;
   sortType: string;
@@ -17,6 +20,49 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
   const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
 
+  //TODO: 응답받은 데이터 리스트로 렌더링해야함
+  const [applicationData, setApplicationData] = useState<ApplicationResponse[]>(
+    []
+  );
+
+  //FIX:
+  const recruitId = 1;
+  const mutation = useMutation(
+    (data: DocBeforeRequest) => postDocComplete(recruitId, data),
+    {
+      onSuccess: (response) => {
+        console.log(
+          "서류 평가하기 <평가 완료> 지원서 리스트 불러오기가 성공적으로 실행되었습니다."
+        );
+        setApplicationData(response.data); // 응답 데이터 저장
+        console.log("API 데이터", applicationData);
+      },
+      onError: (error) => {
+        console.error(
+          "서류 평가하기 <평가 완료> 지원서 리스트 불러오기 중 오류 발생:",
+          error
+        );
+      }
+    }
+  );
+
+  // 컴포넌트 마운트 시 POST 요청
+  useEffect(() => {
+    const initialData: DocBeforeRequest = {
+      // POST 요청에 필요한 초기 데이터 구성
+      groupName: null,
+      sortOrder: "oldest"
+    };
+    console.group(initialData);
+    mutation.mutate(initialData);
+  }, []); // 빈 의존성 배열로 컴포넌트 마운트 시에만 실행
+
+  const { data: user } = useQuery(["me"], getMe, {
+    onError: (error) => {
+      console.error("유저 본인 정보 조회 실패:", error);
+    }
+  });
+
   useEffect(() => {
     // 평가 완료 상태 데이터 필터링
     const completedMembers = members.filter(
@@ -25,7 +71,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         item.incomplete === item.all &&
         item.evaluators.some(
           (evaluator) =>
-            evaluator.state === "평가 완료" && evaluator.name === "홍길동"
+            evaluator.state === "평가 완료" && evaluator.name === user.name
         )
     );
 

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import WideMemberList from "../list/WideMemberList";
 import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { postDocAfter } from "../../service/Step3";
+import { getMe } from "../../../../signup/services/User";
 
 interface AfterEvaluationProps {
   filter: string;
@@ -17,6 +20,49 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   //평가 끝내기
   const [evaluationProcess, setEvaluationProcess] = useState(false);
 
+  //TODO: 응답받은 데이터 리스트로 렌더링해야함
+  const [applicationData, setApplicationData] = useState<ApplicationResponse[]>(
+    []
+  );
+
+  //FIX:
+  const recruitId = 1;
+  const mutation = useMutation(
+    (data: DocBeforeRequest) => postDocAfter(recruitId, data),
+    {
+      onSuccess: (response) => {
+        console.log(
+          "서류 평가하기 <평가 후> 지원서 리스트 불러오기가 성공적으로 실행되었습니다."
+        );
+        setApplicationData(response.data); // 응답 데이터 저장
+        console.log("API 데이터", applicationData);
+      },
+      onError: (error) => {
+        console.error(
+          "서류 평가하기 <평가 후> 지원서 리스트 불러오기 중 오류 발생:",
+          error
+        );
+      }
+    }
+  );
+
+  // 컴포넌트 마운트 시 POST 요청
+  useEffect(() => {
+    const initialData: DocBeforeRequest = {
+      // POST 요청에 필요한 초기 데이터 구성
+      groupName: null,
+      sortOrder: "oldest"
+    };
+    console.group(initialData);
+    mutation.mutate(initialData);
+  }, []); // 빈 의존성 배열로 컴포넌트 마운트 시에만 실행
+
+  const { data: user } = useQuery(["me"], getMe, {
+    onError: (error) => {
+      console.error("유저 본인 정보 조회 실패:", error);
+    }
+  });
+
   useEffect(() => {
     let data = [...applicants];
 
@@ -27,13 +73,10 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
         item.incomplete === item.all &&
         item.evaluators.some(
           (evaluator) =>
-            evaluator.state === "평가 완료" && evaluator.name === "홍길동"
+            evaluator.state === "평가 완료" && evaluator.name === user.name
         )
     );
 
-    //FIX: 현재 운영진의 이름이 홍길동이라 가정
-
-    console.log(data);
     // 필터 처리
     if (filter !== "전체") {
       data = data.filter((item) => item.group === filter);

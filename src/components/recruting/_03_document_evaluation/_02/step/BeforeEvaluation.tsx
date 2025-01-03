@@ -32,10 +32,13 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
           "서류 평가하기 <평가 전> 지원서 리스트 불러오기가 성공적으로 실행되었습니다."
         );
         setApplicationData(response.data); // 응답 데이터 저장
-        console.log(applicationData);
+        console.log("API 데이터", applicationData);
       },
       onError: (error) => {
-        console.error("서류 평가 준비하기 설정 저장 중 오류 발생:", error);
+        console.error(
+          "서류 평가하기 <평가 전> 지원서 리스트 불러오기 중 오류 발생:",
+          error
+        );
       }
     }
   );
@@ -56,7 +59,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
       console.error("유저 본인 정보 조회 실패:", error);
     }
   });
-  console.log(user);
 
   useEffect(() => {
     let data = [...applicants];
@@ -71,8 +73,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
           )
       );
     }
-
-    //FIX: 현재 운영진의 이름이 홍길동이라 가정
 
     // 필터 처리
     if (filter !== "전체") {
