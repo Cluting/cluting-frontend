@@ -37,3 +37,23 @@ export async function postDocPre(recruitId: number, DocPreData: GroupRequest) {
     throw error;
   }
 }
+
+// POST: 서류 평가하기 <평가 전> 지원서 리스트 불러오기
+export async function postDocBefore(
+  recruitId: number,
+  DocBeforeData: DocBeforeRequest
+) {
+  try {
+    const { data } = await Instance.post(
+      `/eval/doc/${recruitId}/before`,
+      DocBeforeData
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 전> 지원서 리스트 불러오기 요청 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}

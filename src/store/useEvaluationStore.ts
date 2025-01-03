@@ -17,7 +17,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 전",
             groupAccess: "개발",
             totalScore: 85,
@@ -29,7 +29,7 @@ export const useApplicantEvaluationStore =
             comment: "기획력이 우수하나, 창의성이 약간 부족합니다."
           },
           {
-            name: "평가자B",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "개발",
             totalScore: 90,
@@ -53,7 +53,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 전",
             groupAccess: "개발",
             totalScore: 78,
@@ -77,7 +77,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 중",
             groupAccess: "개발",
             totalScore: 78,
@@ -101,7 +101,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 중",
             groupAccess: "개발",
             totalScore: 78,
@@ -125,7 +125,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 중",
             groupAccess: "개발",
             totalScore: 78,
@@ -149,7 +149,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "개발",
             totalScore: 78,
@@ -173,7 +173,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "개발",
             totalScore: 78,
@@ -197,7 +197,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "기획",
             totalScore: 78,
@@ -221,7 +221,7 @@ export const useApplicantEvaluationStore =
         isPass: true,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "기획",
             totalScore: 78,
@@ -245,7 +245,7 @@ export const useApplicantEvaluationStore =
         isPass: true,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "기획",
             totalScore: 78,
@@ -269,7 +269,7 @@ export const useApplicantEvaluationStore =
         isPass: false,
         evaluators: [
           {
-            name: "홍길동",
+            name: "은재",
             state: "평가 완료",
             groupAccess: "개발",
             totalScore: 78,
