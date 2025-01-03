@@ -5,6 +5,7 @@ import EvaluationCriteria from "../../common/EvaluationCriteria";
 import RoleSettings from "../../common/RoleSetting";
 import { useMutation } from "@tanstack/react-query";
 import { postDocPre } from "../service/Step3";
+import { ALL_ADMINS_WITH_ID } from "../../../../constants/recruting";
 
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
@@ -156,15 +157,41 @@ export default function DocumentReviewPrepContainer() {
     }
   );
 
+  const convertAdminsToIds = (
+    adminNames: string[],
+    allAdmins: Array<{ id: number; name: string }>
+  ) => {
+    const nameToId: Record<string, number> = allAdmins.reduce(
+      (acc, admin) => ({
+        ...acc,
+        [admin.name]: admin.id
+      }),
+      {}
+    );
+
+    return adminNames.map((name: string) => nameToId[name]);
+  };
+
   const onSubmit = handleSubmit((data) => {
     const cleanedData = {
       groups: data.groups.map((group) => {
         const { id: groupId, ...cleanedGroup } = group;
+        const adminIds = convertAdminsToIds(group.admins, ALL_ADMINS_WITH_ID);
+
         return {
           ...cleanedGroup,
+          admins: adminIds.map(String), // number[]를 string[]로 변환
           criteria: group.criteria.map(
-            ({ id: criteriaId, ...cleanedCriteria }) => cleanedCriteria
-          )
+            ({ id: criteriaId, ...criteriaItem }) => ({
+              ...criteriaItem,
+              score: Number(criteriaItem.score) || 0,
+              detailCriteria:
+                criteriaItem.detailCriteria.length === 0
+                  ? ["임시 기준"]
+                  : criteriaItem.detailCriteria
+            })
+          ),
+          maxScore: Number(cleanedGroup.maxScore) || 0
         };
       })
     };

@@ -116,6 +116,16 @@ export const ALL_ADMINS = [
   "이은재"
 ];
 
+export const ALL_ADMINS_WITH_ID = [
+  { id: 1, name: "최예은" },
+  { id: 2, name: "박시현" },
+  { id: 3, name: "김동현" },
+  { id: 4, name: "윤다인" },
+  { id: 5, name: "곽서연" },
+  { id: 6, name: "양성원" },
+  { id: 7, name: "이은재" }
+];
+
 export const DEFAULT_STEPS: Step[] = [
   { id: 1, name: "합격 인원 설정하기", completed: false, admins: [] },
   { id: 2, name: "인재상 구축하기", completed: false, admins: [] },
