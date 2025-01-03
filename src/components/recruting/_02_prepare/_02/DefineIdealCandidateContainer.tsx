@@ -1,12 +1,26 @@
-import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
 import CommonIdeal from "./CommonIdeal";
 import GroupIdeal from "./GroupIdeal";
 import { useGroupStore } from "../../../../store/useStore";
+import { useMutation } from "@tanstack/react-query";
+import { postPrepare2 } from "./service/Step2";
 
 export default function DefineIdealCandidateContainer() {
+  const mutation = useMutation(
+    (data: { formData: IdealForm; recruitId: number }) =>
+      postPrepare2(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("등록 성공", data);
+      },
+      onError: (error: any) => {
+        console.error(`모집하기2 등록에 실패하였습니다`, error);
+      }
+    }
+  );
+
   const { setStepCompleted, steps } = useStepTwoStore();
   const { group: groups } = useGroupStore();
 
@@ -23,6 +37,13 @@ export default function DefineIdealCandidateContainer() {
   const handleSubmit = methods.handleSubmit((data) => {
     if (data.partIdeals.every((part) => part.content.length > 0)) {
       console.log(data);
+      setStepCompleted(1, true);
+
+      const recruitId = 1; //todo: 일단 임시로
+      mutation.mutate({
+        formData: data,
+        recruitId: recruitId
+      });
       setStepCompleted(1, true);
     }
   });
