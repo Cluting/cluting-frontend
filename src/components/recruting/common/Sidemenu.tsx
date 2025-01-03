@@ -10,6 +10,7 @@ import {
   STEP6_ITEMS
 } from "../../../constants/recruting";
 import { useRecruitmentSessionStore } from "../../../store/useStore";
+import { useAuthStore } from "../../../store/useAuthStore";
 
 export default function Sidemenu() {
   // 현재 경로 가져오기
@@ -83,6 +84,13 @@ export default function Sidemenu() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const { setLogin } = useAuthStore();
+  const handleLogout = () => {
+    setLogin(false);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+  };
 
   return (
     <div
@@ -206,7 +214,7 @@ export default function Sidemenu() {
         })}
       </section>
 
-      <section className="absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">
+      <section className="flex flex-col justify-center absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">
         <div className="flex-center h-[46px] ">
           <img
             src="/assets/ic-sidemenu-notice.svg"
@@ -222,6 +230,14 @@ export default function Sidemenu() {
             </>
           )}
         </div>
+        {!sidemenuClose && (
+          <button
+            onClick={handleLogout}
+            className="text-caption3 text-gray-600 py-[10px] px-[86px] ml-3 bg-gray-100 rounded-lg mt-3 text-gray-800 hover:bg-gray-300"
+          >
+            로그아웃
+          </button>
+        )}
       </section>
     </div>
   );
