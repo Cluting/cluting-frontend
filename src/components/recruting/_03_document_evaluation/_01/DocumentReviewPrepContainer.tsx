@@ -5,7 +5,10 @@ import EvaluationCriteria from "../../common/EvaluationCriteria";
 import RoleSettings from "../../common/RoleSetting";
 import { useMutation } from "@tanstack/react-query";
 import { postDocPre } from "../service/Step3";
-import { ALL_ADMINS_WITH_ID } from "../../../../constants/recruting";
+import {
+  ALL_ADMINS_WITH_ID,
+  BUTTON_TEXT
+} from "../../../../constants/recruting";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function DocumentReviewPrepContainer() {
@@ -13,6 +16,9 @@ export default function DocumentReviewPrepContainer() {
   const [dropdown, setDropdown] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [selectedGroupId, setSelectedGroupId] = useState<number>(1);
+
+  // 3-1 준비하기 완료 상태 (임시)
+  const [prepComplete, setPrepComplete] = useState(false);
 
   const { doc } = useParams();
   const navigate = useNavigate();
@@ -210,7 +216,7 @@ export default function DocumentReviewPrepContainer() {
   });
 
   return (
-    <form className="w-full" onSubmit={onSubmit}>
+    <form className="w-full mb-[143px]" onSubmit={onSubmit}>
       <div className="ml-8 w-full mt-[34px] mb-[34px]">
         {/* 전체 지원자 수 섹션 */}
         <div className="flex">
@@ -258,7 +264,21 @@ export default function DocumentReviewPrepContainer() {
           errors={errors}
         />
       </div>
-      <button type="submit">완료</button>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          onClick={() => {
+            if (mutation.isSuccess) setPrepComplete(true);
+          }}
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            prepComplete
+              ? "bg-main-400 border border-main-100 text-main-100 "
+              : "bg-main-100 text-white-100 "
+          }  text-body flex-center hover:bg-main-500`}
+        >
+          {prepComplete ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+        </button>
+      </div>
     </form>
   );
 }

@@ -10,7 +10,7 @@ export const RECRUIT_STEP_ITEMS = [
 export const PATH = [
   "/recruting/01_plan",
   "/recruting/02_prepare",
-  "/recruting/03_document_evaluation",
+  "/recruting/03_document_evaluation/docPrep",
   "/recruting/04_interview_notification",
   "/recruting/05_interview_evaluation",
   "/recruting/06_final_selection"
