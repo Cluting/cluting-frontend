@@ -10,7 +10,6 @@ export default function DefineIdealCandidateContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
   const { group: groups } = useGroupStore();
 
-  // Form의 초기값을 API 구조에 맞게 설정
   const methods = useForm<IdealForm>({
     defaultValues: {
       partIdeals: [
@@ -22,15 +21,10 @@ export default function DefineIdealCandidateContainer() {
   });
 
   const handleSubmit = methods.handleSubmit((data) => {
-    // 유효성 검사: 모든 그룹에 최소 1개 이상의 인재상이 있는지 확인
-    const isValid = data.partIdeals.every((part) => part.content.length > 0);
-
-    if (!isValid) {
-      return;
+    if (data.partIdeals.every((part) => part.content.length > 0)) {
+      console.log(data);
+      setStepCompleted(1, true);
     }
-
-    console.log(data); // API 스펙에 맞는 형태로 이미 구성되어 있음
-    setStepCompleted(1, true);
   });
 
   return (

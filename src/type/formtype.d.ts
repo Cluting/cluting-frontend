@@ -82,16 +82,6 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//2-2 Form
-interface PartIdeal {
-  partName: string;
-  content: string[];
-}
-
-interface IdealForm {
-  partIdeals: PartIdeal[];
-}
-
 //임원진 일정 Form
 declare interface AdminsScheduleFormData {
   scheduleData: TimeSlotAdmins;

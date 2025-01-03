@@ -13,6 +13,13 @@ export default function GroupIdeal() {
   const [groupInputs, setGroupInputs] = React.useState<Record<string, string>>(
     {}
   );
+  const [showInputs, setShowInputs] = React.useState<Record<string, boolean>>(
+    () => groups.reduce((acc, group) => ({ ...acc, [group.name]: true }), {})
+  );
+  const [touchedGroups, setTouchedGroups] = React.useState<
+    Record<string, boolean>
+  >({});
+
   const partIdeals = watch("partIdeals");
 
   const handleKeyPress = (e: React.KeyboardEvent, groupName: string) => {
@@ -27,8 +34,15 @@ export default function GroupIdeal() {
           groupInputs[groupName].trim()
         ]);
         setGroupInputs((prev) => ({ ...prev, [groupName]: "" }));
+        setShowInputs((prev) => ({ ...prev, [groupName]: false }));
+        setTouchedGroups((prev) => ({ ...prev, [groupName]: true }));
       }
     }
+  };
+
+  const handleAddIdeal = (groupName: string) => {
+    setShowInputs((prev) => ({ ...prev, [groupName]: true }));
+    setTouchedGroups((prev) => ({ ...prev, [groupName]: true }));
   };
 
   const handleRemove = (groupName: string, index: number) => {
@@ -40,17 +54,13 @@ export default function GroupIdeal() {
         `partIdeals.${groupIndex}.content`,
         partIdeals[groupIndex].content.filter((_, i) => i !== index)
       );
+      setTouchedGroups((prev) => ({ ...prev, [groupName]: true }));
     }
   };
 
   const showError = (groupName: string) => {
-    const groupIndex = partIdeals.findIndex(
-      (part) => part.partName === groupName
-    );
-    return (
-      touchedFields.partIdeals?.[groupIndex]?.content &&
-      partIdeals[groupIndex].content.length === 0
-    );
+    const groupIdeal = partIdeals.find((part) => part.partName === groupName);
+    return touchedGroups[groupName] && !groupIdeal?.content.length;
   };
 
   if (groups.length === 0) return null;
@@ -74,13 +84,13 @@ export default function GroupIdeal() {
           return (
             <div
               key={group.name}
-              className="mx-[31px] mb-[28.4px] h-auto rounded-[12px] border border-gray-300 bg-[#FBFBFF]"
+              className="mx-[31px] mb-[28.4px] pt-[18px] pb-[14px] px-[14px] h-auto rounded-[12px] border border-gray-300 bg-[#FBFBFF]"
             >
-              <p className="flex-center w-[152px] h-[55px] ml-[14px] mt-[17px] rounded-[11px] bg-main-300 border border-main-400 text-main-100 font-semibold text-[16px]">
+              <p className="flex-center w-[152px] h-[55px] rounded-[11px] bg-main-300 border border-main-400 text-main-100 font-semibold text-[16px]">
                 {group.name}
               </p>
 
-              <div className="px-[14px]">
+              <div>
                 {groupIdeal.content.map((ideal, index) => (
                   <div
                     key={index}
@@ -98,21 +108,42 @@ export default function GroupIdeal() {
                 ))}
               </div>
 
-              <div className="px-[14px]">
-                <input
-                  value={groupInputs[group.name] || ""}
-                  onChange={(e) =>
-                    setGroupInputs((prev) => ({
-                      ...prev,
-                      [group.name]: e.target.value
-                    }))
-                  }
-                  onKeyPress={(e) => handleKeyPress(e, group.name)}
-                  className={`w-full my-[14px] py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
-                    showError(group.name) ? "border-red-100" : "border-gray-500"
-                  } focus:border-main-100`}
-                  placeholder="인재상을 작성해 주세요."
-                />
+              <div>
+                {showInputs[group.name] ? (
+                  <>
+                    <input
+                      value={groupInputs[group.name] || ""}
+                      onChange={(e) =>
+                        setGroupInputs((prev) => ({
+                          ...prev,
+                          [group.name]: e.target.value
+                        }))
+                      }
+                      onKeyPress={(e) => handleKeyPress(e, group.name)}
+                      onBlur={() =>
+                        setTouchedGroups((prev) => ({
+                          ...prev,
+                          [group.name]: true
+                        }))
+                      }
+                      className={`w-full mt-[14px] py-[11px] px-[21px] bg-white-100 rounded-[8px] outline-none text-[15px] font-medium border ${
+                        showError(group.name)
+                          ? "border-red-100"
+                          : "border-gray-500"
+                      } focus:border-main-100`}
+                      placeholder="인재상을 작성해 주세요."
+                    />
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleAddIdeal(group.name)}
+                    className="w-full mt-[14px] mb-[17px] py-[11px] px-[14.55px] bg-gray-100 rounded-[8px] border border-gray-500 outline-none text-[15px] font-semibold text-left text-gray-700"
+                  >
+                    + 인재상 추가하기
+                  </button>
+                )}
+
                 {showError(group.name) && (
                   <p className="text-state-error mt-[4px]">
                     필수 입력 사항입니다.
