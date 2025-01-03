@@ -10,6 +10,7 @@ import {
 } from "../../../../../store/useStore";
 import StepCompleteModal from "../../../common/StepCompleteModal";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
+import DecisionPassFailModal from "../common/DecisionPassFailModal";
 
 interface CompletedEvaluationProps {
   filter: string;
@@ -124,19 +125,31 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
     );
   };
 
-  const handleDecision = (id: string) => {
-    const isAccepted = window.confirm("합격으로 결정하시겠습니까?");
-    setMembers((prevMembers) =>
-      prevMembers.map((member) =>
-        member.id === id
-          ? {
-              ...member,
-              result: isAccepted ? "합격" : "불합격",
-              isDecisionMode: false
-            }
-          : member
-      )
-    );
+  const [showDecisionModal, setShowDecisionModal] = useState(false);
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+
+  const handleDecisionClick = (id: string) => {
+    setSelectedMemberId(id);
+    setShowDecisionModal(true);
+  };
+
+  const handleDecision = (isPass: boolean) => {
+    if (selectedMemberId) {
+      setMembers((prevMembers) =>
+        prevMembers.map((member) =>
+          member.id === selectedMemberId
+            ? {
+                ...member,
+                isPass: isPass,
+                result: isPass ? "합격" : "불합격",
+                isDecisionMode: false
+              }
+            : member
+        )
+      );
+    }
+    setShowDecisionModal(false);
+    setSelectedMemberId(null);
   };
 
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -170,7 +183,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
             state="평가 완료"
             isEvaluationDone
             onDispute={handleDispute}
-            onDecision={handleDecision}
+            onDecision={handleDecisionClick}
           />
         </div>
 
@@ -181,7 +194,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
             state="평가 완료"
             isEvaluationDone
             onDispute={handleDispute}
-            onDecision={handleDecision}
+            onDecision={handleDecisionClick}
           />
         </div>
       </div>
@@ -218,6 +231,13 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
             않습니다.
           </div>
         </div>
+      )}
+
+      {showDecisionModal && (
+        <DecisionPassFailModal
+          onClose={() => setShowDecisionModal(false)}
+          onDecision={handleDecision}
+        />
       )}
     </>
   );
