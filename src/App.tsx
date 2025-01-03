@@ -13,7 +13,6 @@ import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
-import ApplicantDocument from "./pages/Recruting/document/ApplicantDocument";
 import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
 import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";

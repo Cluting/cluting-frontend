@@ -3,6 +3,8 @@ import { useGroupStore } from "../../../../store/useStore";
 import { useForm } from "react-hook-form";
 import EvaluationCriteria from "../../common/EvaluationCriteria";
 import RoleSettings from "../../common/RoleSetting";
+import { useMutation } from "@tanstack/react-query";
+import { postDocPre } from "../service/Step3";
 
 export default function DocumentReviewPrepContainer() {
   const { group } = useGroupStore();
@@ -140,13 +142,40 @@ export default function DocumentReviewPrepContainer() {
     [groups, setValue]
   );
 
+  //FIX:
+  const recruitId = 1;
+  const mutation = useMutation(
+    (data: GroupRequest) => postDocPre(recruitId, data),
+    {
+      onSuccess: () => {
+        console.log("서류 평가 준비하기 설정이 성공적으로 저장되었습니다.");
+      },
+      onError: (error) => {
+        console.error("서류 평가 준비하기 설정 저장 중 오류 발생:", error);
+      }
+    }
+  );
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    const cleanedData = {
+      groups: data.groups.map((group) => {
+        const { id: groupId, ...cleanedGroup } = group;
+        return {
+          ...cleanedGroup,
+          criteria: group.criteria.map(
+            ({ id: criteriaId, ...cleanedCriteria }) => cleanedCriteria
+          )
+        };
+      })
+    };
+
+    console.log(cleanedData);
+    mutation.mutate(cleanedData);
   });
 
   return (
     <form className="w-full" onSubmit={onSubmit}>
-      <div className="ml-8 w-full mt-[34px]">
+      <div className="ml-8 w-full mt-[34px] mb-[34px]">
         {/* 전체 지원자 수 섹션 */}
         <div className="flex">
           <p className="section-title">전체 지원자 수</p>
@@ -193,6 +222,7 @@ export default function DocumentReviewPrepContainer() {
           errors={errors}
         />
       </div>
+      <button type="submit">완료</button>
     </form>
   );
 }
