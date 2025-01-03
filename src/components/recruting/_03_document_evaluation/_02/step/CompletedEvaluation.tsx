@@ -205,6 +205,20 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           stepIndex={2}
         />
       )}
+      {!steps[1].completed ? (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative w-[1016px] h-[79px] bg-gray-200 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
+            이의 제기 중입니다. 합불을 결정한 뒤, 완료 버튼을 눌러주세요.
+          </div>
+        </div>
+      ) : (
+        <div className="fixed animate-dropdown bottom-[16px]">
+          <div className="relative w-[1016px] h-[79px] bg-gray-300 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
+            해당 단계는 완료되었습니다. 다음 단계로 넘어갈 시, 수정을 권하지
+            않습니다.
+          </div>
+        </div>
+      )}
     </>
   );
 };
