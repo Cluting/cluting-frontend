@@ -20,12 +20,7 @@ export default function DocumentReviewPrepContainer() {
   // 3-1 준비하기 완료 상태 (임시)
   const [prepComplete, setPrepComplete] = useState(false);
 
-  const { doc } = useParams();
   const navigate = useNavigate();
-
-  const setUrl = (doc: "docPrep") => {
-    navigate(`/applicant/applications/${doc}`);
-  };
 
   const defaultGroups = useMemo(() => {
     const existingGroups =

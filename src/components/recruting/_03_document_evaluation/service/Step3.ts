@@ -57,3 +57,24 @@ export async function postDocBefore(
     throw error;
   }
 }
+
+// POST: 서류 평가 전송
+export async function postDocEvaluation(
+  recruitId: number,
+  applicationId: number,
+  DocEvaluationData: DocEvaluationRequest
+) {
+  try {
+    const { data } = await Instance.post(
+      `/eval/doc/${recruitId}/before`,
+      DocEvaluationData
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가 전송 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}

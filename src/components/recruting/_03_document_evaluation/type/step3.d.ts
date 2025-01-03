@@ -16,7 +16,7 @@ declare interface Criterion {
   score: number | undefined;
 }
 
-// <평가 전> 지원서 불러오기 API 형식
+// <평가 전> 지원서 불러오기 API 요청 형식
 declare interface DocBeforeRequest {
   groupName: string | null;
   sortOrder: "newest" | "oldest" | null;
@@ -30,4 +30,15 @@ declare interface ApplicationResponse {
   groupName: string;
   applicationNumClubUser: string;
   createdAt: string;
+}
+
+// 서류 평가 전송 API 요청 형식
+interface DocEvaluationRequest {
+  criteriaEvaluations: CriteriaEvaluation[];
+  comment: string;
+}
+
+interface CriteriaEvaluation {
+  criteriaId: number;
+  score: number;
 }
