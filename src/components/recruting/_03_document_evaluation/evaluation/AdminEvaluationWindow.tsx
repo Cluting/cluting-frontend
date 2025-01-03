@@ -4,9 +4,11 @@ import AdminEvaluationList from "./AdminEvaluationList";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { postDocEvaluation } from "../service/Step3";
+import ClubIdealList from "./ClubIdealList";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
+  const [showClubIdeal, setShowClubIdeal] = useState(false);
   const [authority, setAuthority] = useState(true); //운영진 권한
 
   const {
@@ -52,7 +54,12 @@ export default function AdminEvaluationWindow() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="absolute top-[90px] right-[-420px] z-50 w-[386px] p-[17px] bg-gray-50 rounded-lg border border-gray-200 custom-shadow">
-        <button className="flex-center w-full py-[13px] button-main-light border border-main-400 hover:text-white-100 hover:bg-main-100 font-semibold rounded-[7px]">
+        <button
+          onClick={() => {
+            setShowClubIdeal(!showClubIdeal);
+          }}
+          className="flex-center w-full py-[13px] button-main-light border border-main-400 hover:text-white-100 hover:bg-main-100 font-semibold rounded-[7px]"
+        >
           <img
             src="/assets/ic-ideal.svg"
             alt="인재상"
@@ -85,6 +92,9 @@ export default function AdminEvaluationWindow() {
 
         {showAdminEvaluation && (
           <AdminEvaluationList onClose={() => setShowAdminEvaluation(false)} />
+        )}
+        {showClubIdeal && (
+          <ClubIdealList onClose={() => setShowClubIdeal(false)} />
         )}
 
         {authority && (
