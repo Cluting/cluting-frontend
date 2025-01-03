@@ -6,7 +6,6 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import FinalSelection from "./pages/Recruting/step6/FinalSelection";
 import InterviewNotification from "./pages/Recruting/step4/InterviewNotification";
-import InterviewEvaluation from "./pages/Recruting/step5/InterviewEvaluation";
 import RecrutingPrepare from "./pages/Recruting/step2/RecrutingPrepare";
 import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
@@ -24,6 +23,8 @@ import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
 import DocumentEval from "./pages/Recruting/step3/DocumentEval";
 import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
+import InterviewEval from "./pages/Recruting/step5/InterviewEval";
+import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
 
 export default function App() {
   return (
@@ -69,10 +70,10 @@ export default function App() {
                 path="04_interview_notification"
                 element={<InterviewNotification />}
               />
-              <Route
-                path="05_interview_evaluation"
-                element={<InterviewEvaluation />}
-              />
+              <Route path="05_interview_evaluation">
+                <Route path="interviewPrep" element={<InterviewPrep />} />
+                <Route path="interview" element={<InterviewEval />} />
+              </Route>
               {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question"

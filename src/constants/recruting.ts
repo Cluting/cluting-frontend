@@ -12,7 +12,7 @@ export const PATH = [
   "/recruting/02_prepare",
   "/recruting/03_document_evaluation/docPrep",
   "/recruting/04_interview_notification",
-  "/recruting/05_interview_evaluation",
+  "/recruting/05_interview_evaluation/interviewPrep",
   "/recruting/06_final_selection"
 ];
 
