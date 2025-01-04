@@ -138,3 +138,43 @@ export async function postDocEvaluation(
     throw error;
   }
 }
+
+// PATCH: [서류 평가하기] 4-3. <서류 평가 상태 업데이트>
+
+export async function updateDocEvaluate(
+  recruitId: number,
+  applicationId: number,
+  result: string
+) {
+  try {
+    const { data } = await Instance.patch(
+      `/eval/doc/${recruitId}/${applicationId}/evaluate`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가 상태 업데이트 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// PATCH: [서류 평가하기] 4-2. 서류 평가 상태를 이의제기 중으로 변경
+export async function updateDocEvaluateDispute(
+  recruitId: number,
+  applicationId: number
+) {
+  try {
+    const { data } = await Instance.patch(
+      `/eval/doc/${recruitId}/state/objection`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가 상태 업데이트 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}

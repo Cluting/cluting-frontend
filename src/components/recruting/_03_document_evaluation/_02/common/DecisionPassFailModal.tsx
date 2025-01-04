@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ModalPortal } from "../../../../common/ModalPortal";
 
 interface DecisionPassFailModalProps {
@@ -9,6 +10,7 @@ export default function DecisionPassFailModal({
   onClose,
   onDecision
 }: DecisionPassFailModalProps) {
+  const [isDisputeComplete, setIsDisputeComplete] = useState(false);
   return (
     <ModalPortal>
       <div className="modal-style">

@@ -133,6 +133,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
     setShowDecisionModal(true);
   };
 
+  //ToDO: 여기서 API 연결, 모달 확정 화면 전환
   const handleDecision = (isPass: boolean) => {
     if (selectedMemberId) {
       setMembers((prevMembers) =>
