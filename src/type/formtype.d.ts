@@ -16,17 +16,17 @@ declare interface RecrutingStartFormValue {
 //공고 작성 Form
 declare interface AnnouncementForm {
   title: string;
-  recruitmentStart: Date;
-  recruitmentEnd: Date;
-  announcementDate: Date;
-  finalResultAnnouncementDate: Date;
-  recruitsCount: number;
+  recruitmentStartDate: Date;
+  recruitmentEndDate: Date;
+  documentResultDate: Date; // 서류 합격자 발표일
+  finalResultDate: Date; // 최종 합격자 발표일
+  recruitmentNumber: number; //모집 인원
   activityStart: Date;
   activityEnd: Date;
   activityDay: string;
   activityTime: string;
-  clubFee: string;
-  posterImage?: File;
+  clubFee: number;
+  imageUrl?: string;
   content: string;
 }
 
