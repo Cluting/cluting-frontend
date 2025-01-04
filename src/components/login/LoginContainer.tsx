@@ -19,6 +19,7 @@ export default function LoginContainer() {
       navigate("/main");
       console.log("로그인 성공", data); // 성공 데이터 처리
       localStorage.setItem("access_token", data.accessToken); // 로컬 스토리지 액세스 토큰 등록
+      localStorage.setItem("refresh_token", data.refreshToken);
     },
     onError: (error: any) => {
       alert(`로그인에 실패하였습니다`);

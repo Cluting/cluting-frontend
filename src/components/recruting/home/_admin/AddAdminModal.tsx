@@ -26,9 +26,14 @@ export default function AddAdminModal({ onClose }: AddAdminModalProps) {
     },
     {
       onSuccess: (data) => {
-        setInviteLink(data);
-        console.log("초대 링크 생성 완료", inviteLink);
-        navigator.clipboard.writeText(inviteLink);
+        // 백엔드 URL을 프론트엔드 URL로 변환
+        const frontendBaseUrl = "http://localhost:3000";
+        const token = new URL(data).searchParams.get("token");
+        const frontendInviteLink = `${frontendBaseUrl}/admin/invite?token=${token}`;
+
+        setInviteLink(frontendInviteLink);
+        console.log("초대 링크 생성 완료", frontendInviteLink);
+        navigator.clipboard.writeText(frontendInviteLink);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
       },
