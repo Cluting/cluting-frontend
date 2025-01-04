@@ -1,4 +1,4 @@
-export default function InqueryContainer() {
+export default function InquiryContainer() {
   return (
     <div className="w-full h-[500px] flex-center bg-white-100">
       문의 하이라이트
