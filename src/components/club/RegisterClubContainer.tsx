@@ -7,7 +7,6 @@ import { postClub, postClubImage } from "./service/Club";
 import Input from "../common/Input";
 import Textarea from "../common/Textarea";
 import { useNavigate } from "react-router-dom";
-import UploadClubProfile from "../signup/UploadClubProfile";
 
 export default function RegisterClubContainer() {
   const navigate = useNavigate();
