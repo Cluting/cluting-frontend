@@ -31,12 +31,12 @@ const AnnouncementDetailHeader: React.FC<HeaderProps> = ({
         </p>
       </div>
       {/* Header 아랫부분 */}
-      <div className="flex items-center w-full gap-0 ml-1">
+      <div className="flex items-center w-full">
         <button
           onClick={() => setMenu("announcement")}
           className={`flex-center flex-1 h-12 rounded-t-[11px] border border-b-0 text-callout ${
             currentMenu === "announcement"
-              ? "bg-[#5E2BE8] text-white-100"
+              ? "bg-[#5E2BE8] text-white-100 border-none"
               : "bg-[#F1F3FF] border-[#D0D4E7] text-[#5E2BE8]"
           }`}
         >
@@ -46,7 +46,7 @@ const AnnouncementDetailHeader: React.FC<HeaderProps> = ({
           onClick={() => setMenu("documentSubmit")}
           className={`flex-center flex-1 h-12 rounded-t-[11px] border border-b-0 text-callout ${
             currentMenu === "documentSubmit"
-              ? "bg-[#5E2BE8] text-white-100"
+              ? "bg-[#5E2BE8] text-white-100 border-none"
               : "bg-[#F1F3FF] border-[#D0D4E7] text-[#5E2BE8]"
           }`}
         >
@@ -56,7 +56,7 @@ const AnnouncementDetailHeader: React.FC<HeaderProps> = ({
           onClick={() => setMenu("inquiry")}
           className={`flex-center flex-1 h-12 rounded-t-[11px] border border-b-0 text-callout ${
             currentMenu === "inquiry"
-              ? "bg-[#5E2BE8] text-white-100"
+              ? "bg-[#5E2BE8] text-white-100 border-none"
               : "bg-[#F1F3FF] border-[#D0D4E7] text-[#5E2BE8]"
           }`}
         >

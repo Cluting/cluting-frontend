@@ -25,7 +25,7 @@ export default function AnnouncementListDetail() {
         }
         setMenu={setMenu}
       />
-      <div className="w-full p-4 mt-4 bg-white border rounded">
+      <div className="w-full px-28 bg-[#F1F3FF]">
         {currentMenu === "announcement" && <AnnouncementContainer />}
         {currentMenu === "documentSubmit" && <DocumentSubmitContainer />}
         {currentMenu === "inquiry" && <InquiryContainer />}
