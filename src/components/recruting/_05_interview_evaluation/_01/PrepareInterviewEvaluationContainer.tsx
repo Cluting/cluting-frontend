@@ -9,6 +9,8 @@ import { useGroupStore } from "../../../../store/useStore";
 import { useForm } from "react-hook-form";
 import EvaluationCriteria from "../../common/EvaluationCriteria";
 import RoleSettings from "../../common/RoleSetting";
+import { useQuery } from "@tanstack/react-query";
+import { fetchRecruitMemberNum } from "../services/Step5";
 
 export default function PrepareInterviewEvaluationContainer() {
   const { group } = useGroupStore();
@@ -132,6 +134,15 @@ export default function PrepareInterviewEvaluationContainer() {
     console.log(data);
   });
 
+  const {
+    data: recruitMemberNum,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ["nums"],
+    queryFn: fetchRecruitMemberNum
+  });
+
   return (
     <form className="w-full" onSubmit={onSubmit}>
       <div className="flex flex-col w-full gap-12">
@@ -145,14 +156,21 @@ export default function PrepareInterviewEvaluationContainer() {
           </div>
 
           <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
-            {groups.map((groupItem) => (
-              <div key={groupItem.id} className="flex items-center gap-[15px] ">
-                <p>{groupItem.groupName}</p>
-                <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
-                  175명
-                </div>
+            <div className="flex items-center gap-[15px] ">
+              <p>전체</p>
+              <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                {recruitMemberNum?.data.num}
               </div>
-            ))}
+            </div>
+            {recruitMemberNum?.data.map &&
+              Object.entries(recruitMemberNum.data.map).map(([key, value]) => (
+                <div key={key} className="flex items-center gap-[15px] ">
+                  <p>{key}</p>
+                  <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                    {value as string | number}
+                  </div>
+                </div>
+              ))}
           </div>
         </section>
 
