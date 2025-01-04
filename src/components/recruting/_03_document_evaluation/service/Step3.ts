@@ -141,14 +141,14 @@ export async function postDocEvaluation(
 
 // PATCH: [서류 평가하기] 4-3. <서류 평가 상태 업데이트>
 
-export async function updateDocEvaluate(
+export async function updateDocEvaluationStatus(
   recruitId: number,
   applicationId: number,
-  result: string
+  result: "PASS" | "FAIL"
 ) {
   try {
     const { data } = await Instance.patch(
-      `/eval/doc/${recruitId}/${applicationId}/evaluate`
+      `/api/v1/eval/doc/${recruitId}/${applicationId}/evaluate?result=${result}`
     );
     return data;
   } catch (error: any) {
@@ -167,12 +167,12 @@ export async function updateDocEvaluateDispute(
 ) {
   try {
     const { data } = await Instance.patch(
-      `/eval/doc/${recruitId}/state/objection`
+      `/api/v1/eval/doc/${recruitId}/state/objection?applicationId=${applicationId}`
     );
     return data;
   } catch (error: any) {
     console.error(
-      "서류 평가 상태 업데이트 실패:",
+      "서류 평가 상태를 이의제기 중으로 변경 실패:",
       error.response?.data || error.message
     );
     throw error;
