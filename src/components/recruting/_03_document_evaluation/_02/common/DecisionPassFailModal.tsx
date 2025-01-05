@@ -4,13 +4,17 @@ import { ModalPortal } from "../../../../common/ModalPortal";
 interface DecisionPassFailModalProps {
   onClose: () => void;
   onDecision: (isPass: boolean) => void;
+  applicant: Applicant | null;
 }
 
 export default function DecisionPassFailModal({
   onClose,
-  onDecision
+  onDecision,
+  applicant
 }: DecisionPassFailModalProps) {
-  const [isDisputeComplete, setIsDisputeComplete] = useState(false);
+  //FIX: 지원자 합격, 불합격 임시 데이터
+  const [applicantState, setApplicantState] = useState<"PASS" | "FAIL">("PASS");
+  console.log("합격 여부 결정 모달 - 지원자 데이터", applicant);
   return (
     <ModalPortal>
       <div className="modal-style">
@@ -48,7 +52,11 @@ export default function DecisionPassFailModal({
             <div className="flex justify-center gap-[18px] bg-gray-100 rounded-lg py-3 px-[22px] w-fit mt-[11px] mb-[33px]">
               <p>이전 결과</p>
               <p className="text-main-300">|</p>
-              <p>불합격</p>
+              <p
+                className={`${applicantState === "PASS" ? "text-[#007AFF]" : "text-[#FF5252]"} font-semibold`}
+              >
+                {applicantState === "PASS" ? "합격" : "불합격"}
+              </p>
             </div>
 
             <div className="flex gap-[17px] text-caption1 ">

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
 import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { postDocComplete } from "../../service/Step3";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  postDocComplete,
+  updateDocEvaluationStatus
+} from "../../service/Step3";
 import { getMe } from "../../../../signup/services/User";
 import {
   useRecruitmentStepStore,
@@ -34,6 +37,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
 
   //FIX:
   const recruitId = 1;
+  const queryClient = useQueryClient();
   const mutation = useMutation(
     (data: DocBeforeRequest) => postDocComplete(recruitId, data),
     {
@@ -127,14 +131,40 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
 
   const [showDecisionModal, setShowDecisionModal] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(
+    null
+  );
 
   const handleDecisionClick = (id: string) => {
+    const applicant = members.find((member) => member.id === id);
     setSelectedMemberId(id);
+    setSelectedApplicant(applicant || null);
     setShowDecisionModal(true);
   };
 
   //ToDO: 여기서 API 연결, 모달 확정 화면 전환
+
+  const updateStatusMutation = useMutation({
+    mutationFn: ({
+      recruitId,
+      applicationId,
+      result
+    }: {
+      recruitId: number;
+      applicationId: number;
+      result: "PASS" | "FAIL";
+    }) => updateDocEvaluationStatus(recruitId, applicationId, result),
+    onSuccess: () => {
+      console.log("서류 평가 합불 여부 변경 성공");
+      queryClient.invalidateQueries(["applicants", recruitId]);
+    },
+    onError: (error) => {
+      console.error("서류 평가 합불 여부 변경 실패:", error);
+    }
+  });
+
   const handleDecision = (isPass: boolean) => {
+    //FIX: 임시 데이터 변경하는 부분이니 전체 데이터 연결되면 해당 부분 삭제
     if (selectedMemberId) {
       setMembers((prevMembers) =>
         prevMembers.map((member) =>
@@ -149,6 +179,14 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         )
       );
     }
+
+    //FIX: 실제 데이터로 변경
+    const result = isPass ? "PASS" : "FAIL";
+    updateStatusMutation.mutate({
+      recruitId,
+      applicationId: 20,
+      result
+    });
     setShowDecisionModal(false);
     setSelectedMemberId(null);
   };
@@ -238,6 +276,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         <DecisionPassFailModal
           onClose={() => setShowDecisionModal(false)}
           onDecision={handleDecision}
+          applicant={selectedApplicant}
         />
       )}
     </>
