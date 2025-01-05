@@ -253,6 +253,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
               type="text"
               alt="지원서 제목 입력"
               placeholder="ex) OO 동아리 5기 지원"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               className={`w-full h-[42px] pl-[21px] rounded-[8px] border outline-none focus:border-main-100 text-subheadline ${
                 errors.title ? "border-red-100" : "border-gray-500"
               }`}
@@ -323,6 +328,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </p>
             <input
               type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
               className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
               {...register("partQuestions.0.caution")}
@@ -405,6 +415,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
               <input
                 key={`${selectedGroup}-caution`}
                 type="text"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
                 placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
                 className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
                 {...register(
