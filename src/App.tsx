@@ -23,6 +23,7 @@ import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
 import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
 import PublicRoute from "./components/login/PublicRoute";
 import AnnouncementListDetail from "./pages/Applicant/AnnouncementListDetail";
+import DocumentSubmitContainer from "./components/applicant/announcement_list/detail/DocumentSubmitContainer";
 
 export default function App() {
   return (
@@ -97,7 +98,12 @@ export default function App() {
               <Route
                 path="announcement/:menu/detail"
                 element={<AnnouncementListDetail />}
-              />
+              >
+                <Route
+                  path="documentSubmit"
+                  element={<DocumentSubmitContainer />}
+                />
+              </Route>
               {/* 나의 지원 기록 */}
               <Route path="applications/:menu" element={<ApplicantHistory />} />
               <Route
