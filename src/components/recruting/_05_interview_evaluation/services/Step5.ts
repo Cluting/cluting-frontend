@@ -14,6 +14,10 @@ export const fetchGroups = () =>
     }
   });
 
+// 서류 합격자 정보 가져오기
+export const fetchDocumentPassCandidates = () =>
+  Instance.get(`/eval/interview/${Recruit_Id}/prep`);
+
 // 요청 URL 확인용
 // const url = `/eval/interview/${Recruit_Id}/num`;
 // console.log(`Request URL: ${Instance.defaults.baseURL}${url}`);

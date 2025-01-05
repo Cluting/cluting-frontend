@@ -1,12 +1,14 @@
+import { UUID } from "crypto";
+
 interface ApplicantItemProps {
   applicant: {
-    id: string;
+    id: UUID;
     name: string;
     phone: string;
-    group: string;
+    groupName: string;
     status: "작성 전" | "작성 중" | "작성 완료" | string;
   };
-  onCreateQuestion: (id: string) => void;
+  onCreateQuestion: (id: UUID) => void;
 }
 
 const ApplicantItem: React.FC<ApplicantItemProps> = ({
@@ -32,7 +34,7 @@ const ApplicantItem: React.FC<ApplicantItemProps> = ({
       </div>
 
       <div className="w-16 text-sm font-semibold text-left font-Pretendard text-gray-1100">
-        {applicant.group}
+        {applicant.groupName}
       </div>
 
       <div className="w-32 text-sm font-medium text-left font-Pretendard">

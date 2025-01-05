@@ -1,21 +1,22 @@
+import { UUID } from "crypto";
 import ApplicantItem from "./ApplicantItem";
 import ListHeader from "./ListHeader";
 
 interface Applicant {
-  id: string;
+  id: UUID;
   name: string;
   phone: string;
-  group: string;
+  groupName: string;
   status: "작성 전" | "작성 중" | "작성 완료" | string;
 }
 
 interface ApplicantProps {
   applicants: Applicant[]; // 데이터
-  onCreateQuestion: (id: string) => void;
+  onCreateQuestion: (id: UUID) => void;
 }
 
 const ApplicantList: React.FC<ApplicantProps> = ({
-  applicants,
+  applicants = [],
   onCreateQuestion
 }) => {
   const middleIndex = Math.ceil(applicants.length / 2);

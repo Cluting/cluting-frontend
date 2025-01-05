@@ -3,10 +3,9 @@ import Dropdown from "./dropdown/Dropdown";
 import Headline from "./headline/Headline";
 import ProgressBar from "./processBar/ProcessBar";
 import ApplicantList from "./list/ApplicantList";
-import { v4 as uuidv4 } from "uuid";
 import AuthorityModal from "./modal/AuthorityModal";
 import { useQuery } from "@tanstack/react-query";
-import { fetchGroups } from "../../services/Step5";
+import { fetchDocumentPassCandidates, fetchGroups } from "../../services/Step5";
 
 export default function IndividualInterviewQuestionsSection() {
   const [filter, setFilter] = useState("전체");
@@ -15,65 +14,28 @@ export default function IndividualInterviewQuestionsSection() {
 
   const steps = ["작성 전", "작성 중", "작성 완료"];
 
-  const {
-    data: groups,
-    isLoading,
-    error
-  } = useQuery({
+  const { data: groups } = useQuery({
     queryKey: ["groups"],
     queryFn: fetchGroups
   });
 
-  // 목업데이터로, 추후 삭제 필요
-  const applicantsMockUp = [
-    {
-      id: uuidv4(),
-      name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
-      status: "작성 전"
-    },
-    {
-      id: uuidv4(),
-      name: "곽서연",
-      phone: "010-1234-1234",
-      group: "개발",
-      status: "작성 중"
-    },
-    {
-      id: uuidv4(),
-      name: "박시현",
-      phone: "010-1234-1234",
-      group: "기획",
-      status: "작성 완료"
-    },
-    {
-      id: uuidv4(),
-      name: "김동현",
-      phone: "010-1234-1234",
-      group: "개발",
-      status: "작성 전"
-    },
-    {
-      id: uuidv4(),
-      name: "양성원",
-      phone: "010-1234-1234",
-      group: "개발",
-      status: "작성 완료"
-    },
-    {
-      id: uuidv4(),
-      name: "윤다인",
-      phone: "010-1234-1234",
-      group: "개발",
-      status: "작성 중"
+  // 값 안전하게 전달하려면 Loading이 필요함.
+  const { data: candidates } = useQuery({
+    queryKey: ["candidates"],
+    queryFn: fetchDocumentPassCandidates,
+    onSuccess: (data) => {
+      data.data.forEach((candidate: any) => {
+        candidate.status = "작성 전";
+      });
     }
-  ];
+  });
 
-  const filteredApplicants = applicantsMockUp.filter(
-    (applicant) =>
-      (filter === "전체" || applicant.group === filter) &&
-      applicant.status === steps[currentStep]
+  console.log(candidates);
+
+  const filteredApplicants = candidates?.data.filter(
+    (candidate: any) =>
+      (filter === "전체" || candidate.groupName === filter) &&
+      candidate.status === steps[currentStep]
   );
 
   const renderStepComponents = () => {
