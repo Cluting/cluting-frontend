@@ -98,14 +98,14 @@ export default function AnnouncementDetails() {
           className={` relative h-[46px] w-full input-background rounded-[8px] px-[20px] mt-2  ${errors.recruitmentStartDate ? "border-red-100" : ""}`}
         />
 
-        {!recruitmentStartDate && (
+        {!recruitmentStart && (
           <span className="absolute top-5 left-5 text-[#c9cace] ">
             날짜를 선택해 주세요.
           </span>
         )}
-        {recruitmentStartDate && (
+        {recruitmentStart && (
           <span className="absolute top-5 left-5 text-gray-1100 ">
-            {new Date(recruitmentStartDate).toLocaleDateString()}
+            {new Date(recruitmentStart).toLocaleDateString()}
           </span>
         )}
         <input
@@ -113,8 +113,8 @@ export default function AnnouncementDetails() {
             required: "필수 선택 사항입니다.",
             validate: (value) => {
               return (
-                !recruitmentStartDate ||
-                new Date(value) >= new Date(recruitmentStartDate) ||
+                !recruitmentStart ||
+                new Date(value) >= new Date(recruitmentStart) ||
                 "종료일은 시작일 이후여야 합니다."
               );
             }
@@ -125,14 +125,14 @@ export default function AnnouncementDetails() {
           aria-label="모집 종료일"
           className={`w-full input-background input-style ${errors.recruitmentEndDate ? "border-red-100" : ""}`}
         />
-        {!recruitmentEndDate && (
+        {!recruitmentEnd && (
           <span className="absolute top-5 right-[310px] text-[#c9cace] ">
             날짜를 선택해 주세요.
           </span>
         )}
-        {recruitmentEndDate && (
+        {recruitmentEnd && (
           <span className="absolute top-5 right-[355px] text-gray-1100 ">
-            {new Date(recruitmentEndDate).toLocaleDateString()}
+            {new Date(recruitmentEnd).toLocaleDateString()}
           </span>
         )}
       </div>
