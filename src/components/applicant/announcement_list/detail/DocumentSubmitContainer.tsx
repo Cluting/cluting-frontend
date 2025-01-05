@@ -53,7 +53,7 @@ const DocumentSubmitContainer = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-12 mt-10">
+    <div className="w-[1213px] flex flex-col items-center gap-12 mt-10">
       {renderPage()}
       <NavigationButton
         currentPage={currentStep}
