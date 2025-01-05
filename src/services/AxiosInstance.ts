@@ -16,3 +16,12 @@ Instance.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// 요청 시 Authorization 헤더 추가
+Instance.interceptors.request.use((config) => {
+  const accessToken = localStorage.getItem("access_token");
+  if (accessToken) {
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+  }
+  return config;
+});

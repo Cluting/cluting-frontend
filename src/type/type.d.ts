@@ -7,3 +7,9 @@ export interface Applicant {
   rank: string;
   result: string;
 }
+
+// 계획하기 운영진
+declare interface AdminPlan {
+  name: string;
+  id: number;
+}

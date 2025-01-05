@@ -18,14 +18,15 @@ declare interface AnnouncementForm {
   title: string;
   recruitmentStartDate: Date;
   recruitmentEndDate: Date;
-  documentResultDate: Date;
-  finalResultDate: Date;
-  recruitmentNumber: number;
+  documentResultDate: Date; // 서류 합격자 발표일
+  finalResultDate: Date; // 최종 합격자 발표일
+  recruitmentNumber: number; //모집 인원
   activityStart: Date;
   activityEnd: Date;
   activityDay: string;
   activityTime: string;
   clubFee: string;
+  posterImage?: File;
   content: string;
   imageUrl?: File;
 }
@@ -74,7 +75,7 @@ declare interface AdminUser {
 declare interface Step {
   id: number;
   name: string;
-  admins: string[];
+  admins: AdminPlan[];
   isFixed?: boolean;
 }
 

@@ -3,6 +3,7 @@ import {
   useGroupStore,
   useRecruitmentStepStore
 } from "../../../../store/useStore";
+import { useFormContext } from "react-hook-form";
 
 // 1 - 계획하기 : 지원자 그룹 짓기
 export default function GroupCreate() {
@@ -14,8 +15,20 @@ export default function GroupCreate() {
   const groupList = useGroupStore((state) => state.group);
   const removeGroup = useGroupStore((state) => state.removeGroup);
 
+  const { setValue } = useFormContext();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  useEffect(() => {
+    updateFormValue();
+  }, [groupList]);
+
+  const updateFormValue = () => {
+    const updatedGroups = groupList.map((group) => group.name);
+    console.log(groupList);
+    setValue("applicantGroups", updatedGroups);
   };
 
   const handleAddGroup = () => {
@@ -25,8 +38,9 @@ export default function GroupCreate() {
       alert("그룹명을 입력해주세요.");
       return;
     } else {
-      addGroup(inputValue.trim());
+      addGroup(trimmedValue);
       setInputValue(""); // 입력창 초기화
+      setShowInput(false); // Hide input after adding
     }
   };
 
@@ -67,7 +81,7 @@ export default function GroupCreate() {
       }  w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]`}
     >
       <div className="flex items-center ml-8 my-4">
-        <h1 className="text-callout">지원자 그룹 짓기</h1>
+        <h1 className="section-title">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">
           동아리가 파트로 구분된다면 ex) 기획/디자인/홍보팀 등으로 그룹화해
           주세요

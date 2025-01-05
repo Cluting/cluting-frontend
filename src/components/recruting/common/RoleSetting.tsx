@@ -123,7 +123,7 @@ export default function RoleSettings({
                       {dropdown && currentId === groupItem.id && (
                         <AddAdminDropdown
                           onSelect={(admin) =>
-                            handleAdminSelect(admin, groupItem.id)
+                            handleAdminSelect(admin.name, groupItem.id)
                           }
                           currentAdmins={groupItem.admins}
                         />
