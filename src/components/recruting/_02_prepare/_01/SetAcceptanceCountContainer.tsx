@@ -4,16 +4,38 @@ import GroupPassCount from "./GroupPassCount";
 import NumberSpinner from "./NumberSpinner";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare1 } from "./service/Step1";
+import { getPassIdeal } from "./service/Step1";
 
 export default function SetAcceptanceCountContainer() {
+  const recruitId = 1; //todo: 임시로
+  const { data: passIdeal } = useQuery(
+    ["passIdeal", recruitId],
+    () => getPassIdeal(recruitId),
+    {
+      select: (data) => {
+        // API 응답 데이터를 폼 데이터 구조로 변환
+        console.log("조회 성공!");
+        return {
+          totalDocumentPassCount: data.numDoc,
+          totalFinalPassCount: data.numFinal
+        } as SetAcceptanceCountFormData;
+      },
+      onError: (error) => {
+        console.error("합격 인원 및 인재상 조회 실패", error);
+      }
+    }
+  );
+
+  const queryClient = useQueryClient();
   const mutation = useMutation(
     (data: { formData: SetAcceptanceCountFormData; recruitId: number }) =>
       postPrepare1(data.formData, data.recruitId),
     {
       onSuccess: (data) => {
-        console.log("등록 성공", data); // 성공 데이터 처리
+        console.log("등록 성공", data);
+        queryClient.invalidateQueries(["passIdeal", recruitId]);
       },
       onError: (error: any) => {
         console.error(`모집하기1 등록에 실패하였습니다`, error);
@@ -29,7 +51,8 @@ export default function SetAcceptanceCountContainer() {
     formState: { errors, touchedFields }
   } = useForm<SetAcceptanceCountFormData>({
     mode: "onBlur",
-    reValidateMode: "onSubmit"
+    reValidateMode: "onSubmit",
+    values: passIdeal // 서버에서 가져온 데이터로 초기값 설정
   });
 
   const totalDocumentPassCount = watch("totalDocumentPassCount");

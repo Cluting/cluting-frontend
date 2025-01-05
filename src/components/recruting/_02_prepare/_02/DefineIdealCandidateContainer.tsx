@@ -4,16 +4,36 @@ import { useStepTwoStore } from "../../../../store/useStore";
 import CommonIdeal from "./CommonIdeal";
 import GroupIdeal from "./GroupIdeal";
 import { useGroupStore } from "../../../../store/useStore";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare2 } from "./service/Step2";
+import { getPassIdeal } from "../_01/service/Step1";
 
 export default function DefineIdealCandidateContainer() {
+  const recruitId = 1;
+  const { data: passIdeal } = useQuery(
+    ["passIdeal", recruitId],
+    () => getPassIdeal(recruitId),
+    {
+      select: (data: PassIdealResponse) =>
+        ({
+          partIdeals: data.ideals.map(
+            (ideal: { id: number; content: string }) => ({
+              partName: ideal.id.toString(),
+              content: [ideal.content]
+            })
+          )
+        }) as IdealForm
+    }
+  );
+
+  const queryClient = useQueryClient();
   const mutation = useMutation(
     (data: { formData: IdealForm; recruitId: number }) =>
       postPrepare2(data.formData, data.recruitId),
     {
       onSuccess: (data) => {
         console.log("등록 성공", data);
+        queryClient.invalidateQueries(["passIdeal", recruitId]);
       },
       onError: (error: any) => {
         console.error(`모집하기2 등록에 실패하였습니다`, error);

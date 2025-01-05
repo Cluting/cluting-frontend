@@ -13,3 +13,14 @@ export async function postPrepare1(
     throw error;
   }
 }
+
+// GET: 합격 인원 및 인재상 불러오기(1,2단계)
+export async function getPassIdeal(recruitId: number) {
+  try {
+    const { data } = await Instance.get(`/plan/details/${recruitId}`);
+    return data;
+  } catch (error) {
+    console.error("합격 인원 및 인재상 조회 실패:", error);
+    throw error;
+  }
+}

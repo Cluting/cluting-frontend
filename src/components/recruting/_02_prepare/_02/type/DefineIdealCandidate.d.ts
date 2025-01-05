@@ -7,3 +7,14 @@ declare interface PartIdeal {
 declare interface IdealForm {
   partIdeals: PartIdeal[];
 }
+
+declare interface PassIdealResponse {
+  recruitId: number;
+  title: string;
+  numDoc: number;
+  numFinal: number;
+  ideals: {
+    id: number;
+    content: string;
+  }[];
+}
