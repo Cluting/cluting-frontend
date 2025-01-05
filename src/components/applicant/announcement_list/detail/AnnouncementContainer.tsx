@@ -4,7 +4,7 @@ import ClubProfileShort from "./ClubInformation/ClubProfileShort";
 export default function AnnouncementContainer() {
   return (
     <div
-      className="flex flex-col gap-12 px-16 py-10 bg-white-100"
+      className="w-[1213px] min-h-[800px] flex flex-col gap-12 px-16 py-10  bg-white-100"
       style={{ boxShadow: "0px 4px 21.6px 0px rgba(0, 0, 0, 0.05)" }}
     >
       {/* 공고 윗부분 */}
