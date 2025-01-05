@@ -5,6 +5,8 @@ import ProgressBar from "./processBar/ProcessBar";
 import ApplicantList from "./list/ApplicantList";
 import { v4 as uuidv4 } from "uuid";
 import AuthorityModal from "./modal/AuthorityModal";
+import { useQuery } from "@tanstack/react-query";
+import { fetchGroups } from "../../services/Step5";
 
 export default function IndividualInterviewQuestionsSection() {
   const [filter, setFilter] = useState("전체");
@@ -12,6 +14,15 @@ export default function IndividualInterviewQuestionsSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const steps = ["작성 전", "작성 중", "작성 완료"];
+
+  const {
+    data: groups,
+    isLoading,
+    error
+  } = useQuery({
+    queryKey: ["groups"],
+    queryFn: fetchGroups
+  });
 
   // 목업데이터로, 추후 삭제 필요
   const applicantsMockUp = [
@@ -102,6 +113,11 @@ export default function IndividualInterviewQuestionsSection() {
     alert("질문 생성 버튼");
   };
 
+  const groupOptions = [
+    "전체",
+    ...(groups?.data || []).map((group: any) => group.name)
+  ];
+
   return (
     <div className="relative flex flex-col gap-2">
       <Headline
@@ -126,7 +142,7 @@ export default function IndividualInterviewQuestionsSection() {
           <Dropdown
             label="필터 : "
             defaultValue="전체"
-            options={["전체", "기획", "디자인", "개발"]}
+            options={groupOptions}
             onSelect={(value) => setFilter(value)}
           />
           <ProgressBar
