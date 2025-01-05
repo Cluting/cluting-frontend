@@ -28,7 +28,7 @@ export default function RoleSettings({
   type?: string;
 }) {
   return (
-    <section>
+    <section className="my-[34px]">
       <div className="flex justify-between">
         <div className="flex items-center">
           <p className="section-title">{type} 평가 역할 설정</p>
