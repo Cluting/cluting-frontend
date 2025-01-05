@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuestionStore } from "../../../../../../store/recruiting/_05_interview_evaluation/questionStore";
 import { QuestionCounts } from "../../../../../../store/recruiting/_05_interview_evaluation/questionStore";
 
@@ -14,6 +14,11 @@ const QuestionNumberInput: React.FC<QuestionNumberInputProps> = ({
   bold
 }) => {
   const { questionCounts, setQuestionCounts } = useQuestionStore();
+  const [isActive, setIsActive] = useState(false); // 활성화 상태
+
+  const handleBlur = () => {
+    setIsActive(true);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 입력 값이 유효한 숫자인지 확인
@@ -37,6 +42,7 @@ const QuestionNumberInput: React.FC<QuestionNumberInputProps> = ({
           <input
             type="text"
             value={questionCounts[type] || 0}
+            onBlur={handleBlur}
             onChange={handleChange}
             className="w-14 flex flex-center px-2 py-2 bg-white-100 border border-[#D0D4E7] rounded-md text-center text-[#8B8FA4] font-Pretendard font-semibold leading-5 tracking-tighter outline-[#5E2BE8]"
           />
@@ -46,7 +52,7 @@ const QuestionNumberInput: React.FC<QuestionNumberInputProps> = ({
         </div>
 
         {/* 에러 메시지 1 : 개수를 입력하지 않았을 경우 */}
-        {type === "total" && totalQuestions === 0 && (
+        {type === "total" && isActive && totalQuestions === 0 && (
           <span className="text-xs font-Pretendard font-medium text-[#FF3B3B] text-left">
             필수 입력 사항입니다.
           </span>
