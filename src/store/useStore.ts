@@ -51,6 +51,25 @@ export const useStepTwoStore = create<Store>()((set) => ({
     }))
 }));
 
+// 리크루팅 모집 준비하기 단계 (2) Top Section
+export const useStepThreeStore = create<Store>()((set) => ({
+  currentStep: 0, // 초기 단계
+  steps: [
+    { id: 0, completed: false, name: "서류 평가 준비하기", admins: [] },
+    { id: 1, completed: false, name: "서류 평가하기", admins: [] }
+  ],
+
+  setCurrentStep: (step: number) => set({ currentStep: step }), // 현재 단계 설정
+
+  // 단계 완료 상태 변경 메서드
+  setStepCompleted: (stepId: number, completed: boolean) =>
+    set((state) => ({
+      steps: state.steps.map((step) =>
+        step.id === stepId ? { ...step, completed } : step
+      )
+    }))
+}));
+
 // 4단계
 export const useStepFourStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계

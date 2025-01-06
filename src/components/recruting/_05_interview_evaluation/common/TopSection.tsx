@@ -1,10 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStepFiveStore } from "../../../../store/useStore";
 import { STEP5_ITEMS } from "../../../../constants/recruting";
+import { useNavigate } from "react-router-dom";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep, steps } = useStepFiveStore();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const paths = [
+      "/recruting/05_interview_evaluation/interviewPrep",
+      "/recruting/05_interview_evaluation/interview"
+    ];
+    const index = paths.findIndex((path) => location.pathname.includes(path));
+    if (index !== -1) {
+      setCurrentStep(index);
+    }
+  }, [location.pathname, setCurrentStep]);
+
+  const navigate = useNavigate();
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -16,6 +30,8 @@ export default function TopSection() {
 
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
+    const paths = ["interviewPrep", "interview"];
+    navigate(`/recruting/05_interview_evaluation/${paths[index]}`);
   };
 
   return (

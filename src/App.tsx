@@ -5,15 +5,12 @@ import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import FinalSelection from "./pages/Recruting/step6/FinalSelection";
-import DocumentEvaluation from "./pages/Recruting/step3/DocumentEvaluation";
 import InterviewNotification from "./pages/Recruting/step4/InterviewNotification";
-import InterviewEvaluation from "./pages/Recruting/step5/InterviewEvaluation";
 import RecrutingPrepare from "./pages/Recruting/step2/RecrutingPrepare";
 import RecrutingPlan from "./pages/Recruting/step1/RecrutingPlan";
 import RecrutingHome from "./pages/Recruting/RecrutingHome";
 import RegisterClub from "./pages/RegisterClub";
 import LandingPage from "./pages/LandingPage";
-import ApplicantDocument from "./pages/Recruting/document/ApplicantDocument";
 import ApplicantProfile from "./pages/Applicant/ApplicantProfile";
 import AnnouncementList from "./pages/Applicant/AnnouncementList";
 import ApplicantHistory from "./pages/Applicant/ApplicantHistory";
@@ -23,6 +20,11 @@ import AnswerRecord from "./pages/Recruting/step5/AnswerRecord";
 import InterviewEvaluationRecord from "./pages/Recruting/step5/InterviewEvaluationRecord";
 import PublicRoute from "./components/login/PublicRoute";
 import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
+import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
+import DocumentEval from "./pages/Recruting/step3/DocumentEval";
+import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
+import InterviewEval from "./pages/Recruting/step5/InterviewEval";
+import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
 
 export default function App() {
   return (
@@ -56,19 +58,22 @@ export default function App() {
               {/* 수정된 경로 */}
               <Route path="01_plan" element={<RecrutingPlan />} />
               <Route path="02_prepare" element={<RecrutingPrepare />} />
+              <Route path="03_document_evaluation">
+                <Route path="docPrep" element={<DocumentPrep />} />
+                <Route path="doc" element={<DocumentEval />} />
+              </Route>
               <Route
-                path="03_document_evaluation"
-                element={<DocumentEvaluation />}
+                path="/recruting/evaluation/:id"
+                element={<ApplicantDocument />}
               />
-              <Route path="evaluation" element={<ApplicantDocument />} />
               <Route
                 path="04_interview_notification"
                 element={<InterviewNotification />}
               />
-              <Route
-                path="05_interview_evaluation"
-                element={<InterviewEvaluation />}
-              />
+              <Route path="05_interview_evaluation">
+                <Route path="interviewPrep" element={<InterviewPrep />} />
+                <Route path="interview" element={<InterviewEval />} />
+              </Route>
               {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question"

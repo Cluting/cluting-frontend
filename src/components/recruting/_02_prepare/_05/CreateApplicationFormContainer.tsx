@@ -83,7 +83,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     register,
     handleSubmit,
     watch,
-    trigger,
     formState: { errors, isSubmitted },
     setValue,
     getValues,
@@ -104,7 +103,6 @@ export default function CreateApplicationFormContainer(): ReactElement {
     mode: "onBlur"
   });
 
-  // 핸들러 함수들
   const handleStepTwoSubmit = () => {
     if (!completedSteps[0]) {
       setStepCompleteModalOpen(true);
