@@ -12,15 +12,10 @@ export default function AddAdmin({ isDropdown }: AddAdminProps) {
   const params = useParams();
   const clubId = params.clubId && parseInt(params.clubId, 10);
 
-  const {
-    data: clubUsers,
-    isLoading,
-    error
-  } = useQuery<ClubUser[], Error>(["clubUsers", clubId], () =>
-    getClubUser(Number(clubId))
+  const { data: clubUsers } = useQuery<ClubUser[], Error>(
+    ["clubUsers", clubId],
+    () => getClubUser(Number(clubId))
   );
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <ul

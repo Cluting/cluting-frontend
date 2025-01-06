@@ -36,23 +36,17 @@ export async function deleteTodo(todoId: number) {
   }
 }
 
-// //PATCH: 투두 내용 변경 (근데 이거 없음, 구현 및 연결 X)
-// export async function deleteTodo(todoData: Todo) {}
-
 //PATCH: 투두 완료 상태 변경
 export async function updateTodoStatus(todoId: number) {
-  const token = localStorage.getItem("access_token");
-
   try {
-    const { data } = await Instance.patch(`/todo/status/${todoId}`, null, {
-      headers: {
-        accept: "*/*",
-        Authorization: `Bearer ${token}`
-      }
-    });
-    return data;
+    const response = await Instance.patch(`/todo/status/${todoId}`);
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error(`서버 응답 오류: ${response.status}`);
+    }
   } catch (error) {
-    console.error("TODO 완료 상태 변경 실패:", error);
-    throw error;
+    console.error;
   }
 }

@@ -20,7 +20,10 @@ type TodosResponse = {
 };
 
 export default function TodoTemplate() {
-  const [todos, setTodos] = useState<TodosResponse>({});
+  const [todos, setTodos] = useState<TodosResponse>({
+    "미완료 리스트": [],
+    "완료 리스트": []
+  });
   const nextId = useRef<number>(0);
 
   const queryClient = useQueryClient();
@@ -101,33 +104,19 @@ export default function TodoTemplate() {
   );
 
   const onToggle = useCallback(
-    (id: number, key: string) => {
+    (id: number) => {
       updateTodoStatusMutation.mutate(id, {
         onSuccess: () => {
-          setTodos((prevTodos) => ({
-            ...prevTodos,
-            [key]: prevTodos[key].map((todo) =>
-              todo.id === id ? { ...todo, status: !todo.status } : todo
-            )
-          }));
+          queryClient.invalidateQueries(["todos"]);
         }
       });
     },
-    [updateTodoStatusMutation]
+    [updateTodoStatusMutation, queryClient]
   );
 
   // 완료된 투두와 미완료 투두 분리
-  const incompleteTodos: TodoItem[] = todoData
-    ? (Object.values(todoData).flat() as TodoItem[]).filter(
-        (todo) => !todo.status
-      )
-    : [];
-
-  const completedTodos: TodoItem[] = todoData
-    ? (Object.values(todoData).flat() as TodoItem[]).filter(
-        (todo) => todo.status
-      )
-    : [];
+  const incompleteTodos = todoData?.["미완료 리스트"] || [];
+  const completedTodos = todoData?.["완료 리스트"] || [];
 
   return (
     <div className="w-[585px] h-[340.88] bg-[#F2F2F7] px-[9px] py-[13px] pb-[20.88px] mx-auto rounded-xl overflow-hidden relative flex">
@@ -135,7 +124,7 @@ export default function TodoTemplate() {
         <div className="h-[265px] overflow-auto border-r-4">
           <TodoList
             todos={incompleteTodos}
-            onToggle={(id) => onToggle(id, "additionalProp1")} // 기본 키 지정
+            onToggle={onToggle}
             onRemove={(id) => onRemove(id, "additionalProp1")}
           />
         </div>
@@ -145,7 +134,7 @@ export default function TodoTemplate() {
         <div className="h-[307px] overflow-auto">
           <TodoList
             todos={completedTodos}
-            onToggle={(id) => onToggle(id, "additionalProp1")}
+            onToggle={onToggle}
             onRemove={(id) => onRemove(id, "additionalProp1")}
           />
         </div>
