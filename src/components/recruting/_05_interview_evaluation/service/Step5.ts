@@ -34,7 +34,9 @@ export async function getInterviewList(recruitId: number) {
 // GET: [필터링용] 면접 그룹명 가져오기
 export async function getInterviewGroups(recruitId: number) {
   try {
-    const { data } = await Instance.get(`/eval/interview/${recruitId}/groups`);
+    const { data } = await Instance.get(`/eval/interview/${recruitId}/groups`, {
+      params: { recruitId }
+    });
     return data;
   } catch (error) {
     console.error("면접 그룹명 조회 실패:", error);
