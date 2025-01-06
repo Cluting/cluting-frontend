@@ -35,7 +35,9 @@ export async function getDocumentEvaluationContent(
 // GET: [서류 평가하기 - 필터링용] 그룹명 가져오기
 export async function getDocumentEvaluationGroups(recruitId: number) {
   try {
-    const { data } = await Instance.get(`/eval/doc/${recruitId}/groups`);
+    const { data } = await Instance.get(`/eval/doc/${recruitId}/groups`, {
+      params: { recruitId }
+    });
     return data;
   } catch (error) {
     console.error("서류 평가 그룹명 조회 실패:", error);
