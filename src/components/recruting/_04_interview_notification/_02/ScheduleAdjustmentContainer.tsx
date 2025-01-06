@@ -1,104 +1,344 @@
-import { useGroupStore, useInterviewStore } from "../../../../store/useStore";
-import { useState } from "react";
-import { useStepFourStore } from "../../../../store/useStore";
+import { useState, useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import {
+  useGroupStore,
+  useInterviewStore,
+  useStepFourStore
+} from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
-
-interface Applicant {
-  id: number;
-  name: string;
-}
-
-interface ScheduleData {
-  interviewer: string;
-  time: string;
-  applicants: Applicant[];
-}
-
-interface TimeSlotApplicants {
-  [timeSlot: string]: number[]; // 지원자 ID 배열
-}
+import { DEFAULT_TIME_SLOTS } from "./constants/interview";
+import { getDateKey } from "./utils/date";
+import { DateNavigator } from "./DateNavigator";
+import { GroupTabs } from "./GroupTabs";
+import { ScheduleGrid } from "./ScheduleGrid";
+import {
+  validateScheduleCompletion,
+  validateApplicantAssignment,
+  ValidationError
+} from "./utils/validators";
+import { createScheduleData } from "./utils/schedule";
 
 export default function ScheduleAdjustmentContainer() {
   const { group } = useGroupStore();
-  const { interviewer, interviewee } = useInterviewStore();
-  const [selectedGroupId, setSelectedGroupId] = useState<number>(0);
-  const [selectedTimeSlots, setSelectedTimeSlots] =
-    useState<TimeSlotApplicants>({});
+  const {
+    interviewer,
+    interviewee,
+    interviewStartTime,
+    interviewEndTime,
+    interviewStartDate,
+    interviewEndDate,
+    isTimeSet
+  } = useInterviewStore();
   const { steps } = useStepFourStore();
 
-  // 임시 데이터
-  const scheduleData: ScheduleData[] = [
-    {
-      interviewer: "박시현 / 최예은",
-      time: "18:00 PM",
-      applicants: Array(12)
-        .fill(null)
-        .map((_, index) => ({
-          id: index,
-          name: "박시현"
-        }))
-    },
-    {
-      interviewer: "박시현 / 최예은",
-      time: "19:00 PM",
-      applicants: [{ id: 12, name: "박시현" }]
-    },
-    {
-      interviewer: "양성원 / 윤다인",
-      time: "20:00 PM",
-      applicants: [
-        { id: 13, name: "박시현" },
-        { id: 14, name: "박시현" }
-      ]
+  const [selectedGroupId, setSelectedGroupId] = useState<number>(
+    group[0]?.index || 0
+  );
+  const [currentDate, setCurrentDate] = useState<Date>(
+    new Date(interviewStartDate)
+  );
+  const [dateScheduleMap, setDateScheduleMap] = useState<GroupScheduleMap>({});
+  const [dateSelectionsMap, setDateSelectionsMap] =
+    useState<GroupSelectionsMap>({});
+  const [validationError, setValidationError] =
+    useState<ValidationError | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+    trigger
+  } = useForm<ScheduleFormData>({
+    defaultValues: {
+      groups: group.length
+        ? group.reduce(
+            (acc, g) => ({
+              ...acc,
+              [g.index]: {
+                groupName: g.name,
+                dates: {}
+              }
+            }),
+            {}
+          )
+        : {
+            0: {
+              groupName: "공통",
+              dates: {}
+            }
+          }
     }
-  ];
+  });
 
-  const handleApplicantSelect = (time: string, applicantId: number) => {
-    setSelectedTimeSlots((prev) => {
-      const currentSelected = prev[time] || [];
+  const generateTimeSlots = useCallback(() => {
+    if (!isTimeSet) return DEFAULT_TIME_SLOTS;
 
-      // 이미 선택된 경우 제거
-      if (currentSelected.includes(applicantId)) {
-        const updated = currentSelected.filter((id) => id !== applicantId);
-        return {
-          ...prev,
-          [time]: updated.length ? updated : []
-        };
+    const startTime = new Date(interviewStartTime);
+    const endTime = new Date(interviewEndTime);
+    const slots: string[] = [];
+
+    while (startTime <= endTime) {
+      slots.push(
+        startTime.toLocaleTimeString("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: true
+        })
+      );
+      startTime.setHours(startTime.getHours() + 1);
+    }
+
+    return slots.length > 0 ? slots : DEFAULT_TIME_SLOTS;
+  }, [interviewStartTime, interviewEndTime, isTimeSet]);
+
+  const getAllDatesInRange = useCallback((startDate: Date, endDate: Date) => {
+    const dates: Date[] = [];
+    const endDateTime = new Date(endDate).getTime();
+    const startDateTime = new Date(startDate).getTime();
+
+    for (let time = startDateTime; time <= endDateTime; time += 86400000) {
+      // 86400000ms = 1일
+      dates.push(new Date(time));
+    }
+
+    return dates;
+  }, []);
+
+  useEffect(() => {
+    const dateKey = getDateKey(currentDate);
+    const currentSchedules = dateScheduleMap[selectedGroupId]?.[dateKey] || [];
+    const currentSelections =
+      dateSelectionsMap[selectedGroupId]?.[dateKey] || {};
+
+    const schedules = currentSchedules.map((schedule) => ({
+      time: schedule.time,
+      interviewers: schedule.interviewer,
+      applicants: schedule.applicants
+        .filter((applicant) =>
+          currentSelections[schedule.time]?.includes(applicant.id)
+        )
+        .map((applicant) => applicant.name)
+    }));
+
+    setValue(`groups.${selectedGroupId}.dates.${dateKey}`, { schedules });
+    trigger();
+  }, [
+    currentDate,
+    selectedGroupId,
+    dateScheduleMap,
+    dateSelectionsMap,
+    group,
+    generateTimeSlots,
+    setValue,
+    trigger
+  ]);
+
+  const getOrCreateScheduleData = useCallback(
+    (date: Date, groupId: number) => {
+      return createScheduleData(
+        dateScheduleMap,
+        groupId,
+        date,
+        generateTimeSlots
+      );
+    },
+    [dateScheduleMap, generateTimeSlots]
+  );
+
+  const validateSchedules = useCallback(
+    (dates: ScheduleFormData["dates"]) => {
+      const completionValidation = validateScheduleCompletion(dates);
+      const applicantValidation = validateApplicantAssignment(
+        dates,
+        interviewee
+      );
+
+      if (completionValidation !== true) {
+        setValidationError(completionValidation);
+        return completionValidation.message;
       }
 
-      // 새로 선택하는 경우
-      if (currentSelected.length >= interviewee) return prev;
+      if (applicantValidation !== true) {
+        setValidationError(applicantValidation);
+        return applicantValidation.message;
+      }
 
-      return {
+      setValidationError(null);
+      return true;
+    },
+    [interviewee]
+  );
+
+  const handleApplicantSelect = useCallback(
+    (time: string, applicantId: number) => {
+      const dateKey = getDateKey(currentDate);
+      const currentSelections =
+        dateSelectionsMap[selectedGroupId]?.[dateKey]?.[time] || [];
+
+      setDateSelectionsMap((prev) => ({
         ...prev,
-        [time]: [...currentSelected, applicantId]
-      };
-    });
-  };
+        [selectedGroupId]: {
+          ...prev[selectedGroupId],
+          [dateKey]: {
+            ...prev[selectedGroupId]?.[dateKey],
+            [time]: currentSelections.includes(applicantId)
+              ? currentSelections.filter((id) => id !== applicantId)
+              : currentSelections.length < interviewee
+                ? [...currentSelections, applicantId]
+                : currentSelections
+          }
+        }
+      }));
+    },
+    [currentDate, dateSelectionsMap, selectedGroupId, interviewee]
+  );
 
-  // 시간대별 선택 완료 여부 확인
-  const isTimeSlotComplete = (time: string) => {
-    return (selectedTimeSlots[time]?.length || 0) === interviewee;
-  };
+  const handleReset = useCallback(() => {
+    const dateKey = getDateKey(currentDate);
+    setDateSelectionsMap((prev) => ({
+      ...prev,
+      [selectedGroupId]: {
+        ...prev[selectedGroupId],
+        [dateKey]: {}
+      }
+    }));
+    setValidationError(null);
+  }, [currentDate, selectedGroupId]);
 
-  // 지원자가 선택되었는지 확인
-  const isApplicantSelected = (time: string, applicantId: number) => {
-    return selectedTimeSlots[time]?.includes(applicantId) || false;
-  };
+  const onSubmit = handleSubmit((data: ScheduleFormData) => {
+    const allDates = getAllDatesInRange(
+      new Date(interviewStartDate),
+      new Date(interviewEndDate)
+    );
+
+    const completeFormData: ScheduleFormData = {
+      groups: group.length
+        ? group.reduce((acc, g) => {
+            const groupId = g.index;
+            return {
+              ...acc,
+              [groupId]: {
+                groupName: g.name,
+                dates: allDates.reduce((datesAcc, date) => {
+                  const dateKey = getDateKey(date);
+                  const scheduleData = dateScheduleMap[groupId]?.[dateKey];
+                  const selections =
+                    dateSelectionsMap[groupId]?.[dateKey] || {};
+
+                  if (scheduleData) {
+                    datesAcc[dateKey] = {
+                      schedules: scheduleData.map((schedule) => ({
+                        time: schedule.time,
+                        interviewers: schedule.interviewer,
+                        applicants: schedule.applicants
+                          .filter((applicant) =>
+                            selections[schedule.time]?.includes(applicant.id)
+                          )
+                          .map((applicant) => applicant.name)
+                      }))
+                    };
+                  }
+                  return datesAcc;
+                }, {})
+              }
+            };
+          }, {})
+        : {
+            0: {
+              groupName: "공통",
+              dates: allDates.reduce((datesAcc, date) => {
+                const dateKey = getDateKey(date);
+                const scheduleData = dateScheduleMap[0]?.[dateKey];
+                const selections = dateSelectionsMap[0]?.[dateKey] || {};
+
+                if (scheduleData) {
+                  datesAcc[dateKey] = {
+                    schedules: scheduleData.map((schedule) => ({
+                      time: schedule.time,
+                      interviewers: schedule.interviewer,
+                      applicants: schedule.applicants
+                        .filter((applicant) =>
+                          selections[schedule.time]?.includes(applicant.id)
+                        )
+                        .map((applicant) => applicant.name)
+                    }))
+                  };
+                }
+                return datesAcc;
+              }, {})
+            }
+          }
+    };
+
+    const validation = validateSchedules(completeFormData);
+    if (validation !== true) {
+      return;
+    }
+
+    console.log(completeFormData);
+  });
+
+  const changeDate = useCallback(
+    (direction: DateDirection) => {
+      setCurrentDate((prevDate) => {
+        const newDate = new Date(prevDate);
+        newDate.setDate(newDate.getDate() + (direction === "next" ? 1 : -1));
+
+        if (
+          newDate >= new Date(interviewStartDate) &&
+          newDate <= new Date(interviewEndDate)
+        ) {
+          const dateKey = getDateKey(newDate);
+          if (!dateScheduleMap[selectedGroupId]?.[dateKey]) {
+            setDateScheduleMap((prev) => ({
+              ...prev,
+              [selectedGroupId]: {
+                ...prev[selectedGroupId],
+                [dateKey]: getOrCreateScheduleData(newDate, selectedGroupId)
+              }
+            }));
+          }
+          return newDate;
+        }
+        return prevDate;
+      });
+    },
+    [
+      interviewStartDate,
+      interviewEndDate,
+      selectedGroupId,
+      dateScheduleMap,
+      getOrCreateScheduleData
+    ]
+  );
 
   return (
-    <div className="mt-3">
+    <form onSubmit={onSubmit} className="mt-3">
       <div className="flex justify-between">
         <div className="flex-center gap-4">
-          <div className="flex-center w-[334px] h-[35px] bg-gray-50 border border-[#E9E9E9] text-gray-700">
-            10.16.화
-          </div>
+          <DateNavigator
+            currentDate={currentDate}
+            interviewStartDate={new Date(interviewStartDate)}
+            interviewEndDate={new Date(interviewEndDate)}
+            onChangeDate={changeDate}
+            error={
+              validationError?.type === "INCOMPLETE_DATE"
+                ? validationError
+                : undefined
+            }
+          />
           <div className="tooltip text-main-100">
             구성은 면접관 {interviewer}:지원자 {interviewee}입니다. 지원자
             {interviewee}명을 확정해 주세요.
           </div>
         </div>
-        <button className="flex-center w-auto h-[36px] px-[11px] bg-main-300 border border-main-400 rounded-[6px] text-main-100">
+        <button
+          type="button"
+          onClick={handleReset}
+          className="flex-center w-auto h-[36px] px-[11px] bg-main-300 border border-main-400 rounded-[6px] text-main-100"
+        >
           <img
             src="/assets/ic-reset.svg"
             alt="기존 배치로 돌아가기"
@@ -108,113 +348,48 @@ export default function ScheduleAdjustmentContainer() {
         </button>
       </div>
 
-      <div>
-        <div className="flex mt-[22px]">
-          {group && group.length > 0 ? (
-            group.map((groupItem) => (
-              <button
-                key={groupItem.index}
-                type="button"
-                className={`flex-center w-[162px] min-h-[43px] rounded-t-[11px] border border-b-0 text-callout 
-                  ${
-                    selectedGroupId === groupItem.index
-                      ? "border-main-100 bg-main-100 text-white-100"
-                      : "border-gray-200 bg-gray-100 text-main-100"
-                  }`}
-                onClick={() => setSelectedGroupId(groupItem.index)}
-              >
-                {groupItem.name}
-              </button>
-            ))
-          ) : (
-            <div className="flex-center w-[162px] min-h-[43px] rounded-t-[11px] border border-b-0 text-callout border-main-100 bg-main-100 text-white-100">
-              전체
-            </div>
-          )}
-        </div>
+      <GroupTabs
+        group={group}
+        selectedGroupId={selectedGroupId}
+        onSelectGroup={setSelectedGroupId}
+      />
 
-        <div className="w-full h-auto bg-gray-50 border border-gray-200 rounded-tr-[6.65px] rounded-bl-[6.65px] rounded-br-[6.65px]">
-          <div className="grid grid-cols-[235px_60px_1fr] bg-gray-100 border-b border-gray-200 font-semibold text-gray-800">
-            <div className="py-3">면접관</div>
-            <div className="py-3">시간</div>
-            <div className="py-3">지원자</div>
-          </div>
+      <input
+        type="hidden"
+        {...register("dates", {
+          validate: validateSchedules
+        })}
+      />
 
-          <div className="p-4">
-            {scheduleData.map((schedule) => (
-              <div
-                key={schedule.time}
-                className="grid grid-cols-[200px_120px_1fr] items-start mb-4"
-              >
-                <div className="text-gray-800 text-caption1">
-                  {schedule.interviewer}
-                </div>
-                <div>
-                  <div
-                    className={`flex-center w-[100px] h-[35px] border rounded-[6px] text-caption3 ${
-                      isTimeSlotComplete(schedule.time)
-                        ? "bg-main-300 border-main-400 text-main-100"
-                        : "bg-gray-100 border-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {schedule.time}
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {schedule.applicants.map((applicant) => {
-                    const isSelected = isApplicantSelected(
-                      schedule.time,
-                      applicant.id
-                    );
-                    const isDisabled =
-                      !isSelected &&
-                      (selectedTimeSlots[schedule.time]?.length || 0) >=
-                        interviewee;
+      <ScheduleGrid
+        scheduleData={
+          dateScheduleMap[selectedGroupId]?.[getDateKey(currentDate)] || []
+        }
+        dateSelectionsMap={dateSelectionsMap}
+        selectedGroupId={selectedGroupId}
+        currentDate={currentDate}
+        interviewee={interviewee}
+        onApplicantSelect={handleApplicantSelect}
+        error={
+          validationError?.type === "INCOMPLETE_APPLICANTS"
+            ? validationError
+            : undefined
+        }
+        getDateKey={getDateKey}
+      />
 
-                    return (
-                      <button
-                        key={`${schedule.time}-${applicant.id}`}
-                        onClick={() =>
-                          handleApplicantSelect(schedule.time, applicant.id)
-                        }
-                        disabled={isDisabled}
-                        className={`flex-center w-[80px] h-[35px] border rounded-[6px] text-caption3
-                        ${
-                          isSelected
-                            ? "bg-main-300 border-main-400 text-main-100"
-                            : "bg-gray-100 border-gray-200 text-gray-500"
-                        }
-                        ${
-                          isDisabled
-                            ? "opacity-30 cursor-not-allowed"
-                            : "hover:bg-main-300 hover:border-main-400 hover:text-main-100"
-                        }`}
-                      >
-                        {applicant.name}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
       <div className="flex justify-center">
         <button
           type="submit"
-          aria-label={
-            steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
-          }
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
             steps[1].completed
-              ? "bg-main-400 border border-main-100 text-main-100 "
-              : "bg-main-100 text-white-100 "
-          }  text-body flex-center hover:bg-main-500`}
+              ? "bg-main-400 border border-main-100 text-main-100"
+              : "bg-main-100 text-white-100"
+          } text-body flex-center hover:bg-main-500`}
         >
           {steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
-    </div>
+    </form>
   );
 }
