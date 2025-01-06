@@ -1,5 +1,7 @@
 import { useGroupStore, useInterviewStore } from "../../../../store/useStore";
 import { useState } from "react";
+import { useStepFourStore } from "../../../../store/useStore";
+import { BUTTON_TEXT } from "../../../../constants/recruting";
 
 interface Applicant {
   id: number;
@@ -22,6 +24,7 @@ export default function ScheduleAdjustmentContainer() {
   const [selectedGroupId, setSelectedGroupId] = useState<number>(0);
   const [selectedTimeSlots, setSelectedTimeSlots] =
     useState<TimeSlotApplicants>({});
+  const { steps } = useStepFourStore();
 
   // 임시 데이터
   const scheduleData: ScheduleData[] = [
@@ -148,12 +151,11 @@ export default function ScheduleAdjustmentContainer() {
                 </div>
                 <div>
                   <div
-                    className={`flex-center w-[100px] h-[35px] border rounded-[6px] text-caption3 
-    ${
-      isTimeSlotComplete(schedule.time)
-        ? "bg-main-300 border-main-400 text-main-100"
-        : "bg-gray-100 border-gray-200 text-gray-500"
-    }`}
+                    className={`flex-center w-[100px] h-[35px] border rounded-[6px] text-caption3 ${
+                      isTimeSlotComplete(schedule.time)
+                        ? "bg-main-300 border-main-400 text-main-100"
+                        : "bg-gray-100 border-gray-200 text-gray-500"
+                    }`}
                   >
                     {schedule.time}
                   </div>
@@ -197,6 +199,21 @@ export default function ScheduleAdjustmentContainer() {
             ))}
           </div>
         </div>
+      </div>
+      <div className="flex justify-center">
+        <button
+          type="submit"
+          aria-label={
+            steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+          }
+          className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+            steps[1].completed
+              ? "bg-main-400 border border-main-100 text-main-100 "
+              : "bg-main-100 text-white-100 "
+          }  text-body flex-center hover:bg-main-500`}
+        >
+          {steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+        </button>
       </div>
     </div>
   );
