@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Dropdown from "../../../_03_document_evaluation/_02/common/DropDown";
 import EvalProcessBar from "../../../_03_document_evaluation/_02/common/EvalProcessBar";
 import BeforeEvaluation from "../../../_03_document_evaluation/_02/step/BeforeEvaluation";
 import DuringEvaluation from "../../../_03_document_evaluation/_02/step/DuringEvaluation";
 import AfterEvaluation from "../../../_03_document_evaluation/_02/step/AfterEvaluation";
 import CompletedEvaluation from "../../../_03_document_evaluation/_02/step/CompletedEvaluation";
+import { useQuery } from "@tanstack/react-query";
+import { getInterviewGroups } from "../../service/Step5";
+
+interface Group {
+  groupId: number;
+  name: string;
+}
 
 export default function AfterInterviewContainer() {
   const steps = ["평가 전", "평가 중", "평가 후", "평가 완료"];
   const [currentStep, setCurrentStep] = useState(0);
+
+  //FIX:하드코딩
+  const recruitId = 1;
+  const { data: groups = [] } = useQuery(["groups", recruitId], async () => {
+    const response = await getInterviewGroups(Number(recruitId));
+    return response.map((group: Group) => group.name);
+  });
 
   const renderStepComponent = (): React.ReactNode => {
     switch (currentStep) {
@@ -25,6 +39,8 @@ export default function AfterInterviewContainer() {
 
   const [filter, setFilter] = useState("전체");
   const [sortType, setSortType] = useState("가나다순");
+  const filterOptions = useMemo(() => ["전체", ...groups], [groups]);
+
   return (
     <div className="flex flex-col mt-6">
       <div className="flex flex-col gap-3">
@@ -32,7 +48,7 @@ export default function AfterInterviewContainer() {
           <Dropdown
             label="필터 : "
             defaultValue="전체"
-            options={["전체", "기획", "디자인", "개발"]}
+            options={filterOptions}
             onSelect={(value) => setFilter(value)}
           />
           <Dropdown
