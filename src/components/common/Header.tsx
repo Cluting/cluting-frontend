@@ -13,6 +13,13 @@ export default function Header() {
     console.log("로그인 상태 변경:", isLogin);
   }, [isLogin]);
 
+  const { setLogin } = useAuthStore();
+  const handleLogout = () => {
+    setLogin(false);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+  };
+
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
       <Link to="/main">
@@ -33,6 +40,10 @@ export default function Header() {
           />
           {isLogin ? (
             <>
+              {" "}
+              <button onClick={handleLogout} className="text-white-100">
+                임시 로그아웃
+              </button>
               {isLogin && (
                 <>
                   <img
