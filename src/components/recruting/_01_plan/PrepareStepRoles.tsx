@@ -7,10 +7,12 @@ import { AdminPlan } from "../../../type/type";
 
 interface PrepareStepRolesProps {
   onPrepStagesSubmit: (prepStages: any) => void;
+  isStepOneCompleted: boolean;
 }
 
 export default function PrepareStepRoles({
-  onPrepStagesSubmit
+  onPrepStagesSubmit,
+  isStepOneCompleted
 }: PrepareStepRolesProps) {
   const [dropdown, setDropdown] = useState(false);
   const [steps, setSteps] = useState(DEFAULT_STEPS);
@@ -209,16 +211,18 @@ export default function PrepareStepRoles({
           <p className="text-state-error ">{errors.steps.message}</p>
         )}
       </div>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.preventDefault(); // 기본 동작 방지
-          handleFormSubmit(e); // React Hook Form 처리
-        }}
-        className={`mt-5 py-[7px] px-[24px] rounded-[12px] text-white-100 button-main-bg cursor-pointer`}
-      >
-        적용하기
-      </button>
+      {!isStepOneCompleted && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault(); // 기본 동작 방지
+            handleFormSubmit(e); // React Hook Form 처리
+          }}
+          className={`mt-5 py-[7px] px-[24px] rounded-[12px] text-white-100 button-main-bg cursor-pointer`}
+        >
+          적용하기
+        </button>
+      )}
     </form>
   );
 }

@@ -25,12 +25,13 @@ export default function GroupCreate({ apiGroups }: GroupCreateProps) {
 
   useEffect(() => {
     if (apiGroups && apiGroups.length > 0) {
-      const initialGroups = apiGroups.map((name) => ({ name }));
-      console.log(initialGroups);
-      // useGroupStore.getState().setGroup(settingGroups);
-      // setGroups(initialGroups);
+      apiGroups.forEach((groupName) => {
+        if (!groupList.some((group) => group.name === groupName)) {
+          addGroup(groupName);
+        }
+      });
     }
-  }, [apiGroups]);
+  }, [apiGroups, addGroup, groupList]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);

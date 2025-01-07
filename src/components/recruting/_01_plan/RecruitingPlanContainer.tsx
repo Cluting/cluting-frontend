@@ -52,6 +52,7 @@ export default function RecruitingPlanContainer() {
           setValue("recruitSchedules", data.schedule);
         }
         console.log("계획하기 데이터 불러오기 성공:", data);
+        completeStep(0);
       },
       onError: (error) => {
         console.error("계획하기 데이터 불러오기 실패:", error);
@@ -113,7 +114,10 @@ export default function RecruitingPlanContainer() {
           </div>
           <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
-        <PrepareStepRoles onPrepStagesSubmit={handlePrepStagesSubmit} />
+        <PrepareStepRoles
+          isStepOneCompleted={isStepOneCompleted}
+          onPrepStagesSubmit={handlePrepStagesSubmit}
+        />
         <div className=" w-full flex flex-col items-center ml-8">
           <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
