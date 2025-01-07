@@ -7,8 +7,8 @@ import { BUTTON_TEXT } from "../../../constants/recruting";
 import StepCompleteModal from "../common/StepCompleteModal";
 import { FormProvider, useForm } from "react-hook-form";
 import { PrepareStepRolesFormValues, PrepStage } from "./type/Prep";
-import { useMutation } from "@tanstack/react-query";
-import { postStepPlan } from "./service/Prep";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getPlanningData, postStepPlan } from "./service/Prep";
 
 export default function RecruitingPlanContainer() {
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -36,6 +36,23 @@ export default function RecruitingPlanContainer() {
   };
 
   // 계획하기 API
+  const recruitId = 1;
+  const {
+    data: planningData,
+    isLoading,
+    error
+  } = useQuery(["planningData", recruitId], () => getPlanningData(recruitId), {
+    onSuccess: (data) => {
+      console.log("계획하기 데이터 불러오기 성공:", data);
+      // 불러온 데이터를 폼에 설정
+      if (data) {
+        setValue("prepStages", data.prepStages);
+      }
+    },
+    onError: (error) => {
+      console.error("계획하기 데이터 불러오기 실패:", error);
+    }
+  });
 
   const stepPlanMutation = useMutation(
     ({

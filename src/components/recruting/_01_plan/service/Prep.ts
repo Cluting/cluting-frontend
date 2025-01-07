@@ -1,8 +1,7 @@
-// POST: [계획하기] 등록하기
-
 import { Instance } from "../../../../services/AxiosInstance";
 import { PrepareStepRolesFormValues } from "../type/Prep";
 
+// POST: [계획하기] 등록하기
 export async function postStepPlan(
   recruitId: number,
   planningData: PrepareStepRolesFormValues
@@ -21,6 +20,22 @@ export async function postStepPlan(
   } catch (error: any) {
     console.error(
       "계획하기 페이지 등록 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// GET: [계획하기] 불러오기
+export async function getPlanningData(recruitId: number) {
+  try {
+    const response = await Instance.get(`/prep`, {
+      params: { recruitId }
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "계획하기 데이터 불러오기 실패:",
       error.response?.data || error.message
     );
     throw error;
