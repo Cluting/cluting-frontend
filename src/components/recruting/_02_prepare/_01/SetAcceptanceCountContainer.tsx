@@ -10,6 +10,7 @@ import { getPassIdeal } from "./service/Step1";
 
 export default function SetAcceptanceCountContainer() {
   const recruitId = 1; //todo: 임시로
+  //GET
   const { data: passIdeal } = useQuery(
     ["passIdeal", recruitId],
     () => getPassIdeal(recruitId),
@@ -27,18 +28,20 @@ export default function SetAcceptanceCountContainer() {
       }
     }
   );
-
   const queryClient = useQueryClient();
+
+  //POST
   const mutation = useMutation(
     (data: { formData: SetAcceptanceCountFormData; recruitId: number }) =>
       postPrepare1(data.formData, data.recruitId),
     {
       onSuccess: (data) => {
-        console.log("등록 성공", data);
+        console.log("모집하기1 POST 성공", data);
+        // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
         queryClient.invalidateQueries(["passIdeal", recruitId]);
       },
       onError: (error: any) => {
-        console.error(`모집하기1 등록에 실패하였습니다`, error);
+        console.error(`모집하기1 POST 에실패`, error);
       }
     }
   );

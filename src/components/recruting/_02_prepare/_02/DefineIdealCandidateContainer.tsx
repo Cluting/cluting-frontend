@@ -9,62 +9,86 @@ import { postPrepare2 } from "./service/Step2";
 import { getPassIdeal } from "../_01/service/Step1";
 
 export default function DefineIdealCandidateContainer() {
-  const recruitId = 1;
-  const { data: passIdeal } = useQuery(
+  const { setStepCompleted, steps } = useStepTwoStore();
+  const { group: groups } = useGroupStore();
+
+  //GET
+  const recruitId = 1; //todo: 임시로
+  const { data: passIdeal } = useQuery<CurrentResponse, Error, IdealForm>(
     ["passIdeal", recruitId],
-    () => getPassIdeal(recruitId),
+    async () => {
+      const response = await getPassIdeal(recruitId);
+      return response as unknown as CurrentResponse;
+    },
     {
-      select: (data: PassIdealResponse) =>
-        ({
-          partIdeals: data.ideals.map(
-            (ideal: { id: number; content: string }) => ({
-              partName: ideal.id.toString(),
-              content: [ideal.content]
-            })
-          )
-        }) as IdealForm
+      select: (data) => ({
+        partIdeals: [
+          {
+            partName: "PM",
+            content: data.ideals?.map((ideal) => ideal.content) || []
+          },
+          ...groups.map((group) => ({
+            partName: group.name,
+            content: []
+          }))
+        ]
+      })
     }
   );
-
   const queryClient = useQueryClient();
+
+  // GET 데이터를 폼 데이터 구조로 변환
+  const transformedValues = passIdeal
+    ? {
+        partIdeals: [
+          {
+            partName: "PM",
+            content: [] // 임시로 빈 배열
+          },
+          ...groups.map((group) => ({
+            partName: group.name,
+            content: []
+          }))
+        ]
+      }
+    : undefined;
+
+  //POST
   const mutation = useMutation(
     (data: { formData: IdealForm; recruitId: number }) =>
       postPrepare2(data.formData, data.recruitId),
     {
-      onSuccess: (data) => {
-        console.log("등록 성공", data);
+      onSuccess: (responseData) => {
+        console.log("모집하기2 POST 성공", responseData);
+        // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
         queryClient.invalidateQueries(["passIdeal", recruitId]);
       },
-      onError: (error: any) => {
-        console.error(`모집하기2 등록에 실패하였습니다`, error);
+      onError: (error) => {
+        console.error("모집하기2 POST 실패:", error);
       }
     }
   );
 
-  const { setStepCompleted, steps } = useStepTwoStore();
-  const { group: groups } = useGroupStore();
-
   const methods = useForm<IdealForm>({
+    mode: "onTouched",
+    values: transformedValues,
     defaultValues: {
       partIdeals: [
-        { partName: "공통", content: [] },
+        { partName: "PM", content: [] },
         ...groups.map((group) => ({ partName: group.name, content: [] }))
       ]
-    },
-    mode: "onTouched"
+    }
   });
 
   const handleSubmit = methods.handleSubmit((data) => {
     if (data.partIdeals.every((part) => part.content.length > 0)) {
-      console.log(data);
+      // console.log(data);
       setStepCompleted(1, true);
 
-      const recruitId = 1; //todo: 일단 임시로
       mutation.mutate({
         formData: data,
         recruitId: recruitId
       });
-      setStepCompleted(1, true);
     }
   });
 
