@@ -11,6 +11,7 @@ import {
 import { useInterviewStore } from "../../../../store/useStore";
 import { addDays } from "date-fns";
 import { useFormContext } from "react-hook-form";
+import { RecruitSchedule } from "../../_01_plan/type/Prep";
 
 interface CalendarEvent {
   id: string;
@@ -21,7 +22,13 @@ interface CalendarEvent {
   backgroundColor?: string; // 색상 속성 추가
 }
 
-export default function RecrutingCalenderPicker() {
+interface RecrutingCalenderPickerProps {
+  apiSchedule?: RecruitSchedule;
+}
+
+export default function RecrutingCalenderPicker({
+  apiSchedule
+}: RecrutingCalenderPickerProps) {
   //면접 기간은 전역 상태로 저장
   const { setInterviewStartDate, setInterviewEndDate } = useInterviewStore();
 
@@ -62,6 +69,7 @@ export default function RecrutingCalenderPicker() {
       stage8End: ""
     }
   ]);
+
   // 날짜 선택 시 이벤트 추가 함수
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     const title = currrentTitle;
@@ -193,6 +201,37 @@ export default function RecrutingCalenderPicker() {
   useEffect(() => {
     checkAllStagesSelected();
   }, [completedTitles]);
+
+  // 계획하기 데이터가 있는 경우 캘린더에 표시
+  useEffect(() => {
+    console.log(apiSchedule);
+    if (apiSchedule) {
+      const calendarEvents = Object.entries(apiSchedule)
+        .map(([key, value]) => {
+          if (value && value !== "") {
+            const [, stageNumber, type] =
+              key.match(/stage(\d+)(Start|End)/) || [];
+            const index = parseInt(stageNumber) - 1;
+            const title = CALENDAR_ITEMS[index];
+            const colorIndex = parseInt(stageNumber) - 1;
+
+            return {
+              id: key,
+              title: title,
+              start: type === "Start" ? value : undefined,
+              end: type === "End" ? value : undefined,
+              allDay: true,
+              backgroundColor:
+                CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length]
+            };
+          }
+          return null;
+        })
+        .filter((event) => event !== null);
+
+      setEvents(calendarEvents as CalendarEvent[]);
+    }
+  }, [apiSchedule]);
 
   return (
     <div className="mt-[30px] pl-4 bg-white-100">

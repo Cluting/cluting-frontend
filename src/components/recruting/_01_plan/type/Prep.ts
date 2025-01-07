@@ -28,3 +28,20 @@ export interface PrepareStepRolesFormValues {
   recruitSchedules: RecruitSchedule;
   applicantGroups: string[];
 }
+
+// 계획하기 불러오기
+export interface PrepareStepRolesFormValues {
+  prepStages: PrepStage[];
+  recruitSchedules: RecruitSchedule;
+  applicantGroups: string[];
+}
+
+export interface RecruitmentPlanningData {
+  schedule: RecruitSchedule;
+  prepStages: Array<{
+    stageName: string;
+    adminNames: string[];
+  }>;
+  groups: string[];
+  admins: string[];
+}

@@ -6,7 +6,11 @@ import GroupCreate from "../_02_prepare/_01/GroupCreate";
 import { BUTTON_TEXT } from "../../../constants/recruting";
 import StepCompleteModal from "../common/StepCompleteModal";
 import { FormProvider, useForm } from "react-hook-form";
-import { PrepareStepRolesFormValues, PrepStage } from "./type/Prep";
+import {
+  PrepareStepRolesFormValues,
+  PrepStage,
+  RecruitmentPlanningData
+} from "./type/Prep";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getPlanningData, postStepPlan } from "./service/Prep";
 
@@ -36,23 +40,24 @@ export default function RecruitingPlanContainer() {
   };
 
   // 계획하기 API
+  //FIX:
   const recruitId = 1;
-  const {
-    data: planningData,
-    isLoading,
-    error
-  } = useQuery(["planningData", recruitId], () => getPlanningData(recruitId), {
-    onSuccess: (data) => {
-      console.log("계획하기 데이터 불러오기 성공:", data);
-      // 불러온 데이터를 폼에 설정
-      if (data) {
-        setValue("prepStages", data.prepStages);
+  const { data: apiPlanningData } = useQuery(
+    ["planningData", recruitId],
+    () => getPlanningData(recruitId),
+    {
+      onSuccess: (data: RecruitmentPlanningData) => {
+        //스케줄 데이터가 불러오기로 불러온 경우 form 데이터에 등록해두기
+        if (data) {
+          setValue("recruitSchedules", data.schedule);
+        }
+        console.log("계획하기 데이터 불러오기 성공:", data);
+      },
+      onError: (error) => {
+        console.error("계획하기 데이터 불러오기 실패:", error);
       }
-    },
-    onError: (error) => {
-      console.error("계획하기 데이터 불러오기 실패:", error);
     }
-  });
+  );
 
   const stepPlanMutation = useMutation(
     ({
@@ -106,11 +111,11 @@ export default function RecruitingPlanContainer() {
               리크루팅 진행 단계에 적용됩니다
             </div>
           </div>
-          <RecrutingCalenderPicker />
+          <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
         <PrepareStepRoles onPrepStagesSubmit={handlePrepStagesSubmit} />
         <div className=" w-full flex flex-col items-center ml-8">
-          <GroupCreate />
+          <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
             type="submit"
             aria-label={

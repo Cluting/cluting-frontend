@@ -120,15 +120,6 @@ export default function PrepareStepRoles({
             모집 준비하기의 세부 단계에 따른 역할을 분담해 주세요.
           </div>
         </div>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault(); // 기본 동작 방지
-            handleFormSubmit(e); // React Hook Form 처리
-          }}
-        >
-          완료
-        </button>
       </div>
       <div className="pl-[47px] pr-[48px]">
         <div
@@ -218,6 +209,16 @@ export default function PrepareStepRoles({
           <p className="text-state-error ">{errors.steps.message}</p>
         )}
       </div>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault(); // 기본 동작 방지
+          handleFormSubmit(e); // React Hook Form 처리
+        }}
+        className={`mt-5 py-[7px] px-[24px] rounded-[12px] text-white-100 button-main-bg cursor-pointer`}
+      >
+        적용하기
+      </button>
     </form>
   );
 }
