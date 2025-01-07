@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Pretendard: ["Pretendard"]
+        Pretendard: ["Pretendard"],
+        Line: ["LINESeedKR-Bd"]
       },
       screens: {
         sm: "500px",
