@@ -53,7 +53,9 @@ export const ScheduleGrid = memo(
       <div>
         <div
           className={`w-full h-auto bg-gray-50 border rounded-[6.65px] ${
-            error?.type !== "INCOMPLETE_APPLICANTS" ? "border-gray-200" : ""
+            error?.type === "INCOMPLETE_APPLICANTS"
+              ? "border-red-100"
+              : "border-gray-200"
           }`}
         >
           <div className="grid grid-cols-[235px_60px_1fr] bg-gray-100 border-b border-gray-200 font-semibold text-gray-800">
@@ -103,9 +105,7 @@ export const ScheduleGrid = memo(
           </div>
         </div>
         {error?.type === "INCOMPLETE_APPLICANTS" && (
-          <div className="text-red-100 text-sm mt-2 text-left">
-            {error.message}
-          </div>
+          <div className="text-state-error">{error.message}</div>
         )}
       </div>
     );

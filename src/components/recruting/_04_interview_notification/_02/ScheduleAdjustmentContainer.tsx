@@ -69,7 +69,8 @@ export default function ScheduleAdjustmentContainer() {
               dates: {}
             }
           }
-    }
+    },
+    mode: "onTouched"
   });
 
   const generateTimeSlots = useCallback(() => {
@@ -93,6 +94,93 @@ export default function ScheduleAdjustmentContainer() {
     return slots.length > 0 ? slots : DEFAULT_TIME_SLOTS;
   }, [interviewStartTime, interviewEndTime, isTimeSet]);
 
+  const getOrCreateScheduleData = useCallback(
+    (date: Date, groupId: number) => {
+      return createScheduleData(
+        dateScheduleMap,
+        groupId,
+        date,
+        generateTimeSlots
+      );
+    },
+    [dateScheduleMap, generateTimeSlots]
+  );
+
+  useEffect(() => {
+    // 모든 그룹에 대해 첫 날짜의 데이터 초기화
+    const firstDate = new Date(interviewStartDate);
+    const dateKey = getDateKey(firstDate);
+
+    group.forEach((g) => {
+      if (!dateScheduleMap[g.index]?.[dateKey]) {
+        setDateScheduleMap((prev) => ({
+          ...prev,
+          [g.index]: {
+            ...prev[g.index],
+            [dateKey]: getOrCreateScheduleData(firstDate, g.index)
+          }
+        }));
+      }
+    });
+
+    // 그룹이 없는 경우 default 그룹(0)에 대한 처리
+    if (group.length === 0 && !dateScheduleMap[0]?.[dateKey]) {
+      setDateScheduleMap((prev) => ({
+        ...prev,
+        0: {
+          ...prev[0],
+          [dateKey]: getOrCreateScheduleData(firstDate, 0)
+        }
+      }));
+    }
+  }, [group, interviewStartDate, getOrCreateScheduleData]);
+
+  useEffect(() => {
+    const dateKey = getDateKey(currentDate);
+    const currentSchedules = dateScheduleMap[selectedGroupId]?.[dateKey] || [];
+    const currentSelections =
+      dateSelectionsMap[selectedGroupId]?.[dateKey] || {};
+
+    setValue("groups", {
+      ...group.reduce(
+        (acc, g) => ({
+          ...acc,
+          [g.index]: {
+            groupName: g.name,
+            dates: {}
+          }
+        }),
+        {}
+      ),
+      [selectedGroupId]: {
+        groupName:
+          group.find((g) => g.index === selectedGroupId)?.name || "공통",
+        dates: {
+          [dateKey]: {
+            schedules: currentSchedules.map((schedule) => ({
+              time: schedule.time,
+              interviewers: schedule.interviewer,
+              applicants: schedule.applicants
+                .filter((applicant) =>
+                  currentSelections[schedule.time]?.includes(applicant.id)
+                )
+                .map((applicant) => applicant.name)
+            }))
+          }
+        }
+      }
+    });
+    trigger();
+  }, [
+    currentDate,
+    selectedGroupId,
+    dateScheduleMap,
+    dateSelectionsMap,
+    group,
+    setValue,
+    trigger
+  ]);
+
   const getAllDatesInRange = useCallback((startDate: Date, endDate: Date) => {
     const dates: Date[] = [];
     const endDateTime = new Date(endDate).getTime();
@@ -106,52 +194,15 @@ export default function ScheduleAdjustmentContainer() {
     return dates;
   }, []);
 
-  useEffect(() => {
-    const dateKey = getDateKey(currentDate);
-    const currentSchedules = dateScheduleMap[selectedGroupId]?.[dateKey] || [];
-    const currentSelections =
-      dateSelectionsMap[selectedGroupId]?.[dateKey] || {};
-
-    const schedules = currentSchedules.map((schedule) => ({
-      time: schedule.time,
-      interviewers: schedule.interviewer,
-      applicants: schedule.applicants
-        .filter((applicant) =>
-          currentSelections[schedule.time]?.includes(applicant.id)
-        )
-        .map((applicant) => applicant.name)
-    }));
-
-    setValue(`groups.${selectedGroupId}.dates.${dateKey}`, { schedules });
-    trigger();
-  }, [
-    currentDate,
-    selectedGroupId,
-    dateScheduleMap,
-    dateSelectionsMap,
-    group,
-    generateTimeSlots,
-    setValue,
-    trigger
-  ]);
-
-  const getOrCreateScheduleData = useCallback(
-    (date: Date, groupId: number) => {
-      return createScheduleData(
-        dateScheduleMap,
-        groupId,
-        date,
-        generateTimeSlots
-      );
-    },
-    [dateScheduleMap, generateTimeSlots]
-  );
-
   const validateSchedules = useCallback(
-    (dates: ScheduleFormData["dates"]) => {
-      const completionValidation = validateScheduleCompletion(dates);
+    (formData: ScheduleFormData) => {
+      const completionValidation = validateScheduleCompletion(formData, {
+        interviewStartDate: interviewStartDate,
+        interviewEndDate: interviewEndDate,
+        getAllDatesInRange
+      });
       const applicantValidation = validateApplicantAssignment(
-        dates,
+        formData,
         interviewee
       );
 
@@ -168,7 +219,7 @@ export default function ScheduleAdjustmentContainer() {
       setValidationError(null);
       return true;
     },
-    [interviewee]
+    [interviewee, interviewStartDate, interviewEndDate, getAllDatesInRange]
   );
 
   const handleApplicantSelect = useCallback(
@@ -221,7 +272,18 @@ export default function ScheduleAdjustmentContainer() {
               ...acc,
               [groupId]: {
                 groupName: g.name,
-                dates: allDates.reduce((datesAcc, date) => {
+                dates: allDates.reduce<
+                  Record<
+                    string,
+                    {
+                      schedules: Array<{
+                        time: string;
+                        interviewers: string[];
+                        applicants: string[];
+                      }>;
+                    }
+                  >
+                >((datesAcc, date) => {
                   const dateKey = getDateKey(date);
                   const scheduleData = dateScheduleMap[groupId]?.[dateKey];
                   const selections =
@@ -248,7 +310,18 @@ export default function ScheduleAdjustmentContainer() {
         : {
             0: {
               groupName: "공통",
-              dates: allDates.reduce((datesAcc, date) => {
+              dates: allDates.reduce<
+                Record<
+                  string,
+                  {
+                    schedules: Array<{
+                      time: string;
+                      interviewers: string[];
+                      applicants: string[];
+                    }>;
+                  }
+                >
+              >((datesAcc, date) => {
                 const dateKey = getDateKey(date);
                 const scheduleData = dateScheduleMap[0]?.[dateKey];
                 const selections = dateSelectionsMap[0]?.[dateKey] || {};
@@ -347,18 +420,14 @@ export default function ScheduleAdjustmentContainer() {
           기존 배치로 돌아가기
         </button>
       </div>
+      {validationError && (
+        <div className="text-state-error">{validationError.message}</div>
+      )}
 
       <GroupTabs
         group={group}
         selectedGroupId={selectedGroupId}
         onSelectGroup={setSelectedGroupId}
-      />
-
-      <input
-        type="hidden"
-        {...register("dates", {
-          validate: validateSchedules
-        })}
       />
 
       <ScheduleGrid

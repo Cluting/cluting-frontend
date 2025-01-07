@@ -1,41 +1,82 @@
-// validators.ts
+import { getDateKey } from "./date";
+
 export interface ValidationError {
   type: "INCOMPLETE_DATE" | "INCOMPLETE_APPLICANTS";
   message: string;
-  affectedApplicants?: number[]; // 미확정 지원자 ID 저장
+  affectedApplicants?: number[];
+}
+
+export interface ValidateScheduleProps {
+  interviewStartDate: Date | string;
+  interviewEndDate: Date | string;
+  getAllDatesInRange: (startDate: Date, endDate: Date) => Date[];
 }
 
 export const validateScheduleCompletion = (
-  dates: ScheduleFormData["dates"]
+  formData: ScheduleFormData,
+  {
+    interviewStartDate,
+    interviewEndDate,
+    getAllDatesInRange
+  }: ValidateScheduleProps
 ): true | ValidationError => {
-  const hasIncompleteSchedules = Object.values(dates).some((date) =>
-    date.schedules.some((schedule) => schedule.applicants.length === 0)
-  );
+  const startDate = new Date(interviewStartDate);
+  const endDate = new Date(interviewEndDate);
+  const allDates = getAllDatesInRange(startDate, endDate);
+  const allDateKeys = allDates.map((date) => getDateKey(date));
 
-  if (hasIncompleteSchedules) {
-    return {
-      type: "INCOMPLETE_DATE",
-      message: "모든 날짜를 완료해 주세요."
-    };
+  // 모든 그룹에 대해 검사
+  for (const groupId in formData.groups) {
+    const group = formData.groups[groupId];
+
+    // 각 날짜가 존재하는지 확인
+    for (const dateKey of allDateKeys) {
+      const dateData = group.dates[dateKey];
+
+      // 날짜 데이터가 없거나 스케줄이 비어있는 경우
+      if (!dateData || !dateData.schedules || dateData.schedules.length === 0) {
+        return {
+          type: "INCOMPLETE_DATE",
+          message: "모든 날짜를 완료해 주세요."
+        };
+      }
+
+      // 각 스케줄의 지원자가 비어있는지 확인
+      const hasEmptySchedule = dateData.schedules.some(
+        (schedule) => !schedule.applicants || schedule.applicants.length === 0
+      );
+
+      if (hasEmptySchedule) {
+        return {
+          type: "INCOMPLETE_DATE",
+          message: "모든 날짜를 완료해 주세요."
+        };
+      }
+    }
   }
   return true;
 };
 
 export const validateApplicantAssignment = (
-  dates: ScheduleFormData["dates"],
+  formData: ScheduleFormData,
   requiredCount: number
 ): true | ValidationError => {
   const incompleteApplicants: number[] = [];
 
-  Object.values(dates).forEach((date) => {
-    date.schedules.forEach((schedule) => {
-      if (schedule.applicants.length !== requiredCount) {
-        schedule.applicants.forEach((applicant) => {
-          if (!incompleteApplicants.includes(Number(applicant))) {
-            incompleteApplicants.push(Number(applicant));
-          }
-        });
-      }
+  // 모든 그룹 순회
+  Object.values(formData.groups).forEach((group) => {
+    // 각 그룹의 모든 날짜를 순회
+    Object.values(group.dates).forEach((date) => {
+      date.schedules.forEach((schedule) => {
+        if (schedule.applicants.length !== requiredCount) {
+          schedule.applicants.forEach((applicant) => {
+            const applicantId = Number(applicant);
+            if (!incompleteApplicants.includes(applicantId)) {
+              incompleteApplicants.push(applicantId);
+            }
+          });
+        }
+      });
     });
   });
 

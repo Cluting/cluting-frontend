@@ -40,10 +40,5 @@ export const DateNavigator = ({
         →
       </button>
     </div>
-    {error?.type === "INCOMPLETE_DATE" && (
-      <div className="mt-[5px] text-red-100 text-sm text-left">
-        {error.message}
-      </div>
-    )}
   </div>
 );
