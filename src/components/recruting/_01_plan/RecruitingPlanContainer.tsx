@@ -47,10 +47,6 @@ export default function RecruitingPlanContainer() {
     () => getPlanningData(recruitId),
     {
       onSuccess: (data: RecruitmentPlanningData) => {
-        //스케줄 데이터가 불러오기로 불러온 경우 form 데이터에 등록해두기
-        if (data) {
-          setValue("recruitSchedules", data.schedule);
-        }
         console.log("계획하기 데이터 불러오기 성공:", data);
         completeStep(0);
       },
@@ -115,6 +111,7 @@ export default function RecruitingPlanContainer() {
           <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
         <PrepareStepRoles
+          apiPrepareStepRoles={apiPlanningData?.prepStages}
           isStepOneCompleted={isStepOneCompleted}
           onPrepStagesSubmit={handlePrepStagesSubmit}
         />

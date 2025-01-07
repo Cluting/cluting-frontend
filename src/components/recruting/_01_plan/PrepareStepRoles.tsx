@@ -7,11 +7,16 @@ import { AdminPlan } from "../../../type/type";
 
 interface PrepareStepRolesProps {
   onPrepStagesSubmit: (prepStages: any) => void;
+  apiPrepareStepRoles?: Array<{
+    stageName: string;
+    adminNames: string[];
+  }>;
   isStepOneCompleted: boolean;
 }
 
 export default function PrepareStepRoles({
   onPrepStagesSubmit,
+  apiPrepareStepRoles,
   isStepOneCompleted
 }: PrepareStepRolesProps) {
   const [dropdown, setDropdown] = useState(false);
@@ -23,6 +28,25 @@ export default function PrepareStepRoles({
     const admin = ALL_ADMINS.find((admin) => admin.id === adminId);
     return admin ? admin.name : `Unknown (ID: ${adminId})`;
   };
+
+  console.log("모집 준비하기 역할 분담 넘어온 데이터", apiPrepareStepRoles);
+  useEffect(() => {
+    if (apiPrepareStepRoles && apiPrepareStepRoles.length > 0) {
+      const updatedSteps = DEFAULT_STEPS.map((step) => {
+        const apiStep = apiPrepareStepRoles.find(
+          (apiStep) => apiStep.stageName === step.name
+        );
+        if (apiStep && step.name !== "운영진 면접 일정 조율하기") {
+          return {
+            ...step,
+            admins: apiStep.adminNames
+          };
+        }
+        return step;
+      });
+      setSteps(updatedSteps);
+    }
+  }, [apiPrepareStepRoles]);
 
   const {
     register,
@@ -162,14 +186,17 @@ export default function PrepareStepRoles({
                       {/* 운영진 목록 */}
                       <div>
                         {step.admins.map((admin) => {
-                          const adminName = getAdminNameById(admin, step.id);
+                          const adminName =
+                            typeof admin === "number"
+                              ? getAdminNameById(admin, step.id)
+                              : admin;
                           return (
                             <div
                               key={admin}
                               className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
                             >
                               <span className="text-gray-800">{adminName}</span>
-                              {!step.isFixed && (
+                              {!step.isFixed && !isStepOneCompleted && (
                                 <img
                                   src="/assets/ic-minusCircle.svg"
                                   alt="운영진 삭제 버튼"
@@ -182,7 +209,7 @@ export default function PrepareStepRoles({
                         })}
                       </div>
                       {/* 운영진 추가 버튼 */}
-                      {!step.isFixed && (
+                      {!step.isFixed && !isStepOneCompleted && (
                         <button
                           type="button"
                           className="relative flex-center w-[139px] h-[43px] mb-[10px] border border-gray-200 bg-gray-100 rounded-[10px] text-[15px] font-semibold text-gray-500 hover:bg-gray-300 hover:border-gray-500 hover:text-gray-700"
