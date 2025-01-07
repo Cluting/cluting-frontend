@@ -11,16 +11,7 @@ import {
 import { useInterviewStore } from "../../../../store/useStore";
 import { addDays } from "date-fns";
 import { useFormContext } from "react-hook-form";
-import { RecruitSchedule } from "../../_01_plan/type/Prep";
-
-interface CalendarEvent {
-  id: string;
-  title: string;
-  start: string;
-  end: string;
-  allDay: boolean;
-  backgroundColor?: string; // 색상 속성 추가
-}
+import { CalendarEvent, RecruitSchedule } from "../../_01_plan/type/Prep";
 
 interface RecrutingCalenderPickerProps {
   apiSchedule?: RecruitSchedule;

@@ -4,6 +4,16 @@ export interface PrepStage {
   clubUserIds: number[];
 }
 
+// 캘린더 이벤트 - 리크루팅 홈, 계획하기
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  allDay: boolean;
+  backgroundColor?: string; // 색상 속성 추가
+}
+
 export interface RecruitSchedule {
   stage1Start: string;
   stage1End: string;

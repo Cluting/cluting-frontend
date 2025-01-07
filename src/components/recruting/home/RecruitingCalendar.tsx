@@ -2,8 +2,63 @@ import "../../../style/calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { getPlanningData } from "../_01_plan/service/Prep";
+import { CalendarEvent, RecruitmentPlanningData } from "../_01_plan/type/Prep";
+import { CALENDAR_COLORS, CALENDAR_ITEMS } from "../../../constants/recruting";
+import { useEffect, useState } from "react";
+
 export default function RecruitingCalender() {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+  // 계획하기 API -> 리크루팅 일정 조회
+  //FIX:
+  const recruitId = 1;
+  const { data: apiPlanningData } = useQuery(
+    ["planningData", recruitId],
+    () => getPlanningData(recruitId),
+    {
+      onSuccess: (data: RecruitmentPlanningData) => {
+        console.log("계획하기 데이터 불러오기 성공:", data);
+      },
+      onError: (error) => {
+        console.error("계획하기 데이터 불러오기 실패:", error);
+      }
+    }
+  );
+
+  useEffect(() => {
+    console.log(apiPlanningData?.schedule);
+    const apiSchedule = apiPlanningData?.schedule;
+    if (apiSchedule) {
+      const calendarEvents = Object.entries(apiSchedule)
+        .map(([key, value]) => {
+          if (value && value !== "") {
+            const [, stageNumber, type] =
+              key.match(/stage(\d+)(Start|End)/) || [];
+            const index = parseInt(stageNumber) - 1;
+            const title = CALENDAR_ITEMS[index];
+            const colorIndex = parseInt(stageNumber) - 1;
+
+            return {
+              id: key,
+              title: title,
+              start: type === "Start" ? value : undefined,
+              end: type === "End" ? value : undefined,
+              allDay: true,
+              backgroundColor:
+                CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length]
+            };
+          }
+          return null;
+        })
+        .filter((event) => event !== null);
+
+      setEvents(calendarEvents as CalendarEvent[]);
+    }
+  }, [apiPlanningData?.schedule]);
+
   return (
     <div className="mt-[30px]  bg-white-100 flex gap-[49px] pl-[33px]">
       <div className="flex flex-col">
@@ -62,6 +117,7 @@ export default function RecruitingCalender() {
         <p className="text-headline text-left mb-[21px]">리크루팅 달력</p>
         <FullCalendar
           locale="ko"
+          events={events}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           editable={true}
