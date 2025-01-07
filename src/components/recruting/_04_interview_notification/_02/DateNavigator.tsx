@@ -25,6 +25,7 @@ export const DateNavigator = ({
       }`}
     >
       <button
+        type="button"
         onClick={() => onChangeDate("prev")}
         disabled={new Date(currentDate) <= new Date(interviewStartDate)}
         className="px-2"
@@ -33,6 +34,7 @@ export const DateNavigator = ({
       </button>
       {formatDate(currentDate)}
       <button
+        type="button"
         onClick={() => onChangeDate("next")}
         disabled={new Date(currentDate) >= new Date(interviewEndDate)}
         className="px-2"

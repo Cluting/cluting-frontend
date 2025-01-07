@@ -52,11 +52,9 @@ export const ScheduleGrid = memo(
     return (
       <div>
         <div
-          className={`w-full h-auto bg-gray-50 border rounded-[6.65px] ${
-            error?.type === "INCOMPLETE_APPLICANTS"
-              ? "border-red-100"
-              : "border-gray-200"
-          }`}
+          className={
+            "w-full h-auto bg-gray-50 border rounded-[6.65px] border-gray-200"
+          }
         >
           <div className="grid grid-cols-[235px_60px_1fr] bg-gray-100 border-b border-gray-200 font-semibold text-gray-800">
             <div className="py-3">면접관</div>

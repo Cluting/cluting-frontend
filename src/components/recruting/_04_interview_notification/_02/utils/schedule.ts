@@ -5,11 +5,12 @@ export const createScheduleData = (
   dateScheduleMap: GroupScheduleMap,
   groupId: number,
   date: Date,
-  generateTimeSlots: () => string[]
+  generateTimeSlots: () => string[],
+  interviewerCount: number
 ) => {
   const dateKey = getDateKey(date);
   if (!dateScheduleMap[groupId]?.[dateKey]) {
-    return generateScheduleDataUtil(generateTimeSlots());
+    return generateScheduleDataUtil(generateTimeSlots(), interviewerCount);
   }
   return dateScheduleMap[groupId][dateKey];
 };

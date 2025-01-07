@@ -9,14 +9,16 @@ interface ApplicantButtonProps {
   isDisabled: boolean;
   onClick: () => void;
   isIncomplete?: boolean;
+  isError?: boolean; // 추가
 }
+
 export const ApplicantButton = memo(
   ({
     applicant,
     isSelected,
     isDisabled,
     onClick,
-    isIncomplete
+    isError
   }: ApplicantButtonProps) => (
     <button
       type="button"
@@ -32,11 +34,10 @@ export const ApplicantButton = memo(
         isDisabled
           ? "opacity-30 cursor-not-allowed"
           : "hover:bg-main-300 hover:border-main-400 hover:text-main-100"
-      } ${isIncomplete ? "border-red-100" : ""}`}
+      }
+      ${isError ? "border-red-100" : ""}`}
     >
       {applicant.name}
     </button>
   )
 );
-
-ApplicantButton.displayName = "ApplicantButton";

@@ -1,12 +1,13 @@
 import { INTERVIEWER_NAMES } from "../constants/interview";
 
 export const generateScheduleDataUtil = (
-  timeSlots: string[]
+  timeSlots: string[],
+  interviewerCount: number
 ): ScheduleData[] => {
   return timeSlots.map((time) => ({
     interviewer: [...INTERVIEWER_NAMES]
       .sort(() => Math.random() - 0.5)
-      .slice(0, Math.floor(Math.random() * 3) + 2),
+      .slice(0, interviewerCount),
     time,
     applicants: Array(Math.floor(Math.random() * 8) + 5)
       .fill(null)

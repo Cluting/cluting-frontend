@@ -70,7 +70,7 @@ export default function ScheduleAdjustmentContainer() {
             }
           }
     },
-    mode: "onTouched"
+    mode: "onBlur"
   });
 
   const generateTimeSlots = useCallback(() => {
@@ -100,10 +100,11 @@ export default function ScheduleAdjustmentContainer() {
         dateScheduleMap,
         groupId,
         date,
-        generateTimeSlots
+        generateTimeSlots,
+        interviewer
       );
     },
-    [dateScheduleMap, generateTimeSlots]
+    [dateScheduleMap, generateTimeSlots, interviewer]
   );
 
   useEffect(() => {
@@ -196,9 +197,10 @@ export default function ScheduleAdjustmentContainer() {
 
   const validateSchedules = useCallback(
     (formData: ScheduleFormData) => {
+      // 두 가지 검증을 모두 실행
       const completionValidation = validateScheduleCompletion(formData, {
-        interviewStartDate: interviewStartDate,
-        interviewEndDate: interviewEndDate,
+        interviewStartDate,
+        interviewEndDate,
         getAllDatesInRange
       });
       const applicantValidation = validateApplicantAssignment(
@@ -206,16 +208,19 @@ export default function ScheduleAdjustmentContainer() {
         interviewee
       );
 
+      // 날짜 미완료 에러가 있을 경우
       if (completionValidation !== true) {
         setValidationError(completionValidation);
         return completionValidation.message;
       }
 
+      // 지원자 배정 에러가 있을 경우
       if (applicantValidation !== true) {
         setValidationError(applicantValidation);
         return applicantValidation.message;
       }
 
+      // 에러가 없는 경우
       setValidationError(null);
       return true;
     },
@@ -420,7 +425,7 @@ export default function ScheduleAdjustmentContainer() {
           기존 배치로 돌아가기
         </button>
       </div>
-      {validationError && (
+      {validationError?.type === "INCOMPLETE_DATE" && (
         <div className="text-state-error">{validationError.message}</div>
       )}
 
