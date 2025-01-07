@@ -16,7 +16,7 @@ const isAuthenticated = () => {
 export default function PublicRoute({ children }: PublicRouteProps) {
   if (isAuthenticated()) {
     // 로그인 상태면 메인 페이지로 리다이렉트
-    return <Navigate to="/main" replace />;
+    return <Navigate to="/" replace />;
   }
   // 비로그인 상태면 요청한 페이지를 렌더링
   return children;
