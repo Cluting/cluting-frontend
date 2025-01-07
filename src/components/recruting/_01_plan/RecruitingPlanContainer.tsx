@@ -47,11 +47,7 @@ export default function RecruitingPlanContainer() {
     () => getPlanningData(recruitId),
     {
       onSuccess: (data: RecruitmentPlanningData) => {
-        console.log("계획하기 데이터 불러오기 성공:", data);
         completeStep(0);
-      },
-      onError: (error) => {
-        console.error("계획하기 데이터 불러오기 실패:", error);
       }
     }
   );

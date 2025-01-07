@@ -15,21 +15,12 @@ export default function RecruitingCalender() {
   // 계획하기 API -> 리크루팅 일정 조회
   //FIX:
   const recruitId = 1;
-  const { data: apiPlanningData } = useQuery(
-    ["planningData", recruitId],
-    () => getPlanningData(recruitId),
-    {
-      onSuccess: (data: RecruitmentPlanningData) => {
-        console.log("계획하기 데이터 불러오기 성공:", data);
-      },
-      onError: (error) => {
-        console.error("계획하기 데이터 불러오기 실패:", error);
-      }
-    }
+  const { data: apiPlanningData } = useQuery(["planningData", recruitId], () =>
+    getPlanningData(recruitId)
   );
 
+  //불러온 일정 캘린더에 표시
   useEffect(() => {
-    console.log(apiPlanningData?.schedule);
     const apiSchedule = apiPlanningData?.schedule;
     if (apiSchedule) {
       const calendarEvents = Object.entries(apiSchedule)

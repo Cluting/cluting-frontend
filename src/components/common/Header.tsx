@@ -8,11 +8,6 @@ export default function Header() {
   const [isLoginPage, setIsLoginPage] = useState(false); // 로그인/회원가입 페이지 여부
   const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
 
-  useEffect(() => {
-    // 상태 변경을 감지해 디버깅하거나 추가 작업 수행
-    console.log("로그인 상태 변경:", isLogin);
-  }, [isLogin]);
-
   const { setLogin } = useAuthStore();
   const handleLogout = () => {
     setLogin(false);

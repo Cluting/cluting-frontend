@@ -31,11 +31,7 @@ export default function TodoTemplate() {
   // API에서 투두 데이터 가져오기
   const { data: todoData } = useQuery(["todos"], getTodos, {
     onSuccess: (data) => {
-      console.log("투두 목록", data);
       setTodos(data);
-    },
-    onError: (error) => {
-      console.error("TODO 조회 실패:", error);
     }
   });
 
