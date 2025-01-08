@@ -5,17 +5,32 @@ import {
 } from "../../../../store/useStore";
 import { useFormContext } from "react-hook-form";
 
+interface GroupCreateProps {
+  apiGroups?: string[];
+}
+
 // 1 - 계획하기 : 지원자 그룹 짓기
-export default function GroupCreate() {
+export default function GroupCreate({ apiGroups }: GroupCreateProps) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null); // input 참조
   const [showInput, setShowInput] = useState(false); // input 표시 상태 - 그룹 추가 버튼을 클릭하면 input이 보이도록
+
   //useGroupStore 전역 상태 가져오기
   const addGroup = useGroupStore((state) => state.addGroup);
   const groupList = useGroupStore((state) => state.group);
   const removeGroup = useGroupStore((state) => state.removeGroup);
 
   const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (apiGroups && apiGroups.length > 0) {
+      apiGroups.forEach((groupName) => {
+        if (!groupList.some((group) => group.name === groupName)) {
+          addGroup(groupName);
+        }
+      });
+    }
+  }, [apiGroups, addGroup, groupList]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -27,7 +42,6 @@ export default function GroupCreate() {
 
   const updateFormValue = () => {
     const updatedGroups = groupList.map((group) => group.name);
-    console.log(groupList);
     setValue("applicantGroups", updatedGroups);
   };
 

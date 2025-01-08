@@ -161,3 +161,12 @@ export const CALENDAR_COLORS = [
 ];
 export const CHARTS_COLORS = ["#3E0CC4", "#5E2BE8", "#9572F5", "#CAC8FF"];
 export const RADIAN = Math.PI / 180;
+
+export const ENTIRE_STAGE = [
+  "PLAN",
+  "PREP",
+  "DOC",
+  "DOC_PASS",
+  "EVAL",
+  "FINAL_PASS"
+];

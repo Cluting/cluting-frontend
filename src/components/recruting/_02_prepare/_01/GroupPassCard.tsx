@@ -9,8 +9,8 @@ export default function GroupPassCard({
   rules
 }: GroupPassCardProps) {
   return (
-    <div className="w-[259px] h-[333px] rounded-[12px] bg-[#F2F2F7]">
-      <div className="pt-[13px] flex-center">
+    <div className="w-[265px] h-[333px] rounded-[12px] bg-[#F2F2F7]">
+      <div className="mt-[13px] flex-center">
         <div className="flex-center w-[229px] h-[50px] bg-gray-200 rounded-[11px] border border-gray-400 text-[16px] text-gray-850 font-semibold">
           {groupName}
         </div>
@@ -46,13 +46,13 @@ export default function GroupPassCard({
         </div>
       </div>
 
-      <div className="pl-[19.38px] w-[221px] border border-gray-200"></div>
+      <div className="w-full border border-gray-200"></div>
 
-      <div className="flex flex-col pt-[21px] pb-[45px]">
+      <div className="flex flex-col pt-[21px] ">
         <p className="text-[16px] font-semibold text-gray-850 text-left pl-[15px]">
           최종 합격 인원
         </p>
-        <div className="flex-center pt-[15px] pb-[26px]">
+        <div className="flex-center pt-[15px]">
           <div
             className={`relative flex items-center w-[199px] h-[41px] rounded-[7px] bg-white-100 border ${
               errors?.groups?.[groupIndex]?.finalPass

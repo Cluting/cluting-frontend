@@ -6,9 +6,8 @@ import GroupCreate from "../_02_prepare/_01/GroupCreate";
 import { BUTTON_TEXT } from "../../../constants/recruting";
 import StepCompleteModal from "../common/StepCompleteModal";
 import { FormProvider, useForm } from "react-hook-form";
-import { PrepareStepRolesFormValues, PrepStage } from "./type/Prep";
-import { useMutation } from "@tanstack/react-query";
-import { postStepPlan } from "./service/Prep";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getPlanningData, postStepPlan } from "./service/Prep";
 
 export default function RecruitingPlanContainer() {
   const { completedSteps, completeStep } = useRecruitmentStepStore();
@@ -36,6 +35,17 @@ export default function RecruitingPlanContainer() {
   };
 
   // 계획하기 API
+  //FIX:
+  const recruitId = 1;
+  const { data: apiPlanningData } = useQuery(
+    ["planningData", recruitId],
+    () => getPlanningData(recruitId),
+    {
+      onSuccess: (data: RecruitmentPlanningData) => {
+        completeStep(0);
+      }
+    }
+  );
 
   const stepPlanMutation = useMutation(
     ({
@@ -89,11 +99,15 @@ export default function RecruitingPlanContainer() {
               리크루팅 진행 단계에 적용됩니다
             </div>
           </div>
-          <RecrutingCalenderPicker />
+          <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
-        <PrepareStepRoles onPrepStagesSubmit={handlePrepStagesSubmit} />
+        <PrepareStepRoles
+          apiPrepareStepRoles={apiPlanningData?.prepStages}
+          isStepOneCompleted={isStepOneCompleted}
+          onPrepStagesSubmit={handlePrepStagesSubmit}
+        />
         <div className=" w-full flex flex-col items-center ml-8">
-          <GroupCreate />
+          <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
             type="submit"
             aria-label={
