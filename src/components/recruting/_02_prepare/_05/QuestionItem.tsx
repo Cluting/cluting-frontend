@@ -1,51 +1,36 @@
-import { ReactElement, useEffect, useState } from "react";
-import {
-  UseFormRegister,
-  FieldErrors,
-  Path,
-  UseFormSetError
-} from "react-hook-form";
-
-//fix:이걸 formtype.d.ts 파일로 빼면 에러가 남.. why!!!
-interface QuestionItemProps {
-  section: "common" | string;
-  question: Question;
-  onTypeChange: (
-    section: string,
-    questionId: string,
-    newType: "서술형 질문" | "객관형 질문"
-  ) => void;
-  onDelete: (section: string, questionId: string) => void;
-  onAddOption: (section: string, questionId: string, value: string) => void;
-  onRemoveOption: (
-    section: string,
-    questionId: string,
-    optionId: string
-  ) => void;
-  register: UseFormRegister<CreateApplicationForm>;
-  registerPath: string;
-  errors?: FieldErrors<CreateApplicationForm>;
-  isSubmitted: boolean;
-  setError: UseFormSetError<CreateApplicationForm>;
-  totalQuestions: number;
-}
+//QuestionItem.tsx
+import { ReactElement, useState, useEffect } from "react";
 
 export default function QuestionItem({
-  section,
   question,
+  partName,
+  questionIndex,
   onTypeChange,
   onDelete,
   onAddOption,
   onRemoveOption,
   register,
-  registerPath,
+  setValue,
+  watch,
   errors,
   isSubmitted,
-  setError,
-  totalQuestions
+  partIndex
 }: QuestionItemProps): ReactElement {
   const [newOption, setNewOption] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setValue(
+      `partQuestions.${partIndex}.questions.${questionIndex}.questionType`,
+      question.questionType
+    );
+    if (question.objects) {
+      setValue(
+        `partQuestions.${partIndex}.questions.${questionIndex}.objects`,
+        question.objects
+      );
+    }
+  }, [question.questionType, setValue, partIndex, questionIndex]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,18 +44,63 @@ export default function QuestionItem({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const registerContent =
+    `partQuestions.${partIndex}.questions.${questionIndex}.content` as const;
+  const registerHasWordLimit =
+    `partQuestions.${partIndex}.questions.${questionIndex}.hasWordLimit` as const;
+  const registerWordLimit =
+    `partQuestions.${partIndex}.questions.${questionIndex}.wordLimit` as const;
+  const registerQuestionType =
+    `partQuestions.${partIndex}.questions.${questionIndex}.questionType` as const;
+  const registerObjects =
+    `partQuestions.${partIndex}.questions.${questionIndex}.objects` as const;
+  const registerMultiSelect =
+    `partQuestions.${partIndex}.questions.${questionIndex}.multiSelect` as const;
+
+  // 질문 타입 변경 핸들러
+  //fix: 폼 데이터의 타입 변경 시 이전 필드들이 완전히 제거되지 않음
+  const handleTypeChange = (newType: "OBJECT" | "SUBJECT") => {
+    onTypeChange(partName, question.id!, newType);
+
+    setValue(registerQuestionType, newType);
+    setValue(registerContent, ""); //질문 input 초기화
+    setNewOption(""); //객관식 input 초기화
+
+    if (newType === "OBJECT") {
+      setValue(registerObjects, []);
+    }
+  };
+
+  // 옵션 추가 핸들러
+  const handleAddOption = (value: string) => {
+    if (!value.trim()) return; // 빈 값 체크
+
+    onAddOption(partName, question.id!, value);
+
+    // 기존 옵션 배열 가져오기
+    const currentObjects = watch(registerObjects) || [];
+
+    // 새로운 옵션 추가하여 업데이트
+    setValue(registerObjects, [...currentObjects, value], {
+      shouldValidate: true
+    });
+  };
+
+  // 옵션 삭제 핸들러
+  const handleRemoveOption = (index: number) => {
+    onRemoveOption(partName, question.id!, index);
+    setValue(
+      registerObjects,
+      question.objects?.filter((_, i) => i !== index) || []
+    );
+  };
+
   return (
     <div>
       <div
         className={`w-full h-auto px-[21px] pt-[20px] pb-[13px] bg-gray-100 rounded-[12px] border ${
-          totalQuestions === 1 &&
-          errors &&
-          ((section === "common" &&
-            errors.commonSection?.questions?.[question.id]?.question
-              ?.message) ||
-            (section !== "common" &&
-              errors.groupSections?.[section]?.questions?.[question.id]
-                ?.question?.message))
+          errors?.partQuestions?.[partIndex]?.questions?.[questionIndex]
+            ?.content
             ? "border-red-100"
             : "border-gray-300"
         }`}
@@ -84,24 +114,9 @@ export default function QuestionItem({
                 e.currentTarget.style.height = "auto";
                 e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
               }}
-              {...register(
-                (registerPath + ".question") as Path<CreateApplicationForm>,
-                {
-                  required: "질문을 한 가지 이상 추가해 주세요.",
-                  onBlur: (e) => {
-                    if (!e.target.value.trim()) {
-                      setError(
-                        (registerPath +
-                          ".question") as Path<CreateApplicationForm>,
-                        {
-                          type: "manual",
-                          message: "질문을 한 가지 이상 추가해 주세요."
-                        }
-                      );
-                    }
-                  }
-                }
-              )}
+              {...register(registerContent, {
+                required: "질문을 한 가지 이상 추가해 주세요."
+              })}
             />
 
             <div className="relative">
@@ -110,7 +125,7 @@ export default function QuestionItem({
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="w-[247px] h-[42px] pl-[21px] rounded-[8px] bg-white-100 border border-gray-200"
               >
-                {question.type === "서술형 질문" ? (
+                {question.questionType === "SUBJECT" ? (
                   <div className="flex items-center">
                     <img
                       src="/assets/ic-descriptive.svg"
@@ -130,7 +145,7 @@ export default function QuestionItem({
                       alt=""
                       className="w-5 h-5 mr-[11px]"
                     />
-                    <span>객관형 질문</span>
+                    <span>객관식 질문</span>
                     <img
                       src="/assets/ic-toggleButton.svg"
                       className="ml-[99px]"
@@ -142,22 +157,24 @@ export default function QuestionItem({
               {isDropdownOpen && (
                 <div className="absolute z-50 w-full mt-1 px-2 py-2 bg-white-100 border border-gray-200 rounded-[8px] animate-dropdown">
                   <button
+                    type="button"
                     className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
                     onClick={() => {
-                      onTypeChange(section, question.id, "서술형 질문");
+                      handleTypeChange("SUBJECT");
                       setIsDropdownOpen(false);
                     }}
                   >
                     서술형 질문
                   </button>
                   <button
+                    type="button"
                     className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
                     onClick={() => {
-                      onTypeChange(section, question.id, "객관형 질문");
+                      handleTypeChange("OBJECT");
                       setIsDropdownOpen(false);
                     }}
                   >
-                    객관형 질문
+                    객관식 질문
                   </button>
                 </div>
               )}
@@ -166,14 +183,14 @@ export default function QuestionItem({
 
           <button
             type="button"
-            onClick={() => onDelete(section, question.id)}
+            onClick={() => onDelete(partName, question.id!)}
             className="flex-center"
           >
             <img src="/assets/ic-questionMinus.svg" alt="질문 삭제" />
           </button>
         </div>
 
-        {question.type === "서술형 질문" ? (
+        {question.questionType === "SUBJECT" ? (
           <div>
             <textarea
               placeholder="지원자의 답변 작성란 입니다."
@@ -181,51 +198,49 @@ export default function QuestionItem({
               disabled
             />
             <div className="flex-center justify-end mt-[10px]">
-              <input
-                type="checkbox"
-                className="w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                {...register(
-                  (registerPath +
-                    ".hasWordLimit") as Path<CreateApplicationForm>
-                )}
-              />
-              <label className="flex">
-                글자 수 제한
+              <label className="relative flex items-center">
                 <input
-                  type="number"
-                  placeholder="500"
-                  min="0"
-                  className="flex-center w-[66px] h-[26px] ml-[7px] px-[9px] py-[5px] rounded-[6px] border border-gray-400 outline-none text-caption2 focus:border-main-100"
-                  {...register(
-                    (registerPath +
-                      ".wordLimit") as Path<CreateApplicationForm>,
-                    {
-                      valueAsNumber: true,
-                      min: 1
-                    }
-                  )}
+                  type="checkbox"
+                  className="peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                  {...register(registerHasWordLimit)}
                 />
+                <img
+                  src="/assets/ic-check.svg"
+                  alt=""
+                  className="absolute left-[2.5px] top-[7px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
+                />
+                <span>글자 수 제한</span>
+                {watch(registerHasWordLimit) && (
+                  <input
+                    type="number"
+                    placeholder="500"
+                    min="0"
+                    className="flex-center w-[66px] h-[26px] ml-[7px] px-[9px] py-[5px] rounded-[6px] border border-gray-400 outline-none text-caption2 focus:border-main-100"
+                    {...register(registerWordLimit, {
+                      valueAsNumber: true, //슛자 타입으로 변환
+                      min: 1
+                    })}
+                  />
+                )}
               </label>
             </div>
           </div>
         ) : (
           <div>
             <ul className="mt-[13px]">
-              {(question as MultipleChoiceQuestion).options.map((option) => (
-                <li key={option.id} className="flex items-center mb-[13px]">
+              {question.objects?.map((option, index) => (
+                <li key={index} className="flex items-center mb-[13px]">
                   <img
                     src="/assets/ic-emptyCheck.svg"
                     alt="빈 체크박스"
                     className="mr-[13px]"
                   />
-                  <div className="flex items-center pl-[13px] w-[584px] h-auto pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1">
-                    {option.value}
+                  <div className="flex items-center pl-[13px] w-[504px] h-auto pr-[40px] py-2 bg-white-100 border border-gray-200 rounded-[6px] text-caption1">
+                    {option}
                   </div>
                   <button
                     type="button"
-                    onClick={() =>
-                      onRemoveOption(section, question.id, option.id)
-                    }
+                    onClick={() => handleRemoveOption(index)}
                     className="flex-center ml-[-30px] w-[16px] h-[16px] mr-[13px]"
                   >
                     <img src="/assets/ic-questionMinus.svg" alt="선택지 삭제" />
@@ -245,37 +260,44 @@ export default function QuestionItem({
                 value={newOption}
                 onChange={(e) => setNewOption(e.target.value)}
                 placeholder="선택지 추가"
-                className="flex w-[584px] h-auto px-[13px] py-2 border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
+                className="flex w-[504px] h-auto px-[13px] py-2 border border-gray-200 rounded-[6px] text-caption1 outline-none focus:border-main-100"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && newOption.trim()) {
                     e.preventDefault();
-                    onAddOption(section, question.id, newOption.trim());
+                    handleAddOption(newOption.trim());
                     setNewOption("");
                   }
                 }}
               />
             </div>
+            <div className="flex-center justify-end mt-[10px]">
+              <label className="relative flex items-center">
+                <input
+                  type="checkbox"
+                  className="peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
+                  {...register(registerMultiSelect)}
+                />
+                <img
+                  src="/assets/ic-check.svg"
+                  alt=""
+                  className="absolute left-[2.5px] top-[7px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
+                />
+                <span>복수 선택</span>
+              </label>
+            </div>
           </div>
         )}
       </div>
 
-      {/*질문 하나일 때 에러 메시지 */}
-      {/*//fix: 근데 질문 하나 일 때만 보고 질문 안에 값이 있는지 여부를 못 봄.. 수정해야해*/}
-      {totalQuestions === 1 &&
-        errors &&
-        ((section === "common" &&
-          errors.commonSection?.questions?.[question.id]?.question?.message) ||
-          (section !== "common" &&
-            errors.groupSections?.[section]?.questions?.[question.id]?.question
-              ?.message)) && (
-          <p className="text-state-error mt-2">
-            {section === "common"
-              ? errors.commonSection?.questions?.[question.id]?.question
-                  ?.message
-              : errors.groupSections?.[section]?.questions?.[question.id]
-                  ?.question?.message}
-          </p>
-        )}
+      {errors?.partQuestions?.[partIndex]?.questions?.[questionIndex]
+        ?.content && (
+        <p className="text-state-error mt-2">
+          {
+            errors.partQuestions[partIndex]?.questions?.[questionIndex]?.content
+              ?.message
+          }
+        </p>
+      )}
     </div>
   );
 }
