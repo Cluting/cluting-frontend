@@ -1,24 +1,23 @@
+import { useFormContext } from "react-hook-form";
 import { useInterviewStore } from "../../../../store/useStore";
 import { useEffect, useState } from "react";
 
 // 1 - 면접 형식 설정하기
+
 export default function InterviewFormat() {
   const [summary, setSummary] = useState<string | null>(null);
-  const [interviewer, setInterviewerState] = useState(0);
-  const [interviewee, setIntervieweeState] = useState(0);
   const { setInterviewer, setInterviewee } = useInterviewStore();
 
-  const handleInterviewerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    setInterviewerState(value);
-    setInterviewer(value); // 전역 상태 등록
-  };
+  const { register, watch } = useFormContext();
 
-  const handleIntervieweeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    setIntervieweeState(value);
-    setInterviewee(value); // 전역 상태 등록
-  };
+  const interviewer = watch("interviewer");
+  const interviewee = watch("interviewee");
+
+  useEffect(() => {
+    // 전역 상태 등록
+    setInterviewer(interviewer);
+    setInterviewee(interviewee);
+  }, [interviewer, interviewee, setInterviewer, setInterviewee]);
 
   useEffect(() => {
     if (interviewer > 0 && interviewee > 0) {
@@ -35,8 +34,7 @@ export default function InterviewFormat() {
           <p className="text-gray-850 text-callout">면접관</p>
           <div className="flex items-center">
             <input
-              value={interviewer}
-              onChange={handleInterviewerChange}
+              {...register("interviewer", { valueAsNumber: true, min: 0 })}
               type="number"
               min={0}
               defaultValue={0}
@@ -50,8 +48,7 @@ export default function InterviewFormat() {
           <p className="text-gray-850 text-callout">면접자</p>
           <div className="flex items-center">
             <input
-              value={interviewee}
-              onChange={handleIntervieweeChange}
+              {...register("interviewee", { valueAsNumber: true, min: 0 })}
               type="number"
               min={0}
               defaultValue={0}

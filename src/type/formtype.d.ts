@@ -128,3 +128,30 @@ declare interface ResultMessageForm {
   pass: string;
   fail: string;
 }
+
+//투두
+declare interface TodoInsertProps {
+  onInsert: (value: string) => void;
+}
+
+declare interface Todo {
+  id: number;
+  content: string;
+  status: boolean;
+}
+
+declare interface TodoRequest {
+  content: string;
+}
+
+declare interface TodoListProps {
+  todos: Todo[];
+  onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
+}
+
+interface TodoListItemProps {
+  todo: Todo;
+  onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
+}

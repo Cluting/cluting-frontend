@@ -51,13 +51,13 @@ export function GroupPassCard({
         </div>
       </div>
 
-      <div className="pl-[19.38px] w-[221px] border border-gray-200"></div>
+      <div className="w-full border border-gray-200"></div>
 
-      <div className="flex flex-col pt-[21px] pb-[45px]">
+      <div className="flex flex-col pt-[21px] ">
         <p className="text-[16px] font-semibold text-gray-850 text-left pl-[15px]">
           최종 합격 인원
         </p>
-        <div className="flex-center pt-[15px] pb-[26px]">
+        <div className="flex-center pt-[15px]">
           <div
             className={`relative flex items-center w-[199px] h-[41px] rounded-[7px] bg-white-100 border ${
               errors?.groupInfos?.[groupIndex]?.finalPassCount

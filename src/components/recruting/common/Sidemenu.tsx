@@ -11,6 +11,8 @@ import {
 } from "../../../constants/recruting";
 import { useRecruitmentSessionStore } from "../../../store/useStore";
 import { useAuthStore } from "../../../store/useAuthStore";
+import { useQuery } from "@tanstack/react-query";
+import { getRecruitingHome } from "../service/recruiting";
 
 export default function Sidemenu() {
   // 현재 경로 가져오기
@@ -92,6 +94,34 @@ export default function Sidemenu() {
     localStorage.removeItem("refresh_token");
   };
 
+  // 리크루팅 홈 데이터 조회
+  const params = useParams();
+  const clubId = Number(params.clubId);
+  const recruitId = 1;
+
+  const [clubProfile, setClubProfile] = useState();
+  const [clubName, setClubName] = useState("-");
+  const [generation, setGeneration] = useState("-");
+
+  const { data: recruitingHomeData } = useQuery(
+    ["recruitingHome", recruitId, clubId],
+    () => getRecruitingHome(recruitId, clubId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+
+        if (data?.recruitInfo) {
+          const { clubProfile, clubName, generation } = data.recruitInfo;
+          setGeneration(generation);
+          setClubName(clubName);
+          setClubProfile(clubProfile);
+          console.log(clubProfile);
+        }
+        // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
+      }
+    }
+  );
+
   return (
     <div
       className={` ${sidemenuEvaluationVersion ? "absolute top-[54px] left-0 rounded-br-xl" : "relative rounded-[28px]"}  bg-white-100 custom-shadow ${
@@ -106,16 +136,16 @@ export default function Sidemenu() {
         } rounded-[14px] transition-all`}
       >
         <img
-          src="/assets/ic-profile.svg"
+          src={clubProfile ? clubProfile : "/assets/ic-profile.svg"}
           alt="동아리 프로필"
           onClick={() => setSidemenuClose(!sidemenuClose)}
           className="w-[50px] h-[50px] "
         />
         {!sidemenuClose && (
           <div className="text-left ml-4">
-            <p className="text-body">잇타</p>
+            <p className="text-body">{clubName}</p>
             <p className="text-gray-900 text-caption1 mt-[5px]">
-              {sessionNumber ? sessionNumber : "-"} (리크루팅 준비)
+              {generation ? `${generation}기` : "-"} (리크루팅 준비)
             </p>
           </div>
         )}

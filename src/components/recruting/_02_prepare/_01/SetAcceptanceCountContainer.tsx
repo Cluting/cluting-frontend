@@ -166,7 +166,7 @@ export default function SetAcceptanceCountContainer() {
         }
       }
 
-      console.log("제출된 데이터:", data);
+      console.log(data);
       setStepCompleted(0, true);
 
       const recruitId = 1; //todo: 일단 임시로
@@ -207,6 +207,7 @@ export default function SetAcceptanceCountContainer() {
                   name="totalDocumentPassCount"
                   error={errors.totalDocumentPassCount?.message}
                   rules={{
+                    required: "필수 입력 사항입니다.",
                     validate: validateForm.documentPassCheck
                   }}
                 />
