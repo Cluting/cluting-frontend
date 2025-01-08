@@ -9,22 +9,13 @@ import {
   STEP5_ITEMS,
   STEP6_ITEMS
 } from "../../../constants/recruting";
-import {
-  useClubInfoStore,
-  useRecruitmentSessionStore
-} from "../../../store/useStore";
+import { useClubInfoStore } from "../../../store/useStore";
 import { useAuthStore } from "../../../store/useAuthStore";
-import { useQuery } from "@tanstack/react-query";
-import { getRecruitingHome } from "../service/recruiting";
 
 export default function Sidemenu() {
   // 현재 경로 가져오기
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
-
-  //기수 불러오기
-  const { sessionNumber } = useRecruitmentSessionStore();
-
   const [sidemenuClose, setSidemenuClose] = useState(false);
   const [sidemenuEvaluationVersion, setEvaluationVersion] = useState(false); //평가 페이지일 경우
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
@@ -116,7 +107,7 @@ export default function Sidemenu() {
           src={clubProfile ? clubProfile : "/assets/ic-profile.svg"}
           alt="동아리 프로필"
           onClick={() => setSidemenuClose(!sidemenuClose)}
-          className="w-[50px] h-[50px] "
+          className="w-[50px] h-[50px] rounded-full "
         />
         {!sidemenuClose && (
           <div className="text-left ml-4">

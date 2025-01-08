@@ -39,9 +39,9 @@ export default function AdminProfileDropdown() {
               onClick={() => handleClick(club.id)}
             >
               <img
-                src="/assets/ic-profile.svg"
+                src={club.profile ? club.profile : "/assets/ic-profile.svg"}
                 alt="프로필"
-                className="w-[35px] h-[35px] mx-3"
+                className="w-[35px] h-[35px] mx-3 rounded-full"
               />
               <div className="flex flex-col text-left mx-3">
                 <p className="text-body text-gray-900">{club.name}</p>

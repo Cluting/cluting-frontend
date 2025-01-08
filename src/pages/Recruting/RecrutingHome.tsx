@@ -45,7 +45,7 @@ export default function RecrutingHome() {
           const { clubProfile, clubName, generation } = data.recruitInfo;
           setGeneration(generation);
           setClubName(clubName);
-          setClubProfile(clubProfile);
+          setClubProfile(clubProfile); // 동아리 프로필
         }
         // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
       }
