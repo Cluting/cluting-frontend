@@ -11,7 +11,6 @@ import {
 import { useInterviewStore } from "../../../../store/useStore";
 import { addDays } from "date-fns";
 import { useFormContext } from "react-hook-form";
-import { CalendarEvent, RecruitSchedule } from "../../_01_plan/type/Prep";
 
 interface RecrutingCalenderPickerProps {
   apiSchedule?: RecruitSchedule;

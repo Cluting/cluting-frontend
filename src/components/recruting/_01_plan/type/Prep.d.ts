@@ -1,11 +1,11 @@
-export interface PrepStage {
+declare interface PrepStage {
   stageName: string;
   stageOrder: number;
   clubUserIds: number[];
 }
 
 // 캘린더 이벤트 - 리크루팅 홈, 계획하기
-export interface CalendarEvent {
+declare interface CalendarEvent {
   id: string;
   title: string;
   start: string;
@@ -14,7 +14,7 @@ export interface CalendarEvent {
   backgroundColor?: string; // 색상 속성 추가
 }
 
-export interface RecruitSchedule {
+declare interface RecruitSchedule {
   stage1Start: string;
   stage1End: string;
   stage2Start: string;
@@ -33,20 +33,20 @@ export interface RecruitSchedule {
   stage8End: string;
 }
 
-export interface PrepareStepRolesFormValues {
+declare interface PrepareStepRolesFormValues {
   prepStages: PrepStage[];
   recruitSchedules: RecruitSchedule;
   applicantGroups: string[];
 }
 
 // 계획하기 불러오기
-export interface PrepareStepRolesFormValues {
+declare interface PrepareStepRolesFormValues {
   prepStages: PrepStage[];
   recruitSchedules: RecruitSchedule;
   applicantGroups: string[];
 }
 
-export interface RecruitmentPlanningData {
+declare interface RecruitmentPlanningData {
   schedule: RecruitSchedule;
   prepStages: Array<{
     stageName: string;

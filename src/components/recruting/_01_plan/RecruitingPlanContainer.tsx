@@ -6,11 +6,6 @@ import GroupCreate from "../_02_prepare/_01/GroupCreate";
 import { BUTTON_TEXT } from "../../../constants/recruting";
 import StepCompleteModal from "../common/StepCompleteModal";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  PrepareStepRolesFormValues,
-  PrepStage,
-  RecruitmentPlanningData
-} from "./type/Prep";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getPlanningData, postStepPlan } from "./service/Prep";
 

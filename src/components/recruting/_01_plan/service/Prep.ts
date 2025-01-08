@@ -1,5 +1,4 @@
 import { Instance } from "../../../../services/AxiosInstance";
-import { PrepareStepRolesFormValues } from "../type/Prep";
 
 // POST: [계획하기] 등록하기
 export async function postStepPlan(

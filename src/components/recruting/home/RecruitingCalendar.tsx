@@ -2,28 +2,24 @@ import "../../../style/calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { getPlanningData } from "../_01_plan/service/Prep";
-import { CalendarEvent, RecruitmentPlanningData } from "../_01_plan/type/Prep";
 import { CALENDAR_COLORS, CALENDAR_ITEMS } from "../../../constants/recruting";
 import { useEffect, useState } from "react";
 
-export default function RecruitingCalender() {
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
+interface RecrutingCalenderProps {
+  apiSchedule?: RecruitSchedule;
+}
 
-  // 계획하기 API -> 리크루팅 일정 조회
-  //FIX:
-  const recruitId = 1;
-  const { data: apiPlanningData } = useQuery(["planningData", recruitId], () =>
-    getPlanningData(recruitId)
-  );
+export default function RecruitingCalender({
+  apiSchedule
+}: RecrutingCalenderProps) {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
 
   //불러온 일정 캘린더에 표시
   useEffect(() => {
-    const apiSchedule = apiPlanningData?.schedule;
-    if (apiSchedule) {
-      const calendarEvents = Object.entries(apiSchedule)
+    const schedule = apiSchedule;
+    if (schedule) {
+      const calendarEvents = Object.entries(schedule)
         .map(([key, value]) => {
           if (value && value !== "") {
             const [, stageNumber, type] =
@@ -48,7 +44,7 @@ export default function RecruitingCalender() {
 
       setEvents(calendarEvents as CalendarEvent[]);
     }
-  }, [apiPlanningData?.schedule]);
+  }, [apiSchedule]);
 
   return (
     <div className="mt-[30px]  bg-white-100 flex gap-[49px] pl-[33px]">

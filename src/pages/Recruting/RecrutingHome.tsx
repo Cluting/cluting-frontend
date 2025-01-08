@@ -10,9 +10,39 @@ import RecruitingCalender from "../../components/recruting/home/RecruitingCalend
 import { useRecruitmentStartStore } from "../../store/useStore";
 import AddAdminModal from "../../components/recruting/home/_admin/AddAdminModal";
 import TodoTemplate from "../../components/recruting/home/_todo/TodoTemplate";
+import { useQuery } from "@tanstack/react-query";
+import { getRecruitingHome } from "../../components/recruting/service/recruiting";
+import { useParams } from "react-router-dom";
+import { ENTIRE_STAGE } from "../../constants/recruting";
 
 export default function RecrutingHome() {
-  const { isRecruitingStarted } = useRecruitmentStartStore();
+  const { isRecruitingStarted, startRecruiting } = useRecruitmentStartStore();
+
+  //FIX:
+  const params = useParams();
+  const clubId = Number(params.clubId);
+  const recruitId = 1;
+
+  // 리크루팅 홈 데이터 조회
+  const { data: recruitingHomeData } = useQuery(
+    ["recruitingHome", recruitId, clubId],
+    () => getRecruitingHome(recruitId, clubId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+
+        if (data?.recruitInfo) {
+          const { currentStage, clubName, generation } = data.recruitInfo;
+
+          if (ENTIRE_STAGE.includes(currentStage)) {
+            startRecruiting();
+          }
+        }
+        // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
+      }
+    }
+  );
+
   //운영진 추가 모달
   const [isAddAdminModalOpen, setIsAddAdminModalOpen] = useState(false);
   const handleAddAdminOpenModal = () => {
@@ -38,7 +68,9 @@ export default function RecrutingHome() {
         <div className="  h-auto bg-white-100 pb-6 ml-8  rounded-[12px]">
           <RecruitmentStep />
           <div className="flex">
-            <RecruitingCalender />
+            <RecruitingCalender
+              apiSchedule={recruitingHomeData?.recruitSchedule}
+            />
           </div>
           <div className="px-10 py-[30px]">
             <div className="flex gap-11">
