@@ -38,7 +38,7 @@ export default function FailList({ filter, data, byGroup }: FailListProps) {
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {status === "완료" ? "결정 완료" : ""}
+                  {data.state === "AFTER" ? "결정 완료" : ""}
                 </div>
               </td>
               <td>

@@ -2,6 +2,9 @@ import { FormEvent, useRef, useState } from "react";
 import { useStepFourStore } from "../../../../store/useStore";
 import PreviewModal from "./PreviewModal";
 import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { getDocumentEvaluationResults } from "../service/Step4";
+import { GetApplicant } from "../../../../type/type";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
@@ -84,6 +87,41 @@ export default function ResultMessageContainer() {
       setShowSendModal(true);
     }
   };
+
+  const { data } = useQuery(
+    ["documentEvaluation"],
+    () => getDocumentEvaluationResults(1, "INORDER"),
+    {
+      refetchOnWindowFocus: false
+    }
+  );
+
+  // 전화번호와 합격 불합격 메시지 일치시키기
+  if (data) {
+    const passedPhones = data.passed?.map(
+      (applicant: GetApplicant) => applicant.phone
+    );
+    const failedPhones = data.failed?.map(
+      (applicant: GetApplicant) => applicant.phone
+    );
+
+    const passedList = passedPhones.map((phone: string) => ({
+      message: textareaValues.pass,
+      phone
+    }));
+
+    const failedList = failedPhones.map((phone: string) => ({
+      message: textareaValues.fail,
+      phone
+    }));
+
+    const apiPassData = {
+      list: [...passedList]
+    };
+    const apiFailData = {
+      list: [...failedList]
+    };
+  }
 
   //Form 제출
   const {
