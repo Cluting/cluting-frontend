@@ -203,7 +203,9 @@ export const useClubInfoStore = create<ClubInfoStore>((set) => ({
   clubProfile: "", // 동아리 프로필
   clubName: "",
   generation: 0,
+  currentStage: "",
   setClubProfile: (profile) => set({ clubProfile: profile }),
   setClubName: (name) => set({ clubName: name }),
-  setGeneration: (gen) => set({ generation: gen })
+  setGeneration: (gen) => set({ generation: gen }),
+  setCurrentStage: (stage) => set({ currentStage: stage })
 }));

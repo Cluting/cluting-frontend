@@ -26,7 +26,8 @@ export default function RecrutingHome() {
   const clubId = Number(params.clubId);
   const recruitId = 1;
 
-  const { setClubProfile, setClubName, setGeneration } = useClubInfoStore();
+  const { setClubProfile, setClubName, setGeneration, setCurrentStage } =
+    useClubInfoStore();
 
   // 리크루팅 홈 데이터 조회
   const { data: recruitingHomeData } = useQuery(
@@ -38,7 +39,7 @@ export default function RecrutingHome() {
 
         if (data?.recruitInfo) {
           const { currentStage } = data.recruitInfo;
-
+          setCurrentStage(currentStage);
           if (ENTIRE_STAGE.includes(currentStage)) {
             startRecruiting();
           }

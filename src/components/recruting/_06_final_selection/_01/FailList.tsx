@@ -1,24 +1,9 @@
-import { useEffect, useState } from "react";
-import { Applicant } from "../../../../type/type";
-
-interface failListProps {
+interface FailListProps {
   filter: string;
+  data?: GetApplicant[];
 }
-export default function FailList({ filter }: failListProps) {
-  const [applicants, setApplicants] = useState<Applicant[]>([]);
-  const filteredData =
-    filter === "전체"
-      ? applicants
-      : applicants.filter((item) => item.group === filter);
-
-  useEffect(() => {
-    // JSON 파일에서 더미 데이터 가져오기
-    fetch("/failApplicant.json")
-      .then((response) => response.json())
-      .then((data: Applicant[]) => setApplicants(data))
-      .catch((error) => console.error("JSON 오류:", error));
-  }, []);
-
+export default function FailList({ filter, data }: FailListProps) {
+  console.log("넘어온 불합격", data);
   return (
     <div className="w-max-[440px] pl-[10px]">
       <div className="flex items-center gap-2">
@@ -40,24 +25,24 @@ export default function FailList({ filter }: failListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((applicant) => (
+          {data?.map((data) => (
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {applicant.status === "완료" ? "결정 완료" : ""}
+                  {/* {applicant.status === "완료" ? "결정 완료" : ""} */}
                 </div>
               </td>
               <td>
                 <div className="flex flex-col items-start ml-[25px]">
-                  <div className="text-3"> {applicant.name}</div>
+                  <div className="text-3"> {data.name}</div>
                   <div className="font-normal text-[9.64px] text-gray-500">
-                    {applicant.phone}
+                    {data.phone}
                   </div>
                 </div>
               </td>
-              <td>{applicant.group ? applicant.group : "-"}</td>
-              <td>{applicant.rank}</td>
-              <td className="text-red-100">{applicant.result}</td>
+              <td>{data.part ? data.part : "-"}</td>
+              <td>{data.rank}</td>
+              <td className="text-red-100">{data.result}</td>
             </tr>
           ))}
         </tbody>

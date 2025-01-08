@@ -1,23 +1,14 @@
-import { useEffect, useState } from "react";
-import { Applicant } from "../../../../type/type";
-
-interface failListProps {
+interface FailListProps {
   filter: string;
+  data?: GetApplicant[];
+  byGroup?: { [key: string]: number };
 }
-export default function FailList({ filter }: failListProps) {
-  const [applicants, setApplicants] = useState<Applicant[]>([]);
-  const filteredData =
-    filter === "전체"
-      ? applicants
-      : applicants.filter((item) => item.group === filter);
+export default function FailList({ filter, data, byGroup }: FailListProps) {
+  //FIX:
+  const status = "완료";
 
-  useEffect(() => {
-    // JSON 파일에서 더미 데이터 가져오기
-    fetch("/failApplicant.json")
-      .then((response) => response.json())
-      .then((data: Applicant[]) => setApplicants(data))
-      .catch((error) => console.error("JSON 오류:", error));
-  }, []);
+  const filteredData =
+    filter === "전체" ? data : data?.filter((data) => data.part === filter);
 
   return (
     <div className="w-max-[440px] pl-[10px]">
@@ -40,11 +31,11 @@ export default function FailList({ filter }: failListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((applicant) => (
+          {filteredData?.map((applicant) => (
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {applicant.status === "완료" ? "결정 완료" : ""}
+                  {status === "완료" ? "결정 완료" : ""}
                 </div>
               </td>
               <td>
@@ -55,7 +46,7 @@ export default function FailList({ filter }: failListProps) {
                   </div>
                 </div>
               </td>
-              <td>{applicant.group}</td>
+              <td>{applicant.part}</td>
               <td>{applicant.rank}</td>
               <td className="text-red-100">{applicant.result}</td>
             </tr>

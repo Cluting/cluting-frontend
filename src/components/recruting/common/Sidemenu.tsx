@@ -113,14 +113,15 @@ export default function Sidemenu() {
           <div className="text-left ml-4">
             <p className="text-body">{clubName}</p>
             <p className="text-gray-900 text-caption1 mt-[5px]">
-              {generation ? `${generation}기` : "-"} (리크루팅 준비)
+              {generation ? `${generation}기` : "-"}
             </p>
           </div>
         )}
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <Link to={"/recruting/home/1"}>
+        {/* FIX: 하드코딩 주소 변경 */}
+        <Link to={"/recruting/home/1/1"}>
           <button
             className={`flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] ${
               sidemenuClose ? "pl-0" : "pl-3"

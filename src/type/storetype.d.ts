@@ -89,7 +89,9 @@ declare interface ClubInfoStore {
   clubProfile: string;
   clubName: string;
   generation: number;
+  currentStage: string;
   setClubProfile: (profile: string) => void;
   setClubName: (name: string) => void;
   setGeneration: (gen: number) => void;
+  setCurrentStage: (stage: string) => void;
 }

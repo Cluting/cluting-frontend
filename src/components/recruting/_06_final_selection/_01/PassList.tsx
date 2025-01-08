@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
-import { Applicant } from "../../../../type/type";
 import { useGroupStore } from "../../../../store/useStore";
+
+interface Applicant {
+  id: number;
+  status: string;
+  name: string;
+  phone: string;
+  group: string;
+  rank: string;
+  result: string;
+}
 
 interface passListProps {
   filter: string;
