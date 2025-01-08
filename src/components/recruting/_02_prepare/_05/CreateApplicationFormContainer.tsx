@@ -22,29 +22,30 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
   //GET
-  // const recruitId = 1;
-  // const { data: formData, isLoading } = useQuery(
-  //   ["applicationForm", recruitId],
-  //   () => getPrepare5(recruitId),
-  //   {
-  //     onSuccess: (data) => {
-  //       if (data) {
-  //         // Update form with fetched data
-  //         const fetchedQuestions = data.partQuestions || [];
-  //         setQuestions(fetchedQuestions);
+  const recruitId = 1;
+  const { data: formData, isLoading } = useQuery(
+    ["applicationForm", recruitId],
+    () => getPrepare5(recruitId),
+    {
+      onSuccess: (data) => {
+        if (data) {
+          // Update form with fetched data
+          const fetchedQuestions = data.partQuestions || [];
+          setQuestions(fetchedQuestions);
 
-  //         // Update form default values
-  //         setValue("title", data.title || "");
-  //         setValue("multiApply", data.multiApply ?? true);
-  //         setValue("isPortfolioRequired", data.isPortfolioRequired ?? true);
-  //         setValue("partQuestions", fetchedQuestions);
-  //       }
-  //     },
-  //     onError: (error) => {
-  //       console.error("폼 데이터 조회 실패:", error);
-  //     }
-  //   }
-  // );
+          // Update form default values
+          setValue("title", data.title || "");
+          setValue("multiApply", data.multiApply ?? true);
+          setValue("isPortfolioRequired", data.isPortfolioRequired ?? true);
+          setValue("partQuestions", fetchedQuestions);
+          console.log("2-5 조회 성공!");
+        }
+      },
+      onError: (error) => {
+        console.error("폼 데이터 조회 실패:", error);
+      }
+    }
+  );
 
   //POST
   const createFormMutation = useMutation(

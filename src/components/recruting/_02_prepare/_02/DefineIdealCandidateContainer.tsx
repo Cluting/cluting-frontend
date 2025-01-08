@@ -19,7 +19,8 @@ export default function DefineIdealCandidateContainer() {
     () => getPassIdeal(recruitId),
     {
       select: (data) => {
-        console.log("GET 응답:", data);
+        // console.log("GET 응답:", data);
+        console.log("2-2 조회 성공!");
         return {
           partIdeals: [
             {

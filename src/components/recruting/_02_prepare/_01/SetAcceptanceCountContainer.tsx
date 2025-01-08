@@ -17,7 +17,7 @@ export default function SetAcceptanceCountContainer() {
     {
       select: (data) => {
         // API 응답 데이터를 폼 데이터 구조로 변환
-        console.log("조회 성공!");
+        console.log("2-1 조회 성공!");
         return {
           totalDocumentPassCount: data.numDoc,
           totalFinalPassCount: data.numFinal
