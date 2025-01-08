@@ -7,7 +7,10 @@ import AddAdmin from "../../components/recruting/home/_admin/AddAdmin";
 import Sidemenu from "../../components/recruting/common/Sidemenu";
 import RecruitmentStep from "../../components/recruting/common/RecruitmentStep";
 import RecruitingCalender from "../../components/recruting/home/RecruitingCalendar";
-import { useRecruitmentStartStore } from "../../store/useStore";
+import {
+  useClubInfoStore,
+  useRecruitmentStartStore
+} from "../../store/useStore";
 import AddAdminModal from "../../components/recruting/home/_admin/AddAdminModal";
 import TodoTemplate from "../../components/recruting/home/_todo/TodoTemplate";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +26,8 @@ export default function RecrutingHome() {
   const clubId = Number(params.clubId);
   const recruitId = 1;
 
+  const { setClubProfile, setClubName, setGeneration } = useClubInfoStore();
+
   // 리크루팅 홈 데이터 조회
   const { data: recruitingHomeData } = useQuery(
     ["recruitingHome", recruitId, clubId],
@@ -32,11 +37,15 @@ export default function RecrutingHome() {
         console.log(data);
 
         if (data?.recruitInfo) {
-          const { currentStage, clubName, generation } = data.recruitInfo;
+          const { currentStage } = data.recruitInfo;
 
           if (ENTIRE_STAGE.includes(currentStage)) {
             startRecruiting();
           }
+          const { clubProfile, clubName, generation } = data.recruitInfo;
+          setGeneration(generation);
+          setClubName(clubName);
+          setClubProfile(clubProfile); // 동아리 프로필
         }
         // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
       }
