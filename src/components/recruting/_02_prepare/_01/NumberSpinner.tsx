@@ -49,6 +49,7 @@ export default function NumberSpinner({
                 type="text"
                 value={value ?? 0}
                 onChange={handleInputChange}
+                placeholder="0"
                 onBlur={onBlur}
                 className="w-[120px] text-right pr-[23px] text-[17px] font-bold border-none focus:outline-none"
               />

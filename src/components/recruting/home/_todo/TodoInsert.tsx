@@ -1,17 +1,17 @@
-import { useCallback, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 
-const TodoInsert = ({ onInsert }) => {
-  const [value, setValue] = useState("");
+export default function TodoInsert({ onInsert }: TodoInsertProps) {
+  const [value, setValue] = useState<string>("");
 
-  const onChange = useCallback((e) => {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   }, []);
 
   const onSubmit = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>) => {
       onInsert(value);
       setValue("");
-      e.preventDefault(); //submit시 새로고침 방지
+      e.preventDefault();
     },
     [onInsert, value]
   );
@@ -31,6 +31,4 @@ const TodoInsert = ({ onInsert }) => {
       />
     </form>
   );
-};
-
-export default TodoInsert;
+}

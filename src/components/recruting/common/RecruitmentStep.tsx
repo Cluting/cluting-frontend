@@ -6,6 +6,15 @@ import { useRecruitmentStepStore } from "../../../store/useStore";
 export default function RecruitmentStep() {
   const { completedSteps } = useRecruitmentStepStore();
 
+  // 현재 날짜 가져오기
+  const currentDate = new Date();
+  const options = {
+    month: "long" as const,
+    day: "numeric" as const,
+    weekday: "long" as const
+  };
+  const formattedDate = currentDate.toLocaleDateString("ko-KR", options);
+
   return (
     <div className="flex h-[157px]">
       <div className="w-[240px] flex flex-col items-center pr-[14px] border-r border-b border-gray-200 pt-[26px]">
@@ -16,7 +25,7 @@ export default function RecruitmentStep() {
               className="text-gray-900 text-[18px] font-semibold"
               aria-label="현재 날짜"
             >
-              10월 13일 화요일
+              {formattedDate}
             </p>
           </div>
         </section>

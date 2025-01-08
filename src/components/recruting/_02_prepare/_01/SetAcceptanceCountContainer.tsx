@@ -14,16 +14,16 @@ export default function SetAcceptanceCountContainer() {
     formState: { errors, touchedFields }
   } = useForm<SetAcceptanceCountFormData>({
     defaultValues: {
-      documentPassTotal: 0,
-      finalPassTotal: 0,
+      documentPassTotal: undefined,
+      finalPassTotal: undefined,
       groups: [
-        { documentPass: 0, finalPass: 0 },
-        { documentPass: 0, finalPass: 0 },
-        { documentPass: 0, finalPass: 0 }
+        { documentPass: undefined, finalPass: undefined },
+        { documentPass: undefined, finalPass: undefined },
+        { documentPass: undefined, finalPass: undefined }
       ]
     },
-    mode: "onTouched",
-    reValidateMode: "onSubmit"
+    mode: "all",
+    reValidateMode: "onChange"
   });
 
   const documentPassTotal = watch("documentPassTotal");
@@ -77,10 +77,15 @@ export default function SetAcceptanceCountContainer() {
     required: "필수 입력 사항입니다.",
     documentPassCheck: (value: number) => {
       if (!touchedFields.documentPassTotal) return true;
-      if (!value) return "필수 입력 사항입니다.";
+      if (!value || value <= 0) return "필수 입력 사항입니다.";
       if (value < finalPassTotal) {
         return "최종 합격 인원보다 적어요. 최종 합격 인원보다 많은 수로 조정해 주세요.";
       }
+      return true;
+    },
+    finalPassCheck: (value: number) => {
+      if (!touchedFields.finalPassTotal) return true;
+      if (!value || value <= 0) return "필수 입력 사항입니다";
       return true;
     },
     groupDocumentPassCheck: (value: number) => {
@@ -115,17 +120,12 @@ export default function SetAcceptanceCountContainer() {
 
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
-      await trigger("documentPassTotal");
-      await trigger("finalPassTotal");
-      await trigger();
-      // 모든 그룹 필드 validation
-      for (let i = 0; i < groups.length; i++) {
-        await trigger(`groups.${i}.documentPass`);
-        await trigger(`groups.${i}.finalPass`);
-      }
+      // 모든 필드의 validation을 동시에 실행하고 결과를 기다립니다
+      const isValid = await trigger(undefined, { shouldFocus: true });
 
-      // // validation 결과 확인
-      if (Object.keys(errors).length > 0) return;
+      if (!isValid) {
+        return; // validation이 실패하면 여기서 종료
+      }
 
       const groupTotalDocumentPass = data.groups.reduce(
         (sum, group) => sum + (group.documentPass || 0),
@@ -144,7 +144,7 @@ export default function SetAcceptanceCountContainer() {
         return;
       }
 
-      console.log("제출된 데이터:", data);
+      console.log(data);
       setStepCompleted(0, true);
     } catch (error) {
       console.error("제출 중 에러 발생:", error);
@@ -184,6 +184,7 @@ export default function SetAcceptanceCountContainer() {
                   name="documentPassTotal"
                   error={errors.documentPassTotal?.message}
                   rules={{
+                    required: "필수 입력 사항입니다.",
                     validate: validateForm.documentPassCheck
                   }}
                 />
@@ -224,11 +225,8 @@ export default function SetAcceptanceCountContainer() {
                   name="finalPassTotal"
                   error={errors.finalPassTotal?.message}
                   rules={{
-                    validate: (value: number) => {
-                      if (!touchedFields.finalPassTotal) return true;
-                      if (!value || value <= 0) return "필수 입력 사항입니다";
-                      return true;
-                    }
+                    required: "필수 입력 사항입니다.",
+                    validate: validateForm.finalPassCheck
                   }}
                 />
                 {errors.finalPassTotal && (

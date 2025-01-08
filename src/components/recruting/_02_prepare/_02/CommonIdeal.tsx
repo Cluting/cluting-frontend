@@ -1,14 +1,5 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-
-type CommonIdeal = {
-  id: number;
-  text: string;
-};
-
-type CommonIdealForm = {
-  commonIdeals: { text: string }[];
-};
 
 export default function CommonIdeal() {
   const {
@@ -17,7 +8,9 @@ export default function CommonIdeal() {
     handleSubmit,
     formState: { errors }
   } = useForm<CommonIdealForm>({
-    defaultValues: { commonIdeals: [{ text: "" }] },
+    defaultValues: {
+      commonIdeals: [{ id: 1, text: "" }]
+    },
     mode: "onBlur"
   });
 
@@ -26,14 +19,14 @@ export default function CommonIdeal() {
     name: "commonIdeals"
   });
 
-  const nextId = useRef<number>(1);
+  const nextId = useRef<number>(2);
 
   const onSubmit = handleSubmit((data) => {
-    console.log("Form Data:", data);
+    console.log(data);
   });
 
   const addInputField = () => {
-    append({ text: "" });
+    append({ id: nextId.current, text: "" });
     nextId.current += 1;
   };
 
@@ -47,11 +40,10 @@ export default function CommonIdeal() {
       </div>
 
       <div className="mt-4 pt-[14px] pb-7 relative h-auto bg-white-100 rounded-[12px]">
-        {/* 인재상 입력 */}
         <div className="px-[30px]">
           {fields.map((field, index) => (
-            <>
-              <div key={field.id} className="flex items-center mt-4">
+            <div key={field.id}>
+              <div className="flex items-center mt-4">
                 <input
                   {...register(`commonIdeals.${index}.text`, {
                     required: "필수 입력 사항입니다."
@@ -67,17 +59,17 @@ export default function CommonIdeal() {
                   type="button"
                   onClick={() => remove(index)}
                   aria-label="인재상 삭제하기"
-                  className="absolute right-16 ml-2 flex-center bg-gray-100 rounded-full w-[16px] h-[16px] text-gray-500 hover:text-red-500"
+                  className="absolute right-12 ml-2 flex-center bg-gray-100 rounded-full w-[16px] h-[16px] text-gray-500 hover:text-red-500"
                 >
                   -
                 </button>
               </div>
               {errors.commonIdeals?.[index]?.text && (
-                <div className="w-full text-state-error mt-[4px] ">
+                <div className="w-full text-state-error mt-[4px]">
                   {errors.commonIdeals?.[index]?.text?.message}
                 </div>
               )}
-            </>
+            </div>
           ))}
 
           <button
