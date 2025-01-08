@@ -73,8 +73,17 @@ export default function QuestionItem({
 
   // 옵션 추가 핸들러
   const handleAddOption = (value: string) => {
+    if (!value.trim()) return; // 빈 값 체크
+
     onAddOption(partName, question.id!, value);
-    setValue(registerObjects, [...(question.objects || []), value]);
+
+    // 기존 옵션 배열 가져오기
+    const currentObjects = watch(registerObjects) || [];
+
+    // 새로운 옵션 추가하여 업데이트
+    setValue(registerObjects, [...currentObjects, value], {
+      shouldValidate: true
+    });
   };
 
   // 옵션 삭제 핸들러

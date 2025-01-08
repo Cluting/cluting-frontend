@@ -48,18 +48,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
     id: uuidv4(),
     content: "",
     questionType: type,
-    ...(type === "SUBJECTIVE"
-      ? {
-          hasWordLimit: false,
-          wordLimit: 500
-        }
-      : { objects: [] })
+    hasWordLimit: true,
+    wordLimit: 500,
+    objects: [],
+    multiSelect: true
   });
 
   const [questions, setQuestions] = useState<PartQuestion[]>([
     // 공통 질문 초기값
     {
-      partName: "공통",
+      partName: "Back",
       caution: "",
       questions: [createInitialQuestion()]
     },
@@ -82,8 +80,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
     defaultValues: {
       title: "",
       partQuestions: questions,
-      multiApply: false,
-      isPortfolioRequired: false
+      multiApply: true,
+      isPortfolioRequired: true
     }
   });
 
@@ -147,9 +145,10 @@ export default function CreateApplicationFormContainer(): ReactElement {
             return {
               ...q,
               questionType: newType,
-              objects: newType === "OBJECT" ? [] : undefined,
-              hasWordLimit: newType === "SUBJECTIVE" ? false : undefined,
-              wordLimit: newType === "SUBJECTIVE" ? 500 : undefined
+              hasWordLimit: true,
+              wordLimit: 0,
+              objects: [],
+              multiSelect: true
             };
           })
         };
@@ -209,7 +208,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   const onSubmit = async (data: CreateApplicationForm) => {
     try {
-      const commonPart = data.partQuestions.find((p) => p.partName === "공통");
+      const commonPart = data.partQuestions.find((p) => p.partName === "Back");
       if (!commonPart || commonPart.questions.length === 0) {
         setError("partQuestions", {
           type: "manual",
@@ -218,28 +217,41 @@ export default function CreateApplicationFormContainer(): ReactElement {
         return;
       }
 
-      // API 제출용 데이터 준비 (id 제거)
+      // API 제출용 데이터 준비
       const submitData = {
-        ...data,
+        title: data.title,
+        multiApply: data.multiApply,
+        isPortfolioRequired: data.isPortfolioRequired,
         partQuestions: data.partQuestions.map((part) => ({
-          ...part,
-          questions: part.questions.map(({ id, ...question }) => question)
+          partName: part.partName,
+          caution: part.caution,
+          questions: part.questions.map((question) => {
+            const baseQuestion = {
+              content: question.content,
+              questionType: question.questionType,
+              hasWordLimit: true,
+              wordLimit: 0
+            };
+
+            if (question.questionType === "OBJECT") {
+              return {
+                ...baseQuestion,
+                objects: question.objects || [], // 빈 배열이라도 반드시 포함
+                multiSelect: question.multiSelect || false
+              };
+            }
+
+            return {
+              ...baseQuestion,
+              objects: [],
+              multiSelect: false
+            };
+          })
         }))
       };
-      console.log("원본 데이터:", data);
-      console.log("제출 데이터:", JSON.stringify(submitData, null, 2));
 
-      console.log("=== 제출 데이터 상세 로그 ===");
-      console.log("전체 데이터:", submitData);
-      console.log("title:", submitData.title);
-      console.log("multiApply:", submitData.multiApply);
-      console.log("isPortfolioRequired:", submitData.isPortfolioRequired);
-      console.log(
-        "partQuestions:",
-        JSON.stringify(submitData.partQuestions, null, 2)
-      );
-
-      const recruitId = 1; //todo: 일단 임시로
+      console.log("제출 데이터:", submitData);
+      const recruitId = 1;
       createFormMutation.mutate({ formData: submitData, recruitId });
     } catch (error: any) {
       console.error("폼 제출 중 에러", error);
@@ -362,12 +374,12 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </p>
             <div className="space-y-4">
               {questions
-                .find((p) => p.partName === "공통")
+                .find((p) => p.partName === "Back")
                 ?.questions.map((question, index) => (
                   <QuestionItem
                     key={question.id}
                     question={question}
-                    partName="공통"
+                    partName="Back"
                     questionIndex={index}
                     partIndex={0} // 공통 질문은 항상 0번 인덱스
                     onTypeChange={handleQuestionTypeChange}
@@ -385,7 +397,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
             <button
               type="button"
-              onClick={() => addQuestion("공통")}
+              onClick={() => addQuestion("Back")}
               className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-callout text-main-100 hover:bg-main-100 hover:text-white-100"
             >
               <IdealIcon className="mr-2" />
