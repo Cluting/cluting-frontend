@@ -18,7 +18,7 @@ export async function postPrepare5(
 }
 
 // GET: 지원서 폼 확인
-export async function getForm(recruitId: number) {
+export async function getPrepare5(recruitId: number) {
   try {
     const { data } = await Instance.get(`/plan/details-form/${recruitId}`);
     return data;

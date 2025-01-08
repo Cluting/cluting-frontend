@@ -82,6 +82,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
     defaultValues: {
       title: "",
       partQuestions: questions,
+      multiApply: false,
       isPortfolioRequired: false
     }
   });
@@ -225,9 +226,18 @@ export default function CreateApplicationFormContainer(): ReactElement {
           questions: part.questions.map(({ id, ...question }) => question)
         }))
       };
+      console.log("원본 데이터:", data);
       console.log("제출 데이터:", JSON.stringify(submitData, null, 2));
-      // console.log(submitData);
-      // handleStepTwoSubmit();
+
+      console.log("=== 제출 데이터 상세 로그 ===");
+      console.log("전체 데이터:", submitData);
+      console.log("title:", submitData.title);
+      console.log("multiApply:", submitData.multiApply);
+      console.log("isPortfolioRequired:", submitData.isPortfolioRequired);
+      console.log(
+        "partQuestions:",
+        JSON.stringify(submitData.partQuestions, null, 2)
+      );
 
       const recruitId = 1; //todo: 일단 임시로
       createFormMutation.mutate({ formData: submitData, recruitId });
@@ -295,7 +305,13 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 <input
                   type="checkbox"
                   className=" peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                  {...register("multiApply")}
+                  {...register("multiApply", {
+                    value: true // 초기값
+                  })}
+                  onChange={(e) => {
+                    setValue("multiApply", e.target.checked);
+                    console.log("체크박스 변경:", e.target.checked);
+                  }}
                 />
                 <img
                   src="/assets/ic-check.svg"
