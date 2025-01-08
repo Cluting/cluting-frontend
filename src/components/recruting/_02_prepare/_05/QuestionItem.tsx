@@ -59,7 +59,7 @@ export default function QuestionItem({
 
   // 질문 타입 변경 핸들러
   //fix: 폼 데이터의 타입 변경 시 이전 필드들이 완전히 제거되지 않음
-  const handleTypeChange = (newType: "OBJECT" | "SUBJECTIVE") => {
+  const handleTypeChange = (newType: "OBJECT" | "SUBJECT") => {
     onTypeChange(partName, question.id!, newType);
 
     setValue(registerQuestionType, newType);
@@ -125,7 +125,7 @@ export default function QuestionItem({
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="w-[247px] h-[42px] pl-[21px] rounded-[8px] bg-white-100 border border-gray-200"
               >
-                {question.questionType === "SUBJECTIVE" ? (
+                {question.questionType === "SUBJECT" ? (
                   <div className="flex items-center">
                     <img
                       src="/assets/ic-descriptive.svg"
@@ -160,7 +160,7 @@ export default function QuestionItem({
                     type="button"
                     className="w-full px-4 py-2 text-left rounded-[8px] hover:bg-gray-200"
                     onClick={() => {
-                      handleTypeChange("SUBJECTIVE");
+                      handleTypeChange("SUBJECT");
                       setIsDropdownOpen(false);
                     }}
                   >
@@ -190,7 +190,7 @@ export default function QuestionItem({
           </button>
         </div>
 
-        {question.questionType === "SUBJECTIVE" ? (
+        {question.questionType === "SUBJECT" ? (
           <div>
             <textarea
               placeholder="지원자의 답변 작성란 입니다."

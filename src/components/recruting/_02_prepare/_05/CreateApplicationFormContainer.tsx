@@ -13,14 +13,40 @@ import QuestionItem from "./QuestionItem";
 import InterviewTimeSelector from "./InterviewTimeSelector";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
-import { useMutation } from "@tanstack/react-query";
-import { postPrepare5 } from "./service/Step5";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { postPrepare5, getPrepare5 } from "./service/Step5";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
+  //GET
+  // const recruitId = 1;
+  // const { data: formData, isLoading } = useQuery(
+  //   ["applicationForm", recruitId],
+  //   () => getPrepare5(recruitId),
+  //   {
+  //     onSuccess: (data) => {
+  //       if (data) {
+  //         // Update form with fetched data
+  //         const fetchedQuestions = data.partQuestions || [];
+  //         setQuestions(fetchedQuestions);
+
+  //         // Update form default values
+  //         setValue("title", data.title || "");
+  //         setValue("multiApply", data.multiApply ?? true);
+  //         setValue("isPortfolioRequired", data.isPortfolioRequired ?? true);
+  //         setValue("partQuestions", fetchedQuestions);
+  //       }
+  //     },
+  //     onError: (error) => {
+  //       console.error("폼 데이터 조회 실패:", error);
+  //     }
+  //   }
+  // );
+
+  //POST
   const createFormMutation = useMutation(
     (data: { formData: CreateApplicationForm; recruitId: number }) =>
       postPrepare5(data.formData, data.recruitId),
@@ -43,7 +69,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   // 초기 질문 생성 함수
   const createInitialQuestion = (
-    type: "SUBJECTIVE" | "OBJECT" = "SUBJECTIVE"
+    type: "SUBJECT" | "OBJECT" = "OBJECT"
   ): Question => ({
     id: uuidv4(),
     content: "",
@@ -131,7 +157,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const handleQuestionTypeChange = (
     partName: string,
     questionId: string,
-    newType: "OBJECT" | "SUBJECTIVE"
+    newType: "OBJECT" | "SUBJECT"
   ) => {
     setQuestions((prev) =>
       prev.map((part) => {

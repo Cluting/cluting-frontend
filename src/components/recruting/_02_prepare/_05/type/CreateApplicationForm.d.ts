@@ -5,7 +5,7 @@ interface QuestionItemProps {
   onTypeChange: (
     partName: string,
     questionId: string,
-    newType: "OBJECT" | "SUBJECTIVE"
+    newType: "OBJECT" | "SUBJECT"
   ) => void;
   onDelete: (partName: string, questionId: string) => void;
   onAddOption: (partName: string, questionId: string, value: string) => void;
@@ -31,7 +31,7 @@ interface QuestionOption {
 interface Question {
   id?: string;
   content: string; //질문
-  questionType: "OBJECT" | "SUBJECTIVE";
+  questionType: "OBJECT" | "SUBJECT";
   objects?: string[]; //객관식 선택지
   hasWordLimit?: boolean; //주관식 글자수 제한 여부
   wordLimit?: number; //주관식 글자수 제한
