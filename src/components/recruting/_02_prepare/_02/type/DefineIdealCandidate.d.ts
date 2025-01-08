@@ -25,16 +25,3 @@ declare interface PassIdealResponse {
   numFinal: number;
   groupResponses: GroupResponse[];
 }
-
-// 현재 서버 응답 구조를 위한 임시 타입
-declare interface IdealItem {
-  id: number;
-  content: string;
-}
-declare interface CurrentResponse {
-  recruitId: number;
-  title: string;
-  numDoc: number;
-  numFinal: number;
-  ideals: IdealItem[];
-}

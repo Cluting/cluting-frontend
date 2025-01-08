@@ -14,44 +14,31 @@ export default function DefineIdealCandidateContainer() {
 
   //GET
   const recruitId = 1; //todo: 임시로
-  const { data: passIdeal } = useQuery<CurrentResponse, Error, IdealForm>(
+  const { data: passIdeal } = useQuery<PassIdealResponse, Error, IdealForm>(
     ["passIdeal", recruitId],
-    async () => {
-      const response = await getPassIdeal(recruitId);
-      return response as unknown as CurrentResponse;
-    },
+    () => getPassIdeal(recruitId),
     {
-      select: (data) => ({
-        partIdeals: [
-          {
-            partName: "PM",
-            content: data.ideals?.map((ideal) => ideal.content) || []
-          },
-          ...groups.map((group) => ({
-            partName: group.name,
-            content: []
-          }))
-        ]
-      })
+      select: (data) => {
+        console.log("GET 응답:", data);
+        return {
+          partIdeals: [
+            {
+              partName: "PM",
+              content: Object.values(data.groupResponses[0]?.idealContent || {})
+            },
+            ...groups.map((group) => ({
+              partName: group.name,
+              content: Object.values(
+                data.groupResponses.find((g) => g.groupId === group.index)
+                  ?.idealContent || {}
+              )
+            }))
+          ]
+        };
+      }
     }
   );
   const queryClient = useQueryClient();
-
-  // GET 데이터를 폼 데이터 구조로 변환
-  const transformedValues = passIdeal
-    ? {
-        partIdeals: [
-          {
-            partName: "PM",
-            content: [] // 임시로 빈 배열
-          },
-          ...groups.map((group) => ({
-            partName: group.name,
-            content: []
-          }))
-        ]
-      }
-    : undefined;
 
   //POST
   const mutation = useMutation(
@@ -71,7 +58,7 @@ export default function DefineIdealCandidateContainer() {
 
   const methods = useForm<IdealForm>({
     mode: "onTouched",
-    values: transformedValues,
+    values: passIdeal,
     defaultValues: {
       partIdeals: [
         { partName: "PM", content: [] },
