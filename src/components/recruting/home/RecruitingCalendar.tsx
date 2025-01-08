@@ -3,7 +3,49 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import { Link } from "react-router-dom";
-export default function RecruitingCalender() {
+import { CALENDAR_COLORS, CALENDAR_ITEMS } from "../../../constants/recruting";
+import { useEffect, useState } from "react";
+
+interface RecrutingCalenderProps {
+  apiSchedule?: RecruitSchedule;
+}
+
+export default function RecruitingCalender({
+  apiSchedule
+}: RecrutingCalenderProps) {
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+
+  //불러온 일정 캘린더에 표시
+  useEffect(() => {
+    const schedule = apiSchedule;
+    if (schedule) {
+      const calendarEvents = Object.entries(schedule)
+        .map(([key, value]) => {
+          if (value && value !== "") {
+            const [, stageNumber, type] =
+              key.match(/stage(\d+)(Start|End)/) || [];
+            const index = parseInt(stageNumber) - 1;
+            const title = CALENDAR_ITEMS[index];
+            const colorIndex = parseInt(stageNumber) - 1;
+
+            return {
+              id: key,
+              title: title,
+              start: type === "Start" ? value : undefined,
+              end: type === "End" ? value : undefined,
+              allDay: true,
+              backgroundColor:
+                CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length]
+            };
+          }
+          return null;
+        })
+        .filter((event) => event !== null);
+
+      setEvents(calendarEvents as CalendarEvent[]);
+    }
+  }, [apiSchedule]);
+
   return (
     <div className="mt-[30px]  bg-white-100 flex gap-[49px] pl-[33px]">
       <div className="flex flex-col">
@@ -62,6 +104,7 @@ export default function RecruitingCalender() {
         <p className="text-headline text-left mb-[21px]">리크루팅 달력</p>
         <FullCalendar
           locale="ko"
+          events={events}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           editable={true}
