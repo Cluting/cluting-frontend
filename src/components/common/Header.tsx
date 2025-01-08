@@ -14,10 +14,6 @@ export default function Header() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
   };
-  useEffect(() => {
-    // 상태 변경을 감지해 디버깅하거나 추가 작업 수행
-    console.log("로그인 상태 변경:", isLogin);
-  }, [isLogin]);
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
@@ -32,12 +28,6 @@ export default function Header() {
       </Link>
       {!isLoginPage && (
         <div className="flex items-center">
-          <button
-            className="text-white-100 hover:text-gray-400"
-            onClick={handleLogout}
-          >
-            임시 로그아웃
-          </button>
           <img
             src="/assets/ic-search.svg"
             alt="검색"
@@ -45,6 +35,10 @@ export default function Header() {
           />
           {isLogin ? (
             <>
+              {" "}
+              <button onClick={handleLogout} className="text-white-100">
+                임시 로그아웃
+              </button>
               {isLogin && (
                 <>
                   <img

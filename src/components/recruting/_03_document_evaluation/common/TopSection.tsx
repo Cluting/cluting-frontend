@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { STEP3_ITEMS } from "../../../../constants/recruting";
 import {
   useRecruitmentStepStore,
   useStepTwoStore
 } from "../../../../store/useStore";
 import AddAdmin from "../../home/_admin/AddAdmin";
+import { useNavigate } from "react-router-dom";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep } = useStepTwoStore();
@@ -12,6 +13,18 @@ export default function TopSection() {
     useRecruitmentStepStore(); //전체 스텝
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [showAdmin, setShowAdmin] = useState(false); //권한자 보기 드롭다운
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const paths = [
+      "/recruting/03_document_evaluation/docPrep",
+      "/recruting/03_document_evaluation/doc"
+    ];
+    const index = paths.findIndex((path) => location.pathname.includes(path));
+    if (index !== -1) {
+      setCurrentStep(index);
+    }
+  }, [location.pathname, setCurrentStep]);
 
   const handleMouseEnter = (index: number) => {
     setHoveredIndex(index);
@@ -23,6 +36,8 @@ export default function TopSection() {
 
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
+    const paths = ["docPrep", "doc"];
+    navigate(`/recruting/03_document_evaluation/${paths[index]}`);
   };
 
   return (

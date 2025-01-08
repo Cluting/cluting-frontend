@@ -2,7 +2,7 @@ import "../../../../style/calendar.css";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import {
   CALENDAR_ITEMS,
@@ -10,17 +10,15 @@ import {
 } from "../../../../constants/recruting";
 import { useInterviewStore } from "../../../../store/useStore";
 import { addDays } from "date-fns";
+import { useFormContext } from "react-hook-form";
 
-interface CalendarEvent {
-  id: string;
-  title: string;
-  start: string;
-  end: string;
-  allDay: boolean;
-  backgroundColor?: string; // 색상 속성 추가
+interface RecrutingCalenderPickerProps {
+  apiSchedule?: RecruitSchedule;
 }
 
-export default function RecrutingCalenderPicker() {
+export default function RecrutingCalenderPicker({
+  apiSchedule
+}: RecrutingCalenderPickerProps) {
   //면접 기간은 전역 상태로 저장
   const { setInterviewStartDate, setInterviewEndDate } = useInterviewStore();
 
@@ -41,6 +39,27 @@ export default function RecrutingCalenderPicker() {
   );
   const [editMode, setEditMode] = useState(false);
 
+  const [recruitSchedules, setRecruitSchedules] = useState([
+    {
+      stage1Start: "",
+      stage1End: "",
+      stage2Start: "",
+      stage2End: "",
+      stage3Start: "",
+      stage3End: "",
+      stage4Start: "",
+      stage4End: "",
+      stage5Start: "",
+      stage5End: "",
+      stage6Start: "",
+      stage6End: "",
+      stage7Start: "",
+      stage7End: "",
+      stage8Start: "",
+      stage8End: ""
+    }
+  ]);
+
   // 날짜 선택 시 이벤트 추가 함수
   const handleDateSelect = (selectInfo: DateSelectArg) => {
     const title = currrentTitle;
@@ -49,9 +68,8 @@ export default function RecrutingCalenderPicker() {
     const backgroundColor =
       CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length];
 
-    calendarApi.unselect(); // 선택 해제
+    calendarApi.unselect();
 
-    // 이미 존재하는 제목인지 확인
     const isDuplicateTitle = events.some((event) => event.title === title);
 
     if (title && !isDuplicateTitle) {
@@ -61,13 +79,25 @@ export default function RecrutingCalenderPicker() {
         start: selectInfo.startStr,
         end: addDays(new Date(selectInfo.endStr), 0)
           .toISOString()
-          .split("T")[0], // 종료 날짜에 하루 더하기
+          .split("T")[0],
         allDay: selectInfo.allDay,
         backgroundColor: backgroundColor
       };
+
       setEvents((prevEvents) => [...prevEvents, newEvent]);
-      setCompletedTitles((prevTitles) => [...prevTitles, title]); // 완료된 제목에 추가
-      console.log(events);
+      setCompletedTitles((prevTitles) => [...prevTitles, title]);
+
+      const stageNumber = CALENDAR_ITEMS.indexOf(title) + 1;
+      setRecruitSchedules((prev) => [
+        {
+          ...prev[0],
+          [`stage${stageNumber}Start`]: selectInfo.startStr,
+          [`stage${stageNumber}End`]: addDays(new Date(selectInfo.endStr), 0)
+            .toISOString()
+            .split("T")[0]
+        }
+      ]);
+
       setInstructionMessage("");
       // title이 '면접 기간'인 경우에만 전역 상태에 시작, 종료 날짜 저장
       if (title === "면접 기간") {
@@ -145,6 +175,53 @@ export default function RecrutingCalenderPicker() {
   const handleCalendarMouseLeave = () => {
     setInstructionMessage(null);
   };
+
+  const { setValue } = useFormContext();
+
+  const checkAllStagesSelected = () => {
+    const allStagesSelected = CALENDAR_ITEMS.every((item) =>
+      completedTitles.includes(item)
+    );
+    if (allStagesSelected) {
+      console.log("recruitSchedules:", recruitSchedules);
+      setValue("recruitSchedules", recruitSchedules);
+    }
+  };
+
+  useEffect(() => {
+    checkAllStagesSelected();
+  }, [completedTitles]);
+
+  // 계획하기 데이터가 있는 경우 캘린더에 표시
+  useEffect(() => {
+    console.log(apiSchedule);
+    if (apiSchedule) {
+      const calendarEvents = Object.entries(apiSchedule)
+        .map(([key, value]) => {
+          if (value && value !== "") {
+            const [, stageNumber, type] =
+              key.match(/stage(\d+)(Start|End)/) || [];
+            const index = parseInt(stageNumber) - 1;
+            const title = CALENDAR_ITEMS[index];
+            const colorIndex = parseInt(stageNumber) - 1;
+
+            return {
+              id: key,
+              title: title,
+              start: type === "Start" ? value : undefined,
+              end: type === "End" ? value : undefined,
+              allDay: true,
+              backgroundColor:
+                CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length]
+            };
+          }
+          return null;
+        })
+        .filter((event) => event !== null);
+
+      setEvents(calendarEvents as CalendarEvent[]);
+    }
+  }, [apiSchedule]);
 
   return (
     <div className="mt-[30px] pl-4 bg-white-100">

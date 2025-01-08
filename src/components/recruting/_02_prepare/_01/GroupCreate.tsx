@@ -3,19 +3,46 @@ import {
   useGroupStore,
   useRecruitmentStepStore
 } from "../../../../store/useStore";
+import { useFormContext } from "react-hook-form";
+
+interface GroupCreateProps {
+  apiGroups?: string[];
+}
 
 // 1 - 계획하기 : 지원자 그룹 짓기
-export default function GroupCreate() {
+export default function GroupCreate({ apiGroups }: GroupCreateProps) {
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null); // input 참조
   const [showInput, setShowInput] = useState(false); // input 표시 상태 - 그룹 추가 버튼을 클릭하면 input이 보이도록
+
   //useGroupStore 전역 상태 가져오기
   const addGroup = useGroupStore((state) => state.addGroup);
   const groupList = useGroupStore((state) => state.group);
   const removeGroup = useGroupStore((state) => state.removeGroup);
 
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (apiGroups && apiGroups.length > 0) {
+      apiGroups.forEach((groupName) => {
+        if (!groupList.some((group) => group.name === groupName)) {
+          addGroup(groupName);
+        }
+      });
+    }
+  }, [apiGroups, addGroup, groupList]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
+  };
+
+  useEffect(() => {
+    updateFormValue();
+  }, [groupList]);
+
+  const updateFormValue = () => {
+    const updatedGroups = groupList.map((group) => group.name);
+    setValue("applicantGroups", updatedGroups);
   };
 
   const handleAddGroup = () => {
@@ -25,8 +52,9 @@ export default function GroupCreate() {
       alert("그룹명을 입력해주세요.");
       return;
     } else {
-      addGroup(inputValue.trim());
+      addGroup(trimmedValue);
       setInputValue(""); // 입력창 초기화
+      setShowInput(false); // Hide input after adding
     }
   };
 
@@ -67,7 +95,7 @@ export default function GroupCreate() {
       }  w-full h-auto bg-white-100 pt-6 pb-[60px] mt-[34px] px-[13px] rounded-[12px]`}
     >
       <div className="flex items-center ml-8 my-4">
-        <h1 className="text-callout">지원자 그룹 짓기</h1>
+        <h1 className="section-title">지원자 그룹 짓기</h1>
         <div className="ml-3 tooltip ">
           동아리가 파트로 구분된다면 ex) 기획/디자인/홍보팀 등으로 그룹화해
           주세요

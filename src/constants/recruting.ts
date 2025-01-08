@@ -10,9 +10,9 @@ export const RECRUIT_STEP_ITEMS = [
 export const PATH = [
   "/recruting/01_plan",
   "/recruting/02_prepare",
-  "/recruting/03_document_evaluation",
+  "/recruting/03_document_evaluation/docPrep",
   "/recruting/04_interview_notification",
-  "/recruting/05_interview_evaluation",
+  "/recruting/05_interview_evaluation/interviewPrep",
   "/recruting/06_final_selection"
 ];
 
@@ -107,13 +107,23 @@ export const TermsAgreementdata: Term[] = [
 
 //하드코딩 임시 데이터
 export const ALL_ADMINS = [
-  "최예은",
-  "박시현",
-  "김동현",
-  "윤다인",
-  "곽서연",
-  "양성원",
-  "이은재"
+  { id: 1, name: "최예은" },
+  { id: 2, name: "박시현" },
+  { id: 3, name: "김동현" },
+  { id: 4, name: "윤다인" },
+  { id: 5, name: "곽서연" },
+  { id: 6, name: "양성원" },
+  { id: 7, name: "이은재" }
+];
+
+export const ALL_ADMINS_WITH_ID = [
+  { id: 1, name: "최예은" },
+  { id: 2, name: "박시현" },
+  { id: 3, name: "김동현" },
+  { id: 4, name: "윤다인" },
+  { id: 5, name: "곽서연" },
+  { id: 6, name: "양성원" },
+  { id: 7, name: "이은재" }
 ];
 
 // 면접관 일정 설정 임시 데이터
@@ -197,3 +207,12 @@ export const CALENDAR_COLORS = [
 ];
 export const CHARTS_COLORS = ["#3E0CC4", "#5E2BE8", "#9572F5", "#CAC8FF"];
 export const RADIAN = Math.PI / 180;
+
+export const ENTIRE_STAGE = [
+  "PLAN",
+  "PREP",
+  "DOC",
+  "DOC_PASS",
+  "EVAL",
+  "FINAL_PASS"
+];

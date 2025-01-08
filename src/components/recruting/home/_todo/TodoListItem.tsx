@@ -1,11 +1,14 @@
-import React from "react";
 import cn from "classnames";
 
-const TodoListItem = ({ todo, onToggle }) => {
-  const { id, text, checked } = todo;
+export default function TodoListItem({
+  todo,
+  onToggle,
+  onRemove
+}: TodoListItemProps) {
+  const { id, content, status } = todo;
 
   return (
-    <div className="pt-[0] pr-[7px] pb-[18px] pl-[10px] flex items-center group">
+    <div className="p-3 flex items-center group">
       <div
         className="cursor-pointer flex-1 flex items-center text-left text-[13px]"
         onClick={() => onToggle(id)}
@@ -18,7 +21,7 @@ const TodoListItem = ({ todo, onToggle }) => {
           />
 
           {/* 호버 상태일 때 */}
-          {!checked && (
+          {!status && (
             <>
               <img
                 src="/assets/ic-checkbox.svg"
@@ -33,7 +36,7 @@ const TodoListItem = ({ todo, onToggle }) => {
             </>
           )}
 
-          {checked && (
+          {status && (
             <>
               <img
                 src="/assets/ic-checkbox.svg"
@@ -48,12 +51,15 @@ const TodoListItem = ({ todo, onToggle }) => {
             </>
           )}
         </div>
-        <div className={cn("ml-2 flex-1", { "line-through": checked })}>
-          {text}
+        <div className={cn("ml-2 flex-1", { "line-through": status })}>
+          {content}
         </div>
+        <img
+          src="/assets/ic-minusCircleGray600.svg"
+          onClick={() => onRemove(id)}
+          className="w-4"
+        />
       </div>
     </div>
   );
-};
-
-export default React.memo(TodoListItem);
+}

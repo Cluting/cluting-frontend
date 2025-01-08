@@ -10,10 +10,14 @@ import {
   STEP6_ITEMS
 } from "../../../constants/recruting";
 import { useRecruitmentSessionStore } from "../../../store/useStore";
+import { useAuthStore } from "../../../store/useAuthStore";
+import { useQuery } from "@tanstack/react-query";
+import { getRecruitingHome } from "../service/recruiting";
 
 export default function Sidemenu() {
   // 현재 경로 가져오기
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
 
   //기수 불러오기
   const { sessionNumber } = useRecruitmentSessionStore();
@@ -69,6 +73,7 @@ export default function Sidemenu() {
     //평가 페이지, 개인 질문, 답변 기록 페이지의 경우 사이드메뉴 닫힌 게 기본이도록 설정
     if (
       location.pathname === "/recruting/evaluation" ||
+      location.pathname === `/recruting/evaluation/${id}` ||
       location.pathname === "/recruting/individual_question" ||
       location.pathname.startsWith("/recruting/answer_record") ||
       location.pathname.startsWith("/recruting/interview_evaluation_record")
@@ -81,6 +86,41 @@ export default function Sidemenu() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const { setLogin } = useAuthStore();
+  const handleLogout = () => {
+    setLogin(false);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+  };
+
+  // 리크루팅 홈 데이터 조회
+  const params = useParams();
+  const clubId = Number(params.clubId);
+  const recruitId = 1;
+
+  const [clubProfile, setClubProfile] = useState();
+  const [clubName, setClubName] = useState("-");
+  const [generation, setGeneration] = useState("-");
+
+  const { data: recruitingHomeData } = useQuery(
+    ["recruitingHome", recruitId, clubId],
+    () => getRecruitingHome(recruitId, clubId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+
+        if (data?.recruitInfo) {
+          const { clubProfile, clubName, generation } = data.recruitInfo;
+          setGeneration(generation);
+          setClubName(clubName);
+          setClubProfile(clubProfile);
+          console.log(clubProfile);
+        }
+        // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
+      }
+    }
+  );
 
   return (
     <div
@@ -96,23 +136,23 @@ export default function Sidemenu() {
         } rounded-[14px] transition-all`}
       >
         <img
-          src="/assets/ic-profile.svg"
+          src={clubProfile ? clubProfile : "/assets/ic-profile.svg"}
           alt="동아리 프로필"
           onClick={() => setSidemenuClose(!sidemenuClose)}
           className="w-[50px] h-[50px] "
         />
         {!sidemenuClose && (
           <div className="text-left ml-4">
-            <p className="text-body">잇타</p>
+            <p className="text-body">{clubName}</p>
             <p className="text-gray-900 text-caption1 mt-[5px]">
-              {sessionNumber ? sessionNumber : "-"} (리크루팅 준비)
+              {generation ? `${generation}기` : "-"} (리크루팅 준비)
             </p>
           </div>
         )}
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <Link to={"/recruting/home"}>
+        <Link to={"/recruting/home/1"}>
           <button
             className={`flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] ${
               sidemenuClose ? "pl-0" : "pl-3"
@@ -204,7 +244,7 @@ export default function Sidemenu() {
         })}
       </section>
 
-      <section className="absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">
+      <section className="flex flex-col justify-center absolute bottom-[26px] text-gray-600 text-left text-callout mt-[19px]">
         <div className="flex-center h-[46px] ">
           <img
             src="/assets/ic-sidemenu-notice.svg"
@@ -220,6 +260,14 @@ export default function Sidemenu() {
             </>
           )}
         </div>
+        {!sidemenuClose && (
+          <button
+            onClick={handleLogout}
+            className="text-caption3 text-gray-600 py-[10px] px-[86px] ml-3 bg-gray-100 rounded-lg mt-3 text-gray-800 hover:bg-gray-300"
+          >
+            로그아웃
+          </button>
+        )}
       </section>
     </div>
   );
