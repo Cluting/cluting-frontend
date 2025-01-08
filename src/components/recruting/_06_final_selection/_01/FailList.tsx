@@ -1,9 +1,18 @@
+import { GetApplicant } from "../../../../type/type";
+
 interface FailListProps {
   filter: string;
   data?: GetApplicant[];
+  byGroup?: { [key: string]: number };
 }
-export default function FailList({ filter, data }: FailListProps) {
-  console.log("넘어온 불합격", data);
+
+export default function FailList({ filter, data, byGroup }: FailListProps) {
+  //FIX:
+  const status = "완료";
+
+  const filteredData =
+    filter === "전체" ? data : data?.filter((data) => data.part === filter);
+
   return (
     <div className="w-max-[440px] pl-[10px]">
       <div className="flex items-center gap-2">
@@ -25,11 +34,11 @@ export default function FailList({ filter, data }: FailListProps) {
           </tr>
         </thead>
         <tbody>
-          {data?.map((data) => (
+          {filteredData?.map((data) => (
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {/* {applicant.status === "완료" ? "결정 완료" : ""} */}
+                  {status === "완료" ? "결정 완료" : ""}
                 </div>
               </td>
               <td>

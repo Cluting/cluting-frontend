@@ -1,3 +1,5 @@
+import { GetApplicant } from "../../../../type/type";
+
 interface PassListProps {
   filter: string;
   passData: GetApplicant[];

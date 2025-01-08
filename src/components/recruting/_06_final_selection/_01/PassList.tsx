@@ -1,34 +1,20 @@
 import { useEffect, useState } from "react";
 import { useGroupStore } from "../../../../store/useStore";
+import { GetApplicant } from "../../../../type/type";
 
-interface Applicant {
-  id: number;
-  status: string;
-  name: string;
-  phone: string;
-  group: string;
-  rank: string;
-  result: string;
-}
-
-interface passListProps {
+interface PassListProps {
   filter: string;
+  passData: GetApplicant[];
+  byGroup?: { [key: string]: number };
 }
-export default function PassList({ filter }: passListProps) {
-  const [applicants, setApplicants] = useState<Applicant[]>([]);
+export default function PassList({ filter, passData, byGroup }: PassListProps) {
+  //FIX:
+  const status = "완료";
+
   const filteredData =
     filter === "전체"
-      ? applicants
-      : applicants.filter((item) => item.group === filter);
-
-  const { group: groups } = useGroupStore();
-  useEffect(() => {
-    // JSON 파일에서 더미 데이터 가져오기
-    fetch("/passApplicant.json")
-      .then((response) => response.json())
-      .then((data: Applicant[]) => setApplicants(data))
-      .catch((error) => console.error("JSON 오류:", error));
-  }, []);
+      ? passData
+      : passData.filter((data) => data.part === filter);
 
   return (
     <div className="w-max-[440px] pr-[10px]">
@@ -39,14 +25,15 @@ export default function PassList({ filter }: passListProps) {
           </div>
           <p className="text-[#6F7278] text-[11px]">{"60"}</p>
         </div>
-        {groups.map((group) => (
-          <div className="flex items-center">
-            <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-gray-100 ">
-              {group.name}
+        {byGroup &&
+          Object.entries(byGroup)?.map(([group, count]) => (
+            <div key={group} className="flex items-center">
+              <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-gray-100">
+                {group}
+              </div>
+              <p className="text-[#6F7278] text-[11px]">{count}</p>
             </div>
-            <p className="text-[#6F7278] text-[11px]">{"60"}</p>
-          </div>
-        ))}
+          ))}
       </section>
 
       <table className="w-full mt-4 ">
@@ -60,11 +47,11 @@ export default function PassList({ filter }: passListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((applicant) => (
+          {filteredData?.map((applicant) => (
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {applicant.status === "완료" ? "결정 완료" : ""}
+                  {status === "완료" ? "결정 완료" : ""}
                 </div>
               </td>
               <td>
@@ -75,7 +62,7 @@ export default function PassList({ filter }: passListProps) {
                   </div>
                 </div>
               </td>
-              <td>{applicant.group ? applicant.group : "-"}</td>
+              <td>{applicant.part ? applicant.part : "-"}</td>
               <td> {applicant.rank}</td>
               <td className="text-[#416AFF]"> {applicant.result}</td>
             </tr>
