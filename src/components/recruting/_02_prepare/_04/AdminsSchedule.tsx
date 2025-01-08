@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useInterviewStore } from "../../../../store/useStore";
+import { useGroupStore, useInterviewStore } from "../../../../store/useStore";
 
 export default function AdminsSchedule() {
   const {
@@ -27,6 +27,8 @@ export default function AdminsSchedule() {
     interviewEndDate,
     interviewer
   } = useInterviewStore();
+  const { group } = useGroupStore();
+
   const [currentDate, setCurrentDate] = useState<Date>(
     new Date(interviewStartDate)
   );
@@ -187,6 +189,9 @@ export default function AdminsSchedule() {
                       {timeSlot}
                     </div>
                     {/*운영진들 */}
+                    {group.map((item) => (
+                      <div>{item.name}</div>
+                    ))}
                     {admins.map((admin) => (
                       <button
                         key={`${timeSlot}-${admin}`}
