@@ -13,7 +13,7 @@ import QuestionItem from "./QuestionItem";
 import InterviewTimeSelector from "./InterviewTimeSelector";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare5, getPrepare5 } from "./service/Step5";
 
 export default function CreateApplicationFormContainer(): ReactElement {
@@ -47,6 +47,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
   );
 
+  const queryClient = useQueryClient();
+
   //POST
   const createFormMutation = useMutation(
     (data: { formData: CreateApplicationForm; recruitId: number }) =>
@@ -54,6 +56,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
     {
       onSuccess: (data) => {
         console.log("폼 생성 성공:", data);
+        // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
+        queryClient.invalidateQueries(["applicationForm", recruitId]);
         handleStepTwoSubmit();
       },
       onError: (error) => {

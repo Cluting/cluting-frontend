@@ -7,6 +7,7 @@ import { useGroupStore } from "../../../../store/useStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare2 } from "./service/Step2";
 import { getPassIdeal } from "../_01/service/Step1";
+import { useState, useEffect } from "react";
 
 export default function DefineIdealCandidateContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
@@ -14,31 +15,37 @@ export default function DefineIdealCandidateContainer() {
 
   //GET
   const recruitId = 1; //todo: 임시로
-  const { data: passIdeal } = useQuery<PassIdealResponse, Error, IdealForm>(
-    ["passIdeal", recruitId],
+  const { data: ideal } = useQuery<PassIdealResponse, Error, IdealForm>(
+    ["ideal", recruitId],
     () => getPassIdeal(recruitId),
     {
       select: (data) => {
-        // console.log("GET 응답:", data);
         console.log("2-2 조회 성공!");
         return {
           partIdeals: [
             {
-              partName: "PM",
-              content: Object.values(data.groupResponses[0]?.idealContent || {})
+              partName: "Back",
+              content: data.groupResponses[0]?.idealContent
+                ? Object.values(data.groupResponses[0].idealContent)
+                : []
             },
-            ...groups.map((group) => ({
-              partName: group.name,
-              content: Object.values(
-                data.groupResponses.find((g) => g.groupId === group.index)
-                  ?.idealContent || {}
-              )
-            }))
+            ...groups.map((group) => {
+              const groupResponse = data.groupResponses.find(
+                (g) => g.groupId === group.index
+              );
+              return {
+                partName: group.name,
+                content: groupResponse?.idealContent
+                  ? Object.values(groupResponse.idealContent)
+                  : []
+              };
+            })
           ]
         };
       }
     }
   );
+
   const queryClient = useQueryClient();
 
   //POST
@@ -46,23 +53,21 @@ export default function DefineIdealCandidateContainer() {
     (data: { formData: IdealForm; recruitId: number }) =>
       postPrepare2(data.formData, data.recruitId),
     {
-      onSuccess: (responseData) => {
-        console.log("모집하기2 POST 성공", responseData);
-        // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
-        queryClient.invalidateQueries(["passIdeal", recruitId]);
-      },
-      onError: (error) => {
-        console.error("모집하기2 POST 실패:", error);
+      onSuccess: (data) => {
+        console.log("모집하기2 POST 성공", data);
+        setStepCompleted(1, true);
+        queryClient.invalidateQueries(["ideal", recruitId]);
       }
     }
   );
 
   const methods = useForm<IdealForm>({
     mode: "onTouched",
-    values: passIdeal,
+    values: ideal, // 서버에서 가져온 데이터로 초기값 설정
+
     defaultValues: {
       partIdeals: [
-        { partName: "PM", content: [] },
+        { partName: "Back", content: [] },
         ...groups.map((group) => ({ partName: group.name, content: [] }))
       ]
     }
@@ -70,11 +75,19 @@ export default function DefineIdealCandidateContainer() {
 
   const handleSubmit = methods.handleSubmit((data) => {
     if (data.partIdeals.every((part) => part.content.length > 0)) {
-      // console.log(data);
-      setStepCompleted(1, true);
+      // 새로운 데이터만 POST하기 위해 기존 데이터 제외
+      const newData = {
+        partIdeals: data.partIdeals.map((part) => ({
+          partName: part.partName,
+          // content 배열에서 마지막 항목(새로 추가된 데이터)만 포함
+          content: part.content.slice(-1)
+        }))
+      };
+
+      console.log("제출되는 데이터:", newData);
 
       mutation.mutate({
-        formData: data,
+        formData: newData,
         recruitId: recruitId
       });
     }

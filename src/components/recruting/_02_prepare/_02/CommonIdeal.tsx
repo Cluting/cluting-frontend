@@ -16,10 +16,18 @@ export default function CommonIdeal() {
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && inputValue.trim()) {
       e.preventDefault();
+
+      console.log("입력한 값:", inputValue.trim());
+      console.log("현재 content:", commonIdeal.content);
+
       setValue("partIdeals.0.content", [
         ...commonIdeal.content,
         inputValue.trim()
       ]);
+
+      // setValue 후 실제로 값이 들어갔는지 확인
+      console.log("setValue 후 content:", watch("partIdeals.0.content"));
+
       setInputValue("");
       setShowInput(false);
       setTouched(true);
