@@ -1,4 +1,4 @@
-import GroupPassCard from "./GroupPassCard";
+import { GroupPassCard } from "./GroupPassCard";
 import { useGroupStore, useStepTwoStore } from "../../../../store/useStore";
 
 export default function GroupPassCount({
@@ -7,7 +7,6 @@ export default function GroupPassCount({
   rules
 }: GroupPassCountProps) {
   const { group } = useGroupStore();
-
   //2-1 완료 여부
   const { steps } = useStepTwoStore();
   //그룹 없을 시 렌더링 되지 않도록 처리
@@ -25,20 +24,19 @@ export default function GroupPassCount({
             그룹별로 서류와 최종 합격 인원을 설정해 주세요.
           </div>
         </div>
-        <div className="pt-[16px]">
-          <div className="h-[405px] rounded-[12px] bg-white-100 ">
-            <div className="flex pl-[33.38px] pt-[31px] gap-[27px]">
-              {group.map((group, index) => (
+        <div className="mt-4 h-auto bg-white-100 rounded-[12px] p-8">
+          <div className="grid grid-cols-3 gap-8">
+            {group.map((group, index) => (
+              <div key={group.name} className="flex justify-center">
                 <GroupPassCard
-                  key={group.name}
                   control={control}
                   groupIndex={index}
                   groupName={group.name}
                   errors={errors}
                   rules={rules}
                 />
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

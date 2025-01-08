@@ -40,7 +40,6 @@ export default function RecrutingStartModal({
       onSuccess: (data) => {
         console.log("리크루팅이 성공적으로 시작되었습니다!");
         setSessionNumber(data.generation); // 동아리 기수 Store에 반영
-        startRecruiting(); //리크루팅 프로세스 시작 여부 Store에 반영
         window.scrollTo(0, 0);
         onClose(); // 폼 제출 후 모달 닫기
         navigate("/recruting/01_plan");
