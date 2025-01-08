@@ -16,11 +16,16 @@ export default function SetAcceptanceCountContainer() {
     () => getPassIdeal(recruitId),
     {
       select: (data) => {
-        // API 응답 데이터를 폼 데이터 구조로 변환
         console.log("2-1 조회 성공!");
+
         return {
           totalDocumentPassCount: data.numDoc,
-          totalFinalPassCount: data.numFinal
+          totalFinalPassCount: data.numFinal,
+          groupInfos: data.groupResponses.map((group) => ({
+            groupName: `Group${group.groupId}`, // groupId를 이용해 groupName 생성
+            documentPassCount: group.numDoc,
+            finalPassCount: group.numFinal
+          }))
         } as SetAcceptanceCountFormData;
       },
       onError: (error) => {
