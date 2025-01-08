@@ -3,6 +3,7 @@ import PopularClub from "./PopularClub";
 import { getPopularClub } from "../../../club/service/Club";
 import { clubCategoryList } from "../../../../constants/recruting";
 import LoadingSpinner from "../../common/LoadingSpinner";
+import LazyLoad from "./LazyLoad";
 
 function mapClubDataToPopularClubProps(club: ClubData): PopularClubProps {
   const categoryDescription =
@@ -30,19 +31,8 @@ export default function MainBanner() {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="relative w-full h-[378px]">
-      <img
-        src="/assets/home/banner/mainBanner.svg"
-        className="w-full h-full object-cover"
-      />
-      <div className="absolute inset-0 flex flex-col px-[141px] pt-[176px] pb-[86px]">
-        <p className="text-left text-white-100 text-title3">클루팅 PICK!</p>
-        <p className="text-left text-white-100 text-largeTitle mt-4">
-          지금 가장 인기 있는
-          <br />
-          동아리 리스트
-        </p>
-      </div>
+    <div className="w-full">
+      <LazyLoad />
 
       <div className="absolute right-[150px] top-[85.5px] flex gap-[25.36px]">
         {clubsData &&

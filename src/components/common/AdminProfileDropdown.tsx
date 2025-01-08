@@ -13,7 +13,13 @@ export default function AdminProfileDropdown() {
   const fetchClub = (clubId: number) => {
     return getClub(clubId).then((data) => {
       console.log(data);
-      navigate(`/recruting/home/${data.id}`);
+      if (data.recruits && data.recruits.length > 0) {
+        const recruitId = data.recruits[0].id;
+        navigate(`/recruting/home/${data.id}/${recruitId}`);
+      } else {
+        // 리크루팅 정보가 없는 경우 처리
+        console.error("리크루팅 정보가 없습니다");
+      }
       return data;
     });
   };
@@ -24,20 +30,6 @@ export default function AdminProfileDropdown() {
   return (
     <div className=" absolute animate-dropdown top-[50px] right-[10px] bg-white-100 z-50 w-[320px] h-auto p-2 rounded-[12px]">
       <ul>
-        <li className="dropdown-list" onClick={() => handleClick(1)}>
-          <img
-            src="/assets/ic-profile.svg"
-            alt="프로필"
-            className="w-[35px] h-[35px] mx-3"
-          />
-          <div className="flex flex-col text-left mx-3">
-            <p className="text-body text-gray-900">잇타 (예시 데이터)</p>
-            <p className="text-caption text-gray-900">
-              IT 서비스 동아리 / 연합
-            </p>
-          </div>
-        </li>
-
         {clubsData &&
           clubsData.length > 0 &&
           clubsData.map((club: ClubData) => (

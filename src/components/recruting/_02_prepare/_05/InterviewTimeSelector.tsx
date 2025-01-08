@@ -1,6 +1,6 @@
 export default function InterviewTimeSelector() {
   return (
-    <div className="ml-8 w-full mt-[58px] mb-[50px]">
+    <div className="w-full mt-[58px] mb-[50px]">
       <div className="flex items-center">
         <p className="section-title">면접 시간 선택</p>
         <div className="tooltip">

@@ -25,9 +25,10 @@ declare interface AnnouncementForm {
   activityEnd: Date;
   activityDay: string;
   activityTime: string;
-  clubFee: number;
-  imageUrl?: string;
+  clubFee: string;
+  posterImage?: File;
   content: string;
+  imageUrl?: File;
 }
 
 //이용 약관 Form Type
@@ -63,30 +64,6 @@ declare interface ClubCardProps {
   isLarge?: boolean; //크기 변환 prop
 }
 
-// 합격 인원 설정 Form
-declare interface SetAcceptanceCountFormData {
-  documentPassTotal: number;
-  finalPassTotal: number;
-  groups: {
-    documentPass: number;
-    finalPass: number;
-  }[];
-}
-
-declare interface GroupPassCardProps {
-  control: Control<any>;
-  groupIndex: number;
-  groupName: string;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
-declare interface GroupPassCountProps {
-  control: Control<any>;
-  errors?: any;
-  rules?: RegisterOptions;
-}
-
 // 운영자 Type
 declare interface AdminUser {
   id: string;
@@ -106,34 +83,6 @@ declare interface PrepareStepRolesFormValues {
   steps: Step[];
 }
 
-//공통 인재상(배열로) Form
-declare interface CommonIdealForm {
-  commonIdeal: string;
-  commonIdeals: CommonIdeal[];
-}
-
-//공통 인재상
-declare interface CommonIdeal {
-  id: number;
-  text: string;
-}
-
-//그룹별 인재상 Form
-declare interface GroupIdealForm {
-  groupIdeals: {
-    [groupName: string]: string;
-  };
-}
-
-//그룹별 인재상
-declare interface GroupIdeals {
-  [groupName: string]: {
-    ideals: GroupIdeal[];
-    showInput: boolean;
-    value: string;
-    nextId: number;
-  };
-}
 //임원진 일정 Form
 declare interface AdminsScheduleFormData {
   scheduleData: TimeSlotAdmins;
@@ -142,52 +91,6 @@ declare interface AdminsScheduleFormData {
 //임원진 일정
 declare interface TimeSlotAdmins {
   [timeSlot: string]: string[];
-}
-
-//2-5
-declare interface BaseQuestion {
-  id: string;
-  question: string;
-  type: "서술형 질문" | "객관형 질문";
-}
-
-declare interface DescriptiveQuestion extends BaseQuestion {
-  type: "서술형 질문";
-  hasWordLimit: boolean;
-  wordLimit: number;
-  options: [];
-}
-
-declare interface MultipleChoiceQuestion extends BaseQuestion {
-  type: "객관형 질문";
-  hasWordLimit?: never; // 객관형은 글자수 제한 사용 안 함
-  wordLimit?: never;
-  options: Array<{
-    id: string;
-    value: string;
-  }>;
-}
-
-declare type Question = DescriptiveQuestion | MultipleChoiceQuestion;
-
-declare interface QuestionSection {
-  caution: string;
-  questions: Record<string, Question>;
-}
-
-declare interface CreateApplicationForm {
-  title: string;
-  applyGroups: string[];
-  commonSection: {
-    caution: string;
-    questions: Record<string, Question>;
-  };
-  groupSections: Record<string, QuestionSection>;
-  portfolio: {
-    enabled: boolean;
-    requirements?: string;
-  };
-  multipleApplicationAllowed: boolean;
 }
 
 declare interface Groups {
@@ -214,7 +117,7 @@ declare interface DocumentReviewForm {
   }[];
 }
 
-// 운영진 면접 일정 조정 Form - 면접관, 면접자
+// 2-4 운영진 면접 일정 조정 Form - 면접관, 면접자
 declare interface InterviewNumValue {
   interviewer: number;
   interviewee: number;
@@ -224,4 +127,31 @@ declare interface InterviewNumValue {
 declare interface ResultMessageForm {
   pass: string;
   fail: string;
+}
+
+//투두
+declare interface TodoInsertProps {
+  onInsert: (value: string) => void;
+}
+
+declare interface Todo {
+  id: number;
+  content: string;
+  status: boolean;
+}
+
+declare interface TodoRequest {
+  content: string;
+}
+
+declare interface TodoListProps {
+  todos: Todo[];
+  onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
+}
+
+interface TodoListItemProps {
+  todo: Todo;
+  onToggle: (id: number) => void;
+  onRemove: (id: number) => void;
 }
