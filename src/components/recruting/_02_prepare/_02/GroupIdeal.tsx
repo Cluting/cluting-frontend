@@ -1,13 +1,8 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useGroupStore } from "../../../../store/useStore";
-import { useRef, useEffect } from "react";
 
-export default function GroupIdeal({
-  onFormChange
-}: {
-  onFormChange?: (data: GroupIdealForm) => void;
-}) {
+export default function GroupIdeal() {
   const { group: groups } = useGroupStore();
   const {
     watch,
