@@ -204,3 +204,13 @@ export const useRecruitmentStartStore = create<RecruitmentStartStore>(
     startRecruiting: () => set({ isRecruitingStarted: true }) // 시작 상태로 변경
   })
 );
+
+// 동아리 정보 Store -> 사이드메뉴 연결용
+export const useClubInfoStore = create<ClubInfoStore>((set) => ({
+  clubProfile: "",
+  clubName: "",
+  generation: 0,
+  setClubProfile: (profile) => set({ clubProfile: profile }),
+  setClubName: (name) => set({ clubName: name }),
+  setGeneration: (gen) => set({ generation: gen })
+}));

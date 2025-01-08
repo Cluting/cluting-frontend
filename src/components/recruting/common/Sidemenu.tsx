@@ -9,7 +9,10 @@ import {
   STEP5_ITEMS,
   STEP6_ITEMS
 } from "../../../constants/recruting";
-import { useRecruitmentSessionStore } from "../../../store/useStore";
+import {
+  useClubInfoStore,
+  useRecruitmentSessionStore
+} from "../../../store/useStore";
 import { useAuthStore } from "../../../store/useAuthStore";
 import { useQuery } from "@tanstack/react-query";
 import { getRecruitingHome } from "../service/recruiting";
@@ -94,33 +97,7 @@ export default function Sidemenu() {
     localStorage.removeItem("refresh_token");
   };
 
-  // 리크루팅 홈 데이터 조회
-  const params = useParams();
-  const clubId = Number(params.clubId);
-  const recruitId = 1;
-
-  const [clubProfile, setClubProfile] = useState();
-  const [clubName, setClubName] = useState("-");
-  const [generation, setGeneration] = useState("-");
-
-  const { data: recruitingHomeData } = useQuery(
-    ["recruitingHome", recruitId, clubId],
-    () => getRecruitingHome(recruitId, clubId),
-    {
-      onSuccess: (data) => {
-        console.log(data);
-
-        if (data?.recruitInfo) {
-          const { clubProfile, clubName, generation } = data.recruitInfo;
-          setGeneration(generation);
-          setClubName(clubName);
-          setClubProfile(clubProfile);
-          console.log(clubProfile);
-        }
-        // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
-      }
-    }
-  );
+  const { clubProfile, clubName, generation } = useClubInfoStore();
 
   return (
     <div

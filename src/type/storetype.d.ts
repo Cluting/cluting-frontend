@@ -81,3 +81,13 @@ declare interface RecruitmentStartStore {
   isRecruitingStarted: boolean; // 리크루팅 시작 여부
   startRecruiting: () => void; // 리크루팅 시작 메서드
 }
+
+// 클럽 (동아리) 정보
+declare interface ClubInfoStore {
+  clubProfile: string;
+  clubName: string;
+  generation: number;
+  setClubProfile: (profile: string) => void;
+  setClubName: (name: string) => void;
+  setGeneration: (gen: number) => void;
+}
