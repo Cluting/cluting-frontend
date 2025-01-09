@@ -1,7 +1,7 @@
 import { Instance } from "../../../../../services/AxiosInstance";
 
 // GET: 홈화면 동아리 리스트 조회
-export async function getClub() {
+export async function getMainClub() {
   try {
     const { data } = await Instance.get("/recruit/list");
     return data;
