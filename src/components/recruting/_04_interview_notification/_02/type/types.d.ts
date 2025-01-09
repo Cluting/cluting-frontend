@@ -25,8 +25,8 @@ declare interface ScheduleFormData {
         [date: string]: {
           schedules: {
             time: string;
-            interviewers: string[];
-            applicants: string[];
+            interviewers: number[];
+            applicants: number[]; //id로 받기
           }[];
         };
       };

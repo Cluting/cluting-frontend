@@ -17,8 +17,44 @@ import {
   ValidationError
 } from "./utils/validators";
 import { createScheduleData } from "./utils/schedule";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { postSchedule, getSchedule } from "./service/ScheduleAdjustment";
 
 export default function ScheduleAdjustmentContainer() {
+  const queryClient = useQueryClient();
+  const recruitId = 1;
+
+  //GET
+  const { data: clubsData } = useQuery<ScheduleFormData[]>(
+    ["mainClubs", recruitId],
+    () => getSchedule(recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("4-2 GET 성공: ", data);
+      },
+      onError: (error) => {
+        console.error("4-2 GET 실패:", error);
+      }
+    }
+  );
+
+  //POST
+  const createFormMutation = useMutation(
+    (data: { formData: ScheduleFormData; recruitId: number }) =>
+      postSchedule(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("4-2 POST  성공:", data);
+        // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
+        queryClient.invalidateQueries(["mainClubs", recruitId]);
+        // handleStepTwoSubmit();
+      },
+      onError: (error) => {
+        console.error("4-2 POST 실패:", error);
+      }
+    }
+  );
+
   const { group } = useGroupStore();
   const {
     interviewer,
@@ -160,12 +196,14 @@ export default function ScheduleAdjustmentContainer() {
           [dateKey]: {
             schedules: currentSchedules.map((schedule) => ({
               time: schedule.time,
-              interviewers: schedule.interviewer,
+              interviewers: schedule.interviewer.map((interviewer) =>
+                Number(interviewer)
+              ),
               applicants: schedule.applicants
                 .filter((applicant) =>
                   currentSelections[schedule.time]?.includes(applicant.id)
                 )
-                .map((applicant) => applicant.name)
+                .map((applicant) => applicant.id)
             }))
           }
         }
@@ -283,8 +321,8 @@ export default function ScheduleAdjustmentContainer() {
                     {
                       schedules: Array<{
                         time: string;
-                        interviewers: string[];
-                        applicants: string[];
+                        interviewers: number[];
+                        applicants: number[];
                       }>;
                     }
                   >
@@ -298,12 +336,14 @@ export default function ScheduleAdjustmentContainer() {
                     datesAcc[dateKey] = {
                       schedules: scheduleData.map((schedule) => ({
                         time: schedule.time,
-                        interviewers: schedule.interviewer,
+                        interviewers: schedule.interviewer.map((interviewer) =>
+                          Number(interviewer)
+                        ),
                         applicants: schedule.applicants
                           .filter((applicant) =>
                             selections[schedule.time]?.includes(applicant.id)
                           )
-                          .map((applicant) => applicant.name)
+                          .map((applicant) => applicant.id)
                       }))
                     };
                   }
@@ -321,8 +361,8 @@ export default function ScheduleAdjustmentContainer() {
                   {
                     schedules: Array<{
                       time: string;
-                      interviewers: string[];
-                      applicants: string[];
+                      interviewers: number[];
+                      applicants: number[];
                     }>;
                   }
                 >
@@ -335,12 +375,14 @@ export default function ScheduleAdjustmentContainer() {
                   datesAcc[dateKey] = {
                     schedules: scheduleData.map((schedule) => ({
                       time: schedule.time,
-                      interviewers: schedule.interviewer,
+                      interviewers: schedule.interviewer.map((interviewer) =>
+                        Number(interviewer)
+                      ),
                       applicants: schedule.applicants
                         .filter((applicant) =>
                           selections[schedule.time]?.includes(applicant.id)
                         )
-                        .map((applicant) => applicant.name)
+                        .map((applicant) => applicant.id)
                     }))
                   };
                 }
@@ -356,6 +398,7 @@ export default function ScheduleAdjustmentContainer() {
     }
 
     console.log(completeFormData);
+    createFormMutation.mutate({ formData: completeFormData, recruitId });
   });
 
   const changeDate = useCallback(
