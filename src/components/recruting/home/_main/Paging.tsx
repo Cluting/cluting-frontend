@@ -1,7 +1,7 @@
 export default function Paging() {
   return (
     //UI만 구현
-    <div className="flex-center">
+    <div className="flex-center pt-[96px] pb-[155px]">
       <div className="w-[199px] h-[23px] flex flex-center gap-[3px] cursor-pointer text-[16px]">
         <p className="w-[24px] h-[23px] text-gray-500">‹</p>
         <p className="w-[24px] h-[23px] text-gray-500">1</p>
