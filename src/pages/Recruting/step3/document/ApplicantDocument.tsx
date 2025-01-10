@@ -29,7 +29,13 @@ export default function ApplicantDocument() {
         <Sidemenu />
       </div>
       <div className="z-[0] flex-center absolute top-50 left-28">
-        <Link to="/recruting/05_interview_evaluation/interviewPrep">
+        <Link
+          to={
+            location.pathname === `/recruting/evaluation/${id}`
+              ? "/recruting/03_document_evaluation/doc"
+              : "/recruting/05_interview_evaluation/interviewPrep"
+          }
+        >
           <img src="/assets/ic-back.svg" alt="뒤로가기" className="mr-[11px]" />
         </Link>
         <p className="text-title1">{applicant?.name}</p>
