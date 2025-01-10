@@ -3,6 +3,7 @@
 import { memo, useCallback } from "react";
 import { TimeSlot } from "./TimeSlot";
 import { ApplicantButton } from "./ApplicantButton";
+import { INTERVIEWER_NAMES } from "./constants/interview";
 
 interface ScheduleGridProps {
   scheduleData: ScheduleData[];
@@ -49,6 +50,14 @@ export const ScheduleGrid = memo(
       [currentDate, dateSelectionsMap, selectedGroupId, getDateKey]
     );
 
+    const getInterviewerNames = useCallback((interviewerIds: number[]) => {
+      return interviewerIds.map(
+        (id) =>
+          INTERVIEWER_NAMES.find((interviewer) => interviewer.id === id)
+            ?.name || ""
+      );
+    }, []);
+
     return (
       <div>
         <div
@@ -70,7 +79,7 @@ export const ScheduleGrid = memo(
               >
                 <TimeSlot
                   time={schedule.time}
-                  interviewer={schedule.interviewer}
+                  interviewer={getInterviewerNames(schedule.interviewer)}
                   isComplete={isTimeSlotComplete(schedule.time)}
                 />
                 <div className="flex flex-wrap gap-2">

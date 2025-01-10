@@ -1,12 +1,12 @@
 export const INTERVIEWER_NAMES = [
-  "최시현",
-  "최예은",
-  "윤다인",
-  "곽서연",
-  "김은혜",
-  "이은재",
-  "김동현",
-  "양성원"
+  { id: 1, name: "최시현" },
+  { id: 2, name: "최예은" },
+  { id: 3, name: "윤다인" },
+  { id: 4, name: "곽서연" },
+  { id: 5, name: "김은혜" },
+  { id: 6, name: "이은재" },
+  { id: 7, name: "김동현" },
+  { id: 8, name: "양성원" }
 ] as const;
 
 export const DEFAULT_TIME_SLOTS = [

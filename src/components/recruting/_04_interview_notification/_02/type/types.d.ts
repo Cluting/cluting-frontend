@@ -1,5 +1,5 @@
 declare interface ScheduleData {
-  interviewer: string[];
+  interviewer: number[];
   time: string;
   applicants: { id: number; name: string }[]; // 내부 로직용
 }

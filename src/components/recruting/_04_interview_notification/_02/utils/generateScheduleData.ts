@@ -7,7 +7,8 @@ export const generateScheduleDataUtil = (
   return timeSlots.map((time) => ({
     interviewer: [...INTERVIEWER_NAMES]
       .sort(() => Math.random() - 0.5)
-      .slice(0, interviewerCount),
+      .slice(0, interviewerCount)
+      .map((interviewer) => interviewer.id), // 이제 interviewer.id를 반환
     time,
     applicants: Array(Math.floor(Math.random() * 8) + 5)
       .fill(null)
