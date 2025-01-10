@@ -7,7 +7,6 @@ import { useGroupStore } from "../../../../store/useStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare2 } from "./service/Step2";
 import { getPassIdeal } from "../_01/service/Step1";
-import { useState, useEffect } from "react";
 
 export default function DefineIdealCandidateContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
