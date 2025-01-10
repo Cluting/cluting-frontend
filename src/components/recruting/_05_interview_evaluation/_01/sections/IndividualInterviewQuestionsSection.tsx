@@ -20,42 +20,42 @@ export default function IndividualInterviewQuestionsSection() {
     {
       id: "h1h1",
       name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
+      phone: "010-5255-5555",
+      group: "디자인",
       status: "작성 전"
     },
     {
-      id: uuidv4(),
+      id: "h2h2",
       name: "곽서연",
-      phone: "010-1234-1234",
+      phone: "010-3456-7890",
       group: "개발",
       status: "작성 중"
     },
     {
-      id: uuidv4(),
+      id: "h3h3",
       name: "박시현",
-      phone: "010-1234-1234",
+      phone: "010-0654-3210",
       group: "기획",
       status: "작성 완료"
     },
     {
-      id: "h2h2",
+      id: "h4h4",
       name: "김동현",
-      phone: "010-1234-1234",
+      phone: "010-5255-5555",
       group: "개발",
       status: "작성 전"
     },
     {
-      id: uuidv4(),
+      id: "h5h5",
       name: "양성원",
-      phone: "010-1234-1234",
+      phone: "010-3456-7890",
       group: "개발",
       status: "작성 완료"
     },
     {
-      id: uuidv4(),
+      id: "h6h6",
       name: "윤다인",
-      phone: "010-1234-1234",
+      phone: "010-3456-7890",
       group: "개발",
       status: "작성 중"
     }
