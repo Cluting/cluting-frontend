@@ -69,11 +69,11 @@ export default function ApplicantDocument() {
           </>
         )}
 
-        {location.pathname === `/recruting/evaluation/${id}` && (
+        {location.pathname.startsWith("/recruting/evaluation/") && (
           <AdminEvaluationWindow />
         )}
 
-        {location.pathname === "/recruting/individual_question" && (
+        {location.pathname.startsWith("/recruting/individual_question") && (
           <IndividualQuestionWindow />
         )}
       </div>

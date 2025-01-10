@@ -79,7 +79,7 @@ export default function App() {
               </Route>
               {/* 개별 질문 작성하기 */}
               <Route
-                path="individual_question"
+                path="individual_question/:id"
                 element={<ApplicantDocument />}
               />
               {/* <Route path="answer_record" element={<AnswerRecord />} /> */}

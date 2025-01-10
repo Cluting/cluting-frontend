@@ -115,7 +115,7 @@ export const useApplicantEvaluationStore =
         ]
       },
       {
-        id: uuidv4(),
+        id: "h1h1",
         name: "김은혜",
         phone: "010-5255-5555",
         group: "디자인",
@@ -163,7 +163,7 @@ export const useApplicantEvaluationStore =
         ]
       },
       {
-        id: uuidv4(),
+        id: "h2h2",
         name: "김동현",
         phone: "010-5255-5555",
         group: "개발",
