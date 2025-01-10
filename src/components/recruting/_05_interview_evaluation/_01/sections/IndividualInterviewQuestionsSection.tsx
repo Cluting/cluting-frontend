@@ -5,6 +5,7 @@ import ProgressBar from "./processBar/ProcessBar";
 import ApplicantList from "./list/ApplicantList";
 import { v4 as uuidv4 } from "uuid";
 import AuthorityModal from "./modal/AuthorityModal";
+import { useNavigate } from "react-router-dom";
 
 export default function IndividualInterviewQuestionsSection() {
   const [filter, setFilter] = useState("전체");
@@ -97,9 +98,10 @@ export default function IndividualInterviewQuestionsSection() {
     setIsModalOpen((prev) => !prev);
   };
 
+  const navigate = useNavigate();
   const handleCreateQuestion = (id: string) => {
     // 해당 부분 연결시 바꿔야함
-    alert("질문 생성 버튼");
+    navigate("/recruting/individual_question");
   };
 
   return (
