@@ -52,9 +52,9 @@ export default function PreviewModal({
     if (isSendPass && isSendFail) {
       console.log({ isSendPass, isSendFail, isStepCompleteModalOpen });
       setStepCompleteModalOpen(!isStepCompleteModalOpen);
+      onClose();
     } else {
       console.log({ isSendPass, isSendFail, isStepCompleteModalOpen });
-      onClose();
     }
   };
 

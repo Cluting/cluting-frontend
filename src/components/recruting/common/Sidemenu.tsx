@@ -233,7 +233,7 @@ export default function Sidemenu() {
         {!sidemenuClose && (
           <button
             onClick={handleLogout}
-            className="text-caption3 text-gray-600 py-[10px] px-[86px] ml-3 bg-gray-100 rounded-lg mt-3 text-gray-800 hover:bg-gray-300"
+            className="text-caption3 py-[10px] px-[86px] ml-3 bg-gray-100 rounded-lg mt-3 text-gray-800 hover:bg-gray-300"
           >
             로그아웃
           </button>

@@ -6,7 +6,10 @@ export default function ApplicantHistoryDetail() {
   return (
     <div className="w-full h-full flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <ApplicationHistoryDetailContainer />
+
+      <div className="w-[1016px] pl-8 mb-[143px] h-full">
+        <ApplicationHistoryDetailContainer />
+      </div>
     </div>
   );
 }
