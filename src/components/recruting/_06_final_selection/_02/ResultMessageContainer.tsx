@@ -135,7 +135,7 @@ export default function ResultMessageContainer() {
           <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
             <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
             <button
-              onClick={() => handleInsertText("지원자")}
+              onClick={() => handleInsertText("{{지원자}}")}
               className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-caption3"
             >
               <img
@@ -146,7 +146,7 @@ export default function ResultMessageContainer() {
             </button>
 
             <button
-              onClick={() => handleInsertText("파트")}
+              onClick={() => handleInsertText("{{파트}}")}
               className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3"
             >
               <img

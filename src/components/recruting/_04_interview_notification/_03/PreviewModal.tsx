@@ -10,8 +10,8 @@ import {
 
 interface previewModalProps {
   onClose: () => void;
-  onSendPass: () => void; // 합격 메시지 전송 완료 콜백
-  onSendFail: () => void; // 불합격 메시지 전송 완료 콜백
+  onSendPass: (isPass: boolean) => void; // 합격 메시지 전송 완료 콜백
+  onSendFail: (isPass: boolean) => void; // 불합격 메시지 전송 완료 콜백
   passMessage: string;
   failMessage: string;
   isPreview?: boolean;
@@ -35,7 +35,7 @@ export default function PreviewModal({
   const handleSendPass = () => {
     setIsSendPassModalVisible(true); // 합격 알림 모달 표시
     setIsSendPass(true);
-    onSendPass(); // 상위 컴포넌트에 합격 전송 상태 전달
+    onSendPass(true); // 상위 컴포넌트에 합격 전송 상태 전달
     setTimeout(() => setIsSendPassModalVisible(false), 2000); // 2초 후 숨김
   };
 
@@ -43,7 +43,7 @@ export default function PreviewModal({
   const handleSendFail = () => {
     setIsSendFailModalVisible(true); // 불합격 알림 모달 표시
     setIsSendFail(true);
-    onSendFail(); // 상위 컴포넌트에 불합격 전송 상태 전달
+    onSendFail(false); // 상위 컴포넌트에 불합격 전송 상태 전달
     setTimeout(() => setIsSendFailModalVisible(false), 2000);
   };
 
