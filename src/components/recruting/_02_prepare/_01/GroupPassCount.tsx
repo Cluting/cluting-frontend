@@ -1,4 +1,4 @@
-import GroupPassCard from "./GroupPassCard";
+import { GroupPassCard } from "./GroupPassCard";
 import { useGroupStore, useStepTwoStore } from "../../../../store/useStore";
 
 export default function GroupPassCount({
@@ -7,7 +7,6 @@ export default function GroupPassCount({
   rules
 }: GroupPassCountProps) {
   const { group } = useGroupStore();
-
   //2-1 완료 여부
   const { steps } = useStepTwoStore();
   //그룹 없을 시 렌더링 되지 않도록 처리

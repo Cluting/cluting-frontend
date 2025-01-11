@@ -1,7 +1,6 @@
-import { Control, RegisterOptions } from "react-hook-form";
 import NumberSpinner from "./NumberSpinner";
 
-export default function GroupPassCard({
+export function GroupPassCard({
   control,
   groupIndex,
   groupName,
@@ -9,8 +8,13 @@ export default function GroupPassCard({
   rules
 }: GroupPassCardProps) {
   return (
-    <div className="w-[265px] h-[333px] rounded-[12px] bg-[#F2F2F7]">
-      <div className="mt-[13px] flex-center">
+    <div className="w-[259px] h-[333px] rounded-[12px] bg-[#F2F2F7]">
+      <div className="pt-[13px] flex-center">
+        <input
+          type="hidden"
+          {...control.register(`groupInfos.${groupIndex}.groupName`)}
+          value={groupName}
+        />
         <div className="flex-center w-[229px] h-[50px] bg-gray-200 rounded-[11px] border border-gray-400 text-[16px] text-gray-850 font-semibold">
           {groupName}
         </div>
@@ -22,7 +26,7 @@ export default function GroupPassCard({
         <div className="flex-center pt-[15px] pb[26px] relative">
           <div
             className={`relative flex items-center w-[199px] h-[41px] rounded-[7px] bg-white-100 border ${
-              errors?.groups?.[groupIndex]?.documentPass
+              errors?.groupInfos?.[groupIndex]?.documentPassCount
                 ? "border-red-100"
                 : "border-gray-400"
             }`}
@@ -30,15 +34,16 @@ export default function GroupPassCard({
             <div className="absolute right-[6.44px]">
               <NumberSpinner
                 control={control}
-                name={`groups.${groupIndex}.documentPass`}
-                error={errors?.groups?.[groupIndex]?.documentPass?.message}
-                rules={rules.documentPass}
+                name={`groupInfos.${groupIndex}.documentPassCount`}
+                error={
+                  errors?.groupInfos?.[groupIndex]?.documentPassCount?.message
+                }
+                rules={rules.documentPassCount}
               />
             </div>
-            {/*에러처리 */}
-            {errors?.groups?.[groupIndex]?.documentPass && (
+            {errors?.groupInfos?.[groupIndex]?.documentPassCount && (
               <p className="absolute left-0 top-[42px] text-red-100 font-medium text-[11px]">
-                {errors.groups[groupIndex].documentPass.message}
+                {errors.groupInfos[groupIndex].documentPassCount.message}
               </p>
             )}
           </div>
@@ -55,7 +60,7 @@ export default function GroupPassCard({
         <div className="flex-center pt-[15px]">
           <div
             className={`relative flex items-center w-[199px] h-[41px] rounded-[7px] bg-white-100 border ${
-              errors?.groups?.[groupIndex]?.finalPass
+              errors?.groupInfos?.[groupIndex]?.finalPassCount
                 ? "border-red-100"
                 : "border-gray-400"
             }`}
@@ -63,15 +68,16 @@ export default function GroupPassCard({
             <div className="absolute right-[6.44px]">
               <NumberSpinner
                 control={control}
-                name={`groups.${groupIndex}.finalPass`}
-                error={errors?.groups?.[groupIndex]?.finalPass?.message}
-                rules={rules.finalPass}
+                name={`groupInfos.${groupIndex}.finalPassCount`}
+                error={
+                  errors?.groupInfos?.[groupIndex]?.finalPassCount?.message
+                }
+                rules={rules.finalPassCount}
               />
             </div>
-            {/*에러처리 */}
-            {errors?.groups?.[groupIndex]?.finalPass && (
+            {errors?.groupInfos?.[groupIndex]?.finalPassCount && (
               <p className="absolute left-0 top-[42px] text-red-100 font-medium text-[11px]">
-                {errors.groups[groupIndex].finalPass.message}
+                {errors.groupInfos[groupIndex].finalPassCount.message}
               </p>
             )}
           </div>

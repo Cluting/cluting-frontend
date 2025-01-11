@@ -16,6 +16,7 @@ export default function Sidemenu() {
   // 현재 경로 가져오기
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
+
   const [sidemenuClose, setSidemenuClose] = useState(false);
   const [sidemenuEvaluationVersion, setEvaluationVersion] = useState(false); //평가 페이지일 경우
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(
@@ -68,7 +69,7 @@ export default function Sidemenu() {
     if (
       location.pathname === "/recruting/evaluation" ||
       location.pathname === `/recruting/evaluation/${id}` ||
-      location.pathname === "/recruting/individual_question" ||
+      location.pathname.startsWith("/recruting/individual_question") ||
       location.pathname.startsWith("/recruting/answer_record") ||
       location.pathname.startsWith("/recruting/interview_evaluation_record")
     ) {

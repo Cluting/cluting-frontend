@@ -1,106 +1,119 @@
-//2-5 지원서 폼 제작 및 공고 올리기 (컨테이너)
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import {
   useGroupStore,
   useRecruitmentStepStore,
-  useStepTwoStore,
-  useInterviewStore
+  useStepTwoStore
 } from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import ApplicantProfile from "./ApplicantProfile";
 import StepCompleteModal from "../../common/StepCompleteModal";
-import QuestionItem from "./QuestionItem"; // 이 부분 추가
+import QuestionItem from "./QuestionItem";
 import InterviewTimeSelector from "./InterviewTimeSelector";
+import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { postPrepare5, getPrepare5 } from "./service/Step5";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
-  const { interviewStartTime, interviewEndTime } = useInterviewStore();
-  const titleRef = useRef<HTMLInputElement>(null);
-  const commonCautionRef = useRef<HTMLTextAreaElement>(null);
+  //GET
+  const recruitId = 1;
+  const { data: formData, isLoading } = useQuery(
+    ["applicationForm", recruitId],
+    () => getPrepare5(recruitId),
+    {
+      onSuccess: (data) => {
+        if (data) {
+          // Update form with fetched data
+          const fetchedQuestions = data.partQuestions || [];
+          setQuestions(fetchedQuestions);
 
-  //그룹별 질문 - 지원 그룹 상태 관리
+          // Update form default values
+          setValue("title", data.title || "");
+          setValue("multiApply", data.multiApply ?? true);
+          setValue("isPortfolioRequired", data.isPortfolioRequired ?? true);
+          setValue("partQuestions", fetchedQuestions);
+          console.log("2-5 조회 성공!");
+        }
+      },
+      onError: (error) => {
+        console.error("폼 데이터 조회 실패:", error);
+      }
+    }
+  );
+
+  const queryClient = useQueryClient();
+
+  //POST
+  const createFormMutation = useMutation(
+    (data: { formData: CreateApplicationForm; recruitId: number }) =>
+      postPrepare5(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("폼 생성 성공:", data);
+        // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
+        queryClient.invalidateQueries(["applicationForm", recruitId]);
+        handleStepTwoSubmit();
+      },
+      onError: (error) => {
+        console.error("폼 생성 실패:", error);
+      }
+    }
+  );
+
+  // 선택된 그룹 상태 관리
   const [selectedGroup, setSelectedGroup] = useState<string>(
     group[0]?.name || ""
   );
   const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
 
-  // 초기 질문
+  // 초기 질문 생성 함수
   const createInitialQuestion = (
-    type: "서술형 질문" | "객관형 질문" = "서술형 질문"
-  ): Question => {
-    if (type === "서술형 질문") {
-      return {
-        id: uuidv4(),
-        type: "서술형 질문",
-        question: "",
-        hasWordLimit: false,
-        wordLimit: 500,
-        options: []
-      };
-    } else {
-      return {
-        id: uuidv4(),
-        type: "객관형 질문",
-        question: "",
-        options: []
-      };
-    }
-  };
-
-  // 질문 상태 관리
-  const [commonQuestions, setCommonQuestions] = useState<
-    Record<string, Question>
-  >(() => {
-    const initial = createInitialQuestion();
-    return {
-      [initial.id]: initial
-    };
+    type: "SUBJECT" | "OBJECT" = "OBJECT"
+  ): Question => ({
+    id: uuidv4(),
+    content: "",
+    questionType: type,
+    hasWordLimit: true,
+    wordLimit: 500,
+    objects: [],
+    multiSelect: true
   });
 
-  const [groupQuestions, setGroupQuestions] = useState<
-    Record<string, QuestionSection>
-  >(() => {
-    return group.reduce((acc, g) => {
-      const initial = createInitialQuestion();
-      return {
-        ...acc,
-        [g.name]: {
-          caution: "",
-          questions: {
-            [initial.id]: initial
-          }
-        }
-      };
-    }, {});
-  });
+  const [questions, setQuestions] = useState<PartQuestion[]>([
+    // 공통 질문 초기값
+    {
+      partName: "Back",
+      caution: "",
+      questions: [createInitialQuestion()]
+    },
+    // 그룹별 질문 초기값
+    ...group.map((g) => ({
+      partName: g.name,
+      caution: "",
+      questions: [createInitialQuestion()]
+    }))
+  ]);
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitted },
     setValue,
-    getValues,
+    formState: { errors, isSubmitted },
     setError
   } = useForm<CreateApplicationForm>({
     defaultValues: {
       title: "",
-      commonSection: {
-        caution: "",
-        questions: commonQuestions
-      },
-      groupSections: groupQuestions,
-      portfolio: {
-        enabled: false
-      },
-      multipleApplicationAllowed: false
-    },
-    mode: "onBlur"
+      partQuestions: questions,
+      multiApply: true,
+      isPortfolioRequired: true
+    }
   });
 
   const handleStepTwoSubmit = () => {
@@ -117,294 +130,192 @@ export default function CreateApplicationFormContainer(): ReactElement {
     setStepCompleteModalOpen(false);
   };
 
-  const handleGroupClick = (groupName: string) => setSelectedGroup(groupName);
+  const handleGroupClick = (partName: string) => setSelectedGroup(partName);
 
-  // 질문 관리 함수들
-  const addQuestion = (section: "common" | string) => {
-    const newQuestion = createInitialQuestion();
+  const addQuestion = (partName: string) => {
+    setQuestions((prev) =>
+      prev.map((part) => {
+        if (part.partName !== partName) return part;
 
-    if (section === "common") {
-      setCommonQuestions((prev) => ({
-        ...prev,
-        [newQuestion.id]: newQuestion
-      }));
-      setValue(`commonSection.questions.${newQuestion.id}`, newQuestion);
-    } else {
-      setGroupQuestions((prev) => ({
-        ...prev,
-        [section]: {
-          ...prev[section],
-          questions: {
-            ...prev[section].questions,
-            [newQuestion.id]: newQuestion
-          }
-        }
-      }));
-      setValue(
-        `groupSections.${section}.questions.${newQuestion.id}`,
-        newQuestion
-      );
-    }
+        return {
+          ...part,
+          questions: [...part.questions, createInitialQuestion()]
+        };
+      })
+    );
   };
 
-  const deleteQuestion = (section: "common" | string, questionId: string) => {
-    if (section === "common") {
-      if (Object.keys(commonQuestions).length <= 1) return;
-      const newQuestions = { ...commonQuestions };
-      delete newQuestions[questionId];
-      setCommonQuestions(newQuestions);
-      const { [questionId]: _, ...rest } = getValues("commonSection.questions");
-      setValue("commonSection.questions", rest);
-    } else {
-      const sectionQuestions = groupQuestions[section].questions;
-      if (Object.keys(sectionQuestions).length <= 1) return;
+  const deleteQuestion = (partName: string, questionId: string) => {
+    setQuestions((prev) =>
+      prev.map((part) => {
+        if (part.partName !== partName) return part;
+        if (part.questions.length <= 1) return part;
 
-      setGroupQuestions((prev) => {
-        const newQuestions = { ...prev[section].questions };
-        delete newQuestions[questionId];
         return {
-          ...prev,
-          [section]: {
-            ...prev[section],
-            questions: newQuestions
-          }
+          ...part,
+          questions: part.questions.filter((q) => q.id !== questionId)
         };
-      });
-      const { [questionId]: _, ...rest } = getValues(
-        `groupSections.${section}.questions`
-      );
-      setValue(`groupSections.${section}.questions`, rest);
-    }
+      })
+    );
   };
 
   const handleQuestionTypeChange = (
-    section: "common" | string,
+    partName: string,
     questionId: string,
-    newType: "서술형 질문" | "객관형 질문"
+    newType: "OBJECT" | "SUBJECT"
   ) => {
-    const createNewQuestion = (oldQuestion: Question): Question => {
-      const baseQuestion = {
-        id: questionId,
-        question: oldQuestion.question
-      };
+    setQuestions((prev) =>
+      prev.map((part) => {
+        if (part.partName !== partName) return part;
 
-      if (newType === "서술형 질문") {
         return {
-          ...baseQuestion,
-          type: "서술형 질문",
-          hasWordLimit: false,
-          wordLimit: 500,
-          options: []
-        };
-      } else {
-        return {
-          ...baseQuestion,
-          type: "객관형 질문",
-          options: []
-        };
-      }
-    };
+          ...part,
+          questions: part.questions.map((q) => {
+            if (q.id !== questionId) return q;
 
-    if (section === "common") {
-      setCommonQuestions((prev) => {
-        const updatedQuestion = createNewQuestion(prev[questionId]);
-        setValue(`commonSection.questions.${questionId}`, updatedQuestion);
-        return {
-          ...prev,
-          [questionId]: updatedQuestion
+            return {
+              ...q,
+              questionType: newType,
+              hasWordLimit: true,
+              wordLimit: 0,
+              objects: [],
+              multiSelect: true
+            };
+          })
         };
-      });
-    } else {
-      setGroupQuestions((prev) => {
-        const updatedQuestion = createNewQuestion(
-          prev[section].questions[questionId]
-        );
-        setValue(
-          `groupSections.${section}.questions.${questionId}`,
-          updatedQuestion
-        );
-        return {
-          ...prev,
-          [section]: {
-            ...prev[section],
-            questions: {
-              ...prev[section].questions,
-              [questionId]: updatedQuestion
-            }
-          }
-        };
-      });
-    }
+      })
+    );
   };
 
-  const addOption = (
-    section: "common" | string,
+  const handleAddOption = (
+    partName: string,
     questionId: string,
     value: string
   ) => {
-    const newOption = { id: uuidv4(), value };
-
-    if (section === "common") {
-      setCommonQuestions((prev) => {
-        const question = prev[questionId];
-        if (question.type !== "객관형 질문") return prev;
-
-        const updatedQuestion = {
-          ...question,
-          options: [...question.options, newOption]
-        };
-
-        // form 값도 업데이트
-        setValue(`commonSection.questions.${questionId}`, updatedQuestion);
+    setQuestions((prev) =>
+      prev.map((part) => {
+        if (part.partName !== partName) return part;
 
         return {
-          ...prev,
-          [questionId]: updatedQuestion
-        };
-      });
-    } else {
-      setGroupQuestions((prev) => {
-        const groupQuestions = prev[section];
-        const question = groupQuestions.questions[questionId];
-        if (question.type !== "객관형 질문") return prev;
+          ...part,
+          questions: part.questions.map((q) => {
+            if (q.id !== questionId) return q;
+            if (q.questionType !== "OBJECT") return q;
 
-        const updatedQuestion = {
-          ...question,
-          options: [...question.options, newOption]
+            return {
+              ...q,
+              objects: [...(q.objects || []), value]
+            };
+          })
         };
-
-        // form 값도 업데이트
-        setValue(
-          `groupSections.${section}.questions.${questionId}`,
-          updatedQuestion
-        );
-
-        return {
-          ...prev,
-          [section]: {
-            ...groupQuestions,
-            questions: {
-              ...groupQuestions.questions,
-              [questionId]: updatedQuestion
-            }
-          }
-        };
-      });
-    }
+      })
+    );
   };
 
-  const removeOption = (
-    section: "common" | string,
+  const handleRemoveOption = (
+    partName: string,
     questionId: string,
-    optionId: string
+    optionIndex: number
   ) => {
-    if (section === "common") {
-      setCommonQuestions((prev) => {
-        const question = prev[questionId];
-        if (question.type !== "객관형 질문") return prev;
-
-        const updatedQuestion = {
-          ...question,
-          options: question.options.filter((opt) => opt.id !== optionId)
-        };
-
-        // form 값도 업데이트
-        setValue(`commonSection.questions.${questionId}`, updatedQuestion);
+    setQuestions((prev) =>
+      prev.map((part) => {
+        if (part.partName !== partName) return part;
 
         return {
-          ...prev,
-          [questionId]: updatedQuestion
-        };
-      });
-    } else {
-      setGroupQuestions((prev) => {
-        const groupQuestions = prev[section];
-        const question = groupQuestions.questions[questionId];
-        if (question.type !== "객관형 질문") return prev;
+          ...part,
+          questions: part.questions.map((q) => {
+            if (q.id !== questionId) return q;
+            if (q.questionType !== "OBJECT") return q;
 
-        const updatedQuestion = {
-          ...question,
-          options: question.options.filter((opt) => opt.id !== optionId)
+            return {
+              ...q,
+              objects: q.objects?.filter((_, index) => index !== optionIndex)
+            };
+          })
         };
-
-        // form 값도 업데이트
-        setValue(
-          `groupSections.${section}.questions.${questionId}`,
-          updatedQuestion
-        );
-
-        return {
-          ...prev,
-          [section]: {
-            ...groupQuestions,
-            questions: {
-              ...groupQuestions.questions,
-              [questionId]: updatedQuestion
-            }
-          }
-        };
-      });
-    }
+      })
+    );
   };
 
-  // Submit 핸들러
   const onSubmit = async (data: CreateApplicationForm) => {
     try {
-      if (Object.keys(data.commonSection.questions).length === 0) {
-        setError("commonSection", {
+      const commonPart = data.partQuestions.find((p) => p.partName === "Back");
+      if (!commonPart || commonPart.questions.length === 0) {
+        setError("partQuestions", {
           type: "manual",
           message: "최소 한 개의 공통 질문이 필요합니다."
         });
         return;
       }
 
-      if (group.length > 0) {
-        for (const groupName of group.map((g) => g.name)) {
-          if (
-            Object.keys(data.groupSections[groupName].questions).length === 0
-          ) {
-            setError(`groupSections.${groupName}`, {
-              type: "manual",
-              message: "각 그룹별로 최소 한 개의 질문이 필요합니다."
-            });
-            return;
-          }
-        }
-      }
+      // API 제출용 데이터 준비
+      const submitData = {
+        title: data.title,
+        multiApply: data.multiApply,
+        isPortfolioRequired: data.isPortfolioRequired,
+        partQuestions: data.partQuestions.map((part) => ({
+          partName: part.partName,
+          caution: part.caution,
+          questions: part.questions.map((question) => {
+            const baseQuestion = {
+              content: question.content,
+              questionType: question.questionType,
+              hasWordLimit: true,
+              wordLimit: 0
+            };
 
-      console.log(data);
-      handleStepTwoSubmit();
-    } catch (error) {
-      console.error("Form submission error:", error);
+            if (question.questionType === "OBJECT") {
+              return {
+                ...baseQuestion,
+                objects: question.objects || [], // 빈 배열이라도 반드시 포함
+                multiSelect: question.multiSelect || false
+              };
+            }
+
+            return {
+              ...baseQuestion,
+              objects: [],
+              multiSelect: false
+            };
+          })
+        }))
+      };
+
+      console.log("제출 데이터:", submitData);
+      const recruitId = 1;
+      createFormMutation.mutate({ formData: submitData, recruitId });
+    } catch (error: any) {
+      console.error("폼 제출 중 에러", error);
+      console.log("에러 응답:", error.response?.data);
     }
   };
 
   return (
-    <form className="mb-[147px] w-[1016px]" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="ml-8 mt-[25px] mb-[147px] w-[1016px]"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className={`${steps[4].completed ? "pointer-events-none" : ""}`}>
         {/* 지원서 제목 */}
-        <div className="ml-8 w-full mt-[26px]">
+        <div className="w-full ">
           <p className="section-title">
             <span className="mr-[0.25em] text-main-100">*</span>지원서 제목
           </p>
-          <div className="mt-[12px] h-auto py-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
+          <div className="mt-3 h-auto py-[29px] px-[30px] bg-white-100 rounded-[12px]">
             <input
               type="text"
               alt="지원서 제목 입력"
               placeholder="ex) OO 동아리 5기 지원"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               className={`w-full h-[42px] pl-[21px] rounded-[8px] border outline-none focus:border-main-100 text-subheadline ${
                 errors.title ? "border-red-100" : "border-gray-500"
               }`}
               {...register("title", {
-                required: "필수 입력 사항입니다.",
-                onBlur: (e) => {
-                  if (!e.target.value) {
-                    setError("title", {
-                      type: "manual",
-                      message: "필수 입력 사항입니다."
-                    });
-                  }
-                }
+                required: "필수 입력 사항입니다."
               })}
             />
             {errors.title?.message && (
@@ -417,7 +328,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
         {/* 지원 그룹 */}
         {group.length > 0 && (
-          <div className="ml-8 w-full mt-[34px]">
+          <div className="w-full mt-[34px]">
             <div className="flex">
               <p className="section-title">지원 그룹</p>
               <div className="tooltip">
@@ -426,9 +337,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </div>
             <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
               <div className="flex items-left gap-[11px]">
-                {group.map((groupName) => (
+                {group.map((partName) => (
                   <div className="flex-center w-[225px] h-[50px] border rounded-[11px] bg-gray-100 text-callout">
-                    {groupName.name}
+                    {partName.name}
                   </div>
                 ))}
               </div>
@@ -437,12 +348,18 @@ export default function CreateApplicationFormContainer(): ReactElement {
                 <input
                   type="checkbox"
                   className=" peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                  {...register("multipleApplicationAllowed")}
+                  {...register("multiApply", {
+                    value: true // 초기값
+                  })}
+                  onChange={(e) => {
+                    setValue("multiApply", e.target.checked);
+                    console.log("체크박스 변경:", e.target.checked);
+                  }}
                 />
                 <img
-                  src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
+                  src="/assets/ic-check.svg"
                   alt=""
-                  className="absolute left-[3px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
+                  className="absolute left-[3px] top-[5px] w-[11px] h-[11px] pointer-events-none opacity-0 peer-checked:opacity-100"
                 />
                 다중 지원 가능
                 <span className="ml-[11px] text-main-100 text-caption3">
@@ -454,7 +371,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
         )}
 
         {/* 공통 질문 섹션 */}
-        <div className="ml-8 w-full mt-[58px]">
+        <div className=" w-full mt-[58px]">
           <div className="flex">
             <p className="section-title">
               <span className="mr-[0.25em] text-main-100">*</span>공통 질문
@@ -470,55 +387,51 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </p>
             <input
               type="text"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              }}
               placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
               className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
-              {...register("commonSection.caution")}
+              {...register("partQuestions.0.caution")}
             />
 
-            <div className="flex-center my-[42px] border border-gray-200" />
+            <hr className="flex-center my-[42px]" />
 
             {/* 공통 질문 목록 */}
             <p className="mb-[15px] text-title3 text-gray-1100 text-left">
               공통 질문 추가하기
             </p>
             <div className="space-y-4">
-              {Object.values(commonQuestions).map((question) => (
-                <QuestionItem
-                  key={question.id}
-                  section="common"
-                  question={question}
-                  registerPath={`commonSection.questions.${question.id}`}
-                  onTypeChange={handleQuestionTypeChange}
-                  onDelete={deleteQuestion}
-                  onAddOption={addOption}
-                  onRemoveOption={removeOption}
-                  register={register}
-                  errors={errors}
-                  isSubmitted={isSubmitted}
-                  setError={setError}
-                  totalQuestions={Object.keys(commonQuestions).length}
-                />
-              ))}
+              {questions
+                .find((p) => p.partName === "Back")
+                ?.questions.map((question, index) => (
+                  <QuestionItem
+                    key={question.id}
+                    question={question}
+                    partName="Back"
+                    questionIndex={index}
+                    partIndex={0} // 공통 질문은 항상 0번 인덱스
+                    onTypeChange={handleQuestionTypeChange}
+                    onDelete={deleteQuestion}
+                    onAddOption={handleAddOption}
+                    onRemoveOption={handleRemoveOption}
+                    register={register}
+                    errors={errors}
+                    isSubmitted={isSubmitted}
+                    setValue={setValue}
+                    watch={watch}
+                  />
+                ))}
             </div>
 
-            {/* 질문 추가 버튼 */}
             <button
               type="button"
-              className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
-              onClick={() => addQuestion("common")}
+              onClick={() => addQuestion("Back")}
+              className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-callout text-main-100 hover:bg-main-100 hover:text-white-100"
             >
-              <div className="relative mr-2">
-                <img
-                  alt="질문 추가 버튼"
-                  src="/assets/ic-mainColorPlus.svg"
-                  className="group-hover:opacity-0"
-                />
-                <img
-                  alt="질문 추가 버튼"
-                  src="/assets/ic-whiteColorPlus.svg"
-                  className="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
-                />
-              </div>
+              <IdealIcon className="mr-2" />
               질문 추가하기
             </button>
           </div>
@@ -526,7 +439,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
         {/* 그룹별 질문 섹션 */}
         {group.length > 0 && (
-          <div className="ml-8 w-full mt-[58px]">
+          <div className="w-full mt-[58px]">
             <div className="flex">
               <p className="section-title">
                 <span className="mr-[0.25em] text-main-100">*</span>그룹별 질문
@@ -534,89 +447,79 @@ export default function CreateApplicationFormContainer(): ReactElement {
               <div className="tooltip">각 그룹별 질문을 작성해 주세요.</div>
             </div>
 
-            <div className="mt-[12px] h-auto pt-[32px] pl-[31px] pr-[42px] pb-[32px] bg-white-100 rounded-[12px]">
-              {/* 그룹 선택 */}
-              <p className="text-title3 text-gray-1100 text-left">지원 그룹</p>
-              <div className="flex items-left mt-[11px] gap-[11px]">
-                {group.map((groupName) => (
-                  <button
-                    key={groupName.name}
-                    type="button"
-                    className={`w-[225px] h-[50px] border rounded-[11px] flex-center text-callout ${
-                      selectedGroup === groupName.name
-                        ? "bg-main-100 text-white-100 border-main-100"
-                        : "bg-white-100 text-[#43454F] border-gray-300 hover:bg-main-100 hover:text-white-100"
-                    }`}
-                    onClick={() => handleGroupClick(groupName.name)}
-                  >
-                    {groupName.name}
-                  </button>
-                ))}
-              </div>
+            {/* 그룹 선택 탭 */}
+            <div className="flex">
+              {group.map((partName) => (
+                <button
+                  key={partName.name}
+                  type="button"
+                  onClick={() => handleGroupClick(partName.name)}
+                  className={`flex-center mt-3 w-[162px] min-h-[43px] rounded-t-[11px] border border-b-0 text-callout ${
+                    selectedGroup === partName.name
+                      ? "bg-main-100 text-white-100 border-main-100"
+                      : "bg-gray-100 text-[#43454F] border-gray-200 hover:bg-main-100 hover:text-white-100"
+                  }`}
+                >
+                  {partName.name}
+                </button>
+              ))}
+            </div>
 
-              <div className="flex-center my-[42px] border border-gray-200" />
-
-              {/* 그룹별 주의사항 */}
+            {/* 선택된 그룹의 질문 섹션 */}
+            <div className="h-auto px-9 py-[28px] bg-white-100 rounded-[12px]">
               <p className="mb-[15px] text-title3 text-gray-1100 text-left">
                 '{selectedGroup}' 그룹 질문 관련 주의 사항
               </p>
 
               <input
+                key={`${selectedGroup}-caution`}
                 type="text"
-                key={selectedGroup}
-                className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                }}
                 placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
-                {...register(`groupSections.${selectedGroup}.caution`)}
+                className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
+                {...register(
+                  `partQuestions.${questions.findIndex((p) => p.partName === selectedGroup)}.caution`
+                )}
               />
-              <div className="flex-center my-[42px] border border-gray-200" />
+              <hr className="flex-center my-[42px]" />
 
-              {/* 그룹별 질문 목록 */}
-              <p className="mb-[15px] text-title3 text-gray-1100 text-left">
+              <p className="mb-[20px] text-title3 text-gray-1100 text-left">
                 그룹별 질문 추가하기
               </p>
               <div className="space-y-4">
-                {Object.values(groupQuestions[selectedGroup].questions).map(
-                  (question) => (
+                {questions
+                  .find((p) => p.partName === selectedGroup)
+                  ?.questions.map((question, index) => (
                     <QuestionItem
                       key={question.id}
-                      section={selectedGroup}
                       question={question}
-                      registerPath={`groupSections.${selectedGroup}.questions.${question.id}`} // 추가
+                      partName={selectedGroup}
+                      questionIndex={index}
+                      partIndex={questions.findIndex(
+                        (p) => p.partName === selectedGroup
+                      )}
                       onTypeChange={handleQuestionTypeChange}
                       onDelete={deleteQuestion}
-                      onAddOption={addOption}
-                      onRemoveOption={removeOption}
+                      onAddOption={handleAddOption}
+                      onRemoveOption={handleRemoveOption}
                       register={register}
                       errors={errors}
                       isSubmitted={isSubmitted}
-                      setError={setError}
-                      totalQuestions={
-                        Object.keys(groupQuestions[selectedGroup].questions)
-                          .length
-                      }
+                      setValue={setValue}
+                      watch={watch}
                     />
-                  )
-                )}
+                  ))}
               </div>
-
-              {/* 질문 추가 버튼 */}
               <button
                 type="button"
-                className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-main-100 hover:bg-main-100 hover:text-white-100 group"
                 onClick={() => addQuestion(selectedGroup)}
+                className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-callout text-main-100 hover:bg-main-100 hover:text-white-100"
               >
-                <div className="relative mr-2">
-                  <img
-                    alt="질문 추가 버튼"
-                    src="/assets/ic-mainColorPlus.svg"
-                    className="group-hover:opacity-0"
-                  />
-                  <img
-                    alt="질문 추가 버튼"
-                    src="/assets/ic-whiteColorPlus.svg"
-                    className="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
-                  />
-                </div>
+                <IdealIcon className="mr-2" />
                 질문 추가하기
               </button>
             </div>
@@ -624,25 +527,25 @@ export default function CreateApplicationFormContainer(): ReactElement {
         )}
 
         {/* 포트폴리오 섹션 */}
-        <div className="ml-8 w-full mt-[58px]">
+        <div className="w-full mt-[58px]">
           <div className="flex items-center">
             <p className="section-title">포트폴리오</p>
             <label className="relative flex-center text-subheadline text-gray-900">
               <input
                 type="checkbox"
                 className="peer w-[18px] h-[18px] mr-2 cursor-pointer appearance-none checked:bg-main-100 border border-gray-300 rounded"
-                {...register("portfolio.enabled")}
+                {...register("isPortfolioRequired")}
               />
               <img
-                src="/assets/ic-check.svg" // 흰색 체크표시만 있는 SVG
+                src="/assets/ic-check.svg"
                 alt=""
-                className="absolute left-[3px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
+                className="absolute left-[2.5px] top-[4px] w-[12px] h-[12px] pointer-events-none opacity-0 peer-checked:opacity-100"
               />
               포트폴리오 받기
             </label>
           </div>
           <div className="flex-center w-full min-h-[207px] mt-[12px] bg-white-100 rounded-[12px]">
-            {watch("portfolio.enabled") && (
+            {watch("isPortfolioRequired") && (
               <div className="tooltip">
                 이후 지원자의 저장된 포트폴리오를 불러옵니다.
               </div>
