@@ -1,19 +1,33 @@
-export default function Paging() {
+import { useSearchParams } from "react-router-dom";
+
+interface PagingProps {
+  currentPage: number;
+  totalPages: number;
+}
+
+export default function Paging({ currentPage, totalPages }: PagingProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handlePageChange = (pageNum: number) => {
+    searchParams.set("page", pageNum.toString());
+    setSearchParams(searchParams);
+  };
+
   return (
-    //UI만 구현
-    <div className="flex-center pt-[96px] pb-[155px]">
-      <div className="w-[199px] h-[23px] flex flex-center gap-[3px] cursor-pointer text-[16px]">
-        <p className="w-[24px] h-[23px] text-gray-500">‹</p>
-        <p className="w-[24px] h-[23px] text-gray-500">1</p>
-        <p className="w-[24px] h-[23px] text-gray-500">2</p>
-        <p className="w-[24px] h-[23px] bg-gray-850 rounded-full text-white-100 flex-center">
-          3
-        </p>
-        <p className="w-[24px] h-[23px] text-gray-500">4</p>
-        <p className="w-[24px] h-[23px] text-gray-500">5</p>
-        <p className="w-[24px] h-[23px] text-gray-500">6</p>
-        <p className="w-[24px] h-[23px] text-gray-500">›</p>
-      </div>
+    <div className="flex justify-center gap-2 mt-20 mb-8">
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+        <button
+          key={pageNum}
+          onClick={() => handlePageChange(pageNum)}
+          className={`px-4 py-2 rounded-full ${
+            pageNum === currentPage
+              ? "bg-main-300 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
+        >
+          {pageNum}
+        </button>
+      ))}
     </div>
   );
 }
