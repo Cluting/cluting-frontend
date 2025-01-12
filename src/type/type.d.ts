@@ -1,15 +1,16 @@
-export interface Applicant {
-  id: number;
-  status: string;
+// 계획하기 운영진
+export interface AdminPlan {
   name: string;
-  phone: string;
-  group: string;
-  rank: string;
-  result: string;
+  id: number;
 }
 
-// 계획하기 운영진
-declare interface AdminPlan {
+declare interface GetApplicant {
+  state: string;
   name: string;
-  id: number;
+  phone: string;
+  part: string;
+  score: number;
+  rank: number;
+  createdAt: string;
+  result: string;
 }

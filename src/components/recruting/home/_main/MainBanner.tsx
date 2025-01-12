@@ -14,7 +14,7 @@ function mapClubDataToPopularClubProps(club: ClubData): PopularClubProps {
     logoSrc: club.profile || "/assets/ic-add.svg",
     logoAlt: `${club.name} 로고`,
     mainImageSrc: club.recruits[0]?.image || "/assets/home/profile-default.png",
-    clubType: club.type === "INTERNAL" ? "교내" : "연합",
+    clubType: club.type === "INTERNAL" ? "INTERNAL" : "EXTERNAL",
     clubTitleFirst: categoryDescription,
     clubTitleSecond: club.name,
     tags: club.keyword

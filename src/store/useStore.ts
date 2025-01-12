@@ -190,14 +190,6 @@ export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
     }))
 }));
 
-// 기수 설정 Store
-export const useRecruitmentSessionStore = create<RecruitmentSessionStore>()(
-  (set) => ({
-    sessionNumber: 0, // 현재 기수
-    setSessionNumber: (session: number) => set({ sessionNumber: session }) // 기수 설정
-  })
-);
-
 //리크루팅 시작 여부 Store
 export const useRecruitmentStartStore = create<RecruitmentStartStore>(
   (set) => ({
@@ -205,3 +197,15 @@ export const useRecruitmentStartStore = create<RecruitmentStartStore>(
     startRecruiting: () => set({ isRecruitingStarted: true }) // 시작 상태로 변경
   })
 );
+
+// 동아리 정보 Store -> 사이드메뉴 연결용
+export const useClubInfoStore = create<ClubInfoStore>((set) => ({
+  clubProfile: "", // 동아리 프로필
+  clubName: "",
+  generation: 0,
+  currentStage: "",
+  setClubProfile: (profile) => set({ clubProfile: profile }),
+  setClubName: (name) => set({ clubName: name }),
+  setGeneration: (gen) => set({ generation: gen }),
+  setCurrentStage: (stage) => set({ currentStage: stage })
+}));

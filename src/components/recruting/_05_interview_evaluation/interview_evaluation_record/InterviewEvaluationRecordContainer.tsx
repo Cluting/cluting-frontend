@@ -4,13 +4,15 @@ import QuestionAnswer from "./QuestionAnswer";
 import AdminEvaluationWindow from "../../_03_document_evaluation/evaluation/AdminEvaluationWindow";
 import { useState } from "react";
 import Portfolio from "../../document/Portfolio";
+import ApplicationQuestion from "../../document/ApplicationQuestion";
 
 export default function InterviewEvaluationRecordContainer() {
   const [view, setView] = useState("application");
+
   return (
     <div className="w-fit h-full flex-col items-center relative ">
       <div className="flex items-center gap-2 mb-10 ">
-        <Link to="/recruting/05_interview_evaluation">
+        <Link to="/recruting/05_interview_evaluation/interview">
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
         </Link>
         <p className="text-title1 text-gray-1300 mt-1  text-left ml-[21px]">
@@ -24,7 +26,13 @@ export default function InterviewEvaluationRecordContainer() {
             onClick={() => setView("application")}
             className={`button-main-bg-sm ${view === "application" ? "button-main-bg-sm" : "button-main-light-sm"}`}
           >
-            지원서류
+            면접 기록
+          </button>
+          <button
+            onClick={() => setView("doc")}
+            className={`button-main-bg-sm ml-4 ${view === "doc" ? "button-main-bg-sm" : "button-main-light-sm"}`}
+          >
+            지원 서류
           </button>
           <button
             onClick={() => setView("portfolio")}
@@ -41,6 +49,13 @@ export default function InterviewEvaluationRecordContainer() {
               <QuestionAnswer type="part" />
               <QuestionAnswer type="individual" />
             </div>
+          </>
+        )}
+
+        {view === "doc" && (
+          <>
+            <UserProfile />
+            <ApplicationQuestion />
           </>
         )}
 

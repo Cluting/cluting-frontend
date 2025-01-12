@@ -79,7 +79,7 @@ export default function TodoTemplate() {
         onSuccess: () => {
           setTodos((prevTodos) => ({
             ...prevTodos,
-            [key]: prevTodos[key].filter((todo) => todo.id !== id)
+            [key]: prevTodos[key]?.filter((todo) => todo.id !== id) || []
           }));
         }
       });

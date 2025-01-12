@@ -25,28 +25,63 @@ export async function createTodo(content: string) {
   }
 }
 
-//DELETE: 투두 삭제
-export async function deleteTodo(todoId: number) {
+// PATCH: 투두 완료 상태 변경
+export async function updateTodoStatus(todoId: number) {
+  const url = `http://210.107.205.122:20020/api/v1/todo/status/${todoId}`;
+  const headers = {
+    accept: "*/*",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    "Content-Type": "application/json"
+  };
+
   try {
-    const { data } = await Instance.delete(`/todo/${todoId}`);
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: headers
+    });
+
+    const text = await response.text();
+    console.log("Response Text:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = text ? JSON.parse(text) : {};
+    console.log("Parsed JSON:", data);
     return data;
   } catch (error) {
-    console.error("TODO 삭제 실패:", error);
+    console.error("TODO 상태 변경 실패:", error);
     throw error;
   }
 }
 
-//PATCH: 투두 완료 상태 변경
-export async function updateTodoStatus(todoId: number) {
-  try {
-    const response = await Instance.patch(`/todo/status/${todoId}`);
+// DELETE: 투두 삭제
+export async function deleteTodo(todoId: number) {
+  const url = `http://210.107.205.122:20020/api/v1/todo/${todoId}`;
+  const headers = {
+    accept: "*/*",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`
+  };
 
-    if (response.status === 200) {
-      return response.data;
-    } else {
-      throw new Error(`서버 응답 오류: ${response.status}`);
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: headers
+    });
+
+    const text = await response.text();
+    console.log("Response Text:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const data = text ? JSON.parse(text) : {};
+    console.log("Parsed JSON:", data);
+    return data;
   } catch (error) {
-    console.error;
+    console.error("TODO 삭제 실패:", error);
+    throw error;
   }
 }

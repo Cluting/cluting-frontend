@@ -2,6 +2,8 @@ import { FormEvent, useRef, useState } from "react";
 import { useStepSixStore } from "../../../../store/useStore";
 import { useForm } from "react-hook-form";
 import PreviewModal from "./PreviewModal";
+import { useMutation } from "@tanstack/react-query";
+import { sendInterviewResultNotifications } from "../service/Step6";
 
 // 6-2 합불 안내 메시지 작성하기(컨테이너)
 export default function ResultMessageContainer() {
@@ -61,14 +63,43 @@ export default function ResultMessageContainer() {
     }, 0);
   };
 
-  const handleSend = () => {
+  const sendMutation = useMutation(
+    ({
+      recruitId,
+      state,
+      message
+    }: {
+      recruitId: number;
+      state: string;
+      message: string;
+    }) => sendInterviewResultNotifications(recruitId, state, message),
+    {
+      onSuccess: () => {
+        console.log("전송 완료");
+        if (messageType === "pass") {
+          setIsSendPass(true);
+        } else {
+          setIsSendFail(true);
+        }
+      }
+    }
+  );
+
+  const handleSend = (isPass: boolean) => {
+    //FIX:
+    const recruitId = 1; // 실제 recruitId로 변경 필요
+    const state = isPass ? "PASS" : "FAIL";
+    const message = textareaValues[messageType];
+    console.log(state, message);
+
+    sendMutation.mutate({ recruitId, state, message });
+
     if (messageType === "pass") {
       setIsSendPass(true); // 합격 메시지 전송 완료
     } else {
       setIsSendFail(true); // 불합격 메시지 전송 완료
     }
   };
-
   // 전송 완료 클릭 시
   const handleSendComplete = () => {
     const passMessageEmpty = textareaValues.pass.trim() === "";
@@ -135,7 +166,7 @@ export default function ResultMessageContainer() {
           <div className="flex items-center bg-white-100 border border-gray-200 rounded-t-[6.65px] py-[13px] px-[17px]">
             <p className="mr-[15px] text-gray-600 text-[12px]">개별 정의</p>
             <button
-              onClick={() => handleInsertText("지원자")}
+              onClick={() => handleInsertText("{{지원자}}")}
               className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px] text-caption3"
             >
               <img
@@ -146,7 +177,7 @@ export default function ResultMessageContainer() {
             </button>
 
             <button
-              onClick={() => handleInsertText("파트")}
+              onClick={() => handleInsertText("{{파트}}")}
               className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3"
             >
               <img
@@ -213,8 +244,8 @@ export default function ResultMessageContainer() {
       </div>
       {showPreviewModal && (
         <PreviewModal
-          onSendFail={handleSend}
-          onSendPass={handleSend}
+          onSendFail={(isPass) => handleSend(isPass)}
+          onSendPass={(isPass) => handleSend(isPass)}
           onClose={handleClosePreviewModal}
           passMessage={textareaValues["pass"]}
           failMessage={textareaValues["fail"]}
@@ -224,8 +255,8 @@ export default function ResultMessageContainer() {
 
       {showSendModal && (
         <PreviewModal
-          onSendFail={handleSend}
-          onSendPass={handleSend}
+          onSendFail={(isPass) => handleSend(isPass)}
+          onSendPass={(isPass) => handleSend(isPass)}
           onClose={handleCloseSendModal}
           passMessage={textareaValues["pass"]}
           failMessage={textareaValues["fail"]}
