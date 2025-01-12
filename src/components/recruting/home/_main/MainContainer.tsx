@@ -4,6 +4,7 @@ import MainCategory from "./MainCategory";
 import ClubCardList from "./ClubCardList";
 import Paging from "./Paging";
 import { getMainClub } from "./service/mainClub";
+import { dummyClubData } from "./dummyData";
 
 export default function MainContainer() {
   const [searchParams] = useSearchParams();
@@ -22,8 +23,13 @@ export default function MainContainer() {
     ["mainClubs", queryParams],
     async () => {
       const response = await getMainClub(queryParams);
-      console.log("API Response:", response);
-      return response;
+      console.log("메인 홈 GET:", response);
+      console.log("더미데이터:", dummyClubData);
+      return {
+        ...response,
+        recruits: [...response.recruits, ...dummyClubData.recruits],
+        count: response.count + dummyClubData.recruits.length
+      };
     },
     {
       keepPreviousData: true
