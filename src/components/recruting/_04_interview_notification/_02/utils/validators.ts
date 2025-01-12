@@ -20,24 +20,31 @@ export const validateScheduleCompletion = (
     getAllDatesInRange
   }: ValidateScheduleProps
 ): true | ValidationError => {
-  const startDate = new Date(interviewStartDate);
-  const endDate = new Date(interviewEndDate);
-  const allDates = getAllDatesInRange(startDate, endDate);
-  const allDateKeys = allDates.map((date) => getDateKey(date));
+  // 제출된 날짜가 있는지 확인
+  const submittedDates = Object.values(formData.groups).flatMap((group) =>
+    Object.keys(group.dates)
+  );
 
-  // 모든 그룹에 대해 검사
+  if (submittedDates.length === 0) {
+    return {
+      type: "INCOMPLETE_DATE",
+      message: "최소 하나의 날짜를 완료해 주세요."
+    };
+  }
+
+  // 제출된 날짜들에 대해서만 검사
   for (const groupId in formData.groups) {
     const group = formData.groups[groupId];
 
-    // 각 날짜가 존재하는지 확인
-    for (const dateKey of allDateKeys) {
+    // 각 그룹의 제출된 날짜들만 검사
+    for (const dateKey of Object.keys(group.dates)) {
       const dateData = group.dates[dateKey];
 
       // 날짜 데이터가 없거나 스케줄이 비어있는 경우
       if (!dateData || !dateData.schedules || dateData.schedules.length === 0) {
         return {
           type: "INCOMPLETE_DATE",
-          message: "모든 날짜를 완료해 주세요."
+          message: "선택한 날짜의 스케줄을 모두 완료해 주세요."
         };
       }
 
@@ -49,11 +56,12 @@ export const validateScheduleCompletion = (
       if (hasEmptySchedule) {
         return {
           type: "INCOMPLETE_DATE",
-          message: "모든 날짜를 완료해 주세요."
+          message: "선택한 날짜의 스케줄을 모두 완료해 주세요."
         };
       }
     }
   }
+
   return true;
 };
 

@@ -92,7 +92,7 @@ export default function ScheduleAdjustmentContainer() {
         ? group.reduce(
             (acc, g) => ({
               ...acc,
-              [`group${g.index}`]: {
+              [`group${g.index + 1}`]: {
                 groupName: g.name,
                 dates: {}
               }
@@ -100,7 +100,7 @@ export default function ScheduleAdjustmentContainer() {
             {}
           )
         : {
-            group0: {
+            group1: {
               groupName: "공통",
               dates: {}
             }
@@ -110,24 +110,28 @@ export default function ScheduleAdjustmentContainer() {
   });
 
   const generateTimeSlots = useCallback(() => {
-    if (!isTimeSet) return DEFAULT_TIME_SLOTS;
+    if (!isTimeSet) {
+      // DEFAULT_TIME_SLOTS도 09:00 AM 형식으로 수정 필요
+      return DEFAULT_TIME_SLOTS.map((time) => {
+        const [rawTime, period] = time.split(" ");
+        const [hours] = rawTime.split(":");
+        return `${hours.padStart(2, "0")}:00 ${period}`;
+      });
+    }
 
     const startTime = new Date(interviewStartTime);
     const endTime = new Date(interviewEndTime);
     const slots: string[] = [];
 
     while (startTime <= endTime) {
-      slots.push(
-        startTime.toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true
-        })
-      );
+      const hours = startTime.getHours();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const formattedHours = String(hours % 12 || 12).padStart(2, "0");
+      slots.push(`${formattedHours}:00 ${ampm}`);
       startTime.setHours(startTime.getHours() + 1);
     }
 
-    return slots.length > 0 ? slots : DEFAULT_TIME_SLOTS;
+    return slots;
   }, [interviewStartTime, interviewEndTime, isTimeSet]);
 
   const getOrCreateScheduleData = useCallback(
@@ -301,6 +305,7 @@ export default function ScheduleAdjustmentContainer() {
     setValidationError(null);
   }, [currentDate, selectedGroupId]);
 
+  // 먼저 제출 전에 데이터를 확인해보기 위한 로그 추가
   const onSubmit = handleSubmit((data: ScheduleFormData) => {
     const allDates = getAllDatesInRange(
       new Date(interviewStartDate),
@@ -310,75 +315,55 @@ export default function ScheduleAdjustmentContainer() {
     const completeFormData: ScheduleFormData = {
       groups: group.length
         ? group.reduce((acc, g) => {
-            const groupId = `${g.index}`; // API 요청용 키
-            const groupKeyForMap = `group${g.index}`; // 내부 map 접근용 키
+            const groupId = `${g.index + 1}`;
+            const groupKeyForMap = `group${g.index + 1}`;
 
             return {
               ...acc,
               [groupId]: {
                 groupName: g.name,
-                dates: allDates.reduce<
-                  Record<
-                    string,
-                    {
-                      schedules: Array<{
-                        time: string;
-                        interviewers: number[];
-                        applicants: number[];
-                      }>;
-                    }
-                  >
-                >((datesAcc, date) => {
-                  const dateKey = getDateKey(date);
-                  const scheduleData =
-                    dateScheduleMap[`group${g.index}`]?.[dateKey];
-                  const selections =
-                    dateSelectionsMap[`group${g.index}`]?.[dateKey] || {};
+                dates: allDates.reduce<Record<string, any>>(
+                  (datesAcc, date) => {
+                    const dateKey = getDateKey(date);
+                    const scheduleData =
+                      dateScheduleMap[groupKeyForMap]?.[dateKey];
+                    const selections =
+                      dateSelectionsMap[groupKeyForMap]?.[dateKey] || {};
 
-                  if (scheduleData) {
-                    datesAcc[dateKey] = {
-                      schedules: scheduleData.map((schedule) => ({
-                        time: schedule.time,
-                        interviewers: schedule.interviewer.map((interviewer) =>
-                          Number(interviewer)
-                        ),
-                        applicants: schedule.applicants
-                          .filter((applicant) =>
-                            selections[schedule.time]?.includes(applicant.id)
-                          )
-                          .map((applicant) => applicant.id)
-                      }))
-                    };
-                  }
-                  return datesAcc;
-                }, {})
+                    if (scheduleData) {
+                      datesAcc[dateKey] = {
+                        schedules: scheduleData.map((schedule) => ({
+                          time: schedule.time.replace(/^(\d):/, "0$1:"),
+                          interviewers: schedule.interviewer.map(
+                            (interviewer) => Number(interviewer)
+                          ),
+                          applicants: schedule.applicants
+                            .filter((applicant) =>
+                              selections[schedule.time]?.includes(applicant.id)
+                            )
+                            .map((applicant) => applicant.id)
+                        }))
+                      };
+                    }
+                    return datesAcc;
+                  },
+                  {}
+                )
               }
             };
           }, {})
         : {
-            "0": {
-              // default 그룹도 숫자 문자열로
+            "1": {
               groupName: "공통",
-              dates: allDates.reduce<
-                Record<
-                  string,
-                  {
-                    schedules: Array<{
-                      time: string;
-                      interviewers: number[];
-                      applicants: number[];
-                    }>;
-                  }
-                >
-              >((datesAcc, date) => {
+              dates: allDates.reduce<Record<string, any>>((datesAcc, date) => {
                 const dateKey = getDateKey(date);
-                const scheduleData = dateScheduleMap["group0"]?.[dateKey]; // 내부 map 접근용 키
-                const selections = dateSelectionsMap["group0"]?.[dateKey] || {};
+                const scheduleData = dateScheduleMap["group1"]?.[dateKey];
+                const selections = dateSelectionsMap["group1"]?.[dateKey] || {};
 
                 if (scheduleData) {
                   datesAcc[dateKey] = {
                     schedules: scheduleData.map((schedule) => ({
-                      time: schedule.time,
+                      time: schedule.time.replace(/^(\d):/, "0$1:"),
                       interviewers: schedule.interviewer.map((interviewer) =>
                         Number(interviewer)
                       ),
@@ -396,13 +381,24 @@ export default function ScheduleAdjustmentContainer() {
           }
     };
 
+    // 디버깅을 위한 로그 추가
+    console.log("제출 데이터:", JSON.stringify(completeFormData, null, 2));
+    console.log(
+      "모든 날짜:",
+      allDates.map((date) => getDateKey(date))
+    );
+    console.log(
+      "현재 데이터가 있는 날짜들:",
+      Object.keys(completeFormData.groups[group.length ? "1" : "1"].dates)
+    );
+
     const validation = validateSchedules(completeFormData);
     if (validation !== true) {
+      // 어떤 유효성 검사가 실패했는지 확인
+      console.log("유효성 검사 실패:", validation);
       return;
     }
 
-    // console.log("post 전", completeFormData);
-    console.log("post 전", JSON.stringify(completeFormData, null, 2));
     createFormMutation.mutate({ formData: completeFormData, recruitId });
   });
 
