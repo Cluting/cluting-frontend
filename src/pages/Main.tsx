@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import ClubCardList from "../components/recruting/home/_main/ClubCardList";
 import MainBanner from "../components/recruting/home/_main/MainBanner";
-import Paging from "../components/recruting/home/_main/Paging";
-import MainCategory from "../components/recruting/home/_main/MainCategory";
 import { getMe } from "../components/signup/services/User";
 import { useQuery } from "@tanstack/react-query";
+import MainContainer from "../components/recruting/home/_main/MainContainer";
 
 export default function Main() {
   //이름 불러오기
@@ -30,16 +28,9 @@ export default function Main() {
         <p className="text-[28px] font-semibold text-left pt-[45px]">
           {user ? user.name : "-"}님을 기다리는 동아리들 🙌🏻
         </p>
-        <MainCategory />
       </div>
 
-      <div className="container max-w-[1072px] mx-auto">
-        <ClubCardList />
-      </div>
-
-      <div className="pt-[96px] pb-[155px]">
-        <Paging />
-      </div>
+      <MainContainer />
     </div>
   );
 }
