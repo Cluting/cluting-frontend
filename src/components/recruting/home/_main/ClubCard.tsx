@@ -7,9 +7,15 @@ export default function ClubCard({
   title,
   clubName,
   tags,
-  isLarge = false // 기본값은 작은 버전
+  isLarge = false // 기본값은 크기가 작은 버전
 }: ClubCardProps) {
   const cardWidth = isLarge ? "w-[322px]" : "w-[288px]";
+
+  const handleImageError = (
+    e: React.SyntheticEvent<HTMLImageElement, Event>
+  ) => {
+    e.currentTarget.src = "/assets/home/main/defaultClub.svg";
+  };
 
   return (
     <div
@@ -18,6 +24,7 @@ export default function ClubCard({
       <div className="w-full h-[126px] rounded-t-[16px] bg-gray-300">
         <img
           src={clubImg}
+          onError={handleImageError}
           className="w-full h-full rounded-t-[16px] object-cover"
         />
         <div className="absolute left-[11px] top-[13px] w-[40px] h-[27px] rounded-[10.25px] bg-white-100 text-[#FF4E4E] text-[11px] flex items-center justify-center font-bold">
@@ -27,6 +34,7 @@ export default function ClubCard({
       <div className="absolute right-[23px] top-[96px] w-[60px] h-[60px] rounded-full bg-[#FBFBFF] flex items-center justify-center">
         <img
           src={logoSrc}
+          onError={handleImageError}
           alt={logoAlt}
           className="w-[44px] h-[44px] rounded-full object-cover"
         />
