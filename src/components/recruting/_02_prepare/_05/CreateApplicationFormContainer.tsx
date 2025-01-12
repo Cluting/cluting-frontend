@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -21,6 +21,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const { setStepCompleted, steps } = useStepTwoStore();
   const { completedSteps, completeStep } = useRecruitmentStepStore();
 
+  // 공고 올리기 팝업
+  const [uploadPopupOpen, setUploadPopupOpen] = useState(false);
   //GET
   const recruitId = 1;
   const { data: formData, isLoading } = useQuery(
@@ -289,6 +291,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
       console.log("에러 응답:", error.response?.data);
     }
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (uploadPopupOpen) {
+      timer = setTimeout(() => {
+        setUploadPopupOpen(false);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [uploadPopupOpen]);
 
   return (
     <form
@@ -584,7 +596,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
       {/* 하단 알림 */}
       {!steps[4].completed ? (
         <div className="fixed animate-dropdown bottom-[16px]">
-          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
+          <div className="relative custom-shadow w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
             우리 동아리에 지원하는 지원자의 입장으로 보고싶으신가요?
             <button
               type="button"
@@ -596,15 +608,25 @@ export default function CreateApplicationFormContainer(): ReactElement {
         </div>
       ) : (
         <div className="fixed animate-dropdown bottom-[16px]">
-          <div className="relative custom-shadow ml-8 w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
+          <div className="relative custom-shadow w-[1016px] h-[79px] bg-main-300 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800">
             모든 준비 단계가 완료되었습니다. 최종적으로 모집 공고를 업로드해
             주세요.
             <button
               type="button"
+              onClick={() => setUploadPopupOpen(true)}
               className="absolute right-[15px] bg-main-100 hover:bg-main-500 text-white-100 py-[13px] px-[25px] rounded-[10px]"
             >
               공고 올리기
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* 공고 올리기 팝업 */}
+      {uploadPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="modal-animation bg-white-100 px-10 py-4 rounded-[11px] border border-gray-200 text-center text-body ">
+            전송이 완료되었습니다. 메인 홈에서 동아리 공고를 확인해 주세요.
           </div>
         </div>
       )}

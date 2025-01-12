@@ -47,7 +47,7 @@ export default function PartQuestions() {
             {openQuestions[index] && (
               <div className="flex gap-[40px] text-left mt-4">
                 <div className="w-full p-4 bg-gray-100 border border-gray-200 custom-shadow rounded-lg">
-                  <p className="font-bold text-[20px]">김민지 답변</p>
+                  <p className="font-bold text-[20px]">박시현 답변</p>
                   <textarea
                     onClick={(e) => e.stopPropagation()}
                     className="input-style input-background w-full h-[170px] mt-[18px] text-[16px]"
@@ -56,7 +56,7 @@ export default function PartQuestions() {
                 </div>
 
                 <div className="w-full p-4 bg-gray-100 border border-gray-200 custom-shadow rounded-lg">
-                  <p className="font-bold text-[20px]">이태준 답변</p>
+                  <p className="font-bold text-[20px]">최예은 답변</p>
                   <textarea
                     onClick={(e) => e.stopPropagation()}
                     className="input-style input-background w-full h-[170px] mt-[18px] text-[16px]"

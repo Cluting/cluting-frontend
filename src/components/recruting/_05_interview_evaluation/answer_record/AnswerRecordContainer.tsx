@@ -31,7 +31,7 @@ export default function AnswerRecordContainer() {
         </Link>
         <div className="flex-col justify-start text-left ml-[21px]">
           <p className="text-caption2 text-gray-1100 font-semibold ">
-            10월 13일 월요일 / 11:00 AM 면접
+            1월 13일 월요일 / 11:00 AM 면접
           </p>
           <p className="text-title1 text-gray-1300 mt-1">{intervieweeName}</p>
         </div>
