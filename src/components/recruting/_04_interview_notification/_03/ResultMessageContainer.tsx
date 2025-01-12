@@ -1,9 +1,9 @@
 import { FormEvent, useRef, useState } from "react";
 import { useStepFourStore } from "../../../../store/useStore";
-import PreviewModal from "./PreviewModal";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { sendDocumentEvaluationResults } from "../service/Step4";
+import PreviewModal from "./PreviewModal";
 
 // 4-2 합불 안내 메시지 (컨테이너)
 export default function ResultMessageContainer() {
@@ -27,6 +27,9 @@ export default function ResultMessageContainer() {
   const [showSendwModal, setShowSendModal] = useState(false);
   const handleClosePreviewModal = () => {
     setShowPreviewModal(false);
+  };
+  const handleCloseSendModal = () => {
+    setShowSendModal(false);
   };
 
   const handleTextareaChange = (
@@ -270,7 +273,7 @@ export default function ResultMessageContainer() {
         <PreviewModal
           onSendFail={(isPass) => handleSend(isPass)}
           onSendPass={(isPass) => handleSend(isPass)}
-          onClose={handleClosePreviewModal}
+          onClose={handleCloseSendModal}
           passMessage={textareaValues["pass"]}
           failMessage={textareaValues["fail"]}
         />

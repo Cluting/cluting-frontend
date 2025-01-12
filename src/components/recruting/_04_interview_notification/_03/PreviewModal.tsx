@@ -52,9 +52,9 @@ export default function PreviewModal({
     if (isSendPass && isSendFail) {
       console.log({ isSendPass, isSendFail, isStepCompleteModalOpen });
       setStepCompleteModalOpen(!isStepCompleteModalOpen);
-      onClose();
     } else {
       console.log({ isSendPass, isSendFail, isStepCompleteModalOpen });
+      onClose();
     }
   };
 
@@ -72,7 +72,7 @@ export default function PreviewModal({
 
   return (
     <ModalPortal>
-      <div className="modal-style">
+      <div onClick={(e) => e.stopPropagation()} className="modal-style">
         {/* 합격 전송 알림 */}
         {isSendPassModalVisible && (
           <div className="modal-animation absolute bg-white-100 top-[20px] left-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
@@ -90,7 +90,10 @@ export default function PreviewModal({
           <div className=" flex items-center mt-[27px] mb-[22px]">
             <h1 className="text-title3 ">메시지 전송하기</h1>
             <img
-              onClick={handleClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClose();
+              }}
               src="/assets/ic-close.svg"
               alt="모달 닫기"
               className="absolute top-[30px] right-[20px] w-[16px] h-[16px] mx-3"

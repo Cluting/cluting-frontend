@@ -57,6 +57,7 @@ export default function PreviewModal({
       onClose();
     }
   };
+
   // 닫고 6단계 완료 모달
   const { setStepCompleted } = useStepSixStore();
   const { completeStep } = useRecruitmentStepStore();
