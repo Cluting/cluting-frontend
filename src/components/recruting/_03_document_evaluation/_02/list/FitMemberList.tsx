@@ -62,7 +62,7 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                 to={
                   evaluationItem === "doc"
                     ? `/recruting/evaluation/${item.id}`
-                    : `/recruting/interview_evaluation_record`
+                    : `/recruting/interview_evaluation_record/${item.id}`
                 }
                 key={item.id}
               >
