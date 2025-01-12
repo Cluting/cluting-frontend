@@ -5,6 +5,8 @@ import ProgressBar from "./processBar/ProcessBar";
 import ApplicantList from "./list/ApplicantList";
 import { v4 as uuidv4 } from "uuid";
 import AuthorityModal from "./modal/AuthorityModal";
+import { useNavigate } from "react-router-dom";
+import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 
 export default function IndividualInterviewQuestionsSection() {
   const [filter, setFilter] = useState("전체");
@@ -16,44 +18,44 @@ export default function IndividualInterviewQuestionsSection() {
   // 목업데이터로, 추후 삭제 필요
   const applicantsMockUp = [
     {
-      id: uuidv4(),
+      id: "h1h1",
       name: "김은혜",
-      phone: "010-1234-1234",
-      group: "개발",
+      phone: "010-5255-5555",
+      group: "디자인",
       status: "작성 전"
     },
     {
-      id: uuidv4(),
+      id: "h2h2",
       name: "곽서연",
-      phone: "010-1234-1234",
+      phone: "010-3456-7890",
       group: "개발",
       status: "작성 중"
     },
     {
-      id: uuidv4(),
+      id: "h3h3",
       name: "박시현",
-      phone: "010-1234-1234",
+      phone: "010-0654-3210",
       group: "기획",
       status: "작성 완료"
     },
     {
-      id: uuidv4(),
+      id: "h4h4",
       name: "김동현",
-      phone: "010-1234-1234",
+      phone: "010-5255-5555",
       group: "개발",
       status: "작성 전"
     },
     {
-      id: uuidv4(),
+      id: "h5h5",
       name: "양성원",
-      phone: "010-1234-1234",
+      phone: "010-3456-7890",
       group: "개발",
       status: "작성 완료"
     },
     {
-      id: uuidv4(),
+      id: "h6h6",
       name: "윤다인",
-      phone: "010-1234-1234",
+      phone: "010-3456-7890",
       group: "개발",
       status: "작성 중"
     }
@@ -97,9 +99,18 @@ export default function IndividualInterviewQuestionsSection() {
     setIsModalOpen((prev) => !prev);
   };
 
+  const navigate = useNavigate();
+  const applicants = useApplicantEvaluationStore((state) => state.applicants);
   const handleCreateQuestion = (id: string) => {
-    // 해당 부분 연결시 바꿔야함
-    alert("질문 생성 버튼");
+    // 선택한 이름과 전역 데이터에서 일치하는 이름의 전역 아이디로 링크 이동되게
+    const selectedApplicant = applicants.find(
+      (applicant) => applicant.id === id
+    );
+    if (selectedApplicant) {
+      navigate(`/recruting/individual_question/${selectedApplicant.id}`);
+    } else {
+      console.error("개별 질문 링크 이동 실패");
+    }
   };
 
   return (

@@ -26,7 +26,7 @@ export default function AnswerRecordContainer() {
   return (
     <div className="w-full h-full flex-col ">
       <div className="flex items-center mb-10">
-        <Link to="/recruting/05_interview_evaluation">
+        <Link to="/recruting/05_interview_evaluation/interview">
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
         </Link>
         <div className="flex-col justify-start text-left ml-[21px]">
