@@ -7,10 +7,11 @@ import Portfolio from "../../document/Portfolio";
 
 export default function InterviewEvaluationRecordContainer() {
   const [view, setView] = useState("application");
+
   return (
     <div className="w-fit h-full flex-col items-center relative ">
       <div className="flex items-center gap-2 mb-10 ">
-        <Link to="/recruting/05_interview_evaluation">
+        <Link to="/recruting/05_interview_evaluation/interview">
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
         </Link>
         <p className="text-title1 text-gray-1300 mt-1  text-left ml-[21px]">

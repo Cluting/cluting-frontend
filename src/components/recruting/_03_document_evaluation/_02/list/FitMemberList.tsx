@@ -31,6 +31,12 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
     setDecisionModeItemId(null);
   };
 
+  const evaluationItem = location.pathname.startsWith(
+    "/recruting/05_interview_evaluation/interview"
+  )
+    ? "interview"
+    : "doc";
+
   return (
     <div className="flex flex-col w-full rounded-[7px] gap-4 max-h-[720px]">
       <ul className="flex items-center p-4 w-full h-[42px] bg-[#F1F3FF] gap-2 rounded-md">
@@ -52,7 +58,14 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
           const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
           return (
             <>
-              <Link to={`/recruting/evaluation/${item.id}`} key={item.id}>
+              <Link
+                to={
+                  evaluationItem === "doc"
+                    ? `/recruting/evaluation/${item.id}`
+                    : `/recruting/interview_evaluation_record`
+                }
+                key={item.id}
+              >
                 <li
                   key={item.id}
                   className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"

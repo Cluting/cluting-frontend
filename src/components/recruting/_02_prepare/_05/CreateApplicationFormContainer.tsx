@@ -297,7 +297,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
     if (uploadPopupOpen) {
       timer = setTimeout(() => {
         setUploadPopupOpen(false);
-      }, 3000);
+      }, 2000);
     }
     return () => clearTimeout(timer);
   }, [uploadPopupOpen]);
