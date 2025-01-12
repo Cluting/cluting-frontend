@@ -60,7 +60,6 @@ export default function AnnouncementContainer() {
             </div>
           </div>
           <AnnouncementContent />
-          <button type="submit">제출 테스트</button>
         </div>
         <div className="flex justify-center">
           <button
