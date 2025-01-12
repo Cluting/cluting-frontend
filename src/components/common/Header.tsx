@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AdminProfileDropdown from "./AdminProfileDropdown";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -28,6 +28,9 @@ export default function Header() {
       </Link>
       {!isLoginPage && (
         <div className="flex items-center">
+          <button onClick={handleLogout} className="text-white-100">
+            임시 로그아웃
+          </button>
           <img
             src="/assets/ic-search.svg"
             alt="검색"
@@ -35,10 +38,6 @@ export default function Header() {
           />
           {isLogin ? (
             <>
-              {" "}
-              <button onClick={handleLogout} className="text-white-100">
-                임시 로그아웃
-              </button>
               {isLogin && (
                 <>
                   <img

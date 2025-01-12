@@ -1,5 +1,8 @@
 import { ALL_ADMINS } from "../../../constants/recruting";
-import { AdminPlan } from "../../../type/type";
+interface AdminPlan {
+  name: string;
+  id: number;
+}
 
 interface AddAdminDropdownProps {
   onSelect: (admin: AdminPlan) => void; // 운영진 선택시 호출될 함수

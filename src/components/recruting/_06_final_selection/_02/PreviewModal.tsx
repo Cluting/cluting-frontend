@@ -1,6 +1,6 @@
 // 합격, 불합격 안내 메시지 미리보기 모달
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalPortal } from "../../../common/ModalPortal";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import {
@@ -10,12 +10,36 @@ import {
 
 interface previewModalProps {
   onClose: () => void;
-  onSendPass: () => void; // 합격 메시지 전송 완료 콜백
-  onSendFail: () => void; // 불합격 메시지 전송 완료 콜백
+  onSendPass: (isPass: boolean) => void; // 합격 메시지 전송 완료 콜백
+  onSendFail: (isPass: boolean) => void; // 불합격 메시지 전송 완료 콜백
   passMessage: string;
   failMessage: string;
   isPreview?: boolean;
 }
+
+interface StyledTextProps {
+  text: string;
+}
+
+const StyledText: React.FC<StyledTextProps> = ({ text }) => {
+  const parts = text.split(/(홍길동|기획)/g);
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (part === "홍길동" || part === "기획") {
+          return (
+            <span key={index} className="text-main-500 font-bold text-[20px]">
+              {part}
+            </span>
+          );
+        } else {
+          return <span key={index}>{part}</span>;
+        }
+      })}
+    </>
+  );
+};
 
 export default function PreviewModal({
   onClose,
@@ -31,11 +55,25 @@ export default function PreviewModal({
   const [isSendPassModalVisible, setIsSendPassModalVisible] = useState(false); // 합격 알림 모달 상태
   const [isSendFailModalVisible, setIsSendFailModalVisible] = useState(false); // 불합격 알림 모달 상태
 
+  const [modifiedPassMessage, setModifiedPassMessage] = useState(passMessage);
+  const [modifiedFailMessage, setModifiedFailMessage] = useState(failMessage);
+
+  useEffect(() => {
+    const replacePlaceholders = (message: string) => {
+      return message
+        .replace(/{{지원자}}/g, "홍길동")
+        .replace(/{{파트}}/g, "기획");
+    };
+
+    setModifiedPassMessage(replacePlaceholders(passMessage));
+    setModifiedFailMessage(replacePlaceholders(failMessage));
+  }, [passMessage, failMessage]);
+
   // 합격 전송 처리
   const handleSendPass = () => {
     setIsSendPassModalVisible(true); // 합격 알림 모달 표시
     setIsSendPass(true);
-    onSendPass(); // 상위 컴포넌트에 합격 전송 상태 전달
+    onSendPass(true); // 상위 컴포넌트에 합격 전송 상태 전달
     setTimeout(() => setIsSendPassModalVisible(false), 2000); // 2초 후 숨김
   };
 
@@ -43,7 +81,7 @@ export default function PreviewModal({
   const handleSendFail = () => {
     setIsSendFailModalVisible(true); // 불합격 알림 모달 표시
     setIsSendFail(true);
-    onSendFail(); // 상위 컴포넌트에 불합격 전송 상태 전달
+    onSendFail(false); // 상위 컴포넌트에 불합격 전송 상태 전달
     setTimeout(() => setIsSendFailModalVisible(false), 2000);
   };
 
@@ -57,6 +95,7 @@ export default function PreviewModal({
       onClose();
     }
   };
+
   // 닫고 6단계 완료 모달
   const { setStepCompleted } = useStepSixStore();
   const { completeStep } = useRecruitmentStepStore();
@@ -68,21 +107,20 @@ export default function PreviewModal({
     setStepCompleteModalOpen(false); // StepCompleteModal 닫기
     onClose(); // PreviewModal 닫기
   };
-  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   return (
     <ModalPortal>
       <div className=" modal-style">
         {/* 합격 전송 알림 */}
         {isSendPassModalVisible && (
-          <div className="modal-animation absolute bg-white-100 top-[20px] left-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
+          <div className="modal-animation absolute bg-white-100 top-[80px] left-[650px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
             전송이 완료되었습니다.
           </div>
         )}
 
         {/* 불합격 전송 알림 */}
         {isSendFailModalVisible && (
-          <div className="modal-animation absolute bg-white-100 top-[20px] right-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
+          <div className="modal-animation absolute bg-white-100 top-[80px] right-[650px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
             전송이 완료되었습니다.
           </div>
         )}
@@ -107,7 +145,9 @@ export default function PreviewModal({
                   합격
                 </div>
               </div>
-              <p className="h-[420px] mt-3 overflow-scroll "> {passMessage}</p>
+              <div className="h-[420px] mt-3 overflow-scroll">
+                <StyledText text={modifiedPassMessage} />
+              </div>
 
               {!isPreview && (
                 <div className="flex justify-center">
@@ -132,7 +172,9 @@ export default function PreviewModal({
                   불합격
                 </div>
               </div>
-              <p className="h-[420px] mt-3 overflow-scroll "> {failMessage}</p>
+              <div className="h-[420px] mt-3 overflow-scroll">
+                <StyledText text={modifiedFailMessage} />
+              </div>
 
               {!isPreview && (
                 <div className="flex justify-center">
@@ -157,7 +199,10 @@ export default function PreviewModal({
       {isStepCompleteModalOpen && (
         <StepCompleteModal
           onConfirm={handleConfirmStepComplete}
-          onClose={handleCloseStepCompleteModal}
+          onClose={() => {
+            onClose();
+            setStepCompleteModalOpen(!isStepCompleteModalOpen);
+          }}
           stepIndex={5}
         />
       )}

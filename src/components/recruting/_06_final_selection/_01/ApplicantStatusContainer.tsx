@@ -3,16 +3,38 @@ import FailList from "./FailList";
 import PassList from "./PassList";
 import FilterDropdown from "../../_04_interview_notification/_01/FilterDropdown";
 import AlignDropdown from "../../_04_interview_notification/_01/AlignDropdown";
+import { getFinalInterviewResults } from "../service/Step6";
+import { useQuery } from "@tanstack/react-query";
 
 // 6-1 지원자 합불 결과(컨테이너)
 export default function ApplicantStatusContainer() {
   const [filter, setFilter] = useState("전체");
-  const [align, setAlign] = useState("지원순");
+  const [align, setAlign] = useState("최신순");
 
   const [showFilter, setShowFilter] = useState(false);
   const [showAlign, setShowAlign] = useState(false);
-  //FIX: 합격, 불합격 json 임시 데이터로 연결
-  //TODO: 정렬은 백에서 처리한 데이터로
+
+  const getSortParameter = (align: string) => {
+    switch (align) {
+      case "가나다순":
+        return "INORDER";
+      case "최신순":
+        return "NEWEST";
+      case "오래된순":
+        return "OLDEST";
+      default:
+        return "NEWEST";
+    }
+  };
+
+  const { data } = useQuery(
+    ["interviewEvaluation", align],
+    () => getFinalInterviewResults(1, getSortParameter(align)),
+    {
+      refetchOnWindowFocus: false
+    }
+  );
+
   return (
     <div>
       <div className="w-full flex ">
@@ -62,8 +84,16 @@ export default function ApplicantStatusContainer() {
       </div>
       <div className="bg-gray-50 w-full mt-[18px] px-[25px] py-[18px] border border-gray-200 rounded-[21px] ">
         <div className="grid grid-cols-2">
-          <PassList filter={filter} />
-          <FailList filter={filter} />
+          <PassList
+            filter={filter}
+            passData={data?.passed}
+            byGroup={data?.byGroup}
+          />
+          <FailList
+            filter={filter}
+            data={data?.failed}
+            byGroup={data?.byGroup}
+          />
         </div>
       </div>
     </div>

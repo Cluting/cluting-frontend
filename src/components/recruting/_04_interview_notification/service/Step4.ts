@@ -44,3 +44,27 @@ export async function getDocumentEvaluationGroups(recruitId: number) {
     throw error;
   }
 }
+
+// POST: [서류 합격자 및 면접 안내] 4-3. 서류 결과 전송하기
+export async function sendDocumentEvaluationResults(
+  recruitId: number,
+  state: string,
+  message: string
+) {
+  try {
+    const response = await Instance.post(
+      `/eval/doc/${recruitId}/send?state=${state}`,
+      { message },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "*/*"
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("서류 결과 문자 전송 실패:", error);
+    throw error;
+  }
+}

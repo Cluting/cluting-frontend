@@ -1,18 +1,42 @@
 import { useState } from "react";
-import FailList from "./FailList";
 import PassList from "./PassList";
 import AlignDropdown from "./AlignDropdown";
 import FilterDropdown from "./FilterDropdown";
+import { getDocumentEvaluationResults } from "../service/Step4";
+import { useQuery } from "@tanstack/react-query";
+import FailList from "./FailList";
 
 // 4-1 지원자 합불 결과 (컨테이너)
 export default function ApplicantStatusContainer() {
   const [filter, setFilter] = useState("전체");
-  const [align, setAlign] = useState("지원순");
+  const [align, setAlign] = useState("최신순");
 
   const [showFilter, setShowFilter] = useState(false);
   const [showAlign, setShowAlign] = useState(false);
 
-  //TODO: 정렬은 백에서 처리한 데이터로
+  const getSortParameter = (align: string) => {
+    switch (align) {
+      case "가나다순":
+        return "INORDER";
+      case "최신순":
+        return "NEWEST";
+      case "오래된순":
+        return "OLDEST";
+      default:
+        return "NEWEST";
+    }
+  };
+
+  const { data } = useQuery(
+    ["documentEvaluation", align],
+    () => getDocumentEvaluationResults(1, getSortParameter(align)),
+    {
+      refetchOnWindowFocus: false
+    }
+  );
+
+  console.log(data);
+
   return (
     <div>
       <div className="w-full flex ">
@@ -57,8 +81,16 @@ export default function ApplicantStatusContainer() {
       </div>
       <div className="bg-gray-50 w-full mt-[18px] px-[25px] py-[18px] border border-gray-200 rounded-[21px] ">
         <div className="grid grid-cols-2">
-          <PassList filter={filter} />
-          <FailList filter={filter} />
+          <PassList
+            filter={filter}
+            passData={data?.passed}
+            byGroup={data?.byGroup}
+          />
+          <FailList
+            filter={filter}
+            data={data?.failed}
+            byGroup={data?.byGroup}
+          />
         </div>
       </div>
     </div>
