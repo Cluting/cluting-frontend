@@ -92,7 +92,7 @@ export default function ScheduleAdjustmentContainer() {
         ? group.reduce(
             (acc, g) => ({
               ...acc,
-              [g.index]: {
+              [`group${g.index}`]: {
                 groupName: g.name,
                 dates: {}
               }
@@ -100,7 +100,7 @@ export default function ScheduleAdjustmentContainer() {
             {}
           )
         : {
-            0: {
+            group0: {
               groupName: "공통",
               dates: {}
             }
@@ -149,11 +149,11 @@ export default function ScheduleAdjustmentContainer() {
     const dateKey = getDateKey(firstDate);
 
     group.forEach((g) => {
-      if (!dateScheduleMap[g.index]?.[dateKey]) {
+      if (!dateScheduleMap[`group${g.index}`]?.[dateKey]) {
         setDateScheduleMap((prev) => ({
           ...prev,
-          [g.index]: {
-            ...prev[g.index],
+          [`group${g.index}`]: {
+            ...prev[`group${g.index}`],
             [dateKey]: getOrCreateScheduleData(firstDate, g.index)
           }
         }));
@@ -161,11 +161,11 @@ export default function ScheduleAdjustmentContainer() {
     });
 
     // 그룹이 없는 경우 default 그룹(0)에 대한 처리
-    if (group.length === 0 && !dateScheduleMap[0]?.[dateKey]) {
+    if (group.length === 0 && !dateScheduleMap["group0"]?.[dateKey]) {
       setDateScheduleMap((prev) => ({
         ...prev,
-        0: {
-          ...prev[0],
+        group0: {
+          ...prev["group0"],
           [dateKey]: getOrCreateScheduleData(firstDate, 0)
         }
       }));
@@ -182,14 +182,14 @@ export default function ScheduleAdjustmentContainer() {
       ...group.reduce(
         (acc, g) => ({
           ...acc,
-          [g.index]: {
+          [`group${g.index}`]: {
             groupName: g.name,
             dates: {}
           }
         }),
         {}
       ),
-      [selectedGroupId]: {
+      [`group${selectedGroupId}`]: {
         groupName:
           group.find((g) => g.index === selectedGroupId)?.name || "공통",
         dates: {
@@ -273,10 +273,10 @@ export default function ScheduleAdjustmentContainer() {
 
       setDateSelectionsMap((prev) => ({
         ...prev,
-        [selectedGroupId]: {
-          ...prev[selectedGroupId],
+        [`group${selectedGroupId}`]: {
+          ...prev[`group${selectedGroupId}`],
           [dateKey]: {
-            ...prev[selectedGroupId]?.[dateKey],
+            ...prev[`group${selectedGroupId}`]?.[dateKey],
             [time]: currentSelections.includes(applicantId)
               ? currentSelections.filter((id) => id !== applicantId)
               : currentSelections.length < interviewee
@@ -293,8 +293,8 @@ export default function ScheduleAdjustmentContainer() {
     const dateKey = getDateKey(currentDate);
     setDateSelectionsMap((prev) => ({
       ...prev,
-      [selectedGroupId]: {
-        ...prev[selectedGroupId],
+      [`group${selectedGroupId}`]: {
+        ...prev[`group${selectedGroupId}`],
         [dateKey]: {}
       }
     }));
@@ -310,7 +310,9 @@ export default function ScheduleAdjustmentContainer() {
     const completeFormData: ScheduleFormData = {
       groups: group.length
         ? group.reduce((acc, g) => {
-            const groupId = g.index;
+            const groupId = `${g.index}`; // API 요청용 키
+            const groupKeyForMap = `group${g.index}`; // 내부 map 접근용 키
+
             return {
               ...acc,
               [groupId]: {
@@ -328,9 +330,10 @@ export default function ScheduleAdjustmentContainer() {
                   >
                 >((datesAcc, date) => {
                   const dateKey = getDateKey(date);
-                  const scheduleData = dateScheduleMap[groupId]?.[dateKey];
+                  const scheduleData =
+                    dateScheduleMap[`group${g.index}`]?.[dateKey];
                   const selections =
-                    dateSelectionsMap[groupId]?.[dateKey] || {};
+                    dateSelectionsMap[`group${g.index}`]?.[dateKey] || {};
 
                   if (scheduleData) {
                     datesAcc[dateKey] = {
@@ -353,7 +356,8 @@ export default function ScheduleAdjustmentContainer() {
             };
           }, {})
         : {
-            0: {
+            "0": {
+              // default 그룹도 숫자 문자열로
               groupName: "공통",
               dates: allDates.reduce<
                 Record<
@@ -368,8 +372,8 @@ export default function ScheduleAdjustmentContainer() {
                 >
               >((datesAcc, date) => {
                 const dateKey = getDateKey(date);
-                const scheduleData = dateScheduleMap[0]?.[dateKey];
-                const selections = dateSelectionsMap[0]?.[dateKey] || {};
+                const scheduleData = dateScheduleMap["group0"]?.[dateKey]; // 내부 map 접근용 키
+                const selections = dateSelectionsMap["group0"]?.[dateKey] || {};
 
                 if (scheduleData) {
                   datesAcc[dateKey] = {
@@ -397,7 +401,8 @@ export default function ScheduleAdjustmentContainer() {
       return;
     }
 
-    console.log(completeFormData);
+    // console.log("post 전", completeFormData);
+    console.log("post 전", JSON.stringify(completeFormData, null, 2));
     createFormMutation.mutate({ formData: completeFormData, recruitId });
   });
 
@@ -412,11 +417,11 @@ export default function ScheduleAdjustmentContainer() {
           newDate <= new Date(interviewEndDate)
         ) {
           const dateKey = getDateKey(newDate);
-          if (!dateScheduleMap[selectedGroupId]?.[dateKey]) {
+          if (!dateScheduleMap[`group${selectedGroupId}`]?.[dateKey]) {
             setDateScheduleMap((prev) => ({
               ...prev,
-              [selectedGroupId]: {
-                ...prev[selectedGroupId],
+              [`group${selectedGroupId}`]: {
+                ...prev[`group${selectedGroupId}`],
                 [dateKey]: getOrCreateScheduleData(newDate, selectedGroupId)
               }
             }));
@@ -480,7 +485,9 @@ export default function ScheduleAdjustmentContainer() {
 
       <ScheduleGrid
         scheduleData={
-          dateScheduleMap[selectedGroupId]?.[getDateKey(currentDate)] || []
+          dateScheduleMap[`group${selectedGroupId}`]?.[
+            getDateKey(currentDate)
+          ] || []
         }
         dateSelectionsMap={dateSelectionsMap}
         selectedGroupId={selectedGroupId}

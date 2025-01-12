@@ -4,22 +4,23 @@ declare interface ScheduleData {
   applicants: { id: number; name: string }[]; // 내부 로직용
 }
 declare interface GroupScheduleMap {
-  [groupId: number]: {
+  [groupId: string]: {
     [date: string]: ScheduleData[];
   };
 }
 
 declare interface GroupSelectionsMap {
-  [groupId: number]: {
+  [groupId: string]: {
     [date: string]: {
       [timeSlot: string]: number[];
     };
   };
 }
 
+//폼 데이터
 declare interface ScheduleFormData {
   groups: {
-    [groupId: number]: {
+    [groupId: string]: {
       groupName: string;
       dates: {
         [date: string]: {

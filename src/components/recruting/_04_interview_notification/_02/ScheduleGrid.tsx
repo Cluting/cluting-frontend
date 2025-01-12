@@ -31,8 +31,8 @@ export const ScheduleGrid = memo(
       (time: string) => {
         const dateKey = getDateKey(currentDate);
         return (
-          (dateSelectionsMap[selectedGroupId]?.[dateKey]?.[time]?.length ||
-            0) === interviewee
+          (dateSelectionsMap[`group${selectedGroupId}`]?.[dateKey]?.[time]
+            ?.length || 0) === interviewee
         );
       },
       [currentDate, dateSelectionsMap, selectedGroupId, interviewee, getDateKey]
@@ -42,9 +42,9 @@ export const ScheduleGrid = memo(
       (time: string, applicantId: number) => {
         const dateKey = getDateKey(currentDate);
         return (
-          dateSelectionsMap[selectedGroupId]?.[dateKey]?.[time]?.includes(
-            applicantId
-          ) || false
+          dateSelectionsMap[`group${selectedGroupId}`]?.[dateKey]?.[
+            time
+          ]?.includes(applicantId) || false
         );
       },
       [currentDate, dateSelectionsMap, selectedGroupId, getDateKey]
@@ -90,7 +90,7 @@ export const ScheduleGrid = memo(
                     );
                     const isDisabled =
                       !isSelected &&
-                      (dateSelectionsMap[selectedGroupId]?.[
+                      (dateSelectionsMap[`group${selectedGroupId}`]?.[
                         getDateKey(currentDate)
                       ]?.[schedule.time]?.length || 0) >= interviewee;
 
