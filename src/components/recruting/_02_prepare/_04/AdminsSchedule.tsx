@@ -58,7 +58,7 @@ export default function AdminsSchedule() {
     generateTimeSlots();
   }, [interviewStartTime, interviewEndTime]);
 
-  //임원진도 임의로 써놨습니다!
+  //todo: 임원진도 임의로 써놨습니다!
   const admins = ["박시현", "윤다인", "곽서연", "최예은"];
 
   const handleAdminSelect = async (timeSlot: string, admin: string) => {
@@ -142,7 +142,7 @@ export default function AdminsSchedule() {
               className={`mt-3 border  rounded-[12px] bg-[#FBFBFF]
               ${isSubmitted && errors.scheduleData ? "border-red-100" : "border-gray-300"}`}
             >
-              <div className="flex-center bg-gray-200 border-b-[#C7C7CC rounded-t-[12px] pt-[15px] pb-[14px] text-headline">
+              <div className="flex-center bg-gray-200 border-[#C7C7CC] rounded-t-[12px] pt-[15px] pb-[14px] text-headline">
                 {currentDate > new Date(interviewStartDate) && (
                   <button type="button" onClick={goToPreviousDate}>
                     <img
@@ -184,14 +184,11 @@ export default function AdminsSchedule() {
                     {/*시간*/}
                     <div
                       className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
-                          ${getSelectedAdminCount(timeSlot) >= interviewer ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2`}
+                          ${getSelectedAdminCount(timeSlot) >= interviewer ? "border-main-800 bg-main-100 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2`}
                     >
                       {timeSlot}
                     </div>
                     {/*운영진들 */}
-                    {group.map((item) => (
-                      <div>{item.name}</div>
-                    ))}
                     {admins.map((admin) => (
                       <button
                         key={`${timeSlot}-${admin}`}
@@ -201,8 +198,8 @@ export default function AdminsSchedule() {
                           getSelectedAdminCount(timeSlot) >= interviewer &&
                           !isAdminSelectedForTimeSlot(timeSlot, admin)
                         }
-                        className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-gray-800 hover:border-gray-800 hover:text-[#F2F2F7]
-                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-gray-800 bg-gray-800 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
+                        className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-[#F2F2F7]
+                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-main-100 bg-main-100 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
                       >
                         {admin}
                       </button>
