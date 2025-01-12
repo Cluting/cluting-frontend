@@ -182,6 +182,28 @@ export default function ResultMessageContainer() {
               />
               파트
             </button>
+
+            <button
+              onClick={() => handleInsertText("{{면접 시간대 링크}}")}
+              className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3"
+            >
+              <img
+                src="/assets/ic-add.svg"
+                className="w-[14px] h-[14px] mr-1"
+              />
+              면접 시간대 링크
+            </button>
+
+            <button
+              onClick={() => handleInsertText("{{면접 수락 링크}}")}
+              className="flex-center bg-gray-600 text-white-100 rounded-lg mr-[11px] py-[4px] px-[7px]  text-caption3"
+            >
+              <img
+                src="/assets/ic-add.svg"
+                className="w-[14px] h-[14px] mr-1"
+              />
+              면접 수락 링크
+            </button>
           </div>
           <div className="relative bg-white-100 h-[690px] rounded-b-[6.65px]">
             {isVisible && (

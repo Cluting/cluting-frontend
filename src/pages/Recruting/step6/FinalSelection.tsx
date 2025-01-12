@@ -19,7 +19,7 @@ export default function FinalSelection() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="w-[1016px] pl-8  mb-[143px]">
+      <div className="w-[1016px] pl-8 h-screen mb-[500px]">
         <TopSection />
         <CurrentStepComponent />
       </div>
