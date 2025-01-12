@@ -129,7 +129,10 @@ export default function EvaluationCriteria({
                     ? "border-main-100 bg-main-100 text-white-100"
                     : "border-gray-200 text-main-100"
                 }`}
-            onClick={() => setSelectedGroupId(groupItem.id)}
+            onClick={() => {
+              setSelectedGroupId(groupItem.id);
+              setNewDetailCriteria("");
+            }}
           >
             {groupItem.groupName}
           </button>
