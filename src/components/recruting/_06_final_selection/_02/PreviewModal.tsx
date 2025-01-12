@@ -69,7 +69,6 @@ export default function PreviewModal({
     setStepCompleteModalOpen(false); // StepCompleteModal 닫기
     onClose(); // PreviewModal 닫기
   };
-  const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   return (
     <ModalPortal>
@@ -158,7 +157,10 @@ export default function PreviewModal({
       {isStepCompleteModalOpen && (
         <StepCompleteModal
           onConfirm={handleConfirmStepComplete}
-          onClose={handleCloseStepCompleteModal}
+          onClose={() => {
+            onClose();
+            setStepCompleteModalOpen(!isStepCompleteModalOpen);
+          }}
           stepIndex={5}
         />
       )}

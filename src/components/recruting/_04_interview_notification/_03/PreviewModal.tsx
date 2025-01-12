@@ -159,6 +159,10 @@ export default function PreviewModal({
         <StepCompleteModal
           onConfirm={handleConfirmStepComplete}
           stepIndex={3}
+          onClose={() => {
+            onClose();
+            setStepCompleteModalOpen(!isStepCompleteModalOpen);
+          }}
         />
       )}
     </ModalPortal>
