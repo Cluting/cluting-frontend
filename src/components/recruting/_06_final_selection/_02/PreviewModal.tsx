@@ -76,14 +76,14 @@ export default function PreviewModal({
       <div className=" modal-style">
         {/* 합격 전송 알림 */}
         {isSendPassModalVisible && (
-          <div className="modal-animation absolute bg-white-100 top-[20px] left-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
+          <div className="modal-animation absolute bg-white-100 top-[80px] left-[650px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
             전송이 완료되었습니다.
           </div>
         )}
 
         {/* 불합격 전송 알림 */}
         {isSendFailModalVisible && (
-          <div className="modal-animation absolute bg-white-100 top-[20px] right-[500px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
+          <div className="modal-animation absolute bg-white-100 top-[80px] right-[650px] px-10 py-4 bg-black rounded-[11px] text-center text-body z-[50]">
             전송이 완료되었습니다.
           </div>
         )}
