@@ -1,6 +1,6 @@
 // 합격, 불합격 안내 메시지 미리보기 모달
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ModalPortal } from "../../../common/ModalPortal";
 import StepCompleteModal from "../../common/StepCompleteModal";
 import {
@@ -17,6 +17,30 @@ interface previewModalProps {
   isPreview?: boolean;
 }
 
+interface StyledTextProps {
+  text: string;
+}
+
+const StyledText: React.FC<StyledTextProps> = ({ text }) => {
+  const parts = text.split(/(홍길동|기획)/g);
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        if (part === "홍길동" || part === "기획") {
+          return (
+            <span key={index} className="text-main-500 font-bold text-[20px]">
+              {part}
+            </span>
+          );
+        } else {
+          return <span key={index}>{part}</span>;
+        }
+      })}
+    </>
+  );
+};
+
 export default function PreviewModal({
   onClose,
   onSendPass,
@@ -30,6 +54,20 @@ export default function PreviewModal({
 
   const [isSendPassModalVisible, setIsSendPassModalVisible] = useState(false); // 합격 알림 모달 상태
   const [isSendFailModalVisible, setIsSendFailModalVisible] = useState(false); // 불합격 알림 모달 상태
+
+  const [modifiedPassMessage, setModifiedPassMessage] = useState(passMessage);
+  const [modifiedFailMessage, setModifiedFailMessage] = useState(failMessage);
+
+  useEffect(() => {
+    const replacePlaceholders = (message: string) => {
+      return message
+        .replace(/{{지원자}}/g, "홍길동")
+        .replace(/{{파트}}/g, "기획");
+    };
+
+    setModifiedPassMessage(replacePlaceholders(passMessage));
+    setModifiedFailMessage(replacePlaceholders(failMessage));
+  }, [passMessage, failMessage]);
 
   // 합격 전송 처리
   const handleSendPass = () => {
@@ -107,7 +145,9 @@ export default function PreviewModal({
                   합격
                 </div>
               </div>
-              <p className="h-[420px] mt-3 overflow-scroll "> {passMessage}</p>
+              <div className="h-[420px] mt-3 overflow-scroll">
+                <StyledText text={modifiedPassMessage} />
+              </div>
 
               {!isPreview && (
                 <div className="flex justify-center">
@@ -132,7 +172,9 @@ export default function PreviewModal({
                   불합격
                 </div>
               </div>
-              <p className="h-[420px] mt-3 overflow-scroll "> {failMessage}</p>
+              <div className="h-[420px] mt-3 overflow-scroll">
+                <StyledText text={modifiedFailMessage} />
+              </div>
 
               {!isPreview && (
                 <div className="flex justify-center">
