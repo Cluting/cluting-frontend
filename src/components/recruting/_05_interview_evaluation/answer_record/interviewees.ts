@@ -3,7 +3,7 @@ export const INTERVIEWEES = [
   {
     id: 1,
     color: "039B72",
-    name: "김민지",
+    name: "박시현",
     role: "기획",
     university: "성신여자대학교",
     major: "서비스디자인공학과",
@@ -15,7 +15,7 @@ export const INTERVIEWEES = [
   },
   {
     id: 2,
-    name: "이태준",
+    name: "최예은",
     role: "기획",
     color: "7E57C2",
     university: "홍익대학교",

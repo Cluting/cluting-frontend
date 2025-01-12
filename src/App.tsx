@@ -90,7 +90,7 @@ export default function App() {
               />
               {/* 면접 평가하기 */}
               <Route
-                path="interview_evaluation_record"
+                path="interview_evaluation_record/:id"
                 element={<InterviewEvaluationRecord />}
               />
               <Route path="06_final_selection" element={<FinalSelection />} />
