@@ -9,7 +9,7 @@ const AnnouncementDetailHeader: React.FC<HeaderProps> = ({
 }) => {
   return (
     <div
-      className="flex flex-col items-center justify-between w-full h-32 pt-5 px-28"
+      className="flex flex-col items-center justify-between h-32 pt-5 px-28"
       style={{ boxShadow: "0px 4px 27.2px 0px rgba(0, 0, 0, 0.08)" }}
     >
       {/* Header 윗부분 */}
@@ -31,7 +31,7 @@ const AnnouncementDetailHeader: React.FC<HeaderProps> = ({
         </p>
       </div>
       {/* Header 아랫부분 */}
-      <div className="w-[1213px] flex items-center w-full">
+      <div className="w-[1213px] flex items-center">
         <button
           onClick={() => setMenu("announcement")}
           className={`flex-center flex-1 h-12 rounded-t-[11px] border text-callout ${

@@ -14,7 +14,7 @@ const NavigationButton: React.FC<NavigationButtonProps> = ({
   onComplete
 }) => {
   return (
-    <div className="flex gap-7">
+    <div className="flex mb-10 gap-7">
       {currentPage > 0 && (
         <button
           onClick={onPrevious}
