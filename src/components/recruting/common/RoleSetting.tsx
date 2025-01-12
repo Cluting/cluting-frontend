@@ -46,7 +46,7 @@ export default function RoleSettings({
             </div>
           )}
         </div>
-        {groups ? (
+        {groups.length === 1 ? (
           <div>
             <button
               type="button"
