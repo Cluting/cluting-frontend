@@ -19,12 +19,20 @@ export async function getFinalInterviewResults(
 // POST: [최종합격자 및 활동 안내] 6-2. 합불 안내 메시지 전송하기
 export async function sendInterviewResultNotifications(
   recruitId: number,
-  notifications: { message: string; phone: string }[]
+  state: string,
+  message: string
 ) {
   try {
-    const response = await Instance.post(`/eval/interview/${recruitId}/send`, {
-      list: notifications
-    });
+    const response = await Instance.post(
+      `/eval/interview/${recruitId}/send?state=${state}`,
+      { message },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "*/*"
+        }
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("최종 합격 안내 메시지 전송 실패:", error);
