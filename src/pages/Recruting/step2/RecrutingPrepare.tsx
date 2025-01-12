@@ -26,7 +26,7 @@ export default function RecrutingPrepare() {
   return (
     <div className="flex justify-center pt-6 bg-gray-100">
       <Sidemenu />
-      <div className="w-[1016px] h-screen mb-[500px]">
+      <div className="w-[1016px] h-full mb-[500px]">
         <TopSection />
         <CurrentStepComponent />
       </div>
