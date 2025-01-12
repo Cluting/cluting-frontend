@@ -4,6 +4,7 @@ import QuestionAnswer from "./QuestionAnswer";
 import AdminEvaluationWindow from "../../_03_document_evaluation/evaluation/AdminEvaluationWindow";
 import { useState } from "react";
 import Portfolio from "../../document/Portfolio";
+import ApplicationQuestion from "../../document/ApplicationQuestion";
 
 export default function InterviewEvaluationRecordContainer() {
   const [view, setView] = useState("application");
@@ -25,7 +26,13 @@ export default function InterviewEvaluationRecordContainer() {
             onClick={() => setView("application")}
             className={`button-main-bg-sm ${view === "application" ? "button-main-bg-sm" : "button-main-light-sm"}`}
           >
-            지원서류
+            면접 기록
+          </button>
+          <button
+            onClick={() => setView("doc")}
+            className={`button-main-bg-sm ml-4 ${view === "doc" ? "button-main-bg-sm" : "button-main-light-sm"}`}
+          >
+            지원 서류
           </button>
           <button
             onClick={() => setView("portfolio")}
@@ -42,6 +49,13 @@ export default function InterviewEvaluationRecordContainer() {
               <QuestionAnswer type="part" />
               <QuestionAnswer type="individual" />
             </div>
+          </>
+        )}
+
+        {view === "doc" && (
+          <>
+            <UserProfile />
+            <ApplicationQuestion />
           </>
         )}
 
