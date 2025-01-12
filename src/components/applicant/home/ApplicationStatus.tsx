@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function ApplicantStatus() {
-  //FIX:
+  //FIX: 임시 단계별 진행 상태
   const [completedSteps, setCompletedSteps] = useState([
     true,
     false,

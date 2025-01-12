@@ -1,5 +1,6 @@
 //지원자 홈
 
+import ApplicantCalendar from "./ApplicantCalendar";
 import ApplicantStatus from "./ApplicationStatus";
 
 export default function ApplicantHomeContainer() {
@@ -20,6 +21,7 @@ export default function ApplicantHomeContainer() {
             <h2 className="font-bold text-title2 text-gray-800">
               지원 캘린더(2)
             </h2>
+            <ApplicantCalendar />
           </section>
         </div>
       </div>
