@@ -5,8 +5,7 @@ import NumberSpinner from "./NumberSpinner";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { postPrepare1 } from "./service/Step1";
-import { getPassIdeal } from "./service/Step1";
+import { postPrepare1, getPassIdeal, patchPrepare1 } from "./service/Step1";
 
 export default function SetAcceptanceCountContainer() {
   const recruitId = 1; //todo: 임시로
@@ -47,6 +46,22 @@ export default function SetAcceptanceCountContainer() {
       },
       onError: (error: any) => {
         console.error(`모집하기1 POST 에실패`, error);
+      }
+    }
+  );
+
+  //PATCH
+  const patchMutation = useMutation(
+    (data: { formData: SetAcceptanceCountFormData; recruitId: number }) =>
+      patchPrepare1(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("모집하기1 PATCH 성공", data);
+        // PATCH 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
+        queryClient.invalidateQueries(["passIdeal", recruitId]);
+      },
+      onError: (error: any) => {
+        console.error(`모집하기1 PATCH 실패`, error);
       }
     }
   );
@@ -145,9 +160,7 @@ export default function SetAcceptanceCountContainer() {
 
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
-      // 모든 필드 validation
       await trigger();
-
       // validation 결과 확인
       if (Object.keys(errors).length > 0) return;
 
@@ -161,21 +174,26 @@ export default function SetAcceptanceCountContainer() {
           (sum, group) => sum + (group.finalPassCount || 0),
           0
         );
-
         if (groupTotalDocumentPass !== data.totalDocumentPassCount) {
           return;
         }
-
         if (groupTotalFinalPass !== data.totalFinalPassCount) {
           return;
         }
       }
 
       console.log(data);
-      setStepCompleted(0, true);
 
       const recruitId = 1; //todo: 일단 임시로
-      mutation.mutate({ formData: data, recruitId });
+      if (steps[0].completed) {
+        //수정하기 버튼인 경우 -> PATCH 요청
+        await patchMutation.mutateAsync({ formData: data, recruitId });
+        setStepCompleted(0, false); // PATCH 성공 후 완료하기
+      } else {
+        //완료하기 버튼인 경우 -> POST 요청
+        await mutation.mutateAsync({ formData: data, recruitId });
+        setStepCompleted(0, true); // POST 성공 후 수정하기
+      }
     } catch (error) {
       console.error("제출 중 에러 발생:", error);
     }
@@ -195,9 +213,7 @@ export default function SetAcceptanceCountContainer() {
           <div className="tooltip">서류 합격 인원을 설정해 주세요.</div>
         </div>
 
-        <div
-          className={`${steps[0].completed ? "pointer-events-none" : ""} pt-[16px]`}
-        >
+        <div className="pt-[16px]">
           <div className="relative h-[105px] bg-white-100 rounded-[12px]">
             <div className="flex-center absolute left-[32px] top-[27px]">
               <div
@@ -228,9 +244,7 @@ export default function SetAcceptanceCountContainer() {
         </div>
       </div>
 
-      <div
-        className={`${steps[0].completed ? "pointer-events-none" : ""} mt-[34px]`}
-      >
+      <div className="mt-[34px]">
         <div className="flex">
           <p className="section-title">
             <span className="mr-[0.25em] text-main-100">*</span>
