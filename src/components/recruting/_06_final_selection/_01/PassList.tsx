@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useGroupStore } from "../../../../store/useStore";
 import { GetApplicant } from "../../../../type/type";
 
 interface PassListProps {
@@ -9,8 +7,6 @@ interface PassListProps {
 }
 export default function PassList({ filter, passData, byGroup }: PassListProps) {
   //FIX:
-  const status = "완료";
-
   const filteredData =
     filter === "전체"
       ? passData

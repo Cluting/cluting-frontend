@@ -7,9 +7,6 @@ interface FailListProps {
 }
 
 export default function FailList({ filter, data, byGroup }: FailListProps) {
-  //FIX:
-  const status = "완료";
-
   const filteredData =
     filter === "전체" ? data : data?.filter((data) => data.part === filter);
 

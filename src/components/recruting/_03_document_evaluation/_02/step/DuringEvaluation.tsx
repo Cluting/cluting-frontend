@@ -121,17 +121,6 @@ interface DuringEvaluationProps {
   sortType: string; // 정렬 기준
 }
 
-interface Member {
-  id: string;
-  state: string;
-  name: string;
-  phone: string;
-  group: string;
-  incomplete: number;
-  all: number;
-  result?: "합격" | "불합격";
-}
-
 const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
   filter,
   sortType
