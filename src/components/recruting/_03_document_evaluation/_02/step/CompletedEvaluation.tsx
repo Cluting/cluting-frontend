@@ -205,7 +205,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   const handleConfirmStepComplete = () => {
-    completeStep(2);
+    completeStep(2, true);
     setStepCompleted(1, true);
     setStepCompleteModalOpen(false);
   };

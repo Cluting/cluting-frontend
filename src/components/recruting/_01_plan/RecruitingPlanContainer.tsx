@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 import RecrutingCalenderPicker from "../_02_prepare/_01/RecruitingCalenderPicker";
 import PrepareStepRoles from "./PrepareStepRoles";
@@ -7,10 +7,12 @@ import { BUTTON_TEXT } from "../../../constants/recruting";
 import StepCompleteModal from "../common/StepCompleteModal";
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getPlanningData, postStepPlan } from "./service/Prep";
+import { getPlanningData, patchPrep, postStepPlan } from "./service/Prep";
 
 export default function RecruitingPlanContainer() {
   const { completedSteps, completeStep } = useRecruitmentStepStore();
+  //수정하기
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // 1단계 완료 여부 처리
   const isStepOneCompleted = completedSteps[0] || false;
@@ -22,7 +24,7 @@ export default function RecruitingPlanContainer() {
   };
 
   const handleConfirmStepComplete = () => {
-    completeStep(0);
+    completeStep(0, true);
     setStepCompleteModalOpen(false); // 모달 닫기
   };
 
@@ -42,7 +44,7 @@ export default function RecruitingPlanContainer() {
     () => getPlanningData(recruitId),
     {
       onSuccess: (data: RecruitmentPlanningData) => {
-        completeStep(0);
+        completeStep(0, true);
       }
     }
   );
@@ -64,9 +66,72 @@ export default function RecruitingPlanContainer() {
       }
     }
   );
-  const onSubmit = (data: PrepareStepRolesFormValues) => {
-    console.log("API 제출 데이터:", data);
-    stepPlanMutation.mutate({ recruitId: 1, planningData: data });
+
+  const patchPlanMutation = useMutation(
+    ({
+      recruitId,
+      planningData
+    }: {
+      recruitId: number;
+      planningData: PrepareStepRolesFormValues;
+    }) => patchPrep(recruitId, planningData),
+    {
+      onSuccess: (data) => {
+        console.log("계획하기 단계가 성공적으로 수정되었습니다!");
+      }
+    }
+  );
+
+  const handleButtonClick = () => {
+    if (isStepOneCompleted) {
+      setIsEditMode(true);
+      completeStep(0, false);
+    } else {
+      setStepCompleteModalOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (apiPlanningData) {
+      methods.reset({
+        recruitSchedules: apiPlanningData.schedule, // Remove the array brackets
+        prepStages: apiPlanningData.prepStages.map((stage, index) => ({
+          stageName: stage.stageName,
+          stageOrder: index + 1,
+          clubUserIds: [] // Assuming clubUserIds should be an empty array initially
+        })),
+        applicantGroups: apiPlanningData.groups
+      });
+    }
+  }, [apiPlanningData, methods]);
+
+  const onSubmit = async (data: PrepareStepRolesFormValues) => {
+    try {
+      const formattedData = {
+        recruitSchedules: data.recruitSchedules,
+        prepStages: data.prepStages,
+        applicantGroups: data.applicantGroups
+      };
+
+      console.log("Submitting data:", formattedData);
+
+      if (isEditMode) {
+        console.log(data);
+        await patchPlanMutation.mutateAsync({
+          recruitId: 1,
+          planningData: data
+        });
+      } else {
+        await stepPlanMutation.mutateAsync({
+          recruitId: 1,
+          planningData: data
+        });
+      }
+      setIsEditMode(false);
+      completeStep(0, true);
+    } catch (error) {
+      console.error("제출 중 에러 발생:", error);
+    }
   };
 
   return (
@@ -81,8 +146,9 @@ export default function RecruitingPlanContainer() {
 
         <section
           className={`${
-            isStepOneCompleted ? "pointer-events-none" : ""
-          } w-full h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]`}
+            isStepOneCompleted && !isEditMode ? "pointer-events-none" : ""
+          }
+           w-full h-auto bg-white-100 py-6 mx-8 px-[13px] rounded-[12px]`}
         >
           <div className="flex items-center mx-8 my-4">
             <h1 className="section-title">
@@ -103,23 +169,32 @@ export default function RecruitingPlanContainer() {
         </section>
         <PrepareStepRoles
           apiPrepareStepRoles={apiPlanningData?.prepStages}
-          isStepOneCompleted={isStepOneCompleted}
+          isStepOneCompleted={isStepOneCompleted && !isEditMode}
           onPrepStagesSubmit={handlePrepStagesSubmit}
         />
         <div className=" w-full flex flex-col items-center ml-8">
           <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
             type="submit"
+            onClick={handleButtonClick}
             aria-label={
-              isStepOneCompleted ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+              isEditMode
+                ? BUTTON_TEXT.COMPLETE
+                : isStepOneCompleted
+                  ? BUTTON_TEXT.EDIT
+                  : BUTTON_TEXT.COMPLETE
             }
             className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-              isStepOneCompleted
-                ? "bg-main-400 border border-main-100 text-main-100 "
-                : "bg-main-100 text-white-100 "
-            }  text-body flex-center hover:bg-main-500`}
+              isEditMode || !isStepOneCompleted
+                ? "bg-main-100 text-white-100"
+                : "bg-main-400 border border-main-100 text-main-100"
+            } text-body flex-center hover:bg-main-500`}
           >
-            {isStepOneCompleted ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+            {isEditMode
+              ? BUTTON_TEXT.COMPLETE
+              : isStepOneCompleted
+                ? BUTTON_TEXT.EDIT
+                : BUTTON_TEXT.COMPLETE}
           </button>
 
           {isStepCompleteModalOpen && (
@@ -130,7 +205,7 @@ export default function RecruitingPlanContainer() {
             />
           )}
 
-          {isStepOneCompleted && (
+          {isStepOneCompleted && !isEditMode && (
             <div className="fixed animate-dropdown bottom-[16px]">
               <div className="w-[1015px] h-[79px] bg-gray-400 rounded-[11px] pl-[31px] flex items-center text-[16px] font-semibold text-gray-800 overflow-hidden">
                 해당 단계는 완료되었습니다. 다음 단계로 넘어갈 시, 수정을 권하지

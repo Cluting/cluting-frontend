@@ -40,3 +40,38 @@ export async function getPlanningData(recruitId: number) {
     throw error;
   }
 }
+
+// PATCH: 계획하기 수정
+export async function patchPrep(
+  recruitId: number,
+  data: PrepareStepRolesFormValues
+) {
+  const url = `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`;
+  const headers = {
+    accept: "*/*",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    "Content-Type": "application/json"
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify(data)
+    });
+
+    const text = await response.text();
+    console.log("Response Text:", text);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseData = text ? JSON.parse(text) : {};
+    console.log("계획하기 수정 성공:", responseData);
+    return responseData;
+  } catch (error) {
+    console.error("계획하기 수정 실패:", error);
+    throw error;
+  }
+}
