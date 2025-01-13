@@ -20,7 +20,7 @@ export default function FailList({ filter, data, byGroup }: FailListProps) {
           <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-gray-100 ">
             불합격자
           </div>
-          <p className="text-[#6F7278] text-[11px]">{"78"}</p>
+          <p className="text-[#6F7278] text-[11px]">{data?.length}</p>
         </div>
       </div>
       <table className="w-full mt-4">

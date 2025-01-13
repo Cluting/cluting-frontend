@@ -23,7 +23,7 @@ export default function PassList({ filter, passData, byGroup }: PassListProps) {
           <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-gray-100 ">
             전체 합격자
           </div>
-          <p className="text-[#6F7278] text-[11px]">{"60"}</p>
+          <p className="text-[#6F7278] text-[11px]">{passData?.length}</p>
         </div>
         {byGroup &&
           Object.entries(byGroup)?.map(([group, count]) => (
