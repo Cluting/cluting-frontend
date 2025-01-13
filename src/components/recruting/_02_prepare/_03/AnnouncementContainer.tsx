@@ -6,8 +6,12 @@ import { useStepTwoStore } from "../../../../store/useStore";
 import AnnouncementContent from "./AnnouncementContent";
 import AnnouncementDetails from "./AnnouncementDetails";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getPrepare3AnnouncementInfo, postPrepare3 } from "../service/Step2";
-import { useEffect } from "react";
+import {
+  getPrepare3AnnouncementInfo,
+  patchPrepare3,
+  postPrepare3
+} from "../service/Step2";
+import { useEffect, useState } from "react";
 
 // 리크루팅 아이디 (하드코딩)
 const RECRUIT_ID = 1;
@@ -16,15 +20,25 @@ export default function AnnouncementContainer() {
   //현재 단계 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
 
+  const [isEditMode, setIsEditMode] = useState(false);
+
   // Mutation 설정
   const mutation = useMutation(
     (data: AnnouncementForm) => postPrepare3(RECRUIT_ID, data),
     {
       onSuccess: (data) => {
         console.log("등록 성공", data); // 성공 데이터 처리
-      },
-      onError: (error: any) => {
-        alert(`모집하기3 등록에에 실패하였습니다`);
+      }
+    }
+  );
+
+  const patchMutation = useMutation(
+    (data: AnnouncementForm) => patchPrepare3(RECRUIT_ID, data),
+    {
+      onSuccess: (data) => {
+        console.log("수정 성공", data);
+        setStepCompleted(2, true);
+        setIsEditMode(false);
       }
     }
   );
@@ -34,8 +48,19 @@ export default function AnnouncementContainer() {
   const { handleSubmit, reset } = methods;
 
   const onSubmit = (data: AnnouncementForm) => {
-    console.log(data);
-    mutation.mutate(data);
+    if (isEditMode) {
+      patchMutation.mutate(data);
+    } else {
+      mutation.mutate(data);
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (steps[2].completed && !isEditMode) {
+      setIsEditMode(true);
+    } else {
+      handleSubmit(onSubmit)();
+    }
   };
 
   //FIX:
@@ -55,7 +80,9 @@ export default function AnnouncementContainer() {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className=" mb-[147px]">
-        <div className={`${steps[2].completed ? "pointer-events-none" : ""}`}>
+        <div
+          className={`${steps[2].completed && !isEditMode ? "pointer-events-none" : ""}`}
+        >
           <div className="flex items-center mx-8 my-4">
             <h1 className="section-title">
               <span className="text-main-100 mr-[0.25em]">* </span>공고 세부
@@ -78,20 +105,22 @@ export default function AnnouncementContainer() {
         </div>
         <div className="flex justify-center">
           <button
-            type="submit"
-            onClick={() => {
-              setStepCompleted(2, true);
-            }}
+            type="button"
+            onClick={handleButtonClick}
             aria-label={
-              steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+              steps[2].completed && !isEditMode
+                ? BUTTON_TEXT.EDIT
+                : BUTTON_TEXT.COMPLETE
             }
             className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-              steps[2].completed
-                ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
-                : "bg-main-100 text-white-100 " //완료하기
-            }  text-body flex-center hover:bg-main-500`}
+              steps[2].completed && !isEditMode
+                ? "bg-main-400 border border-main-100 text-main-100"
+                : "bg-main-100 text-white-100"
+            } text-body flex-center hover:bg-main-500`}
           >
-            {steps[2].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+            {steps[2].completed && !isEditMode
+              ? BUTTON_TEXT.EDIT
+              : BUTTON_TEXT.COMPLETE}
           </button>
         </div>
 
