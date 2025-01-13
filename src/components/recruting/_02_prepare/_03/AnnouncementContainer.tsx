@@ -5,8 +5,9 @@ import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { useStepTwoStore } from "../../../../store/useStore";
 import AnnouncementContent from "./AnnouncementContent";
 import AnnouncementDetails from "./AnnouncementDetails";
-import { useMutation } from "@tanstack/react-query";
-import { postPrepare3 } from "../service/Step2";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getPrepare3AnnouncementInfo, postPrepare3 } from "../service/Step2";
+import { useEffect } from "react";
 
 // 리크루팅 아이디 (하드코딩)
 const RECRUIT_ID = 1;
@@ -30,12 +31,25 @@ export default function AnnouncementContainer() {
 
   //Form 제출
   const methods = useForm<AnnouncementForm>();
-  const { handleSubmit } = methods;
+  const { handleSubmit, reset } = methods;
 
   const onSubmit = (data: AnnouncementForm) => {
     console.log(data);
     mutation.mutate(data);
   };
+
+  //FIX:
+  const recruitId = 1;
+  const { data: announcementInfo } = useQuery(
+    ["announcementInfo", recruitId],
+    () => getPrepare3AnnouncementInfo(recruitId)
+  );
+
+  useEffect(() => {
+    if (announcementInfo) {
+      reset(announcementInfo);
+    }
+  }, [announcementInfo, reset]);
 
   return (
     <FormProvider {...methods}>
