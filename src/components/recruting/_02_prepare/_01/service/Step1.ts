@@ -26,3 +26,18 @@ export async function getPassIdeal(recruitId: number) {
     throw error;
   }
 }
+
+//PATCH: 완료하기 <-> 수정하기
+export async function patchPrepare1(
+  data: SetAcceptanceCountFormData,
+  recruitId: number
+) {
+  try {
+    const response = await Instance.patch(`/plan/stage1/${recruitId}`, data);
+    console.log("모집하기(1) PATCH 성공:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("모집하기(1) PATCH 실패:", error);
+    throw error;
+  }
+}
