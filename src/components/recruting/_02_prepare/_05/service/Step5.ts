@@ -27,3 +27,18 @@ export async function getPrepare5(recruitId: number) {
     throw error;
   }
 }
+
+//PATCH: 완료하기 <-> 수정하기
+export async function patchPrepare5(
+  data: CreateApplicationForm,
+  recruitId: number
+) {
+  try {
+    const response = await Instance.patch(`/plan/stage5/${recruitId}`, data);
+    console.log("모집하기(5) PATCH 성공:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("모집하기(5) PATCH 실패:", error);
+    throw error;
+  }
+}

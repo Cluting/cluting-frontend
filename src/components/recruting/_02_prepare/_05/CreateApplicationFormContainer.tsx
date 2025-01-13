@@ -14,7 +14,7 @@ import InterviewTimeSelector from "./InterviewTimeSelector";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { postPrepare5, getPrepare5 } from "./service/Step5";
+import { postPrepare5, getPrepare5, patchPrepare5 } from "./service/Step5";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
@@ -64,6 +64,22 @@ export default function CreateApplicationFormContainer(): ReactElement {
       },
       onError: (error) => {
         console.error("폼 생성 실패:", error);
+      }
+    }
+  );
+
+  //PATCH
+  const patchMutation = useMutation(
+    (data: { formData: CreateApplicationForm; recruitId: number }) =>
+      patchPrepare5(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("모집하기5 PATCH 성공", data);
+        // PATCH 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
+        queryClient.invalidateQueries(["applicationForm", recruitId]);
+      },
+      onError: (error: any) => {
+        console.error(`모집하기5 PATCH 실패`, error);
       }
     }
   );
@@ -283,12 +299,21 @@ export default function CreateApplicationFormContainer(): ReactElement {
         }))
       };
 
-      console.log("제출 데이터:", submitData);
-      const recruitId = 1;
-      createFormMutation.mutate({ formData: submitData, recruitId });
-    } catch (error: any) {
-      console.error("폼 제출 중 에러", error);
-      console.log("에러 응답:", error.response?.data);
+      const recruitId = 1; //todo: 일단 임시로
+      if (steps[4].completed) {
+        //수정하기 버튼인 경우 -> PATCH 요청
+        await patchMutation.mutateAsync({ formData: submitData, recruitId });
+        setStepCompleted(4, false); // PATCH 성공 후 완료하기
+      } else {
+        //완료하기 버튼인 경우 -> POST 요청
+        await createFormMutation.mutateAsync({
+          formData: submitData,
+          recruitId
+        });
+        setStepCompleted(4, true); // POST 성공 후 수정하기
+      }
+    } catch (error) {
+      console.error("제출 중 에러 발생:", error);
     }
   };
 
@@ -301,6 +326,12 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
     return () => clearTimeout(timer);
   }, [uploadPopupOpen]);
+
+  useEffect(() => {
+    if (formData) {
+      setStepCompleted(4, true);
+    }
+  }, [formData, setStepCompleted]);
 
   return (
     <form
@@ -417,12 +448,12 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </p>
             <div className="space-y-4">
               {questions
-                .find((p) => p.partName === "Back")
+                .find((p) => p.partName === "개발")
                 ?.questions.map((question, index) => (
                   <QuestionItem
                     key={question.id}
                     question={question}
-                    partName="Back"
+                    partName="개발"
                     questionIndex={index}
                     partIndex={0} // 공통 질문은 항상 0번 인덱스
                     onTypeChange={handleQuestionTypeChange}
