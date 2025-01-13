@@ -23,7 +23,7 @@ export async function getPrepare3AnnouncementInfo(recruitId: number) {
   }
 }
 
-// PATCH: 모집하기(3) - 공고 일부 수정
+//FIX: url 하드코딩
 // PATCH: 모집하기(3) - 공고 일부 수정
 export async function patchPrepare3(recruitId: number, data: AnnouncementForm) {
   try {

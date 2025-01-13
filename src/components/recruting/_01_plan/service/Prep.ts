@@ -41,6 +41,7 @@ export async function getPlanningData(recruitId: number) {
   }
 }
 
+//FIX: url 하드코딩
 // PATCH: 계획하기 수정
 export async function patchPrep(
   recruitId: number,
