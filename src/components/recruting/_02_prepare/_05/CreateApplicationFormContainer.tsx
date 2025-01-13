@@ -327,6 +327,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
     return () => clearTimeout(timer);
   }, [uploadPopupOpen]);
 
+  //제출한 데이터 있을 경우 해당 단계 완료 처리
   useEffect(() => {
     if (formData) {
       setStepCompleted(4, true);
