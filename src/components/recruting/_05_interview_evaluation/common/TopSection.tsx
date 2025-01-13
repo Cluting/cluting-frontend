@@ -30,7 +30,7 @@ export default function TopSection() {
 
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
-    const paths = ["interviewPrep", "interview"];
+    const paths = ["interviewPrep", "interview/day"];
     navigate(`/recruting/05_interview_evaluation/${paths[index]}`);
   };
 

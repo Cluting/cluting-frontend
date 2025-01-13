@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 interface FitMemberListProps {
   items: Applicant[]; // Applicant 타입의 배열로 변경
   state: string;
+  isDispute?: boolean;
   isEvaluationDone?: boolean;
   onDispute?: (id: string) => void; // 이의제기
   onDecision?: (id: string) => void;
@@ -13,6 +14,7 @@ interface FitMemberListProps {
 const FitMemberList: React.FC<FitMemberListProps> = ({
   items,
   state,
+  isDispute,
   isEvaluationDone,
   onDispute,
   onDecision
@@ -90,12 +92,11 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                       )
                     ) : null}
 
-                    {isEvaluationDone &&
-                      item.evaluators?.[0]?.state === "평가 완료" && (
-                        <button className="text-caption2 text-main-100 bg-main-300 px-3 py-[6px] rounded-[7px] border border-main-400">
-                          이의 제기
-                        </button>
-                      )}
+                    {state === "평가 완료" && isEvaluationDone && isDispute && (
+                      <button className="text-caption2 text-main-100 bg-main-300 px-3 py-[6px] rounded-[7px] border border-main-400">
+                        이의 제기
+                      </button>
+                    )}
                   </div>
                   <div className="flex flex-col text-left w-28">
                     <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">

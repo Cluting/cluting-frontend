@@ -127,7 +127,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   const handleConfirmStepComplete = () => {
-    completeStep(1);
+    completeStep(1, true);
     setStepCompleted(4, true);
     setStepCompleteModalOpen(false);
   };
