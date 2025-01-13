@@ -77,7 +77,7 @@ export default function RecrutingCalenderPicker({
         id: String(events.length + 1),
         title,
         start: selectInfo.startStr,
-        end: addDays(new Date(selectInfo.endStr), 0)
+        end: addDays(new Date(selectInfo.endStr), 1)
           .toISOString()
           .split("T")[0],
         allDay: selectInfo.allDay,
@@ -120,10 +120,10 @@ export default function RecrutingCalenderPicker({
       id: clickInfo.event.id,
       title,
       start: start ? start.toISOString().split("T")[0] : "",
-      end: end ? end.toISOString().split("T")[0] : "",
+      end: end ? addDays(new Date(end), -1).toISOString().split("T")[0] : "",
       allDay: clickInfo.event.allDay
     });
-    setEditMode(false); // 수정 모드 비활성화
+    setEditMode(false);
   };
 
   const handleEditEvent = () => {
@@ -135,7 +135,13 @@ export default function RecrutingCalenderPicker({
       setEvents((prevEvents) =>
         prevEvents.map((event) =>
           event.id === selectedEvent.id
-            ? { ...event, start: selectedEvent.start, end: selectedEvent.end }
+            ? {
+                ...event,
+                start: selectedEvent.start,
+                end: addDays(new Date(selectedEvent.end), 1)
+                  .toISOString()
+                  .split("T")[0]
+              }
             : event
         )
       );

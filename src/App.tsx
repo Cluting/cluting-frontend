@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/common/Header";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -25,6 +25,8 @@ import DocumentEval from "./pages/Recruting/step3/DocumentEval";
 import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
 import InterviewEval from "./pages/Recruting/step5/InterviewEval";
 import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
+import DayOfInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_01_dayOfInterview/DayOfInterviewContainer";
+import AfterInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_02_afterInterview/AfterInterviewContainer";
 
 export default function App() {
   return (
@@ -75,14 +77,16 @@ export default function App() {
               />
               <Route path="05_interview_evaluation">
                 <Route path="interviewPrep" element={<InterviewPrep />} />
-                <Route path="interview" element={<InterviewEval />} />
+                <Route path="interview">
+                  <Route path="day" element={<DayOfInterviewContainer />} />
+                  <Route path="after" element={<AfterInterviewContainer />} />
+                </Route>
               </Route>
               {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question/:id"
                 element={<ApplicantDocument />}
               />
-              {/* <Route path="answer_record" element={<AnswerRecord />} /> */}
               {/* (면접) 답변 기록하기 */}
               <Route
                 path="answer_record/:intervieweeName"

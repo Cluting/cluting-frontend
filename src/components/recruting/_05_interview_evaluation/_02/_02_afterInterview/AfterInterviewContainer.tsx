@@ -7,6 +7,9 @@ import AfterEvaluation from "../../../_03_document_evaluation/_02/step/AfterEval
 import CompletedEvaluation from "../../../_03_document_evaluation/_02/step/CompletedEvaluation";
 import { useQuery } from "@tanstack/react-query";
 import { getInterviewGroups } from "../../service/Step5";
+import Sidemenu from "../../../common/Sidemenu";
+import TopSection from "../../common/TopSection";
+import ScheduleTopSection from "../ScheduleTopSection";
 
 interface Group {
   groupId: number;
@@ -37,34 +40,43 @@ export default function AfterInterviewContainer() {
     }
   };
 
+  const [schedule, setSchedule] = useState("이후");
+
   const [filter, setFilter] = useState("전체");
   const [sortType, setSortType] = useState("가나다순");
   const filterOptions = useMemo(() => ["전체", ...groups], [groups]);
 
   return (
-    <div className="flex flex-col mt-6">
-      <div className="flex flex-col gap-3">
-        <div className="flex gap-3">
-          <Dropdown
-            label="필터 : "
-            defaultValue="전체"
-            options={filterOptions}
-            onSelect={(value) => setFilter(value)}
-          />
-          <Dropdown
-            label="정렬 : "
-            defaultValue="가나다순"
-            options={["가나다순"]}
-            onSelect={(value) => setSortType(value)}
-          />
+    <div className="flex justify-center pt-6 bg-gray-100">
+      <Sidemenu />
+      <div className="flex flex-col gap-7 w-[1016px] pl-8 mb-[143px]">
+        <TopSection />
+        <ScheduleTopSection schedule={schedule} setSchedule={setSchedule} />
+        <div className="flex flex-col mt-6">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3">
+              <Dropdown
+                label="필터 : "
+                defaultValue="전체"
+                options={filterOptions}
+                onSelect={(value) => setFilter(value)}
+              />
+              <Dropdown
+                label="정렬 : "
+                defaultValue="가나다순"
+                options={["가나다순"]}
+                onSelect={(value) => setSortType(value)}
+              />
+            </div>
+            <EvalProcessBar
+              steps={steps}
+              currentStep={currentStep}
+              onStepClick={setCurrentStep}
+            />
+          </div>
+          <div className="mb-8">{renderStepComponent()}</div>
         </div>
-        <EvalProcessBar
-          steps={steps}
-          currentStep={currentStep}
-          onStepClick={setCurrentStep}
-        />
       </div>
-      <div className="mb-8">{renderStepComponent()}</div>
     </div>
   );
 }
