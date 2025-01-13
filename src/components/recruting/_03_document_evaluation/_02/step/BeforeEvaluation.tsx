@@ -28,29 +28,44 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     (data: DocBeforeRequest) => postDocBefore(recruitId, data),
     {
       onSuccess: (response) => {
-        console.log(
-          "서류 평가하기 <평가 전> 지원서 리스트 불러오기가 성공적으로 실행되었습니다."
-        );
-        setApplicationData(response.data); // 응답 데이터 저장
-        console.log("API 데이터", applicationData);
+        console.log("API 호출 성공", response);
+        if (response && Array.isArray(response)) {
+          const transformedData = transformApiResponse(response);
+          setFilteredData(transformedData);
+        } else {
+          console.error("API 응답 데이터가 올바르지 않습니다.");
+          setFilteredData([]);
+        }
       },
       onError: (error) => {
-        console.error(
-          "서류 평가하기 <평가 전> 지원서 리스트 불러오기 중 오류 발생:",
-          error
-        );
+        console.error("API 호출 실패", error);
       }
     }
   );
 
+  const transformApiResponse = (apiData: any[]): Applicant[] => {
+    return apiData.map((item) => ({
+      id: item.createdAt,
+      name: item.applicantName,
+      phone: item.applicantPhone || "", // 빈 문자열을 기본값으로 설정
+      group: item.groupName,
+      incomplete: parseInt(item.applicationNumClubUser.split("/")[0], 10),
+      all: parseInt(item.applicationNumClubUser.split("/")[1], 10),
+      isPass: undefined,
+      evaluators: undefined,
+      isDecisionMode: undefined,
+      isDisputed: undefined
+    }));
+  };
+
   // 컴포넌트 마운트 시 POST 요청
+  const initialData: DocBeforeRequest = {
+    // POST 요청에 필요한 초기 데이터 구성
+    groupName: null,
+    sortOrder: "newest"
+  };
+
   useEffect(() => {
-    const initialData: DocBeforeRequest = {
-      // POST 요청에 필요한 초기 데이터 구성
-      groupName: null,
-      sortOrder: "oldest"
-    };
-    console.group(initialData);
     mutation.mutate(initialData);
   }, []); // 빈 의존성 배열로 컴포넌트 마운트 시에만 실행
 
@@ -59,12 +74,10 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
       console.error("유저 본인 정보 조회 실패:", error);
     }
   });
-
-  useEffect(() => {
-    let data = [...applicants];
+  const filterAndSortData = (data: Applicant[]) => {
+    let filteredData = [...data];
     if (user) {
-      // 평가 전 상태를 가진 항목 필터링
-      data = data.filter(
+      filteredData = filteredData.filter(
         (item) =>
           item.evaluators &&
           item.evaluators.some(
@@ -74,22 +87,31 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
       );
     }
 
-    // 필터 처리
     if (filter !== "전체") {
-      data = data.filter((item) => item.group === filter);
+      filteredData = filteredData.filter((item) => item.group === filter);
     }
 
-    // 정렬 처리
     if (sortType === "가나다순") {
-      data.sort((a, b) => a.name.localeCompare(b.name));
+      filteredData.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    setFilteredData(data);
-  }, [filter, sortType]);
+    return filteredData;
+  };
+
+  useEffect(() => {
+    if (filteredData.length > 0) {
+      const newFilteredData = filterAndSortData(filteredData);
+      setFilteredData(newFilteredData);
+    }
+  }, [filter, sortType, user]);
 
   return (
     <div className="w-[1016px] flex items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
-      <WideMemberList items={filteredData} />
+      {filteredData ? (
+        <WideMemberList items={filteredData} />
+      ) : (
+        <p>데이터를 불러오는 중입니다...</p>
+      )}
     </div>
   );
 };
