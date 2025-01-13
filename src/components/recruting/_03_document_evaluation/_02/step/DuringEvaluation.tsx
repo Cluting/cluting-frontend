@@ -1,9 +1,120 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
-import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { postDocIng } from "../../service/Step3";
-import { getMe } from "../../../../signup/services/User";
+// 임시 데이터 생성 함수
+const createTempData = (): Applicant[] => {
+  return [
+    {
+      id: "temp1",
+      name: "김수정",
+      phone: "010-1234-5678",
+      group: "개발",
+      incomplete: 3,
+      all: 5,
+      isPass: undefined,
+      evaluators: [
+        {
+          name: "평가자1",
+          state: "평가 완료",
+          totalScore: 85,
+          criteriaScores: [
+            { id: 1, name: "기술 이해도", score: 18 },
+            { id: 2, name: "문제 해결 능력", score: 17 },
+            { id: 3, name: "의사소통 능력", score: 16 },
+            { id: 4, name: "팀워크", score: 17 },
+            { id: 5, name: "열정", score: 17 }
+          ],
+          comment: "개발 능력이 뛰어나며 의사소통 능력도 우수합니다.",
+          groupAccess: "개발"
+        }
+      ],
+      isDecisionMode: false,
+      isDisputed: false
+    },
+    {
+      id: "temp2",
+      name: "이열람",
+      phone: "010-2345-6789",
+      group: "디자인",
+      incomplete: 4,
+      all: 5,
+      isPass: undefined,
+      evaluators: [
+        {
+          name: "평가자2",
+          state: "평가 완료",
+          totalScore: 80,
+          criteriaScores: [
+            { id: 1, name: "디자인 감각", score: 17 },
+            { id: 2, name: "창의성", score: 16 },
+            { id: 3, name: "도구 활용 능력", score: 16 },
+            { id: 4, name: "의사소통 능력", score: 15 },
+            { id: 5, name: "포트폴리오 퀄리티", score: 16 }
+          ],
+          comment: "창의적인 디자인 능력이 돋보입니다.",
+          groupAccess: "개발"
+        }
+      ],
+      isDecisionMode: false,
+      isDisputed: false
+    },
+    {
+      id: "temp3",
+      name: "박수정",
+      phone: "010-3456-7890",
+      group: "기획",
+      incomplete: 2,
+      all: 5,
+      isPass: undefined,
+      evaluators: [
+        {
+          name: "평가자3",
+          state: "평가 완료",
+          totalScore: 88,
+          criteriaScores: [
+            { id: 1, name: "기획력", score: 18 },
+            { id: 2, name: "분석 능력", score: 18 },
+            { id: 3, name: "의사소통 능력", score: 17 },
+            { id: 4, name: "창의성", score: 17 },
+            { id: 5, name: "프레젠테이션 스킬", score: 18 }
+          ],
+          comment: "뛰어난 기획 능력과 분석력을 보여주었습니다.",
+          groupAccess: "기획"
+        }
+      ],
+      isDecisionMode: false,
+      isDisputed: false
+    },
+    {
+      id: "temp4",
+      name: "최열람",
+      phone: "010-4567-8901",
+      group: "마케팅",
+      incomplete: 5,
+      all: 5,
+      isPass: undefined,
+      evaluators: [
+        {
+          name: "평가자4",
+          state: "평가 완료",
+          totalScore: 82,
+          criteriaScores: [
+            { id: 1, name: "마케팅 전략 수립 능력", score: 17 },
+            { id: 2, name: "데이터 분석 능력", score: 16 },
+            { id: 3, name: "창의성", score: 17 },
+            { id: 4, name: "의사소통 능력", score: 16 },
+            { id: 5, name: "트렌드 이해도", score: 16 }
+          ],
+          comment: "창의적인 마케팅 전략 수립 능력이 인상적입니다.",
+          groupAccess: "개발"
+        }
+      ],
+      isDecisionMode: false,
+      isDisputed: false
+    }
+  ];
+};
 
 interface DuringEvaluationProps {
   filter: string; // 필터링 기준
@@ -25,107 +136,82 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const { applicants } = useApplicantEvaluationStore();
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
   const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
-
-  //TODO: 응답받은 데이터 리스트로 렌더링해야함
-  const [applicationData, setApplicationData] = useState<ApplicationResponse[]>(
-    []
-  );
 
   //FIX:
   const recruitId = 1;
   const mutation = useMutation(
     (data: DocBeforeRequest) => postDocIng(recruitId, data),
     {
-      onSuccess: (response) => {
-        console.log(
-          "서류 평가하기 <평가 중> 지원서 리스트 불러오기가 성공적으로 실행되었습니다."
-        );
-        setApplicationData(response.data); // 응답 데이터 저장
-        console.log("API 데이터", applicationData);
-      },
-      onError: (error) => {
-        console.error(
-          "서류 평가하기 <평가 중> 지원서 리스트 불러오기 중 오류 발생:",
-          error
-        );
+      onSuccess: (response: DocIngResponse) => {
+        console.log(response);
+        const transformedData = transformApiResponse(response.ING);
+        setFilteredData(transformedData);
+        //FIX: 평가중 - 팀원 평가중 데이터 백 수정 필요
+        //  setFilteredData2(transformedData);
+        setFilteredData2(createTempData());
       }
     }
   );
+  const transformApiResponse = (apiData: DocIngApplicant[]): Applicant[] => {
+    return apiData.map((item) => {
+      const [incomplete, all] = item.applicationNumClubUser
+        .split("/")
+        .map(Number);
+      return {
+        id: item.createdAt,
+        name: item.applicantName,
+        phone: item.applicantPhone,
+        group: item.groupName,
+        incomplete,
+        all,
+        isPass: undefined,
+        evaluators: undefined,
+        isDecisionMode: false,
+        isDisputed: false
+      };
+    });
+  };
 
   // 컴포넌트 마운트 시 POST 요청
+  const initialData: DocBeforeRequest = {
+    // POST 요청에 필요한 초기 데이터 구성
+    groupName: null,
+    sortOrder: "newest"
+  };
   useEffect(() => {
-    const initialData: DocBeforeRequest = {
-      // POST 요청에 필요한 초기 데이터 구성
-      groupName: null,
-      sortOrder: "oldest"
-    };
     console.group(initialData);
     mutation.mutate(initialData);
   }, []); // 빈 의존성 배열로 컴포넌트 마운트 시에만 실행
 
-  const { data: user } = useQuery(["me"], getMe, {
-    onError: (error) => {
-      console.error("유저 본인 정보 조회 실패:", error);
-    }
-  });
+  const filterAndSortData = useCallback(
+    (data: Applicant[], evaluationState: string) => {
+      let filteredData = [...data];
 
-  // 첫 번째 데이터
-  useEffect(() => {
-    let data = [...applicants];
-
-    // 평가 중 상태를 가진 항목 필터링
-    data = data.filter(
-      (item) =>
-        item.evaluators &&
-        item.evaluators.some((evaluator) => evaluator.state === "평가 중")
-    );
-
-    // 필터 처리
-    if (filter !== "전체") {
-      data = data.filter((item) => item.group === filter);
-    }
-
-    // 정렬 처리
-    if (sortType === "가나다순") {
-      data.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    setFilteredData(data);
-  }, [filter, sortType]);
-
-  // 두 번째 데이터
-  useEffect(() => {
-    if (user) {
-      let data = [...applicants];
-
-      // 평가 중 상태를 가진 항목 필터링
-      data = data.filter(
-        (item) =>
-          item.evaluators &&
-          item.evaluators.some(
-            (evaluator) =>
-              evaluator.name === user.name &&
-              evaluator.state === "평가 완료" &&
-              item.isPass === false
-          )
-      );
-
-      // 필터 처리
       if (filter !== "전체") {
-        data = data.filter((item) => item.group === filter);
+        filteredData = filteredData.filter((item) => item.group === filter);
       }
 
-      // 정렬 처리
       if (sortType === "가나다순") {
-        data.sort((a, b) => a.name.localeCompare(b.name));
+        filteredData.sort((a, b) => a.name.localeCompare(b.name));
       }
 
-      setFilteredData2(data);
+      return filteredData;
+    },
+    [filter, sortType]
+  );
+
+  useEffect(() => {
+    if (filteredData.length > 0) {
+      const newFilteredData = filterAndSortData(filteredData, "평가 중");
+      if (JSON.stringify(newFilteredData) !== JSON.stringify(filteredData)) {
+        setFilteredData(newFilteredData);
+      }
     }
   }, [filter, sortType]);
+
+  //FIX: 팀원 평가에 수정 가능, 열람 가능 권한 설정 필요 -> 백 데이터 따라
 
   return (
     <div className="w-[1016px] flex items-start gap-[22px] p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
@@ -133,7 +219,6 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
         <h2 className="text-left text-gray-1100 text-title3">
           이어서 평가를 완료해 주세요.
         </h2>
-        {/* FitMemberList에 필터링된 데이터 전달 */}
         <FitMemberList items={filteredData} state="평가 중" />
       </div>
 
@@ -141,7 +226,6 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
         <h2 className="text-left text-gray-1100 text-title3">
           팀원들이 아직 평가 중이에요.
         </h2>
-        {/* FitMemberList에 필터링된 데이터 전달 */}
         <FitMemberList items={filteredData2} state="평가 완료" />
       </div>
     </div>

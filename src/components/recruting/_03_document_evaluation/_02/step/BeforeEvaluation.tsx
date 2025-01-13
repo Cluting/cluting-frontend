@@ -14,13 +14,7 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const { applicants } = useApplicantEvaluationStore();
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
-
-  //TODO: 응답받은 데이터 리스트로 렌더링해야함
-  const [applicationData, setApplicationData] = useState<ApplicationResponse[]>(
-    []
-  );
 
   //FIX:
   const recruitId = 1;
@@ -28,7 +22,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     (data: DocBeforeRequest) => postDocBefore(recruitId, data),
     {
       onSuccess: (response) => {
-        console.log("API 호출 성공", response);
         if (response && Array.isArray(response)) {
           const transformedData = transformApiResponse(response);
           setFilteredData(transformedData);
@@ -36,9 +29,6 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
           console.error("API 응답 데이터가 올바르지 않습니다.");
           setFilteredData([]);
         }
-      },
-      onError: (error) => {
-        console.error("API 호출 실패", error);
       }
     }
   );
