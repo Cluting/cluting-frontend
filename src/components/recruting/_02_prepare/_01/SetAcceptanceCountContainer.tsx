@@ -199,6 +199,12 @@ export default function SetAcceptanceCountContainer() {
     }
   };
 
+  useEffect(() => {
+    if (passIdeal) {
+      setStepCompleted(0, true);
+    }
+  }, [passIdeal, setStepCompleted]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

@@ -48,6 +48,7 @@ export default function AnnouncementContainer() {
   useEffect(() => {
     if (announcementInfo) {
       reset(announcementInfo);
+      setStepCompleted(2, true);
     }
   }, [announcementInfo, reset]);
 
