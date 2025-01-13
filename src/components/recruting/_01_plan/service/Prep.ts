@@ -44,30 +44,26 @@ export async function getPlanningData(recruitId: number) {
 // PATCH: 계획하기 수정
 export async function patchPrep(
   recruitId: number,
-  data: PrepareStepRolesFormValues
+  data: PrepareStepPatchFormValues
 ) {
-  const url = `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`;
-  const headers = {
-    accept: "*/*",
-    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-    "Content-Type": "application/json"
-  };
-
   try {
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers: headers,
-      body: JSON.stringify(data)
-    });
-
-    const text = await response.text();
-    console.log("Response Text:", text);
+    const response = await fetch(
+      `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*"
+        },
+        body: JSON.stringify(data)
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const responseData = text ? JSON.parse(text) : {};
+    const responseData = await response.json();
     console.log("계획하기 수정 성공:", responseData);
     return responseData;
   } catch (error) {
