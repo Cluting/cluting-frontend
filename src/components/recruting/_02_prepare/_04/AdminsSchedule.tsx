@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useGroupStore, useInterviewStore } from "../../../../store/useStore";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult
+} from "@hello-pangea/dnd";
 
 export default function AdminsSchedule() {
   const {
@@ -59,7 +65,28 @@ export default function AdminsSchedule() {
   }, [interviewStartTime, interviewEndTime]);
 
   //todo: 임원진도 임의로 써놨습니다!
-  const admins = ["박시현", "윤다인", "곽서연", "최예은"];
+  const [admins, setAdmins] = useState([
+    { id: "babo1", name: "바보1" },
+    { id: "babo2", name: "바보2" },
+    { id: "babo3", name: "바보3" }
+  ]);
+
+  //드래그 앤 드랍 초기 설정
+  const onDragEnd = (result: DropResult) => {
+    //요상한 곳으로 드래그하면 return(초기 상태로)
+    if (!result?.destination) return;
+
+    console.log(result);
+
+    const sourceIndex = result.source.index; //드래그를 해 온 요소
+    const destinationIndex = result.destination.index; //드래그앤드롭한 목적지
+
+    const newList = [...admins]; //초기 리스트 상태 복사한 후 저장
+    const pickedBabo = newList[sourceIndex]; //복사한 리스트에서 sourceIndex부분을 삭제한 뒤 붙여넣기 -> 위치 바뀜
+    newList.splice(sourceIndex, 1);
+    newList.splice(destinationIndex, 0, pickedBabo);
+    setAdmins(newList);
+  };
 
   const handleAdminSelect = async (timeSlot: string, admin: string) => {
     const currentAdmins = timeSlotAdmins[timeSlot] || [];
@@ -193,15 +220,15 @@ export default function AdminsSchedule() {
                       <button
                         key={`${timeSlot}-${admin}`}
                         type="button"
-                        onClick={() => handleAdminSelect(timeSlot, admin)}
+                        onClick={() => handleAdminSelect(timeSlot, admin.name)}
                         disabled={
                           getSelectedAdminCount(timeSlot) >= interviewer &&
-                          !isAdminSelectedForTimeSlot(timeSlot, admin)
+                          !isAdminSelectedForTimeSlot(timeSlot, admin.name)
                         }
                         className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-white-100
-                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-main-100 bg-main-100 text-white-100" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
+                            ${isAdminSelectedForTimeSlot(timeSlot, admin.name) ? "border-main-100 bg-main-100 text-white-100" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
                       >
-                        {admin}
+                        {admin.name}
                       </button>
                     ))}
                   </div>
@@ -216,6 +243,36 @@ export default function AdminsSchedule() {
             )}
           </div>
         </div>
+      </div>
+      <div>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="01" key="01" direction="horizontal">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="flex-center"
+              >
+                {admins.map((babo, index) => (
+                  <Draggable key={babo.id} draggableId={babo.id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                        className="flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-white-100
+                          border-[#E5E5EA] text-gray-1100 text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed"
+                      >
+                        {babo.name}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </form>
   );
