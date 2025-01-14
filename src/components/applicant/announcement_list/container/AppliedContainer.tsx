@@ -3,6 +3,7 @@ import ClubCard from "../../../recruting/home/_main/ClubCard";
 import { useQuery } from "@tanstack/react-query";
 import { getApplied } from "./services/Applicant";
 import { DEFAULT_CLUB_IMAGE } from "../../../../constants/recruting";
+import { dummyData } from "./dummyData";
 
 function mapClubDataToCardProps(club: ClubData): ClubCardProps {
   // 사용자가 지원한 모집 공고 찾기
@@ -41,10 +42,14 @@ function mapClubDataToCardProps(club: ClubData): ClubCardProps {
 }
 
 export default function AppliedContainer() {
-  const { data: appliedData } = useQuery<ClubData[]>(
-    ["appliedData"],
-    getApplied
-  );
+  // const { data: appliedData } = useQuery<ClubData[]>(
+  //   ["appliedData"],
+  //   getApplied
+  // );
+
+  // 더미 데이터 사용
+  const appliedData = dummyData;
+
   console.log("지원한 동아리 데이터:", appliedData);
 
   //지원한 동아리 필터링

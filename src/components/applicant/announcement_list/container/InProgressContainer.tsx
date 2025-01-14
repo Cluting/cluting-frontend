@@ -3,7 +3,7 @@ import ClubCard from "../../../recruting/home/_main/ClubCard";
 import { useQuery } from "@tanstack/react-query";
 import { getApplying } from "./services/Applicant";
 import { DEFAULT_CLUB_IMAGE } from "../../../../constants/recruting";
-
+import { dummyData } from "./dummyData";
 // ClubData를 ClubCard 프롭스로 변환하는 함수
 function mapClubDataToCardProps(club: ClubData): ClubCardProps {
   // 현재 진행중인 모집 공고 찾기
@@ -46,10 +46,14 @@ function mapClubDataToCardProps(club: ClubData): ClubCardProps {
 }
 
 export default function InProgressContainer() {
-  const { data: progressData } = useQuery<ClubData[]>(
-    ["progressData"],
-    getApplying
-  );
+  // const { data: progressData } = useQuery<ClubData[]>(
+  //   ["progressData"],
+  //   getApplying
+  // );
+
+  // 더미 데이터 사용
+  const progressData = dummyData;
+
   console.log("지원 중인 데이터:", progressData);
 
   // 실제 지원 가능한(마감되지 않은) 동아리만 필터링
