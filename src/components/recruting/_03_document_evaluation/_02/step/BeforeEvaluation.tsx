@@ -17,14 +17,13 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
 
   //FIX:
   const recruitId = 1;
-  const { data: applicantsData } = useQuery(
+  const { data: applicantsData, isLoading } = useQuery(
     ["applicantsBefore", recruitId],
     () => getAppListBefore(recruitId),
     {
       onSuccess: (data) => {
-        console.log(data);
         const transformedData = transformApiResponse(data);
-        console.log("transformedData", transformedData);
+
         setFilteredData(transformedData);
       }
     }
@@ -32,7 +31,7 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
 
   const transformApiResponse = (apiData: any[]): Applicant[] => {
     return apiData.map((item) => ({
-      id: item.createdAt, //FIX: id 추가
+      id: item.applicationId,
       name: item.applicantName,
       phone: item.applicantPhone || "",
       group: item.groupName,
@@ -46,11 +45,7 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     }));
   };
 
-  const { data: user } = useQuery(["me"], getMe, {
-    onError: (error) => {
-      console.error("유저 본인 정보 조회 실패:", error);
-    }
-  });
+  const { data: user } = useQuery(["me"], getMe);
 
   const filterAndSortData = (data: Applicant[]) => {
     let filteredData = [...data];
@@ -85,10 +80,10 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
 
   return (
     <div className="w-[1016px] flex items-start gap-2.5 p-[20px] self-stretch rounded-[21px] border border-[#D0D4E7] bg-white-100">
-      {filteredData ? (
-        <WideMemberList items={filteredData} />
-      ) : (
+      {isLoading ? (
         <p>데이터를 불러오는 중입니다...</p>
+      ) : (
+        <WideMemberList items={filteredData} />
       )}
     </div>
   );

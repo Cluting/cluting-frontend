@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/common/Header";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -23,7 +23,6 @@ import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
 import DocumentEval from "./pages/Recruting/step3/DocumentEval";
 import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
-import InterviewEval from "./pages/Recruting/step5/InterviewEval";
 import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
 import DayOfInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_01_dayOfInterview/DayOfInterviewContainer";
 import AfterInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_02_afterInterview/AfterInterviewContainer";

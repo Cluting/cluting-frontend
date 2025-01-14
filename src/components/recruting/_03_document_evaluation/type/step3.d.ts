@@ -67,3 +67,33 @@ interface CriteriaEvaluation {
   criteriaId: number;
   score: number;
 }
+
+// 서류 평가 지원자 정보 조회
+declare interface ApplicantInfo {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  profile: string;
+  school: string;
+  major: string;
+  doubleMajor: string | null;
+  semester: string;
+  groupName: string;
+}
+
+declare interface EvaluatorScore {
+  evaluatorName: string;
+  scores: number[];
+  totalScore: number;
+  comment: string;
+}
+
+declare interface DocEvaluationContent {
+  applicantInfo: ApplicantInfo;
+  questionAndAnswers: any[]; // You might want to define a more specific type
+  ideals: any[]; // You might want to define a more specific type
+  averageScore: number;
+  evaluatorScores: EvaluatorScore[];
+  myEvaluation: any | null; // You might want to define a more specific type
+}

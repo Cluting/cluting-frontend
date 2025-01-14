@@ -282,3 +282,22 @@ export async function getAppListComplete(
     throw error;
   }
 }
+
+// GET: 서류 평가 내용 가져오기
+export async function getDocEvaluationContent(
+  recruitId: number,
+  applicationId: number
+): Promise<DocEvaluationContent> {
+  try {
+    const { data } = await Instance.get<DocEvaluationContent>(
+      `/eval/doc/${recruitId}/${applicationId}/doc-evaluate`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가 내용 가져오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
