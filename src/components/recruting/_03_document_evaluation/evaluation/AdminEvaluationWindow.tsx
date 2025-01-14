@@ -42,14 +42,10 @@ export default function AdminEvaluationWindow() {
       onSuccess: (data) => {
         console.log(data);
         console.log("서류 평가 전송이 성공적으로 등록되었습니다!");
-      },
-      onError: (error) => {
-        console.error("서류 평가 전송 중 오류 발생:", error);
       }
     }
   );
 
-  // 폼 제출
   const onSubmit = (data: DocEvaluationRequest) => {
     console.log("폼 데이터:", data);
     docEvauationMutation.mutate(data);
@@ -59,10 +55,21 @@ export default function AdminEvaluationWindow() {
 
   const criteriaEvaluations = watch("criteriaEvaluations") || [];
 
-  const totalScore = criteriaEvaluations.reduce(
-    (sum, criteria) => sum + (criteria.score || 0),
-    0
+  const averageScore = criteriaEvaluations.reduce(
+    (acc, criteria) => {
+      if (criteria.score !== undefined && criteria.score !== null) {
+        acc.sum += criteria.score;
+        acc.count += 1;
+      }
+      return acc;
+    },
+    { sum: 0, count: 0 }
   );
+
+  const finalAverageScore =
+    averageScore.count > 0
+      ? (averageScore.sum / averageScore.count).toFixed(1)
+      : "0.0";
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -125,7 +132,9 @@ export default function AdminEvaluationWindow() {
                   <p className="text-subheadline text-[#949494] ml-1">평가자</p>
                 </div>
                 <div className="flex-center gap-[3px] bg-gray-100 rounded-[5px] pl-[26px] py-[5px] pr-1">
-                  <p className="text-callout text-gray-1100 ">{totalScore}</p>
+                  <p className="text-callout text-gray-1100 ">
+                    {finalAverageScore}
+                  </p>
                   <p className="text-caption3 text-gray-600">/100점</p>
                 </div>
               </div>
