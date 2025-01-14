@@ -14,7 +14,6 @@ export default function AdminEvaluationList({
   onClose,
   evaluatorScores
 }: AdminEvaluationListProps) {
-  console.log("냥", evaluatorScores);
   return (
     <div className="absolute left-[-400px] top-[160px] w-[391px] custom-shadow bg-white-100 border border-gray-200 rounded-lg  py-4 px-[17px]">
       <div className="flex items-center justify-between">
