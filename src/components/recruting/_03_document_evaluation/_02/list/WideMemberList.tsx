@@ -6,7 +6,7 @@ interface WideMemberListProps {
 }
 const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
   const stateStyles = {
-    "평가 전": "bg-[#F1F3FF] text-[#8B8FA4]",
+    BEFORE: "bg-[#F1F3FF] text-[#8B8FA4]",
     "수정 가능": "bg-main-300 text-[#43454F]",
     "열람 가능": "bg-[#BAF3E4] text-[#43454F]"
   };
@@ -39,7 +39,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
       </ul>
       <ul className="flex flex-col overflow-y-auto">
         {items.map((item) => {
-          const evaluatorState = item.evaluators?.[0]?.state || "평가 전";
+          // const evaluatorState = item.evaluators?.[0]?.state || "BEFORE";
           const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
           return (
             <Link
@@ -57,15 +57,15 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
                 <div className="w-32 text-left">
                   {/*  keyof typeof 를 쓸 경우, 예외처리가 발생 시 오류남. 목업 때만 사용 후 수정 필요 */}
 
-                  {evaluatorState === "평가 전" && (
+                  {item.evaluationStage === "BEFORE" && (
                     <button
-                      className={`${stateStyles[evaluatorState as keyof typeof stateStyles]} px-4 py-2 rounded-[38px] text-caption3 `}
+                      className={`${stateStyles[item.evaluationStage as keyof typeof stateStyles]} px-4 py-2 rounded-[38px] text-caption3 `}
                     >
-                      {evaluatorState}
+                      {"평가전"}
                     </button>
                   )}
 
-                  {evaluatorState === "평가 완료" ? (
+                  {item.evaluationStage === "COMPLETE" ? (
                     groupAccess ? (
                       <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
                         수정 가능

@@ -64,9 +64,22 @@ export async function patchPrep(
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const responseData = await response.json();
-    console.log("계획하기 수정 성공:", responseData);
-    return responseData;
+    const responseText = await response.text();
+
+    if (!responseText) {
+      console.log("서버 응답이 비어있습니다.");
+      return null;
+    }
+
+    try {
+      const responseData = JSON.parse(responseText);
+      console.log("계획하기 수정 성공:", responseData);
+      return responseData;
+    } catch (parseError) {
+      console.error("JSON 파싱 오류:", parseError);
+      console.log("원본 응답:", responseText);
+      throw new Error("서버 응답을 파싱할 수 없습니다.");
+    }
   } catch (error) {
     console.error("계획하기 수정 실패:", error);
     throw error;

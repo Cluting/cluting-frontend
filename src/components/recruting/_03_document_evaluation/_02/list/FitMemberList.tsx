@@ -80,7 +80,7 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                       />
                     )}
                     {!isEvaluationDone &&
-                    item.evaluators?.[0]?.state === "평가 완료" ? (
+                    item.evaluators?.[0]?.state === "COMPLETE" ? (
                       groupAccess ? (
                         <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
                           수정 가능

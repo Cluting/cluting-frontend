@@ -16,7 +16,7 @@ const createTempData = (): Applicant[] => {
       evaluators: [
         {
           name: "평가자1",
-          state: "평가 완료",
+          state: "COMPLETE",
           totalScore: 85,
           criteriaScores: [
             { id: 1, name: "기술 이해도", score: 18 },
@@ -43,7 +43,7 @@ const createTempData = (): Applicant[] => {
       evaluators: [
         {
           name: "평가자2",
-          state: "평가 완료",
+          state: "COMPLETE",
           totalScore: 80,
           criteriaScores: [
             { id: 1, name: "디자인 감각", score: 17 },
@@ -70,7 +70,7 @@ const createTempData = (): Applicant[] => {
       evaluators: [
         {
           name: "평가자3",
-          state: "평가 완료",
+          state: "COMPLETE",
           totalScore: 88,
           criteriaScores: [
             { id: 1, name: "기획력", score: 18 },
@@ -97,7 +97,7 @@ const createTempData = (): Applicant[] => {
       evaluators: [
         {
           name: "평가자4",
-          state: "평가 완료",
+          state: "COMPLETE",
           totalScore: 82,
           criteriaScores: [
             { id: 1, name: "마케팅 전략 수립 능력", score: 17 },

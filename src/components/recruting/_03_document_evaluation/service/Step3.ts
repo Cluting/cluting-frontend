@@ -178,3 +178,107 @@ export async function updateDocEvaluateDispute(
     throw error;
   }
 }
+
+// FIX: 수정된 평가전/중/후/완료 API
+
+interface Evaluator {
+  name: string;
+  state: string;
+}
+
+interface Applicant {
+  evaluationStage: string;
+  applicantName: string;
+  applicantPhone: string;
+  groupName: string;
+  applicationNumClubUser: string;
+  createdAt: string;
+  currentEvaluator: Evaluator;
+  otherEvaluators: Evaluator[];
+}
+
+interface CompletedApplicant {
+  evaluationStage: string;
+  applicantName: string;
+  applicantPhone: string;
+  groupName: string;
+  applicationNumClubUser: string;
+  createdAt: string;
+  currentEvaluator: {
+    name: string;
+    state: string;
+  };
+  otherEvaluators: Array<{
+    name: string;
+    state: string;
+  }>;
+  result: "PASS" | "FAIL";
+}
+
+// GET: 평가 전 지원서 리스트
+export async function getAppListBefore(
+  recruitId: number
+): Promise<Applicant[]> {
+  try {
+    const { data } = await Instance.get<Applicant[]>(
+      `/app-list/${recruitId}/before`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 전> 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// GET: 평가 중 지원서 리스트
+export async function getAppListIng(recruitId: number): Promise<Applicant[]> {
+  try {
+    const { data } = await Instance.get<Applicant[]>(
+      `/app-list/${recruitId}/ing`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 중> 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// GET: 평가 후 지원서 리스트
+export async function getAppListAfter(recruitId: number): Promise<Applicant[]> {
+  try {
+    const { data } = await Instance.get<Applicant[]>(
+      `/app-list/${recruitId}/after`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 후> 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// GET: 평가 완료 지원서 리스트
+export async function getAppListComplete(
+  recruitId: number
+): Promise<CompletedApplicant[]> {
+  try {
+    const { data } = await Instance.get<CompletedApplicant[]>(
+      `/app-list/${recruitId}/complete`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "평가 완료 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}

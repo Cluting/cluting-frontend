@@ -1,5 +1,5 @@
 // 지원자 상태 타입
-declare type ApplicantState = "평가 전" | "평가 중" | "평가 완료";
+declare type ApplicantState = "BEFORE" | "ING" | "AFTER" | "COMPLETE";
 
 // 지원자 데이터 타입
 declare interface Applicant {
@@ -13,6 +13,7 @@ declare interface Applicant {
   evaluators?: Evaluator[]; // 평가자에 대한 운영진 정보
   isDecisionMode?: boolean; //합불 결정하기 버튼 여부
   isDisputed?: boolean; //이의제기 여부
+  evaluationStage?: string; //평가 단계
 }
 
 // 평가 기준

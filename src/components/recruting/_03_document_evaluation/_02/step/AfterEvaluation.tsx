@@ -74,7 +74,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
           item.incomplete === item.all &&
           item.evaluators.some(
             (evaluator) =>
-              evaluator.state === "평가 완료" && evaluator.name === user.name
+              evaluator.state === "COMPLETE" && evaluator.name === user.name
           )
       );
 
