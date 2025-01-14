@@ -33,7 +33,7 @@ export default function AdminEvaluationWindow() {
     }
   );
   const evaluatorScores = evaluationContent?.evaluatorScores || [];
-  console.log(evaluationContent);
+  const groupIdeals = evaluationContent?.groupIdeals || [];
 
   const docEvauationMutation = useMutation(
     (data: DocEvaluationRequest) =>
@@ -110,7 +110,10 @@ export default function AdminEvaluationWindow() {
           />
         )}
         {showClubIdeal && (
-          <ClubIdealList onClose={() => setShowClubIdeal(false)} />
+          <ClubIdealList
+            groupIdeals={groupIdeals}
+            onClose={() => setShowClubIdeal(false)}
+          />
         )}
 
         {authority && (

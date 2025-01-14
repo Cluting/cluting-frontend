@@ -92,8 +92,33 @@ declare interface EvaluatorScore {
 declare interface DocEvaluationContent {
   applicantInfo: ApplicantInfo;
   questionAndAnswers: any[]; // You might want to define a more specific type
-  ideals: any[]; // You might want to define a more specific type
+  groupIdeals: GroupIdeal[];
   averageScore: number;
   evaluatorScores: EvaluatorScore[];
   myEvaluation: any | null; // You might want to define a more specific type
+}
+
+declare interface GroupIdeal {
+  question: string;
+  ideals: string[];
+}
+
+interface ApplicantInfo {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  profile: string;
+  school: string;
+  major: string;
+  doubleMajor: string | null;
+  semester: string;
+  groupName: string;
+}
+
+interface EvaluatorScore {
+  evaluatorName: string;
+  scores: number[];
+  totalScore: number;
+  comment: string;
 }
