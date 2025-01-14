@@ -88,7 +88,7 @@ export async function updateDocEvaluationStatus(
 ) {
   try {
     const { data } = await Instance.patch(
-      `/api/v1/eval/doc/${recruitId}/${applicationId}/evaluate?result=${result}`
+      `/eval/doc/${recruitId}/${applicationId}/evaluate?result=${result}`
     );
     return data;
   } catch (error: any) {

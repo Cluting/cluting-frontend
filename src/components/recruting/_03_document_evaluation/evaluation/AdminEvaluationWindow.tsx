@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EvaluationCard from "./EvaluationCard";
 import AdminEvaluationList from "./AdminEvaluationList";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { postDocEvaluation } from "../service/Step3";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getDocEvaluationContent, postDocEvaluation } from "../service/Step3";
 import ClubIdealList from "./ClubIdealList";
+import { useParams } from "react-router-dom";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
@@ -18,10 +19,22 @@ export default function AdminEvaluationWindow() {
     formState: { errors }
   } = useForm<DocEvaluationRequest>({ mode: "onSubmit" });
 
+  const { id } = useParams<{ id: string }>();
   // 동아리 등록
   //FIX: 리크루팅 아이디, 지원자 아이디 하드 코딩
   const recruitId = 1;
-  const applicationId = 1;
+  const applicationId = Number(id);
+
+  const { data: evaluationContent } = useQuery(
+    ["evaluationContent", recruitId, id],
+    () => getDocEvaluationContent(recruitId, parseInt(id!, 10)),
+    {
+      enabled: !!id
+    }
+  );
+  const evaluatorScores = evaluationContent?.evaluatorScores || [];
+  console.log(evaluationContent);
+
   const docEvauationMutation = useMutation(
     (data: DocEvaluationRequest) =>
       postDocEvaluation(recruitId, applicationId, data),
@@ -91,7 +104,10 @@ export default function AdminEvaluationWindow() {
         </button>
 
         {showAdminEvaluation && (
-          <AdminEvaluationList onClose={() => setShowAdminEvaluation(false)} />
+          <AdminEvaluationList
+            evaluatorScores={evaluatorScores}
+            onClose={() => setShowAdminEvaluation(false)}
+          />
         )}
         {showClubIdeal && (
           <ClubIdealList onClose={() => setShowClubIdeal(false)} />

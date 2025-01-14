@@ -44,7 +44,7 @@ export default function UserProfile() {
               <img
                 src={evaluationContent?.applicantInfo?.profile}
                 alt="프로필 예시 사진"
-                className="w-[150px] h-[184px] shrink-0 rounded-lg"
+                className="w-[150px] h-[184px] shrink-0 rounded-lg object-cover"
               />
             ) : (
               <div className="w-[150px] h-[184px] shrink-0 bg-gray-200 rounded-lg"></div>
