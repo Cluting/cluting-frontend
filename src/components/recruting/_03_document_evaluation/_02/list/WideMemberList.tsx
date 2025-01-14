@@ -1,13 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Link } from "react-router-dom";
+import { getMe } from "../../../../signup/services/User";
 
 interface WideMemberListProps {
   items: Applicant[]; // Applicant 타입의 배열로 변경
 }
 const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
+  const { data: user } = useQuery(["me"], getMe);
+
   const stateStyles = {
     BEFORE: "bg-[#F1F3FF] text-[#8B8FA4]",
-    "수정 가능": "bg-main-300 text-[#43454F]",
+    EDITABLE: "bg-main-300 text-[#43454F]",
     "열람 가능": "bg-[#BAF3E4] text-[#43454F]"
   };
 
@@ -21,6 +25,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
   )
     ? "interview"
     : "doc";
+
   return (
     <div className="flex flex-col w-full rounded-[7px] gap-4 max-h-[720px]">
       <ul className="flex items-center p-4 w-full h-[42px] bg-[#F1F3FF] gap-2 rounded-md">
@@ -39,8 +44,11 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
       </ul>
       <ul className="flex flex-col overflow-y-auto">
         {items.map((item) => {
-          // const evaluatorState = item.evaluators?.[0]?.state || "BEFORE";
-          const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
+          const groupAccess =
+            user &&
+            item.evaluators?.some(
+              (evaluator) => evaluator?.name === user?.name
+            );
           return (
             <Link
               to={
@@ -65,7 +73,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
                     </button>
                   )}
 
-                  {item.evaluationStage === "COMPLETE" ? (
+                  {item.evaluationStage === "EDITABLE" ? (
                     groupAccess ? (
                       <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
                         수정 가능
