@@ -70,3 +70,22 @@ export async function getInterviewResults(recruitId: number, sort: SortOrder) {
     throw error;
   }
 }
+
+// GET: 면접 평가 내용 가져오기
+export async function getInterviewEvaluationContent(
+  recruitId: number,
+  interviewId: number
+): Promise<InterviewEvaluationContent> {
+  try {
+    const { data } = await Instance.get<InterviewEvaluationContent>(
+      `/eval/interview/${recruitId}/${interviewId}/evaluate`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "면접 평가 내용 가져오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
