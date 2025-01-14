@@ -1,8 +1,8 @@
 //지원 중인 동아리
-import { v4 as uuidv4 } from "uuid";
 import ClubCard from "../../../recruting/home/_main/ClubCard";
 import { useQuery } from "@tanstack/react-query";
 import { getApplying } from "./services/Applicant";
+import { DEFAULT_CLUB_IMAGE } from "../../../../constants/recruting";
 
 // ClubData를 ClubCard 프롭스로 변환하는 함수
 function mapClubDataToCardProps(club: ClubData): ClubCardProps {
@@ -16,8 +16,8 @@ function mapClubDataToCardProps(club: ClubData): ClubCardProps {
     return {
       id: club.id,
       dDay: 0,
-      clubImg: "/assets/home/main/1.svg",
-      logoSrc: club.profile || "/assets/home/main/1Logo.svg",
+      clubImg: DEFAULT_CLUB_IMAGE,
+      logoSrc: club.profile || DEFAULT_CLUB_IMAGE,
       logoAlt: club.name,
       title: `${club.name} 모집 예정`,
       clubName: club.name,
@@ -35,8 +35,8 @@ function mapClubDataToCardProps(club: ClubData): ClubCardProps {
   return {
     id: club.id,
     dDay: dDay,
-    clubImg: currentRecruit.image || "/assets/home/main/1.svg",
-    logoSrc: club.profile || "/assets/home/main/1Logo.svg",
+    clubImg: currentRecruit.image || DEFAULT_CLUB_IMAGE,
+    logoSrc: club.profile || DEFAULT_CLUB_IMAGE,
     logoAlt: club.name,
     title: currentRecruit.title,
     clubName: club.name,
@@ -50,7 +50,8 @@ export default function InProgressContainer() {
     ["progressData"],
     getApplying
   );
-  console.log("서버에서 받아온 데이터:", progressData);
+  console.log("지원 중인 데이터:", progressData);
+
   // 실제 지원 가능한(마감되지 않은) 동아리만 필터링
   const activeClubs = progressData?.filter(
     (club) =>

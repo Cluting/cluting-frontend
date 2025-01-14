@@ -216,3 +216,5 @@ export const ENTIRE_STAGE = [
   "EVAL",
   "FINAL_PASS"
 ];
+
+export const DEFAULT_CLUB_IMAGE = "/assets/home/main/defaultClub.svg";
