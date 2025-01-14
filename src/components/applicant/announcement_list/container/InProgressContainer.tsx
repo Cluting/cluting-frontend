@@ -1,8 +1,15 @@
 //지원 중인 동아리
 import { v4 as uuidv4 } from "uuid";
 import ClubCard from "../../../recruting/home/_main/ClubCard";
+import { useQuery } from "@tanstack/react-query";
+import { getApplying } from "./services/Applicant";
 
 export default function InProgressContainer() {
+  const { data: progressData } = useQuery<ClubData[]>(
+    ["progressData"],
+    getApplying
+  );
+
   const clubsData = [
     {
       id: uuidv4(),
@@ -28,19 +35,20 @@ export default function InProgressContainer() {
   return (
     <div className="w-full min-h-[630px] bg-white-100">
       <div className="grid grid-cols-3 gap-8">
-        {clubsData.map((club, index) => (
-          <ClubCard
-            id={club.id}
-            key={club.id}
-            dDay={club.dDay}
-            clubImg={club.clubImg}
-            logoSrc={club.logoSrc}
-            logoAlt={club.logoAlt}
-            title={club.title}
-            clubName={club.clubName}
-            tags={club.tags}
-          />
-        ))}
+        {clubsData &&
+          clubsData.map((club, index) => (
+            <ClubCard
+              id={club.id}
+              key={club.id}
+              dDay={club.dDay}
+              clubImg={club.clubImg}
+              logoSrc={club.logoSrc}
+              logoAlt={club.logoAlt}
+              title={club.title}
+              clubName={club.clubName}
+              tags={club.tags}
+            />
+          ))}
       </div>
     </div>
   );
