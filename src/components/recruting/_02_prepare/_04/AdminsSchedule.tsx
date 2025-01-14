@@ -41,7 +41,7 @@ export default function AdminsSchedule() {
     const slots: string[] = [];
 
     // 시작 시간부터 종료 시간까지 1시간 간격으로 timeSlots 배열 생성
-    while (startTime < endTime) {
+    while (startTime <= endTime) {
       const timeString = startTime.toLocaleString("en-US", {
         hour: "numeric",
         minute: "numeric",
@@ -182,12 +182,12 @@ export default function AdminsSchedule() {
                     className="flex items-center space-x-[7px] mb-[13px] "
                   >
                     {/*시간*/}
-                    <div
-                      className={`flex-center w-[77.85px] mr-[3.15px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border 
-                          ${getSelectedAdminCount(timeSlot) >= interviewer ? "border-main-800 bg-main-100 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2`}
+                    <button
+                      className={`flex-center w-[77px] h-7 
+                          ${getSelectedAdminCount(timeSlot) >= interviewer ? "border-main-800 text-main-100" : "border-[#E5E5EA] text-gray-1100"}  text-caption2`}
                     >
                       {timeSlot}
-                    </div>
+                    </button>
                     {/*운영진들 */}
                     {admins.map((admin) => (
                       <button
@@ -198,8 +198,8 @@ export default function AdminsSchedule() {
                           getSelectedAdminCount(timeSlot) >= interviewer &&
                           !isAdminSelectedForTimeSlot(timeSlot, admin)
                         }
-                        className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-[#F2F2F7]
-                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-main-100 bg-main-100 text-[#F2F2F7]" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
+                        className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-white-100
+                            ${isAdminSelectedForTimeSlot(timeSlot, admin) ? "border-main-100 bg-main-100 text-white-100" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
                       >
                         {admin}
                       </button>
