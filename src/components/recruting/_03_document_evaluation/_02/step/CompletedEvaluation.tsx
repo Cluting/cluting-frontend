@@ -3,6 +3,7 @@ import FitMemberList from "../list/FitMemberList";
 import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  getAppListComplete,
   postDocComplete,
   updateDocEvaluationStatus
 } from "../../service/Step3";
@@ -74,17 +75,16 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const [members, setMembers] = useState<Applicant[]>(applicants);
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
   const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
-  const [applicationData, setApplicationData] = useState<ApiResponse | null>(
-    null
-  );
+  const [applicationData] = useState<ApiResponse | null>(null);
 
   const recruitId = 1;
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    (data: DocBeforeRequest) => postDocComplete(recruitId, data),
+  const { data: completedApplicants } = useQuery(
+    ["completedApplicants", recruitId],
+    () => getAppListComplete(recruitId),
     {
-      onSuccess: (response: ApiResponse) => {
-        setApplicationData(response);
+      onSuccess: (data) => {
+        console.log("평가 완료 지원서 리스트 불러오기 성공", data);
       }
     }
   );
@@ -96,18 +96,6 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
       setMembers(transformedApplicants);
     }
   }, [applicationData]);
-
-  // 컴포넌트 마운트 시 POST 요청
-  const initialData: DocBeforeRequest = {
-    // POST 요청에 필요한 초기 데이터 구성
-    groupName: null,
-    sortOrder: "newest"
-  };
-
-  useEffect(() => {
-    console.group(initialData);
-    mutation.mutate(initialData);
-  }, []); // 빈 의존성 배열로 컴포넌트 마운트 시에만 실행
 
   const { data: user } = useQuery(["me"], getMe);
 
