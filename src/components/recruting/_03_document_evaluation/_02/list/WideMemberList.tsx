@@ -12,7 +12,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
   const stateStyles = {
     BEFORE: "bg-[#F1F3FF] text-[#8B8FA4]",
     EDITABLE: "bg-main-300 text-[#43454F]",
-    "열람 가능": "bg-[#BAF3E4] text-[#43454F]"
+    READABLE: "bg-[#BAF3E4] text-[#43454F]"
   };
 
   const maskPhoneNumber = (phone: string) => {

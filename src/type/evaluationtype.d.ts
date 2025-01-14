@@ -1,5 +1,11 @@
 // 지원자 상태 타입
-declare type ApplicantState = "BEFORE" | "ING" | "AFTER" | "COMPLETE";
+declare type ApplicantState =
+  | "BEFORE"
+  | "ING"
+  | "AFTER"
+  | "COMPLETE"
+  | "READABLE"
+  | "EDITABLE";
 
 // 지원자 데이터 타입
 declare interface Applicant {
