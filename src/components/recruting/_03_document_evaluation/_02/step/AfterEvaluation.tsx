@@ -13,9 +13,11 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   sortType
 }) => {
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
-
   //평가 끝내기
   const [evaluationProcess, setEvaluationProcess] = useState(false);
+  const handleEvaluationProcessToggle = () => {
+    setEvaluationProcess(!evaluationProcess);
+  };
 
   //FIX:
   const recruitId = 1;
@@ -85,15 +87,12 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
       </div>
       <div className="flex-center">
         <button
-          type="submit"
-          onClick={() => {
-            setEvaluationProcess(true);
-          }}
+          onClick={handleEvaluationProcessToggle}
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] mb-[143px] ${
             evaluationProcess
-              ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
-              : "bg-main-100 text-white-100 " //완료하기
-          }  text-body flex-center hover:bg-main-500`}
+              ? "bg-main-400 border border-main-100 text-main-100"
+              : "bg-main-100 text-white-100"
+          } text-body flex-center hover:bg-main-500`}
         >
           {evaluationProcess ? "수정하기" : "평가 끝내기"}
         </button>

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getAppListIng, postDocIng } from "../../service/Step3";
+import { useQuery } from "@tanstack/react-query";
+import { getAppListIng } from "../../service/Step3";
 
 interface DuringEvaluationProps {
   filter: string; // 필터링 기준
