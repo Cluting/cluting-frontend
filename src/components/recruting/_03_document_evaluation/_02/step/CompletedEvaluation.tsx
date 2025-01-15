@@ -14,20 +14,6 @@ import StepCompleteModal from "../../../common/StepCompleteModal";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
 import DecisionPassFailModal from "../common/DecisionPassFailModal";
 
-// API 응답 형식
-interface CompletedApplicant {
-  id: number;
-  applicantName: string;
-  applicantPhone: string;
-  groupName: string | null;
-  passed: boolean;
-}
-
-interface ApiResponse {
-  PASS: CompletedApplicant[];
-  FAIL: CompletedApplicant[];
-}
-
 interface Applicant {
   id: string;
   name: string;
@@ -39,6 +25,8 @@ interface Applicant {
   evaluators: undefined;
   isDecisionMode: boolean;
   isDisputed: boolean;
+  createdAt: string;
+  applicationNumClubUser: string;
 }
 
 const transformApiResponse = (
@@ -48,16 +36,18 @@ const transformApiResponse = (
 
   return apiData.map(
     (item): Applicant => ({
-      id: item.id?.toString() ?? "",
-      name: item.applicantName ?? "",
-      phone: item.applicantPhone ?? "",
-      group: item.groupName ?? "미지정",
+      id: item.applicationId.toString(),
+      name: item.applicantName,
+      phone: item.applicantPhone,
+      group: item.groupName || "미지정",
       incomplete: 0,
       all: 0,
-      isPass: item.passed ?? false,
+      isPass: false, // 기본값으로 설정, API에서 제공되지 않음
       evaluators: undefined,
       isDecisionMode: false,
-      isDisputed: false
+      isDisputed: false,
+      createdAt: item.createdAt,
+      applicationNumClubUser: item.applicationNumClubUser
     })
   );
 };
@@ -80,12 +70,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
 
   const { data: completedApplicants } = useQuery<CompletedApplicant[]>(
     ["completedApplicants", recruitId],
-    () => getAppListComplete(recruitId),
-    {
-      onSuccess: (data) => {
-        console.log("평가완료", data);
-      }
-    }
+    () => getAppListComplete(recruitId)
   );
 
   const { data: user } = useQuery(["me"], getMe);

@@ -123,11 +123,14 @@ interface EvaluatorScore {
   comment: string;
 }
 
-//평가 완료 조회 데이터
 declare interface CompletedApplicant {
-  id: number;
+  applicationId: number;
   applicantName: string;
   applicantPhone: string;
   groupName: string | null;
-  passed: boolean;
+  applicationNumClubUser: string;
+  createdAt: string;
+  evaluationStage: string;
+  currentEvaluator: null;
+  otherEvaluators: any[];
 }
