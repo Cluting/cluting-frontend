@@ -33,7 +33,10 @@ export default function AdminsSchedule() {
     interviewEndDate,
     interviewer
   } = useInterviewStore();
-  const { group } = useGroupStore();
+
+  //전역상태 그룹
+  // const { group } = useGroupStore();
+  const groupList = useGroupStore((state) => state.group);
 
   const [currentDate, setCurrentDate] = useState<Date>(
     new Date(interviewStartDate)
@@ -66,10 +69,30 @@ export default function AdminsSchedule() {
 
   //todo: 임원진도 임의로 써놨습니다!
   const [admins, setAdmins] = useState([
-    { id: "babo1", name: "바보1" },
-    { id: "babo2", name: "바보2" },
-    { id: "babo3", name: "바보3" }
+    { id: "1", name: "최예은" },
+    { id: "2", name: "박시현" },
+    { id: "3", name: "김동현" },
+    { id: "4", name: "윤다인" },
+    { id: "5", name: "곽서연" },
+    { id: "6", name: "양성원" },
+    { id: "7", name: "이은재" },
+    { id: "8", name: "김은혜" }
   ]);
+
+  // 그룹당 admin 수 계산
+  const adminsPerGroup = Math.round(admins.length / groupList.length);
+
+  // admin 배열을 그룹 수에 맞게 분할
+  const distributeAdmins = () => {
+    const distributed = [];
+    for (let i = 0; i < groupList.length; i++) {
+      const start = i * adminsPerGroup;
+      const end = start + adminsPerGroup;
+      distributed.push(admins.slice(start, end));
+    }
+    return distributed;
+  };
+  const distributedAdmins = distributeAdmins();
 
   //드래그 앤 드랍 초기 설정
   const onDragEnd = (result: DropResult) => {
@@ -162,8 +185,8 @@ export default function AdminsSchedule() {
         <div>
           <div className="mt-[16px] h-auto pt-[29px] px-[30px] pb-[40px] bg-white-100 rounded-[12px]">
             <p className="text-main-100 text-caption3 text-left">
-              면접에 들어갈 {interviewer}명을 선택해 주세요. {interviewer}명이
-              가능한 시간을 이후에 지원자들이 선택할 수 있습니다.
+              면접에 들어갈 {interviewer}명을 드래그 앤 드롭으로 선택해 주세요.
+              해당 시간을 이후에 지원자들이 선택할 수 있습니다.
             </p>
             <div
               className={`mt-3 border  rounded-[12px] bg-[#FBFBFF]
@@ -196,41 +219,117 @@ export default function AdminsSchedule() {
                   </button>
                 )}
               </div>
-              <div className="pt-2 pb-[10px] pl-[11px]">
+              <div className="pt-[18px] pb-[10px] pl-[11px]">
                 <input
                   type="hidden"
                   {...register("scheduleData", {
                     validate: validateScheduleData
                   })}
                 />
+
+                {/* 그룹 헤더 */}
+                <div className="flex">
+                  <div className="w-[77px] mr-[7px]"></div>
+                  {/* 시간 영역 공간 확보 */}
+                  <div
+                    className={`grid ${
+                      groupList.length === 3
+                        ? "grid-cols-3"
+                        : groupList.length === 4
+                          ? "grid-cols-4"
+                          : groupList.length === 5
+                            ? "grid-cols-5"
+                            : "grid-cols-6"
+                    } gap-4 w-full mb-7`}
+                  >
+                    {groupList.map((group, index) => (
+                      <div
+                        key={index}
+                        className="flex-center text-caption2 font-bold text-main-500 "
+                      >
+                        <p className="flex-center w-[77px] h-[26px] bg-gray-100 rounded-lg">
+                          {group.name}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {timeSlots.map((timeSlot) => (
                   <div
                     key={timeSlot}
                     className="flex items-center space-x-[7px] mb-[13px] "
                   >
                     {/*시간*/}
-                    <button
+                    <div
                       className={`flex-center w-[77px] h-7 
                           ${getSelectedAdminCount(timeSlot) >= interviewer ? "border-main-800 text-main-100" : "border-[#E5E5EA] text-gray-1100"}  text-caption2`}
                     >
                       {timeSlot}
-                    </button>
-                    {/*운영진들 */}
-                    {admins.map((admin) => (
-                      <button
-                        key={`${timeSlot}-${admin}`}
-                        type="button"
-                        onClick={() => handleAdminSelect(timeSlot, admin.name)}
-                        disabled={
-                          getSelectedAdminCount(timeSlot) >= interviewer &&
-                          !isAdminSelectedForTimeSlot(timeSlot, admin.name)
-                        }
-                        className={`flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-white-100
-                            ${isAdminSelectedForTimeSlot(timeSlot, admin.name) ? "border-main-100 bg-main-100 text-white-100" : "border-[#E5E5EA] text-gray-1100"} text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed`}
-                      >
-                        {admin.name}
-                      </button>
-                    ))}
+                    </div>
+
+                    <div className="flex flex-col gap-4 w-full">
+                      {/* 드래그 가능한 운영진 행 */}
+                      <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable
+                          droppableId="01"
+                          key="01"
+                          direction="horizontal"
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.droppableProps}
+                              className={`grid grid-cols-${groupList.length} gap-4 w-full`}
+                            >
+                              {distributedAdmins.map(
+                                (groupAdmins, groupIndex) => (
+                                  <div
+                                    key={groupIndex}
+                                    className="flex justify-center gap-2"
+                                  >
+                                    {groupAdmins.map((admin, adminIndex) => (
+                                      <Draggable
+                                        key={admin.id}
+                                        draggableId={admin.id}
+                                        index={
+                                          groupIndex * adminsPerGroup +
+                                          adminIndex
+                                        }
+                                      >
+                                        {(provided) => (
+                                          <div
+                                            key={`${timeSlot}-${admin.name}`}
+                                            onClick={() =>
+                                              handleAdminSelect(
+                                                timeSlot,
+                                                admin.name
+                                              )
+                                            }
+                                            ref={provided.innerRef}
+                                            {...provided.dragHandleProps}
+                                            {...provided.draggableProps}
+                                            className={`flex-center text-caption2 w-20 h-7 rounded-md cursor-pointer border transition-colors
+                          ${
+                            isAdminSelectedForTimeSlot(timeSlot, admin.name)
+                              ? "bg-main-100 border-main-100 text-white-100"
+                              : "bg-gray-100 border-gray-200 text-gray-1100 hover:bg-main-300 hover:border-main-400 hover:text-main-100"
+                          }`}
+                                          >
+                                            {admin.name}
+                                          </div>
+                                        )}
+                                      </Draggable>
+                                    ))}
+                                  </div>
+                                )
+                              )}
+                              {provided.placeholder}
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -244,36 +343,7 @@ export default function AdminsSchedule() {
           </div>
         </div>
       </div>
-      <div>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="01" key="01" direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="flex-center"
-              >
-                {admins.map((babo, index) => (
-                  <Draggable key={babo.id} draggableId={babo.id} index={index}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.dragHandleProps}
-                        {...provided.draggableProps}
-                        className="flex-center w-[77.85px] h-7 bg-[#FBFBFF] rounded-[6px] cursor-pointer border hover:bg-main-100 hover:border-main-100 hover:text-white-100
-                          border-[#E5E5EA] text-gray-1100 text-caption2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover-not-allowed"
-                      >
-                        {babo.name}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </div>
+      <div></div>
     </form>
   );
 }
