@@ -20,6 +20,19 @@ export async function getInterviewEvaluationData({
   }
 }
 
+// GET: [평가 완료] 불러오기
+export async function getCompletedEvaluations(recruitId: number) {
+  try {
+    const { data } = await Instance.get(
+      `/eval/interview/${recruitId}/complete`
+    );
+    return data;
+  } catch (error) {
+    console.error("[평가 완료] 데이터 불러오기 실패:", error);
+    throw error;
+  }
+}
+
 // GET: 면접 리스트
 export async function getInterviewList(recruitId: number) {
   try {
