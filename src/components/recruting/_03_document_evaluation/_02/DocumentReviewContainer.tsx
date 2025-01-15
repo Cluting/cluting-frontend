@@ -7,12 +7,13 @@ import CompletedEvaluation from "./step/CompletedEvaluation";
 import Dropdown from "./common/DropDown";
 import { useNavigate, useParams } from "react-router-dom";
 
+const steps = ["평가 전", "평가 중", "평가 후", "평가 완료"];
+const stepsPath = ["before", "ing", "after", "complete"];
+
 const DocumentReviewContainer: React.FC = () => {
   const navigate = useNavigate();
   const { stage } = useParams<{ stage: string }>();
 
-  const steps = ["평가 전", "평가 중", "평가 후", "평가 완료"];
-  const stepsPath = ["before", "ing", "after", "complete"];
   const [currentStep, setCurrentStep] = useState(0);
 
   // 필터와 정렬 상태 관리

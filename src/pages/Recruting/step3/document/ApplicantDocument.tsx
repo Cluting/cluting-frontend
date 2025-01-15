@@ -24,7 +24,6 @@ export default function ApplicantDocument() {
   }, []);
 
   const navigate = useNavigate();
-
   const handleGoBack = () => {
     navigate(-1);
   };

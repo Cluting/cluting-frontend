@@ -23,7 +23,7 @@ export default function ScheduleTopSection({
         면접 당일
       </Link>
       <Link
-        to="/recruting/05_interview_evaluation/interview/after"
+        to="/recruting/05_interview_evaluation/interview/after/before"
         onClick={() => setSchedule("이후")}
         className={`w-full flex-center rounded-[10.63px] py-[14.5px] ${
           schedule === "이후"

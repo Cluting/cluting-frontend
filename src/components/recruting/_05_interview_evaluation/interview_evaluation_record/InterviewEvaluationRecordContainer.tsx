@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import UserProfile from "../../document/UserProfile";
 import QuestionAnswer from "./QuestionAnswer";
 import AdminEvaluationWindow from "../../_03_document_evaluation/evaluation/AdminEvaluationWindow";
@@ -22,12 +22,17 @@ export default function InterviewEvaluationRecordContainer() {
     }
   );
 
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="w-fit h-full flex-col items-center relative ">
       <div className="flex items-center gap-2 mb-10 ">
-        <Link to="/recruting/05_interview_evaluation/interview/after">
+        <button onClick={handleGoBack}>
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
-        </Link>
+        </button>
         <p className="text-title1 text-gray-1300 mt-1  text-left ml-[21px]">
           {evaluationContent?.applicantInfo?.name}
         </p>

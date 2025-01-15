@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Dropdown from "../../../_03_document_evaluation/_02/common/DropDown";
 import { useQuery } from "@tanstack/react-query";
 import { getInterviewGroups } from "../../service/Step5";
@@ -10,42 +10,67 @@ import DuringEvaluation from "./step/DuringEvaluation";
 import AfterEvaluation from "./step/AfterEvaluation";
 import CompletedEvaluation from "./step/CompletedEvaluation";
 import EvalProcessBar from "../../../_03_document_evaluation/_02/common/EvalProcessBar";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Group {
   groupId: number;
   name: string;
 }
+const steps = ["평가 전", "평가 중", "평가 후", "평가 완료"];
+const stepsPath = ["before", "ing", "after", "complete"];
 
 export default function AfterInterviewContainer() {
-  const steps = ["평가 전", "평가 중", "평가 후", "평가 완료"];
-  const [currentStep, setCurrentStep] = useState(0);
+  const navigate = useNavigate();
+  const { stage } = useParams<{ stage: string }>();
 
-  //FIX:하드코딩
+  const [currentStep, setCurrentStep] = useState(0);
+  const [schedule, setSchedule] = useState("이후");
   const recruitId = 1;
   const { data: groups = [] } = useQuery(["groups", recruitId], async () => {
     const response = await getInterviewGroups(Number(recruitId));
     return response.map((group: Group) => group.name);
   });
 
-  const renderStepComponent = (): React.ReactNode => {
-    switch (currentStep) {
-      case 0:
-        return <BeforeEvaluation filter={filter} sortType={sortType} />;
-      case 1:
-        return <DuringEvaluation filter={filter} sortType={sortType} />;
-      case 2:
-        return <AfterEvaluation filter={filter} sortType={sortType} />;
-      case 3:
-        return <CompletedEvaluation filter={filter} sortType={sortType} />;
-    }
-  };
-
-  const [schedule, setSchedule] = useState("이후");
-
+  // 필터와 정렬 상태 관리
   const [filter, setFilter] = useState("전체");
   //FIX: 드롭다운 검토 필요 지원순, 오래된 순
   const [sortType, setSortType] = useState("지원순");
   const filterOptions = useMemo(() => ["전체", ...groups], [groups]);
+
+  // URL과 현재 단계 동기화
+  useEffect(() => {
+    const index = stepsPath.indexOf(stage || "before");
+    if (index !== -1) {
+      setCurrentStep(index);
+    }
+  }, [stage, location.pathname]);
+
+  // 단계 변경 핸들러
+  const handleStepClick = (index: number) => {
+    const newStage = stepsPath[index];
+    const newPath = `/recruting/05_interview_evaluation/interview/after/${newStage}`;
+
+    if (location.pathname !== newPath) {
+      navigate(newPath, { replace: false });
+      setCurrentStep(index);
+    }
+  };
+
+  // 현재 단계에 따라 컴포넌트 렌더링
+  const renderStepComponent = (): React.ReactNode => {
+    switch (stage) {
+      case "before":
+        return <BeforeEvaluation filter={filter} sortType={sortType} />;
+      case "ing":
+        return <DuringEvaluation filter={filter} sortType={sortType} />;
+      case "after":
+        return <AfterEvaluation filter={filter} sortType={sortType} />;
+      case "complete":
+        return <CompletedEvaluation filter={filter} sortType={sortType} />;
+      default:
+        return <BeforeEvaluation filter={filter} sortType={sortType} />;
+    }
+  };
 
   return (
     <div className="flex justify-center pt-6 bg-gray-100 ">
@@ -72,7 +97,7 @@ export default function AfterInterviewContainer() {
             <EvalProcessBar
               steps={steps}
               currentStep={currentStep}
-              onStepClick={setCurrentStep}
+              onStepClick={handleStepClick}
             />
           </div>
           <div className="mb-8">{renderStepComponent()}</div>

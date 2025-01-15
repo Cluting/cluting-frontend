@@ -78,7 +78,10 @@ export default function App() {
                 <Route path="interviewPrep" element={<InterviewPrep />} />
                 <Route path="interview">
                   <Route path="day" element={<DayOfInterviewContainer />} />
-                  <Route path="after" element={<AfterInterviewContainer />} />
+                  <Route
+                    path="after/:stage"
+                    element={<AfterInterviewContainer />}
+                  />
                 </Route>
               </Route>
               {/* 개별 질문 작성하기 */}

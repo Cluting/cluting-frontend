@@ -76,7 +76,7 @@ export default function RecruitingCalender({
             서류 결과 보기
           </Link>
           <Link
-            to="/recruting/05_interview_evaluation/interview"
+            to="/recruting/05_interview_evaluation/interview/after/before"
             className="bg-gray-100 border border-gray-200 flex items-center  py-[14px] pl-4 mb-[17px] rounded-[8px] text-subheadline text-gray-900"
           >
             <img
