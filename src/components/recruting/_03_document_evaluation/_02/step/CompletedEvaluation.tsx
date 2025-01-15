@@ -13,6 +13,7 @@ import {
 import StepCompleteModal from "../../../common/StepCompleteModal";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
 import DecisionPassFailModal from "../common/DecisionPassFailModal";
+import { on } from "events";
 
 interface Applicant {
   id: string;
@@ -70,7 +71,12 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
 
   const { data: completedApplicants } = useQuery<CompletedApplicant[]>(
     ["completedApplicants", recruitId],
-    () => getAppListComplete(recruitId)
+    () => getAppListComplete(recruitId),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      }
+    }
   );
 
   const { data: user } = useQuery(["me"], getMe);

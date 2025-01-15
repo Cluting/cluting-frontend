@@ -22,8 +22,8 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
     () => getAppListBefore(recruitId),
     {
       onSuccess: (data) => {
+        console.log(data);
         const transformedData = transformApiResponse(data);
-
         setFilteredData(transformedData);
       }
     }

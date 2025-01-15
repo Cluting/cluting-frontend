@@ -33,6 +33,8 @@ export default function AdminEvaluationWindow() {
       enabled: !!id
     }
   );
+
+  console.log(evaluationContent);
   const evaluatorScores = evaluationContent?.evaluatorScores || [];
   const groupIdeals = evaluationContent?.groupIdeals || [];
 
