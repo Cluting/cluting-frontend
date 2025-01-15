@@ -18,7 +18,7 @@ export default function TopSection() {
   useEffect(() => {
     const paths = [
       "/recruting/03_document_evaluation/docPrep",
-      "/recruting/03_document_evaluation/doc"
+      "/recruting/03_document_evaluation/doc/평가%20전"
     ];
     const index = paths.findIndex((path) => location.pathname.includes(path));
     if (index !== -1) {
@@ -37,7 +37,11 @@ export default function TopSection() {
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
     const paths = ["docPrep", "doc"];
-    navigate(`/recruting/03_document_evaluation/${paths[index]}`);
+    if (paths[index] === "docPrep") {
+      navigate(`/recruting/03_document_evaluation/${paths[index]}`);
+    } else {
+      navigate(`/recruting/03_document_evaluation/${paths[index]}/before}`);
+    }
   };
 
   return (

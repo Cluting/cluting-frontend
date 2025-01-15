@@ -54,7 +54,7 @@ export default function RecruitingCalender({
         </p>
         <section className="w-[307px] text-caption3 bg-white-100  flex flex-col rounded-[12px]">
           <Link
-            to="/recruting/03_document_evaluation/doc"
+            to="/recruting/03_document_evaluation/doc/before"
             className="bg-gray-100 border border-gray-200 flex items-center py-[14px] pl-4 mb-[17px] rounded-[8px] text-subheadline text-gray-900"
           >
             <img

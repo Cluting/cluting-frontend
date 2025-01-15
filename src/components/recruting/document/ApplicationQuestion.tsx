@@ -16,7 +16,7 @@ export default function ApplicationQuestion() {
   );
 
   return (
-    <div className="flex flex-col items-start h-full pt-6 bg-gray-100">
+    <div className="flex flex-col items-start h-full pt-6 bg-gray-100 mb-[1200px]">
       <p className="evalutation-title mb-[9px]">지원 문항</p>
       {evaluationContent?.questionAndAnswers.map((qa, index) => (
         <section

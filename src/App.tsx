@@ -64,7 +64,7 @@ export default function App() {
               <Route path="02_prepare" element={<RecrutingPrepare />} />
               <Route path="03_document_evaluation">
                 <Route path="docPrep" element={<DocumentPrep />} />
-                <Route path="doc" element={<DocumentEval />} />
+                <Route path="doc/:stage" element={<DocumentEval />} />
               </Route>
               <Route
                 path="/recruting/evaluation/:id"
