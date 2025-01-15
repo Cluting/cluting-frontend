@@ -2,22 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getDocEvaluationContent } from "../_03_document_evaluation/service/Step3";
 import { useParams } from "react-router-dom";
 
-interface QuestionAndAnswer {
-  question: string;
-  answer: string;
-  options: { content: string; isCorrect: boolean }[];
-}
-
-interface EvaluationContent {
-  questionAndAnswers: QuestionAndAnswer[];
-}
-
 //3 - 리크루팅 : 서류 평가하기 단계  지원 문항
 export default function ApplicationQuestion() {
   const { id } = useParams<{ id: string }>();
   //FIX: 리크루팅 아이디, 지원자 아이디 하드 코딩
   const recruitId = 1;
-  const applicationId = Number(id);
   const { data: evaluationContent } = useQuery(
     ["evaluationContent", recruitId, id],
     () => getDocEvaluationContent(recruitId, parseInt(id!, 10)),
