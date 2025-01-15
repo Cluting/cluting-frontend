@@ -19,7 +19,7 @@ export default function PassList({ filter, passData, byGroup }: PassListProps) {
           <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-gray-100 ">
             전체 합격자
           </div>
-          <p className="text-[#6F7278] text-[11px]">{passData.length}</p>
+          <p className="text-[#6F7278] text-[11px]">{passData?.length}</p>
         </div>
         {byGroup &&
           Object.entries(byGroup).map(([group, count]) => (
@@ -47,7 +47,7 @@ export default function PassList({ filter, passData, byGroup }: PassListProps) {
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {data.state === "AFTER" ? "결정 완료" : ""}
+                  {data.state === "AFTER" ? "결정 완료" : "결정 완료"}
                 </div>
               </td>
               <td>
