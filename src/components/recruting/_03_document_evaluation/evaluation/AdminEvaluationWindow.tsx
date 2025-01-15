@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getDocEvaluationContent, postDocEvaluation } from "../service/Step3";
 import ClubIdealList from "./ClubIdealList";
 import { useParams } from "react-router-dom";
+import { getMe } from "../../../signup/services/User";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
@@ -34,6 +35,8 @@ export default function AdminEvaluationWindow() {
   );
   const evaluatorScores = evaluationContent?.evaluatorScores || [];
   const groupIdeals = evaluationContent?.groupIdeals || [];
+
+  const { data: user } = useQuery(["me"], getMe, {});
 
   const docEvauationMutation = useMutation(
     (data: DocEvaluationRequest) =>
@@ -91,7 +94,9 @@ export default function AdminEvaluationWindow() {
           <p className="text-gray-800 font-semibold text-[15.71px]">
             총점 평균
           </p>
-          <p className="font-bold text-[18px] ml-1">{"89.5점"}</p>
+          <p className="font-bold text-[18px] ml-1">
+            {evaluationContent?.averageScore}
+          </p>
           <p className="text-gray-800 font-semibold text-[15.71px] ml-1">
             /100점
           </p>
@@ -128,7 +133,7 @@ export default function AdminEvaluationWindow() {
             <section className="w-full mt-10">
               <div className="flex justify-between">
                 <div className="flex items-center">
-                  <p className="text-title3">{"최예은"}</p>
+                  <p className="text-title3">{user?.name}</p>
                   <p className="text-subheadline text-[#949494] ml-1">평가자</p>
                 </div>
                 <div className="flex-center gap-[3px] bg-gray-100 rounded-[5px] pl-[26px] py-[5px] pr-1">

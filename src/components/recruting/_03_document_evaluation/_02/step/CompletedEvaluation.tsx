@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
-import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getAppListComplete,
-  postDocComplete,
   updateDocEvaluationStatus
 } from "../../service/Step3";
 import { getMe } from "../../../../signup/services/User";
@@ -16,25 +14,8 @@ import StepCompleteModal from "../../../common/StepCompleteModal";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
 import DecisionPassFailModal from "../common/DecisionPassFailModal";
 
-interface Applicant {
-  id: string;
-  name: string;
-  phone: string;
-  group: string;
-  incomplete: number;
-  all: number;
-  isPass?: boolean;
-  evaluators?: Evaluator[];
-  isDecisionMode?: boolean;
-  isDisputed?: boolean;
-}
-
-interface ApiResponse {
-  PASS: ApiApplicant[];
-  FAIL: ApiApplicant[];
-}
-
-interface ApiApplicant {
+// API 응답 형식
+interface CompletedApplicant {
   id: number;
   applicantName: string;
   applicantPhone: string;
@@ -42,24 +23,43 @@ interface ApiApplicant {
   passed: boolean;
 }
 
-const transformApiResponse = (apiData: ApiResponse): Applicant[] => {
-  const transformSingleApplicant = (item: ApiApplicant): Applicant => ({
-    id: item.id.toString(),
-    name: item.applicantName,
-    phone: item.applicantPhone,
-    group: item.groupName || "미지정",
-    incomplete: 0,
-    all: 0,
-    isPass: item.passed,
-    evaluators: undefined,
-    isDecisionMode: false,
-    isDisputed: false
-  });
+interface ApiResponse {
+  PASS: CompletedApplicant[];
+  FAIL: CompletedApplicant[];
+}
 
-  const passApplicants = apiData.PASS.map(transformSingleApplicant);
-  const failApplicants = apiData.FAIL.map(transformSingleApplicant);
+interface Applicant {
+  id: string;
+  name: string;
+  phone: string;
+  group: string;
+  incomplete: number;
+  all: number;
+  isPass: boolean;
+  evaluators: undefined;
+  isDecisionMode: boolean;
+  isDisputed: boolean;
+}
 
-  return [...passApplicants, ...failApplicants];
+const transformApiResponse = (
+  apiData: CompletedApplicant[] | undefined
+): Applicant[] => {
+  if (!apiData) return [];
+
+  return apiData.map(
+    (item): Applicant => ({
+      id: item.id?.toString() ?? "",
+      name: item.applicantName ?? "",
+      phone: item.applicantPhone ?? "",
+      group: item.groupName ?? "미지정",
+      incomplete: 0,
+      all: 0,
+      isPass: item.passed ?? false,
+      evaluators: undefined,
+      isDecisionMode: false,
+      isDisputed: false
+    })
+  );
 };
 
 interface CompletedEvaluationProps {
@@ -71,46 +71,36 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const { applicants } = useApplicantEvaluationStore();
-  const [members, setMembers] = useState<Applicant[]>(applicants);
+  const [members, setMembers] = useState<Applicant[]>([]);
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
   const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
-  const [applicationData] = useState<ApiResponse | null>(null);
 
   const recruitId = 1;
   const queryClient = useQueryClient();
-  const { data: completedApplicants } = useQuery(
+
+  const { data: completedApplicants } = useQuery<CompletedApplicant[]>(
     ["completedApplicants", recruitId],
     () => getAppListComplete(recruitId),
     {
       onSuccess: (data) => {
-        console.log("평가 완료 지원서 리스트 불러오기 성공", data);
+        console.log("평가완료", data);
       }
     }
   );
 
-  useEffect(() => {
-    if (applicationData) {
-      const transformedApplicants = transformApiResponse(applicationData);
-
-      setMembers(transformedApplicants);
-    }
-  }, [applicationData]);
-
   const { data: user } = useQuery(["me"], getMe);
 
   useEffect(() => {
-    // 평가 완료 상태 데이터 필터링
-    if (user && applicationData) {
-      const transformedApplicants = transformApiResponse(applicationData);
+    if (user && completedApplicants) {
+      const transformedApplicants = transformApiResponse(completedApplicants);
+      setMembers(transformedApplicants);
 
       // 합격자와 불합격자 분리
-      const filteredAccepted = transformedApplicants.filter(
-        (item) => item.isPass === true
-      );
-      const filteredRejected = transformedApplicants.filter(
-        (item) => item.isPass === false
-      );
+      const filteredAccepted =
+        transformedApplicants.filter((item) => item.isPass === true) ?? [];
+
+      const filteredRejected =
+        transformedApplicants.filter((item) => item.isPass === false) ?? [];
 
       const sortData = (data: Applicant[]) =>
         sortType === "가나다순"
@@ -129,11 +119,11 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           : sortData(filteredRejected.filter((item) => item.group === filter))
       );
     }
-  }, [filter, sortType, applicationData, user]);
+  }, [filter, sortType, completedApplicants, user]);
 
   const handleDispute = (id: string) => {
     setMembers((prevMembers) =>
-      prevMembers.map((member) =>
+      prevMembers?.map((member) =>
         member.id === id
           ? {
               ...member,
@@ -153,7 +143,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   );
 
   const handleDecisionClick = (id: string) => {
-    const applicant = members.find((member) => member.id === id);
+    const applicant = members?.find((member) => member.id === id);
     setSelectedMemberId(id);
     setSelectedApplicant(applicant || null);
     setShowDecisionModal(true);
@@ -178,29 +168,28 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   });
 
   const handleDecision = (isPass: boolean) => {
-    //FIX: 임시 데이터 변경하는 부분이니 전체 데이터 연결되면 해당 부분 삭제
     if (selectedMemberId) {
+      const applicationId = parseInt(selectedMemberId);
+      const result = isPass ? "PASS" : "FAIL";
+
+      updateStatusMutation.mutate({
+        recruitId,
+        applicationId,
+        result
+      });
+
       setMembers((prevMembers) =>
-        prevMembers.map((member) =>
+        prevMembers?.map((member) =>
           member.id === selectedMemberId
             ? {
                 ...member,
                 isPass: isPass,
-                result: isPass ? "합격" : "불합격",
                 isDecisionMode: false
               }
             : member
         )
       );
     }
-
-    //FIX: 실제 데이터로 변경
-    const result = isPass ? "PASS" : "FAIL";
-    updateStatusMutation.mutate({
-      recruitId,
-      applicationId: 20,
-      result
-    });
     setShowDecisionModal(false);
     setSelectedMemberId(null);
   };

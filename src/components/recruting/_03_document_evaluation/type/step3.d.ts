@@ -122,3 +122,12 @@ interface EvaluatorScore {
   totalScore: number;
   comment: string;
 }
+
+//평가 완료 조회 데이터
+declare interface CompletedApplicant {
+  id: number;
+  applicantName: string;
+  applicantPhone: string;
+  groupName: string | null;
+  passed: boolean;
+}

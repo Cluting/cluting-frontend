@@ -137,24 +137,6 @@ interface Applicant {
   otherEvaluators: Evaluator[];
 }
 
-interface CompletedApplicant {
-  evaluationStage: string;
-  applicantName: string;
-  applicantPhone: string;
-  groupName: string;
-  applicationNumClubUser: string;
-  createdAt: string;
-  currentEvaluator: {
-    name: string;
-    state: string;
-  };
-  otherEvaluators: Array<{
-    name: string;
-    state: string;
-  }>;
-  result: "PASS" | "FAIL";
-}
-
 // GET: 평가 전 지원서 리스트
 export async function getAppListBefore(
   recruitId: number
