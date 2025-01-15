@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from "react";
 import Dropdown from "../../../_03_document_evaluation/_02/common/DropDown";
-import EvalProcessBar from "../../../_03_document_evaluation/_02/common/EvalProcessBar";
-import BeforeEvaluation from "../../../_03_document_evaluation/_02/step/BeforeEvaluation";
-import DuringEvaluation from "../../../_03_document_evaluation/_02/step/DuringEvaluation";
-import AfterEvaluation from "../../../_03_document_evaluation/_02/step/AfterEvaluation";
-import CompletedEvaluation from "../../../_03_document_evaluation/_02/step/CompletedEvaluation";
 import { useQuery } from "@tanstack/react-query";
 import { getInterviewGroups } from "../../service/Step5";
 import Sidemenu from "../../../common/Sidemenu";
 import TopSection from "../../common/TopSection";
 import ScheduleTopSection from "../ScheduleTopSection";
+import BeforeEvaluation from "./step/BeforeEvaluation";
+import DuringEvaluation from "./step/DuringEvaluation";
+import AfterEvaluation from "./step/AfterEvaluation";
+import CompletedEvaluation from "./step/CompletedEvaluation";
+import EvalProcessBar from "../../../_03_document_evaluation/_02/common/EvalProcessBar";
 
 interface Group {
   groupId: number;
@@ -43,13 +43,14 @@ export default function AfterInterviewContainer() {
   const [schedule, setSchedule] = useState("이후");
 
   const [filter, setFilter] = useState("전체");
-  const [sortType, setSortType] = useState("가나다순");
+  //FIX: 드롭다운 검토 필요 지원순, 오래된 순
+  const [sortType, setSortType] = useState("지원순");
   const filterOptions = useMemo(() => ["전체", ...groups], [groups]);
 
   return (
-    <div className="flex justify-center pt-6 bg-gray-100">
+    <div className="flex justify-center pt-6 bg-gray-100 ">
       <Sidemenu />
-      <div className="flex flex-col gap-7 w-[1016px] pl-8 mb-[143px]">
+      <div className="flex flex-col gap-7 w-[1016px] pl-8 mb-[500px]">
         <TopSection />
         <ScheduleTopSection schedule={schedule} setSchedule={setSchedule} />
         <div className="flex flex-col mt-6">
@@ -63,8 +64,8 @@ export default function AfterInterviewContainer() {
               />
               <Dropdown
                 label="정렬 : "
-                defaultValue="가나다순"
-                options={["가나다순"]}
+                defaultValue="지원순"
+                options={["지원순"]}
                 onSelect={(value) => setSortType(value)}
               />
             </div>
