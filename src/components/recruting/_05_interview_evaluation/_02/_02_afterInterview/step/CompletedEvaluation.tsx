@@ -9,6 +9,7 @@ import {
 import { getMe } from "../../../../../signup/services/User";
 import {
   useRecruitmentStepStore,
+  useStepFiveStore,
   useStepThreeStore
 } from "../../../../../../store/useStore";
 import FitMemberList from "../../../../_03_document_evaluation/_02/list/FitMemberList";
@@ -70,6 +71,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const recruitId = 1;
   const queryClient = useQueryClient();
 
+  //FIX: 평가 완료 5단계 API로 수정 필요
   const { data: completedApplicants } = useQuery<CompletedApplicant[]>(
     ["completedApplicants", recruitId],
     () => getAppListComplete(recruitId),
@@ -189,9 +191,9 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const { completedSteps, completeStep } = useRecruitmentStepStore();
   const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
 
-  const { setStepCompleted, steps } = useStepThreeStore();
+  const { setStepCompleted, steps } = useStepFiveStore();
 
-  const handleStepThreeSubmit = () => {
+  const handleStepFiveSubmit = () => {
     if (!completedSteps[0]) {
       setStepCompleteModalOpen(true);
     }
@@ -200,7 +202,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   const handleConfirmStepComplete = () => {
-    completeStep(2, true);
+    completeStep(4, true);
     setStepCompleted(1, true);
     setStepCompleteModalOpen(false);
   };
@@ -237,7 +239,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
       <div className="flex justify-center">
         <button
           type="submit"
-          onClick={handleStepThreeSubmit}
+          onClick={handleStepFiveSubmit}
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
             steps[1].completed
               ? "bg-main-400 border border-main-100 text-main-100"
@@ -251,7 +253,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
         <StepCompleteModal
           onClose={handleCloseStepCompleteModal}
           onConfirm={handleConfirmStepComplete}
-          stepIndex={2}
+          stepIndex={4}
         />
       )}
       {!steps[1].completed ? (
