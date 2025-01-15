@@ -1,6 +1,6 @@
 import "./App.css";
 import Header from "./components/common/Header";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -23,7 +23,6 @@ import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
 import DocumentEval from "./pages/Recruting/step3/DocumentEval";
 import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
-import InterviewEval from "./pages/Recruting/step5/InterviewEval";
 import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
 import DayOfInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_01_dayOfInterview/DayOfInterviewContainer";
 import AfterInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_02_afterInterview/AfterInterviewContainer";
@@ -65,7 +64,7 @@ export default function App() {
               <Route path="02_prepare" element={<RecrutingPrepare />} />
               <Route path="03_document_evaluation">
                 <Route path="docPrep" element={<DocumentPrep />} />
-                <Route path="doc" element={<DocumentEval />} />
+                <Route path="doc/:stage" element={<DocumentEval />} />
               </Route>
               <Route
                 path="/recruting/evaluation/:id"
@@ -79,7 +78,10 @@ export default function App() {
                 <Route path="interviewPrep" element={<InterviewPrep />} />
                 <Route path="interview">
                   <Route path="day" element={<DayOfInterviewContainer />} />
-                  <Route path="after" element={<AfterInterviewContainer />} />
+                  <Route
+                    path="after/:stage"
+                    element={<AfterInterviewContainer />}
+                  />
                 </Route>
               </Route>
               {/* 개별 질문 작성하기 */}

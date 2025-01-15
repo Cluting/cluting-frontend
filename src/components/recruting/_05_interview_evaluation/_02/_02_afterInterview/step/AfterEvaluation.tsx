@@ -1,11 +1,33 @@
 import React, { useCallback, useEffect, useState } from "react";
-import WideMemberList from "../list/WideMemberList";
+import WideMemberList from "../../../../_03_document_evaluation/_02/list/WideMemberList";
 import { useQuery } from "@tanstack/react-query";
-import { getAppListAfter } from "../../service/Step3";
+import { getInterviewEvaluationData } from "../../../service/Step5";
 
 interface AfterEvaluationProps {
   filter: string;
   sortType: string;
+}
+
+interface ApiApplicant {
+  stage: string;
+  applicantName: string;
+  applicantPhone: string;
+  groupName: string;
+  evaluationStatus: string;
+}
+
+interface Applicant {
+  id: string;
+  name: string;
+  phone: string;
+  group: string;
+  incomplete: number;
+  all: number;
+  isPass: undefined;
+  evaluators: any[];
+  isDecisionMode: boolean;
+  isDisputed: boolean;
+  evaluationStage: string;
 }
 
 const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
@@ -22,35 +44,36 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   //FIX:
   const recruitId = 1;
   const { data: applicantsData } = useQuery(
-    ["applicantsAfter", recruitId],
-    () => getAppListAfter(recruitId),
+    ["applicantsAfter", recruitId, filter, sortType],
+    () =>
+      getInterviewEvaluationData({
+        recruitId,
+        groupName: filter === "전체" ? undefined : filter,
+        sortOrder: sortType === "지원순" ? "oldest" : "newest"
+      }),
     {
       onSuccess: (data) => {
-        console.log(
-          "서류 평가하기 <평가 후> 지원서 리스트 불러오기 성공",
-          data
-        );
         const transformedData = transformApiResponse(data);
         setFilteredData(
-          transformedData.filter((item) => item.evaluationStage === "EDITABLE")
+          transformedData.filter((item) => item.evaluationStage === "AFTER")
         );
       }
     }
   );
 
-  const transformApiResponse = (apiData: any[]): Applicant[] => {
-    return apiData.map((item) => ({
-      id: item.applicationId.toString(),
+  const transformApiResponse = (apiData: ApiApplicant[]): Applicant[] => {
+    return apiData.map((item, index) => ({
+      id: index.toString(),
       name: item.applicantName,
       phone: item.applicantPhone,
       group: item.groupName,
-      incomplete: parseInt(item.applicationNumClubUser.split("/")[0], 10),
-      all: parseInt(item.applicationNumClubUser.split("/")[1], 10),
+      incomplete: parseInt(item.evaluationStatus.split("/")[0], 10),
+      all: parseInt(item.evaluationStatus.split("/")[1], 10),
       isPass: undefined,
-      evaluators: [item.currentEvaluator, ...item.otherEvaluators],
+      evaluators: [],
       isDecisionMode: false,
       isDisputed: false,
-      evaluationStage: item.evaluationStage
+      evaluationStage: item.stage
     }));
   };
 
@@ -71,6 +94,7 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
     [filter, sortType]
   );
 
+  //FIX: 이 부분도 운영진 상태 들어오는 대로 수정가능 , 열람 가능 처리 필요
   useEffect(() => {
     if (filteredData.length > 0) {
       const newFilteredData = filterAndSortData(filteredData);

@@ -77,3 +77,17 @@ export async function postPrepare4InterviewSetup(
     throw error;
   }
 }
+
+// GET: 모집하기 1~5단계 완료여부 불러오기
+export async function getSecondStageState(recruitId: number) {
+  try {
+    const response = await Instance.get(
+      `/global/second-stage-state?recruitId=${recruitId}`
+    );
+    console.log("모집하기 1~5단계 완료여부 불러오기 성공:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("모집하기 1~5단계 완료여부 불러오기 실패:", error);
+    throw error;
+  }
+}

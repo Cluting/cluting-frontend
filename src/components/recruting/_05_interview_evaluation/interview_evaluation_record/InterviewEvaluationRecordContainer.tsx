@@ -1,24 +1,44 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import UserProfile from "../../document/UserProfile";
 import QuestionAnswer from "./QuestionAnswer";
 import AdminEvaluationWindow from "../../_03_document_evaluation/evaluation/AdminEvaluationWindow";
 import { useState } from "react";
 import Portfolio from "../../document/Portfolio";
 import ApplicationQuestion from "../../document/ApplicationQuestion";
+import { useQuery } from "@tanstack/react-query";
+import { getInterviewEvaluationContent } from "../service/Step5";
 
 export default function InterviewEvaluationRecordContainer() {
   const [view, setView] = useState("application");
 
+  const { id } = useParams<{ id: string }>();
+  //FIX:
+  const recruitId = 1;
+  const { data: evaluationContent } = useQuery(
+    ["evaluationContent", recruitId, id],
+    () => getInterviewEvaluationContent(recruitId, parseInt(id!, 10)),
+    {
+      enabled: !!id
+    }
+  );
+
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="w-fit h-full flex-col items-center relative ">
       <div className="flex items-center gap-2 mb-10 ">
-        <Link to="/recruting/05_interview_evaluation/interview/after">
+        <button onClick={handleGoBack}>
           <img src="/assets/ic-back.svg" alt="뒤로가기" />
-        </Link>
+        </button>
         <p className="text-title1 text-gray-1300 mt-1  text-left ml-[21px]">
-          {"곽서연"}
+          {evaluationContent?.applicantInfo?.name}
         </p>
-        <p className="text-title3 text-gray-800 mt-1">{"기획"}</p>
+        <p className="text-title3 text-gray-800 mt-1">
+          {evaluationContent?.applicantInfo?.groupName}
+        </p>
       </div>
       <section className="relative w-[829px] ">
         <div className="w-full flex justify-end">
