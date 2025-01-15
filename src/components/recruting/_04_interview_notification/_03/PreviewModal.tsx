@@ -110,7 +110,7 @@ export default function PreviewModal({
 
   const [isStepCompleteModalOpen, setStepCompleteModalOpen] = useState(false);
   const handleConfirmStepComplete = () => {
-    completeStep(3); //전체 4단계 완료
+    completeStep(3, true); //전체 4단계 완료
     setStepCompleted(2, true); //4-3 단계 완료
     setStepCompleteModalOpen(false);
     onClose();

@@ -223,14 +223,33 @@ export default function DocumentReviewPrepContainer() {
           </div>
 
           <div className="flex gap-[31px] mt-[10px] w-full h-auto py-[28px] pb-[29px] px-[31px] bg-white-100 border border-[#D6D7DA] rounded-[21px] overflow-auto [&::-webkit-scrollbar]:hidden whitespace-nowrap">
-            {groups.map((groupItem) => (
+            {/* {groups.map((groupItem) => (
               <div key={groupItem.id} className="flex items-center gap-[15px] ">
                 <p>{groupItem.groupName}</p>
                 <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
-                  175명
+                  20명
                 </div>
               </div>
-            ))}
+            ))} */}
+            {/*todo: 일단 하드코딩ㅜㅜ */}
+            <div className="flex items-center gap-[15px] ">
+              <p>공통</p>
+              <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                20명
+              </div>
+              <p>기획</p>
+              <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                4명
+              </div>
+              <p>디자인</p>
+              <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                4명
+              </div>
+              <p>개발</p>
+              <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
+                12명
+              </div>
+            </div>
           </div>
         </div>
 

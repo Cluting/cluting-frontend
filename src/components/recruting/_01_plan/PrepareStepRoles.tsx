@@ -29,7 +29,6 @@ export default function PrepareStepRoles({
     return admin ? admin.name : `Unknown (ID: ${adminId})`;
   };
 
-  console.log("모집 준비하기 역할 분담 넘어온 데이터", apiPrepareStepRoles);
   useEffect(() => {
     if (apiPrepareStepRoles && apiPrepareStepRoles.length > 0) {
       const updatedSteps = DEFAULT_STEPS.map((step) => {

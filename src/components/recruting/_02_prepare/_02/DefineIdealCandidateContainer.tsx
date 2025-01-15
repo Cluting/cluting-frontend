@@ -7,6 +7,7 @@ import { useGroupStore } from "../../../../store/useStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare2 } from "./service/Step2";
 import { getPassIdeal } from "../_01/service/Step1";
+import { useEffect } from "react";
 
 export default function DefineIdealCandidateContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
@@ -91,6 +92,12 @@ export default function DefineIdealCandidateContainer() {
       });
     }
   });
+
+  useEffect(() => {
+    if (ideal && ideal.partIdeals.some((part) => part.content.length > 0)) {
+      setStepCompleted(1, true);
+    }
+  }, [ideal, setStepCompleted]);
 
   return (
     <FormProvider {...methods}>

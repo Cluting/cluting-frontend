@@ -2,12 +2,12 @@ import axios from "axios";
 
 export const Instance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
-  withCredentials: true,
-  headers: {
-    "Access-Control-Allow-Origin": "http://localhost:3000",
-    "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS"
-  }
+  withCredentials: true
+  // headers: {
+  //   "Access-Control-Allow-Origin": "http://localhost:3000",
+  //   "Access-Control-Allow-Credentials": "true",
+  //   "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS"
+  // }
 });
 
 // 요청 시 Authorization 헤더 추가

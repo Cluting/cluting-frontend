@@ -2,28 +2,23 @@ import { create } from "zustand";
 
 // 리크루팅 전체 단계
 export const useRecruitmentStepStore = create<RecruitmentStore>()((set) => ({
-  currentRecruitmentStep: 0, // 초기 단계
-  completedSteps: [] as boolean[], // 각 단계 완료 여부 배열 (초기에는 모두 false로)
+  currentRecruitmentStep: 0,
+  completedSteps: [] as boolean[],
 
   setCurrentRecruitmentStep: (step: number) =>
-    set({ currentRecruitmentStep: step }), // 단계 변경
+    set({ currentRecruitmentStep: step }),
 
-  // 특정 단계를 완료 상태로 설정하는 메서드
-  completeStep: (step: number) =>
+  // Modified completeStep function
+  completeStep: (step: number, isCompleted: boolean) =>
     set((state) => {
       const updatedCompletedSteps = [...state.completedSteps];
-      updatedCompletedSteps[step] = true;
-      return { completedSteps: updatedCompletedSteps };
-    }),
-
-  // 특정 단계의 완료 여부를 취소하는 메서드
-  resetStepCompletion: (step: number) =>
-    set((state) => {
-      const updatedCompletedSteps = [...state.completedSteps];
-      updatedCompletedSteps[step] = false;
+      updatedCompletedSteps[step] = isCompleted;
       return { completedSteps: updatedCompletedSteps };
     })
+
+  // The resetStepCompletion function can be removed as it's now redundant
 }));
+
 // 리크루팅 모집 준비하기 단계 (2) Top Section
 export const useStepTwoStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계

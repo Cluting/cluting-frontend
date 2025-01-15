@@ -31,6 +31,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
     {
       onSuccess: (data) => {
         if (data) {
+          if (data) {
+            setStepCompleted(4, true);
+          }
           // Update form with fetched data
           const fetchedQuestions = data.partQuestions || [];
           setQuestions(fetchedQuestions);
@@ -48,6 +51,13 @@ export default function CreateApplicationFormContainer(): ReactElement {
       }
     }
   );
+
+  // 불러온 2-5 데이터 있을 경우 2-5 완료 처리
+  useEffect(() => {
+    if (formData) {
+      setStepCompleted(4, true);
+    }
+  }, [setStepCompleted]);
 
   const queryClient = useQueryClient();
 
@@ -127,7 +137,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   const handleConfirmStepComplete = () => {
-    completeStep(1);
+    completeStep(1, true);
     setStepCompleted(4, true);
     setStepCompleteModalOpen(false);
   };

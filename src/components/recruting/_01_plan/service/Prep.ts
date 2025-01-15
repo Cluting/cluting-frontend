@@ -40,3 +40,48 @@ export async function getPlanningData(recruitId: number) {
     throw error;
   }
 }
+
+//FIX: url 하드코딩
+// PATCH: 계획하기 수정
+export async function patchPrep(
+  recruitId: number,
+  data: PrepareStepPatchFormValues
+) {
+  try {
+    const response = await fetch(
+      `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*"
+        },
+        body: JSON.stringify(data)
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const responseText = await response.text();
+
+    if (!responseText) {
+      console.log("서버 응답이 비어있습니다.");
+      return null;
+    }
+
+    try {
+      const responseData = JSON.parse(responseText);
+      console.log("계획하기 수정 성공:", responseData);
+      return responseData;
+    } catch (parseError) {
+      console.error("JSON 파싱 오류:", parseError);
+      console.log("원본 응답:", responseText);
+      throw new Error("서버 응답을 파싱할 수 없습니다.");
+    }
+  } catch (error) {
+    console.error("계획하기 수정 실패:", error);
+    throw error;
+  }
+}
