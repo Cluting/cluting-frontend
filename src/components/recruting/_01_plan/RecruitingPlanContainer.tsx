@@ -95,7 +95,7 @@ export default function RecruitingPlanContainer() {
     if (apiPlanningData) {
       methods.reset({
         recruitSchedules: apiPlanningData.schedule, // Remove the array brackets
-        prepStages: apiPlanningData.prepStages.map((stage, index) => ({
+        prepStages: apiPlanningData?.prepStages?.map((stage, index) => ({
           stageName: stage.stageName,
           stageOrder: index + 1,
           clubUserIds: [] // Assuming clubUserIds should be an empty array initially
@@ -169,11 +169,13 @@ export default function RecruitingPlanContainer() {
           </div>
           <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
-        <PrepareStepRoles
-          apiPrepareStepRoles={apiPlanningData?.prepStages}
-          isStepOneCompleted={isStepOneCompleted && !isEditMode}
-          onPrepStagesSubmit={handlePrepStagesSubmit}
-        />
+        {/* {apiPlanningData && (
+          <PrepareStepRoles
+            apiPrepareStepRoles={apiPlanningData.prepStages}
+            isStepOneCompleted={isStepOneCompleted && !isEditMode}
+            onPrepStagesSubmit={handlePrepStagesSubmit}
+          />
+        )} */}
         <div className=" w-full flex flex-col items-center ml-8">
           <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
