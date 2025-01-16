@@ -26,6 +26,7 @@ import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
 import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
 import DayOfInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_01_dayOfInterview/DayOfInterviewContainer";
 import AfterInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_02_afterInterview/AfterInterviewContainer";
+import AnnouncementListDetail from "./pages/Applicant/AnnouncementListDetail";
 
 export default function App() {
   return (
@@ -111,7 +112,7 @@ export default function App() {
               <Route path="announcement/:menu" element={<AnnouncementList />} />
               <Route
                 path="announcement/:menu/detail"
-                element={<ApplicantHistoryDetail />}
+                element={<AnnouncementListDetail />}
               />
               {/* 나의 지원 기록 */}
               <Route path="applications/:menu" element={<ApplicantHistory />} />

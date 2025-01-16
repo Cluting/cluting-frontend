@@ -1,56 +1,69 @@
 //지원한 동아리
-import { v4 as uuidv4 } from "uuid";
 import ClubCard from "../../../recruting/home/_main/ClubCard";
+import { useQuery } from "@tanstack/react-query";
+import { getApplied } from "./services/Applicant";
+import { DEFAULT_CLUB_IMAGE } from "../../../../constants/recruting";
+import { dummyData } from "./dummyData";
+
+function mapClubDataToCardProps(club: ClubData): ClubCardProps {
+  // 사용자가 지원한 모집 공고 찾기
+  const appliedRecruit = club.recruits.find((recruit) => recruit.isDone);
+
+  if (!appliedRecruit) {
+    return {
+      id: club.id,
+      dDay: 0,
+      clubImg: DEFAULT_CLUB_IMAGE,
+      logoSrc: club.profile || DEFAULT_CLUB_IMAGE,
+      logoAlt: club.name,
+      title: `${club.name}`,
+      clubName: club.name,
+      tags: club.keyword,
+      isLarge: false
+    };
+  }
+
+  const today = new Date();
+  const deadline = new Date(appliedRecruit.deadLine);
+  const diffTime = deadline.getTime() - today.getTime();
+  const dDay = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return {
+    id: club.id,
+    dDay: dDay,
+    clubImg: appliedRecruit.image || DEFAULT_CLUB_IMAGE,
+    logoSrc: club.profile || DEFAULT_CLUB_IMAGE,
+    logoAlt: club.name,
+    title: appliedRecruit.title,
+    clubName: club.name,
+    tags: club.keyword,
+    isLarge: false
+  };
+}
 
 export default function AppliedContainer() {
-  const clubsData = [
-    {
-      id: uuidv4(),
-      dDay: 3,
-      clubImg: "/assets/home/main/1.svg",
-      logoSrc: "/assets/home/main/1Logo.svg",
-      logoAlt: "1",
-      title: "밴드 온더락 6기 모집",
-      clubName: "밴드 On The Rock",
-      tags: ["문화예술", "밴드", "인디"]
-    },
-    {
-      id: uuidv4(),
-      dDay: 3,
-      clubImg: "/assets/home/main/1.svg",
-      logoSrc: "/assets/home/main/1Logo.svg",
-      logoAlt: "1",
-      title: "밴드 온더락 6기 모집",
-      clubName: "밴드 On The Rock",
-      tags: ["문화예술", "밴드", "인디"]
-    },
-    {
-      id: uuidv4(),
-      dDay: 3,
-      clubImg: "/assets/home/main/1.svg",
-      logoSrc: "/assets/home/main/1Logo.svg",
-      logoAlt: "1",
-      title: "밴드 온더락 6기 모집",
-      clubName: "밴드 On The Rock",
-      tags: ["문화예술", "밴드", "인디"]
-    }
-  ];
+  // const { data: appliedData } = useQuery<ClubData[]>(
+  //   ["appliedData"],
+  //   getApplied
+  // );
+
+  // 더미 데이터 사용
+  const appliedData = dummyData;
+
+  console.log("지원한 동아리 데이터:", appliedData);
+
+  //지원한 동아리 필터링
+  const completedApplications = appliedData?.filter((club) =>
+    club.recruits.some((recruit) => recruit.isDone)
+  );
+
   return (
     <div className="w-full min-h-[630px] bg-white-100">
       <div className="grid grid-cols-3 gap-8">
-        {clubsData.map((club, index) => (
-          <ClubCard
-            id={club.id}
-            key={club.id}
-            dDay={club.dDay}
-            clubImg={club.clubImg}
-            logoSrc={club.logoSrc}
-            logoAlt={club.logoAlt}
-            title={club.title}
-            clubName={club.clubName}
-            tags={club.tags}
-          />
-        ))}
+        {completedApplications &&
+          completedApplications.map((club) => (
+            <ClubCard key={club.id} {...mapClubDataToCardProps(club)} />
+          ))}
       </div>
     </div>
   );

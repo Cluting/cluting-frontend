@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 import { getMe } from "../../signup/services/User";
 import { useAuthStore } from "../../../store/useAuthStore";
 
-export default function Sidemenu() {
+interface SidemenuProps {
+  forceClose?: boolean;
+}
+
+export default function Sidemenu({ forceClose = false }: SidemenuProps) {
   const { data: user } = useQuery(["me"], getMe, {
     onError: (error) => {
       console.error("유저 본인 정보 조회 실패:", error);
@@ -18,9 +22,13 @@ export default function Sidemenu() {
     if (window.innerWidth <= 1200) {
       setSidemenuClose(true);
     } else {
-      setSidemenuClose(false);
+      setSidemenuClose(forceClose);
     }
   };
+
+  useEffect(() => {
+    setSidemenuClose(forceClose);
+  }, [forceClose]);
 
   useEffect(() => {
     handleResize();
@@ -28,7 +36,7 @@ export default function Sidemenu() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [forceClose]);
 
   const { setLogin } = useAuthStore();
   const handleLogout = () => {
