@@ -4,15 +4,15 @@ export const dummyClubData = {
     {
       id: 1001,
       clubId: 1001,
-      title: "밴드 온더락 6기 모집",
-      description: "대학생 연합 밴드 동아리",
-      category: "CULTURE",
-      clubType: "EXTERNAL",
-      profile: "assets/home/main/1.svg",
+      title: "일본어 동아리 오소이 부원 모집",
+      description: "일본어 학습 및 문화교류 동아리",
+      category: "LANGUAGE",
+      clubType: "INTERNAL",
+      profile: "/assets/home/main/6.svg",
       isDone: false,
       caution: "",
-      deadLine: "2025-02-15T00:00:00.000Z",
-      createdAt: "2025-01-12T00:00:00.000Z"
+      deadLine: "2025-02-28T00:00:00.000Z",
+      createdAt: "2025-01-16T00:00:00.000Z"
     },
     {
       id: 1002,
@@ -69,15 +69,15 @@ export const dummyClubData = {
     {
       id: 1006,
       clubId: 1006,
-      title: "일본어 동아리 오소이 부원 모집",
-      description: "일본어 학습 및 문화교류 동아리",
-      category: "LANGUAGE",
-      clubType: "INTERNAL",
-      profile: "/assets/home/main/6.svg",
+      title: "밴드 온더락 6기 모집",
+      description: "대학생 연합 밴드 동아리",
+      category: "CULTURE",
+      clubType: "EXTERNAL",
+      profile: "assets/home/main/3.svg",
       isDone: false,
       caution: "",
-      deadLine: "2025-02-28T00:00:00.000Z",
-      createdAt: "2025-01-16T00:00:00.000Z"
+      deadLine: "2025-02-15T00:00:00.000Z",
+      createdAt: "2025-01-12T00:00:00.000Z"
     }
   ]
 };

@@ -14,7 +14,7 @@ export default function ClubCardList({ clubs }: ClubCardListProps) {
 
   const getValidImagePath = (profile: string) => {
     if (!profile) {
-      return "assets/home/main/defaultClub.svg"; //null일 때 기본 이미지
+      return "assets/home/main/ita.svg"; //null일 때 기본 이미지
     }
     // example.com URL인 경우 더미 이미지 사용
     if (profile.startsWith("https")) {
@@ -27,7 +27,7 @@ export default function ClubCardList({ clubs }: ClubCardListProps) {
       return profile.slice(1);
     }
 
-    return "assets/home/main/defaultClub.svg";
+    return "assets/home/main/ita.svg";
   };
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[53px]">
