@@ -16,7 +16,7 @@ export default function ApplicationHistoryDetailContainer() {
   };
 
   return (
-    <div className="w-full h-screen mt-[28px] ml-[52px] bg-gray-100">
+    <div className="w-full h-auto mt-[28px] ml-[52px] bg-gray-100">
       <div className="flex flex-col items-start">
         <div>
           <ClubInfo />

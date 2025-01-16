@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export default function ClubCard({
   id,
   dDay,
@@ -11,6 +13,11 @@ export default function ClubCard({
 }: ClubCardProps) {
   const cardWidth = isLarge ? "w-[322px]" : "w-[288px]";
 
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/applicant/announcement/${id}/detail`);
+  };
+
   const handleImageError = (
     e: React.SyntheticEvent<HTMLImageElement, Event>
   ) => {
@@ -19,6 +26,7 @@ export default function ClubCard({
 
   return (
     <div
+      onClick={handleClick}
       className={`relative ${cardWidth} h-[211px] rounded-[16.86px] bg-[#FBFBFF] border border-gray-300`}
     >
       <div className="w-full h-[126px] rounded-t-[16px] bg-gray-300">
