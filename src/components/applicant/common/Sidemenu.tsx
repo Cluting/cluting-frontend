@@ -75,7 +75,7 @@ export default function Sidemenu({ forceClose = false }: SidemenuProps) {
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <Link to={"/recruting/home"}>
+        <Link to={"/applicant/home"}>
           <button className="flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] pl-3">
             <img
               src="/assets/ic-sidemenu-home.svg"
