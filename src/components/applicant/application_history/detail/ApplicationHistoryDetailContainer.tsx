@@ -42,7 +42,7 @@ export default function ApplicationHistoryDetailContainer() {
               동아리 리크루팅 정보
             </button>
           </div>
-          <div className="w-[1213px] bg-white-100  rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
+          <div className="mb-16 w-[1213px] bg-white-100  rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
             {currentMenu === "document" && <MyDocumentContainer />}
             {currentMenu === "portfolio" && <MyPortfolioContainer />}
             {currentMenu === "recrutingInfo" && <RecrutingInfoContainer />}
