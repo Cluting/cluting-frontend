@@ -7,6 +7,7 @@ export default function RoleSettings({
   dropdown,
   currentId,
   type,
+  step,
   setValue,
   setDropdown,
   setCurrentId,
@@ -18,6 +19,8 @@ export default function RoleSettings({
   groups: DocumentReviewForm["groups"];
   dropdown: boolean;
   currentId: number | null;
+  type?: string;
+  step: string;
   setValue: UseFormSetValue<DocumentReviewForm>;
   setDropdown: (value: boolean) => void;
   setCurrentId: (value: number | null) => void;
@@ -25,7 +28,6 @@ export default function RoleSettings({
   handleAdminSelect: (admin: string, groupId: number) => void;
   removeAdmin: (groupId: number, adminToRemove: string) => void;
   handleGroupNameChange: (groupId: number, newName: string) => void;
-  type?: string;
 }) {
   return (
     <section className="my-[34px]">
@@ -78,14 +80,20 @@ export default function RoleSettings({
                     <div className="flex items-center text-[12.25px] font-semibold gap-[8.33px] text-[#5C6067]">
                       <p>지원자 수</p>
                       <div className="flex-center bg-gray-100 h-[22px] px-[6.74px] py-[3.52px] rounded-[7.35px]">
-                        {groupItem.groupName == "기획" ? (
-                          <p>2명</p>
-                        ) : groupItem.groupName == "디자인" ? (
+                        {groupItem.groupName === "기획" && step === "3" ? (
                           <p>4명</p>
-                        ) : groupItem.groupName == "개발" ? (
+                        ) : groupItem.groupName === "기획" && step === "5" ? (
+                          <p>2명</p>
+                        ) : groupItem.groupName === "디자인" && step === "3" ? (
+                          <p>4명</p>
+                        ) : groupItem.groupName === "디자인" && step === "5" ? (
+                          <p>2명</p>
+                        ) : groupItem.groupName === "개발" && step === "3" ? (
+                          <p>12명</p>
+                        ) : groupItem.groupName === "개발" && step === "5" ? (
                           <p>8명</p>
                         ) : (
-                          "0명"
+                          <p>0명</p>
                         )}
                       </div>
                       <p>운영자 수</p>

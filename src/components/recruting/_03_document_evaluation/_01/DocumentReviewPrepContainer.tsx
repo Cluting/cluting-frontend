@@ -266,6 +266,7 @@ export default function DocumentReviewPrepContainer() {
             removeAdmin={removeAdmin}
             handleGroupNameChange={handleGroupNameChange}
             type="서류"
+            step="3"
           />
         </div>
 
