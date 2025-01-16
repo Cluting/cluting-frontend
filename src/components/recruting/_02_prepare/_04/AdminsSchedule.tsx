@@ -36,7 +36,7 @@ export default function AdminsSchedule() {
 
   //전역상태 그룹
   // const { group } = useGroupStore();
-  const groupList = useGroupStore((state) => state.group);
+  const groupList = useGroupStore((state) => state.group) || [];
 
   const [currentDate, setCurrentDate] = useState<Date>(
     new Date(interviewStartDate)
@@ -79,17 +79,28 @@ export default function AdminsSchedule() {
     { id: "8", name: "김은혜" }
   ]);
 
-  // 그룹당 admin 수 계산
-  const adminsPerGroup = Math.round(admins.length / groupList.length);
-
-  // admin 배열을 그룹 수에 맞게 분할
+  // admin 배열을 면접관 수에 맞게 분할
   const distributeAdmins = () => {
-    const distributed = [];
-    for (let i = 0; i < groupList.length; i++) {
-      const start = i * adminsPerGroup;
-      const end = start + adminsPerGroup;
-      distributed.push(admins.slice(start, end));
+    if (!groupList || groupList.length === 0) {
+      console.log("GroupList is empty or invalid:", groupList); // 디버깅용
+
+      return [[...admins]]; // groupList가 없거나 비어있으면 모든 admin을 하나의 그룹으로
     }
+    const distributed = [];
+    const adminsPerGroup = Math.floor(admins.length / groupList.length); // 그룹당 기본 admin 수
+    const remainingAdmins = [...admins];
+
+    // 각 그룹별로 admin 분배
+    for (let i = 0; i < groupList.length; i++) {
+      const groupAdmins = remainingAdmins.splice(0, adminsPerGroup);
+      distributed.push(groupAdmins);
+    }
+
+    // 남은 admin이 있다면 추가 그룹으로 배치
+    if (remainingAdmins.length > 0) {
+      distributed.push(remainingAdmins);
+    }
+
     return distributed;
   };
   const distributedAdmins = distributeAdmins();
@@ -105,9 +116,9 @@ export default function AdminsSchedule() {
     const destinationIndex = result.destination.index; //드래그앤드롭한 목적지
 
     const newList = [...admins]; //초기 리스트 상태 복사한 후 저장
-    const pickedBabo = newList[sourceIndex]; //복사한 리스트에서 sourceIndex부분을 삭제한 뒤 붙여넣기 -> 위치 바뀜
+    const pickedAdmins = newList[sourceIndex]; //복사한 리스트에서 sourceIndex부분을 삭제한 뒤 붙여넣기 -> 위치 바뀜
     newList.splice(sourceIndex, 1);
-    newList.splice(destinationIndex, 0, pickedBabo);
+    newList.splice(destinationIndex, 0, pickedAdmins);
     setAdmins(newList);
   };
 
@@ -179,6 +190,11 @@ export default function AdminsSchedule() {
     });
   };
 
+  // useEffect를 사용하여 상태 초기화 확인
+  useEffect(() => {
+    console.log("Current groupList:", groupList); // 디버깅용
+  }, [groupList]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="ml-8 w-full mt-[34px]">
@@ -233,25 +249,35 @@ export default function AdminsSchedule() {
                   {/* 시간 영역 공간 확보 */}
                   <div
                     className={`grid ${
-                      groupList.length === 3
+                      distributedAdmins.length === 3
                         ? "grid-cols-3"
-                        : groupList.length === 4
+                        : distributedAdmins.length === 4
                           ? "grid-cols-4"
-                          : groupList.length === 5
+                          : distributedAdmins.length === 5
                             ? "grid-cols-5"
                             : "grid-cols-6"
                     } gap-4 w-full mb-7`}
                   >
-                    {groupList.map((group, index) => (
-                      <div
-                        key={index}
-                        className="flex-center text-caption2 font-bold text-main-500 "
-                      >
+                    {/* 기존 그룹 이름들 */}
+                    {groupList &&
+                      groupList.map((group, index) => (
+                        <div
+                          key={index}
+                          className="flex-center text-caption2 font-bold text-main-500"
+                        >
+                          <p className="flex-center w-[77px] h-[26px] bg-gray-100 rounded-lg">
+                            {group.name}
+                          </p>
+                        </div>
+                      ))}
+                    {/* 남은 admin이 있는 경우 추가 그룹 헤더 표시 */}
+                    {distributedAdmins.length > groupList.length && (
+                      <div className="flex-center text-caption2 font-bold text-main-">
                         <p className="flex-center w-[77px] h-[26px] bg-gray-100 rounded-lg">
-                          {group.name}
+                          가능 인원
                         </p>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
 
@@ -268,68 +294,73 @@ export default function AdminsSchedule() {
                       {timeSlot}
                     </div>
 
-                    <div className="flex flex-col gap-4 w-full">
-                      {/* 드래그 가능한 운영진 행 */}
-                      <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable
-                          droppableId="01"
-                          key="01"
-                          direction="horizontal"
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.droppableProps}
-                              className={`grid grid-cols-${groupList.length} gap-4 w-full`}
-                            >
-                              {distributedAdmins.map(
-                                (groupAdmins, groupIndex) => (
-                                  <div
-                                    key={groupIndex}
-                                    className="flex justify-center gap-2"
-                                  >
-                                    {groupAdmins.map((admin, adminIndex) => (
-                                      <Draggable
-                                        key={admin.id}
-                                        draggableId={admin.id}
-                                        index={
-                                          groupIndex * adminsPerGroup +
-                                          adminIndex
-                                        }
-                                      >
-                                        {(provided) => (
-                                          <div
-                                            key={`${timeSlot}-${admin.name}`}
-                                            onClick={() =>
-                                              handleAdminSelect(
-                                                timeSlot,
-                                                admin.name
-                                              )
-                                            }
-                                            ref={provided.innerRef}
-                                            {...provided.dragHandleProps}
-                                            {...provided.draggableProps}
-                                            className={`flex-center text-caption2 w-20 h-7 rounded-md cursor-pointer border transition-colors
+                    {/* 드래그 가능한 운영진 행 */}
+                    <DragDropContext onDragEnd={onDragEnd}>
+                      <Droppable
+                        droppableId="01"
+                        key="01"
+                        direction="horizontal"
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            className={`grid ${
+                              distributedAdmins.length === 3
+                                ? "grid-cols-3"
+                                : distributedAdmins.length === 4
+                                  ? "grid-cols-4"
+                                  : distributedAdmins.length === 5
+                                    ? "grid-cols-5"
+                                    : "grid-cols-6"
+                            } gap-4 w-full`}
+                          >
+                            {distributedAdmins.map(
+                              (groupAdmins, groupIndex) => (
+                                <div
+                                  key={groupIndex}
+                                  className="flex justify-center gap-2"
+                                >
+                                  {groupAdmins.map((admin, adminIndex) => (
+                                    <Draggable
+                                      key={admin.id}
+                                      draggableId={admin.id}
+                                      index={
+                                        groupIndex * interviewer + adminIndex
+                                      }
+                                    >
+                                      {(provided) => (
+                                        <div
+                                          key={`${timeSlot}-${admin.name}`}
+                                          onClick={() =>
+                                            handleAdminSelect(
+                                              timeSlot,
+                                              admin.name
+                                            )
+                                          }
+                                          ref={provided.innerRef}
+                                          {...provided.dragHandleProps}
+                                          {...provided.draggableProps}
+                                          className={`flex-center text-caption2 w-20 h-7 rounded-md cursor-pointer border transition-colors
                           ${
                             isAdminSelectedForTimeSlot(timeSlot, admin.name)
                               ? "bg-main-100 border-main-100 text-white-100"
                               : "bg-gray-100 border-gray-200 text-gray-1100 hover:bg-main-300 hover:border-main-400 hover:text-main-100"
                           }`}
-                                          >
-                                            {admin.name}
-                                          </div>
-                                        )}
-                                      </Draggable>
-                                    ))}
-                                  </div>
-                                )
-                              )}
-                              {provided.placeholder}
-                            </div>
-                          )}
-                        </Droppable>
-                      </DragDropContext>
-                    </div>
+                                        >
+                                          {admin.name}
+                                        </div>
+                                      )}
+                                    </Draggable>
+                                  ))}
+                                </div>
+                              )
+                            )}
+                            {provided.placeholder}
+                          </div>
+                        )}
+                      </Droppable>
+                    </DragDropContext>
                   </div>
                 ))}
               </div>
@@ -343,7 +374,6 @@ export default function AdminsSchedule() {
           </div>
         </div>
       </div>
-      <div></div>
     </form>
   );
 }
