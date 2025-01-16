@@ -27,7 +27,7 @@ export default function ClubCard({
   return (
     <div
       onClick={handleClick}
-      className={`relative ${cardWidth} h-[211px] rounded-[16.86px] bg-[#FBFBFF] border border-gray-300`}
+      className={`relative ${cardWidth} h-[211px] rounded-[16.86px] bg-[#FBFBFF] border border-gray-300 cursor-pointer`}
     >
       <div className="w-full h-[126px] rounded-t-[16px] bg-gray-300">
         <img

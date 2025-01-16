@@ -15,32 +15,30 @@ export default function AnnouncementListDetailContainer() {
   };
 
   return (
-    <div className="w-full h-screen flex-center bg-gray-100">
+    <div className="w-full h-auto bg-gray-100">
       <div className="flex flex-col items-start ">
-        <h1>공고 클릭 시 상세</h1>
-
         <section>
-          <div className="w-full ml-1 flex items-center gap-0">
+          <div className="w-full flex items-center gap-0">
             <button
               onClick={() => setMenu("announcement")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "announcement" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+              className={`flex-center w-[404px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "announcement" ? "bg-main-100 text-white-100 border-main-100" : "bg-gray-100 text-gray-1100 border-gray-200"} `}
             >
               공고 보기
             </button>
             <button
               onClick={() => setMenu("documentSubmit")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "documentSubmit" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
+              className={`flex-center w-[404px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "documentSubmit" ? "bg-main-100 text-white-100 border-main-100" : "bg-gray-100 text-gray-1100 border-gray-200"}`}
             >
               지원서 제출하기
             </button>
             <button
               onClick={() => setMenu("inquiry")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "inquiry" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
+              className={`flex-center w-[404px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "inquiry" ? "bg-main-100 text-white-100 border-main-100" : "bg-gray-100 text-gray-1100 border-gray-200"}`}
             >
               문의 하이라이트
             </button>
           </div>
-          <div className="mt-4 w-full p-4 bg-white border rounded">
+          <div className="w-[1213px] px-12 py-11 bg-white-100 border rounded-xl">
             {currentMenu === "announcement" && <AnnouncementContainer />}
             {currentMenu === "documentSubmit" && <DocumentSubmitContainer />}
             {currentMenu === "inquiry" && <InqueryContainer />}
