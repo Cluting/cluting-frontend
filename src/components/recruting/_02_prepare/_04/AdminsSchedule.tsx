@@ -36,11 +36,17 @@ export default function AdminsSchedule() {
 
   //전역상태 그룹
   // const { group } = useGroupStore();
-  const groupList = useGroupStore((state) => state.group) || [];
+  const groupList = useGroupStore((state) => state.group) ?? []; // null/undefined 체크
 
   const [currentDate, setCurrentDate] = useState<Date>(
     new Date(interviewStartDate)
   );
+
+  useEffect(() => {
+    // store의 전체 상태 확인
+    const state = useGroupStore.getState();
+    console.log("Store state:", state);
+  }, []);
 
   // 1시간 간격의 시간 배열 생성
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
@@ -272,7 +278,7 @@ export default function AdminsSchedule() {
                       ))}
                     {/* 남은 admin이 있는 경우 추가 그룹 헤더 표시 */}
                     {distributedAdmins.length > groupList.length && (
-                      <div className="flex-center text-caption2 font-bold text-main-">
+                      <div className="flex-center text-caption2 font-bold text-main-700">
                         <p className="flex-center w-[77px] h-[26px] bg-gray-100 rounded-lg">
                           가능 인원
                         </p>
