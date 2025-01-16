@@ -5,7 +5,7 @@ import Sidemenu from "../../components/applicant/common/Sidemenu";
 export default function ApplicantHistoryDetail() {
   return (
     <div className="w-full h-full flex justify-center pt-6 bg-gray-100">
-      <Sidemenu />
+      <Sidemenu forceClose={true} />
 
       <div className="w-[1016px] mb-[143px] h-full">
         <ApplicationHistoryDetailContainer />

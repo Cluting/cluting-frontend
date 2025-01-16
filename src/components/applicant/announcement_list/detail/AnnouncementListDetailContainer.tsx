@@ -38,7 +38,7 @@ export default function AnnouncementListDetailContainer() {
               문의 하이라이트
             </button>
           </div>
-          <div className="w-[1213px] px-12 py-11 bg-white-100 border rounded-xl">
+          <div className="w-[1213px] px-12 py-11 bg-white-100 border rounded-b-xl">
             {currentMenu === "announcement" && <AnnouncementContainer />}
             {currentMenu === "documentSubmit" && <DocumentSubmitContainer />}
             {currentMenu === "inquiry" && <InqueryContainer />}
