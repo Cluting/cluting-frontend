@@ -60,9 +60,9 @@ export default function AnnouncementListDetailContainer() {
           <div className="w-[1213px] px-12 py-11 bg-white-100 border rounded-b-xl">
             {currentMenu === "announcement" && <AnnouncementContainer />}
             {currentMenu === "documentSubmit" && <DocumentSubmitContainer />}
-            {currentMenu === "inquiry" && <InqueryContainer />}
           </div>
         </section>
+        {currentMenu === "inquiry" && <InqueryContainer />}
       </div>
     </div>
   );
