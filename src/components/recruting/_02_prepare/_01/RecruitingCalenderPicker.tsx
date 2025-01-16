@@ -198,9 +198,7 @@ export default function RecrutingCalenderPicker({
     checkAllStagesSelected();
   }, [completedTitles]);
 
-  // 계획하기 데이터가 있는 경우 캘린더에 표시
   useEffect(() => {
-    console.log(apiSchedule);
     if (apiSchedule) {
       const calendarEvents = Object.entries(apiSchedule)
         .map(([key, value]) => {
@@ -226,6 +224,16 @@ export default function RecrutingCalenderPicker({
         .filter((event) => event !== null);
 
       setEvents(calendarEvents as CalendarEvent[]);
+
+      // Update completedTitles based on apiSchedule
+      const completedTitles = CALENDAR_ITEMS.filter((item, index) => {
+        const stageNumber = index + 1;
+        return (
+          (apiSchedule as any)[`stage${stageNumber}Start`] &&
+          (apiSchedule as any)[`stage${stageNumber}End`]
+        );
+      });
+      setCompletedTitles(completedTitles);
     }
   }, [apiSchedule]);
 
@@ -329,7 +337,7 @@ export default function RecrutingCalenderPicker({
                   style={{
                     backgroundColor:
                       CALENDAR_COLORS[index % CALENDAR_COLORS.length]
-                  }} // 각 순서에 맞는 색상 적용
+                  }}
                 ></div>
                 {item}
               </button>
