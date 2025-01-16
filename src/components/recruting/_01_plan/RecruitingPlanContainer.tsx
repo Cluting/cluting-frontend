@@ -73,7 +73,7 @@ export default function RecruitingPlanContainer() {
       planningData
     }: {
       recruitId: number;
-      planningData: PrepareStepRolesFormValues;
+      planningData: PrepareStepPatchFormValues;
     }) => patchPrep(recruitId, planningData),
     {
       onSuccess: (data) => {
@@ -107,19 +107,21 @@ export default function RecruitingPlanContainer() {
 
   const onSubmit = async (data: PrepareStepRolesFormValues) => {
     try {
-      const formattedData = {
-        recruitSchedules: data.recruitSchedules,
-        prepStages: data.prepStages,
+      const formattedPatchData: PrepareStepPatchFormValues = {
+        recruitSchedules: [data.recruitSchedules],
+        prepStages: data.prepStages.map((stage) => ({
+          ...stage,
+          clubUserIds: stage.clubUserIds
+        })),
         applicantGroups: data.applicantGroups
       };
 
-      console.log("Submitting data:", formattedData);
+      console.log("Submitting data:", isEditMode ? formattedPatchData : data);
 
       if (isEditMode) {
-        console.log(data);
         await patchPlanMutation.mutateAsync({
           recruitId: 1,
-          planningData: data
+          planningData: formattedPatchData
         });
       } else {
         await stepPlanMutation.mutateAsync({

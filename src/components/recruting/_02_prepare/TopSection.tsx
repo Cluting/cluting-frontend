@@ -2,6 +2,8 @@ import { useState } from "react";
 import { STEP2_ITEMS } from "../../../constants/recruting";
 import { useStepTwoStore } from "../../../store/useStore";
 import AddAdmin from "../home/_admin/AddAdmin";
+import { useQuery } from "@tanstack/react-query";
+import { getSecondStageState } from "./service/Step2";
 
 export default function TopSection() {
   const { currentStep, setCurrentStep, steps } = useStepTwoStore();
@@ -20,6 +22,16 @@ export default function TopSection() {
   const handleItemClick = (index: number) => {
     setCurrentStep(index); // 현재 단계를 업데이트
   };
+
+  //FIX: 2단계 완료 여부 백엔드에서 실제로 반영하면 데이터로 연결
+  const recruitId = 1; //FIX:
+  const { data: stageState } = useQuery(
+    ["secondStageState", recruitId],
+    () => getSecondStageState(recruitId),
+    {
+      refetchOnWindowFocus: false
+    }
+  );
 
   return (
     <div>

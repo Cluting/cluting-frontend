@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   PATH,
+  START_PATH,
   STEP2_ITEMS,
   STEP3_ITEMS,
   STEP4_ITEMS,
@@ -183,7 +184,7 @@ export default function Sidemenu() {
           리크루팅 단계
         </p>
         {[...Array(6)].map((_, index) => {
-          const isActive = location.pathname === PATH[index];
+          const isActive = location.pathname.startsWith(START_PATH[index]);
           return (
             <div key={index} onClick={() => handleDropdownClick(index)}>
               <div

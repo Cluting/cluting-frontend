@@ -41,35 +41,45 @@ export async function getPlanningData(recruitId: number) {
   }
 }
 
+//FIX: url 하드코딩
 // PATCH: 계획하기 수정
 export async function patchPrep(
   recruitId: number,
-  data: PrepareStepRolesFormValues
+  data: PrepareStepPatchFormValues
 ) {
-  const url = `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`;
-  const headers = {
-    accept: "*/*",
-    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-    "Content-Type": "application/json"
-  };
-
   try {
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers: headers,
-      body: JSON.stringify(data)
-    });
-
-    const text = await response.text();
-    console.log("Response Text:", text);
+    const response = await fetch(
+      `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*"
+        },
+        body: JSON.stringify(data)
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const responseData = text ? JSON.parse(text) : {};
-    console.log("계획하기 수정 성공:", responseData);
-    return responseData;
+    const responseText = await response.text();
+
+    if (!responseText) {
+      console.log("서버 응답이 비어있습니다.");
+      return null;
+    }
+
+    try {
+      const responseData = JSON.parse(responseText);
+      console.log("계획하기 수정 성공:", responseData);
+      return responseData;
+    } catch (parseError) {
+      console.error("JSON 파싱 오류:", parseError);
+      console.log("원본 응답:", responseText);
+      throw new Error("서버 응답을 파싱할 수 없습니다.");
+    }
   } catch (error) {
     console.error("계획하기 수정 실패:", error);
     throw error;

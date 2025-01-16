@@ -39,6 +39,12 @@ declare interface PrepareStepRolesFormValues {
   applicantGroups: string[];
 }
 
+declare interface PrepareStepPatchFormValues {
+  prepStages: PrepStage[];
+  recruitSchedules: [RecruitSchedule];
+  applicantGroups: string[];
+}
+
 // 계획하기 불러오기
 declare interface PrepareStepRolesFormValues {
   prepStages: PrepStage[];

@@ -31,6 +31,10 @@ export default function CreateApplicationFormContainer(): ReactElement {
     {
       onSuccess: (data) => {
         if (data) {
+          if (data) {
+            setStepCompleted(4, true);
+          }
+          // Update form with fetched data
           const fetchedQuestions = data.partQuestions || [];
 
           // 받아온 데이터에서 Back을 공통으로 변환
@@ -69,6 +73,13 @@ export default function CreateApplicationFormContainer(): ReactElement {
       }
     }
   );
+
+  // 불러온 2-5 데이터 있을 경우 2-5 완료 처리
+  useEffect(() => {
+    if (formData) {
+      setStepCompleted(4, true);
+    }
+  }, [setStepCompleted]);
 
   const queryClient = useQueryClient();
 
