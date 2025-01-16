@@ -46,7 +46,7 @@ export default function RoleSettings({
             </div>
           )}
         </div>
-        {groups ? (
+        {groups.length >= 1 ? (
           <div>
             <button
               type="button"
@@ -78,7 +78,15 @@ export default function RoleSettings({
                     <div className="flex items-center text-[12.25px] font-semibold gap-[8.33px] text-[#5C6067]">
                       <p>지원자 수</p>
                       <div className="flex-center bg-gray-100 h-[22px] px-[6.74px] py-[3.52px] rounded-[7.35px]">
-                        23명
+                        {groupItem.groupName == "기획" ? (
+                          <p>2명</p>
+                        ) : groupItem.groupName == "디자인" ? (
+                          <p>4명</p>
+                        ) : groupItem.groupName == "개발" ? (
+                          <p>8명</p>
+                        ) : (
+                          "0명"
+                        )}
                       </div>
                       <p>운영자 수</p>
                       <div className="flex-center bg-gray-100 h-[22px] px-[6.74px] py-[3.52px] rounded-[7.35px]">

@@ -45,11 +45,13 @@ export default function Header() {
                     alt="알림"
                     className="w-[24px] h-[24px] mx-4"
                   />
-                  <img
-                    src="/assets/ic-profile.svg"
-                    alt="개인 계정 프로필"
-                    className="w-[35px] h-[35px] mx-3"
-                  />
+                  <Link to="/applicant/home">
+                    <img
+                      src="/assets/applicant-profile.png"
+                      alt="개인 계정 프로필"
+                      className="w-[35px] h-[35px] mx-3 rounded-full"
+                    />
+                  </Link>
                   <button
                     className="relative flex items-center"
                     onClick={() => {
@@ -57,9 +59,9 @@ export default function Header() {
                     }}
                   >
                     <img
-                      src="/assets/ic-profile.svg"
+                      src="/assets/club-profile.png"
                       alt="운영자 계정 프로필"
-                      className="w-[35px] h-[35px] mx-3"
+                      className="w-[35px] h-[35px] mx-3 rounded-full"
                     />
                     <img
                       src="/assets/ic-dropdown.svg"

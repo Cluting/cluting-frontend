@@ -16,7 +16,7 @@ export default function FailList({ filter, data, byGroup }: FailListProps) {
           <div className="text-[#525252] text-[13.3px] mr-[5px] p-[6px] rounded-[5px] bg-gray-100 ">
             불합격자
           </div>
-          <p className="text-[#6F7278] text-[11px]">{"78"}</p>
+          <p className="text-[#6F7278] text-[11px]">{data?.length}</p>
         </div>
       </div>
       <table className="w-full mt-4">
@@ -34,7 +34,7 @@ export default function FailList({ filter, data, byGroup }: FailListProps) {
             <tr className="h-[50px] text-[12.85px] text-gray-1100 font-semibold border-b border-[#D6D7DA]">
               <td>
                 <div className="bg-gray-100 rounded-[38px] text-gray-500 flex-center py-[5px] px-[5px] text-caption3">
-                  {applicant.state === "AFTER" ? "결정 완료" : ""}
+                  {applicant.state === "AFTER" ? "결정 완료" : "결정 완료"}
                 </div>
               </td>
               <td>

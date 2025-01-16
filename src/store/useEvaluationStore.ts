@@ -18,7 +18,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 전",
+            state: "BEFORE",
             groupAccess: "개발",
             totalScore: 85,
             criteriaScores: [
@@ -30,7 +30,7 @@ export const useApplicantEvaluationStore =
           },
           {
             name: "은재",
-            state: "평가 완료",
+            state: "AFTER",
             groupAccess: "개발",
             totalScore: 90,
             criteriaScores: [
@@ -54,7 +54,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 전",
+            state: "BEFORE",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
@@ -78,7 +78,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 중",
+            state: "ING",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
@@ -102,7 +102,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 중",
+            state: "ING",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
@@ -126,7 +126,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 중",
+            state: "ING",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
@@ -150,7 +150,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 완료",
+            state: "COMPLETE",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
@@ -174,7 +174,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 완료",
+            state: "COMPLETE",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [
@@ -198,7 +198,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 완료",
+            state: "COMPLETE",
             groupAccess: "기획",
             totalScore: 78,
             criteriaScores: [
@@ -222,7 +222,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 완료",
+            state: "COMPLETE",
             groupAccess: "기획",
             totalScore: 78,
             criteriaScores: [
@@ -246,7 +246,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 완료",
+            state: "COMPLETE",
             groupAccess: "기획",
             totalScore: 78,
             criteriaScores: [
@@ -270,7 +270,7 @@ export const useApplicantEvaluationStore =
         evaluators: [
           {
             name: "은재",
-            state: "평가 완료",
+            state: "COMPLETE",
             groupAccess: "개발",
             totalScore: 78,
             criteriaScores: [

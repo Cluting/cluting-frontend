@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import FitMemberList from "../list/FitMemberList";
-import { useApplicantEvaluationStore } from "../../../../../store/useEvaluationStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  postDocComplete,
+  getAppListComplete,
   updateDocEvaluationStatus
 } from "../../service/Step3";
 import { getMe } from "../../../../signup/services/User";
@@ -14,6 +13,45 @@ import {
 import StepCompleteModal from "../../../common/StepCompleteModal";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
 import DecisionPassFailModal from "../common/DecisionPassFailModal";
+import { on } from "events";
+
+interface Applicant {
+  id: string;
+  name: string;
+  phone: string;
+  group: string;
+  incomplete: number;
+  all: number;
+  isPass: boolean;
+  evaluators: undefined;
+  isDecisionMode: boolean;
+  isDisputed: boolean;
+  createdAt: string;
+  applicationNumClubUser: string;
+}
+
+const transformApiResponse = (
+  apiData: CompletedApplicant[] | undefined
+): Applicant[] => {
+  if (!apiData) return [];
+
+  return apiData.map(
+    (item): Applicant => ({
+      id: item.applicationId.toString(),
+      name: item.applicantName,
+      phone: item.applicantPhone,
+      group: item.groupName || "미지정",
+      incomplete: 0,
+      all: 0,
+      isPass: false, // 기본값으로 설정, API에서 제공되지 않음
+      evaluators: undefined,
+      isDecisionMode: false,
+      isDisputed: false,
+      createdAt: item.createdAt,
+      applicationNumClubUser: item.applicationNumClubUser
+    })
+  );
+};
 
 interface CompletedEvaluationProps {
   filter: string;
@@ -24,76 +62,36 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const { applicants } = useApplicantEvaluationStore();
-
-  const [members, setMembers] = useState<Applicant[]>(applicants);
+  const [members, setMembers] = useState<Applicant[]>([]);
   const [filteredData, setFilteredData] = useState<Applicant[]>([]);
   const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
 
-  //TODO: 응답받은 데이터 리스트로 렌더링해야함
-  const [applicationData, setApplicationData] = useState<ApplicationResponse[]>(
-    []
-  );
-
-  //FIX:
   const recruitId = 1;
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    (data: DocBeforeRequest) => postDocComplete(recruitId, data),
+
+  const { data: completedApplicants } = useQuery<CompletedApplicant[]>(
+    ["completedApplicants", recruitId],
+    () => getAppListComplete(recruitId),
     {
-      onSuccess: (response) => {
-        console.log(
-          "서류 평가하기 <평가 완료> 지원서 리스트 불러오기가 성공적으로 실행되었습니다."
-        );
-        setApplicationData(response.data); // 응답 데이터 저장
-        console.log("API 데이터", applicationData);
-      },
-      onError: (error) => {
-        console.error(
-          "서류 평가하기 <평가 완료> 지원서 리스트 불러오기 중 오류 발생:",
-          error
-        );
+      onSuccess: (data) => {
+        console.log(data);
       }
     }
   );
 
-  // 컴포넌트 마운트 시 POST 요청
-  useEffect(() => {
-    const initialData: DocBeforeRequest = {
-      // POST 요청에 필요한 초기 데이터 구성
-      groupName: null,
-      sortOrder: "oldest"
-    };
-    console.group(initialData);
-    mutation.mutate(initialData);
-  }, []); // 빈 의존성 배열로 컴포넌트 마운트 시에만 실행
-
-  const { data: user } = useQuery(["me"], getMe, {
-    onError: (error) => {
-      console.error("유저 본인 정보 조회 실패:", error);
-    }
-  });
+  const { data: user } = useQuery(["me"], getMe);
 
   useEffect(() => {
-    // 평가 완료 상태 데이터 필터링
-    if (user) {
-      const completedMembers = members.filter(
-        (item) =>
-          item.evaluators &&
-          item.incomplete === item.all &&
-          item.evaluators.some(
-            (evaluator) =>
-              evaluator.state === "평가 완료" && evaluator.name === user.name
-          )
-      );
+    if (user && completedApplicants) {
+      const transformedApplicants = transformApiResponse(completedApplicants);
+      setMembers(transformedApplicants);
 
       // 합격자와 불합격자 분리
-      const filteredAccepted = completedMembers.filter(
-        (item) => item.isPass === true
-      );
-      const filteredRejected = completedMembers.filter(
-        (item) => item.isPass === false
-      );
+      const filteredAccepted =
+        transformedApplicants.filter((item) => item.isPass === true) ?? [];
+
+      const filteredRejected =
+        transformedApplicants.filter((item) => item.isPass === false) ?? [];
 
       const sortData = (data: Applicant[]) =>
         sortType === "가나다순"
@@ -112,11 +110,11 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           : sortData(filteredRejected.filter((item) => item.group === filter))
       );
     }
-  }, [filter, sortType, members]);
+  }, [filter, sortType, completedApplicants, user]);
 
   const handleDispute = (id: string) => {
     setMembers((prevMembers) =>
-      prevMembers.map((member) =>
+      prevMembers?.map((member) =>
         member.id === id
           ? {
               ...member,
@@ -136,7 +134,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   );
 
   const handleDecisionClick = (id: string) => {
-    const applicant = members.find((member) => member.id === id);
+    const applicant = members?.find((member) => member.id === id);
     setSelectedMemberId(id);
     setSelectedApplicant(applicant || null);
     setShowDecisionModal(true);
@@ -157,36 +155,32 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
     onSuccess: () => {
       console.log("서류 평가 합불 여부 변경 성공");
       queryClient.invalidateQueries(["applicants", recruitId]);
-    },
-    onError: (error) => {
-      console.error("서류 평가 합불 여부 변경 실패:", error);
     }
   });
 
   const handleDecision = (isPass: boolean) => {
-    //FIX: 임시 데이터 변경하는 부분이니 전체 데이터 연결되면 해당 부분 삭제
     if (selectedMemberId) {
+      const applicationId = parseInt(selectedMemberId);
+      const result = isPass ? "PASS" : "FAIL";
+
+      updateStatusMutation.mutate({
+        recruitId,
+        applicationId,
+        result
+      });
+
       setMembers((prevMembers) =>
-        prevMembers.map((member) =>
+        prevMembers?.map((member) =>
           member.id === selectedMemberId
             ? {
                 ...member,
                 isPass: isPass,
-                result: isPass ? "합격" : "불합격",
                 isDecisionMode: false
               }
             : member
         )
       );
     }
-
-    //FIX: 실제 데이터로 변경
-    const result = isPass ? "PASS" : "FAIL";
-    updateStatusMutation.mutate({
-      recruitId,
-      applicationId: 20,
-      result
-    });
     setShowDecisionModal(false);
     setSelectedMemberId(null);
   };
@@ -205,7 +199,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   const handleCloseStepCompleteModal = () => setStepCompleteModalOpen(false);
 
   const handleConfirmStepComplete = () => {
-    completeStep(2);
+    completeStep(2, true);
     setStepCompleted(1, true);
     setStepCompleteModalOpen(false);
   };
@@ -220,6 +214,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
           <FitMemberList
             items={filteredData}
             state="평가 완료"
+            isDispute
             isEvaluationDone
             onDispute={handleDispute}
             onDecision={handleDecisionClick}
@@ -232,6 +227,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
             items={filteredData2}
             state="평가 완료"
             isEvaluationDone
+            isDispute
             onDispute={handleDispute}
             onDecision={handleDecisionClick}
           />

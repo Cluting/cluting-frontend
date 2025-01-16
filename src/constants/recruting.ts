@@ -16,6 +16,15 @@ export const PATH = [
   "/recruting/06_final_selection"
 ];
 
+export const START_PATH = [
+  "/recruting/01_plan",
+  "/recruting/02_prepare",
+  "/recruting/03_document_evaluation",
+  "/recruting/04_interview_notification",
+  "/recruting/05_interview_evaluation",
+  "/recruting/06_final_selection"
+];
+
 export const STEP2_ITEMS = [
   "합격 인원 설정하기",
   "인재상 구축하기",
@@ -216,3 +225,5 @@ export const ENTIRE_STAGE = [
   "EVAL",
   "FINAL_PASS"
 ];
+
+export const DEFAULT_CLUB_IMAGE = "/assets/home/main/defaultClub.svg";

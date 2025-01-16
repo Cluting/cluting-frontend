@@ -29,7 +29,6 @@ export default function PrepareStepRoles({
     return admin ? admin.name : `Unknown (ID: ${adminId})`;
   };
 
-  console.log("모집 준비하기 역할 분담 넘어온 데이터", apiPrepareStepRoles);
   useEffect(() => {
     if (apiPrepareStepRoles && apiPrepareStepRoles.length > 0) {
       const updatedSteps = DEFAULT_STEPS.map((step) => {
@@ -168,7 +167,7 @@ export default function PrepareStepRoles({
             {/* 오른쪽 컨텐츠 영역 */}
             <div>
               <div className="flex ml-[27.35px] mt-[21px] ">
-                {steps.map((step, index) => (
+                {steps?.map((step, index) => (
                   <div key={step.id} className="w-full min-h-[329px]">
                     <div className="flex-center">
                       <div className="w-[139px] h-[66px] px-[21px] bg-gray-200 rounded-[12px] flex-center text-caption1">
@@ -185,7 +184,7 @@ export default function PrepareStepRoles({
                     <div className="mt-[29px]">
                       {/* 운영진 목록 */}
                       <div>
-                        {step.admins.map((admin) => {
+                        {step?.admins.map((admin) => {
                           const adminName =
                             typeof admin === "number"
                               ? getAdminNameById(admin, step.id)

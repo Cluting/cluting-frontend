@@ -27,8 +27,7 @@ declare interface RecruitmentStore {
 
   // 단계 완료 여부 배열 및 관련 메서드
   completedSteps: boolean[]; // 각 단계의 완료 여부를 저장하는 배열
-  completeStep: (step: number) => void; // 특정 단계를 완료로 설정하는 함수
-  resetStepCompletion: (step: number) => void; // 특정 단계의 완료 여부를 취소하는 함수
+  completeStep: (step: number, isCompleted: boolean) => void; // 특정 단계의 완료 여부를 설정하는 함수
 }
 
 declare interface GroupStore {

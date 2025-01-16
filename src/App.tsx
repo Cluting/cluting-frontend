@@ -23,8 +23,10 @@ import AdminInvite from "./components/recruting/home/_admin/AdminInvite";
 import ApplicantDocument from "./pages/Recruting/step3/document/ApplicantDocument";
 import DocumentEval from "./pages/Recruting/step3/DocumentEval";
 import DocumentPrep from "./pages/Recruting/step3/DocumentPrep";
-import InterviewEval from "./pages/Recruting/step5/InterviewEval";
 import InterviewPrep from "./pages/Recruting/step5/InterviewPrep";
+import DayOfInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_01_dayOfInterview/DayOfInterviewContainer";
+import AfterInterviewContainer from "./components/recruting/_05_interview_evaluation/_02/_02_afterInterview/AfterInterviewContainer";
+import AnnouncementListDetail from "./pages/Applicant/AnnouncementListDetail";
 
 export default function App() {
   return (
@@ -63,7 +65,7 @@ export default function App() {
               <Route path="02_prepare" element={<RecrutingPrepare />} />
               <Route path="03_document_evaluation">
                 <Route path="docPrep" element={<DocumentPrep />} />
-                <Route path="doc" element={<DocumentEval />} />
+                <Route path="doc/:stage" element={<DocumentEval />} />
               </Route>
               <Route
                 path="/recruting/evaluation/:id"
@@ -75,14 +77,19 @@ export default function App() {
               />
               <Route path="05_interview_evaluation">
                 <Route path="interviewPrep" element={<InterviewPrep />} />
-                <Route path="interview" element={<InterviewEval />} />
+                <Route path="interview">
+                  <Route path="day" element={<DayOfInterviewContainer />} />
+                  <Route
+                    path="after/:stage"
+                    element={<AfterInterviewContainer />}
+                  />
+                </Route>
               </Route>
               {/* 개별 질문 작성하기 */}
               <Route
                 path="individual_question/:id"
                 element={<ApplicantDocument />}
               />
-              {/* <Route path="answer_record" element={<AnswerRecord />} /> */}
               {/* (면접) 답변 기록하기 */}
               <Route
                 path="answer_record/:intervieweeName"
@@ -105,7 +112,7 @@ export default function App() {
               <Route path="announcement/:menu" element={<AnnouncementList />} />
               <Route
                 path="announcement/:menu/detail"
-                element={<ApplicantHistoryDetail />}
+                element={<AnnouncementListDetail />}
               />
               {/* 나의 지원 기록 */}
               <Route path="applications/:menu" element={<ApplicantHistory />} />
