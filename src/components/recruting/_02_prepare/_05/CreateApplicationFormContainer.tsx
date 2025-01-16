@@ -14,7 +14,7 @@ import InterviewTimeSelector from "./InterviewTimeSelector";
 import { ReactComponent as IdealIcon } from "../../../../assets/ic-plus.svg";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { postPrepare5, getPrepare5 } from "./service/Step5";
+import { postPrepare5, getPrepare5, patchPrepare5 } from "./service/Step5";
 
 export default function CreateApplicationFormContainer(): ReactElement {
   const { group } = useGroupStore();
@@ -36,13 +36,35 @@ export default function CreateApplicationFormContainer(): ReactElement {
           }
           // Update form with fetched data
           const fetchedQuestions = data.partQuestions || [];
-          setQuestions(fetchedQuestions);
 
-          // Update form default values
+          // 받아온 데이터에서 Back을 공통으로 변환
+          const transformedQuestions = fetchedQuestions.map(
+            (question: PartQuestion) => ({
+              ...question,
+              partName:
+                question.partName === "Back" ? "공통" : question.partName
+            })
+          );
+
+          // 공통 파트가 없으면 새로 생성
+          const updatedQuestions = [
+            {
+              partName: "공통",
+              caution: "",
+              questions: [createInitialQuestion()]
+            },
+            ...transformedQuestions.filter(
+              (question: PartQuestion) => question.partName !== "공통"
+            )
+          ];
+
+          setQuestions(updatedQuestions);
+
+          // form 값들 설정
           setValue("title", data.title || "");
           setValue("multiApply", data.multiApply ?? true);
           setValue("isPortfolioRequired", data.isPortfolioRequired ?? true);
-          setValue("partQuestions", fetchedQuestions);
+          setValue("partQuestions", updatedQuestions);
           console.log("2-5 조회 성공!");
         }
       },
@@ -78,6 +100,22 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
   );
 
+  //PATCH
+  const patchMutation = useMutation(
+    (data: { formData: CreateApplicationForm; recruitId: number }) =>
+      patchPrepare5(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("모집하기5 PATCH 성공", data);
+        // PATCH 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
+        queryClient.invalidateQueries(["applicationForm", recruitId]);
+      },
+      onError: (error: any) => {
+        console.error(`모집하기5 PATCH 실패`, error);
+      }
+    }
+  );
+
   // 선택된 그룹 상태 관리
   const [selectedGroup, setSelectedGroup] = useState<string>(
     group[0]?.name || ""
@@ -100,7 +138,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const [questions, setQuestions] = useState<PartQuestion[]>([
     // 공통 질문 초기값
     {
-      partName: "Back",
+      partName: "공통",
       caution: "",
       questions: [createInitialQuestion()]
     },
@@ -145,6 +183,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const handleGroupClick = (partName: string) => setSelectedGroup(partName);
 
   const addQuestion = (partName: string) => {
+    console.log("Adding question to:", partName); // 디버깅용
+    console.log("Current questions:", questions); // 디버깅용
     setQuestions((prev) =>
       prev.map((part) => {
         if (part.partName !== partName) return part;
@@ -251,7 +291,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   const onSubmit = async (data: CreateApplicationForm) => {
     try {
-      const commonPart = data.partQuestions.find((p) => p.partName === "Back");
+      const commonPart = data.partQuestions.find((p) => p.partName === "공통");
       if (!commonPart || commonPart.questions.length === 0) {
         setError("partQuestions", {
           type: "manual",
@@ -266,7 +306,8 @@ export default function CreateApplicationFormContainer(): ReactElement {
         multiApply: data.multiApply,
         isPortfolioRequired: data.isPortfolioRequired,
         partQuestions: data.partQuestions.map((part) => ({
-          partName: part.partName,
+          ...part,
+          partName: part.partName === "공통" ? "공통" : part.partName,
           caution: part.caution,
           questions: part.questions.map((question) => {
             const baseQuestion = {
@@ -292,13 +333,22 @@ export default function CreateApplicationFormContainer(): ReactElement {
           })
         }))
       };
-
-      console.log("제출 데이터:", submitData);
-      const recruitId = 1;
-      createFormMutation.mutate({ formData: submitData, recruitId });
-    } catch (error: any) {
-      console.error("폼 제출 중 에러", error);
-      console.log("에러 응답:", error.response?.data);
+      console.log(submitData);
+      const recruitId = 1; //todo: 일단 임시로
+      if (steps[4].completed) {
+        //수정하기 버튼인 경우 -> PATCH 요청
+        await patchMutation.mutateAsync({ formData: submitData, recruitId });
+        setStepCompleted(4, false); // PATCH 성공 후 완료하기
+      } else {
+        //완료하기 버튼인 경우 -> POST 요청
+        await createFormMutation.mutateAsync({
+          formData: submitData,
+          recruitId
+        });
+        setStepCompleted(4, true); // POST 성공 후 수정하기
+      }
+    } catch (error) {
+      console.error("제출 중 에러 발생:", error);
     }
   };
 
@@ -311,6 +361,13 @@ export default function CreateApplicationFormContainer(): ReactElement {
     }
     return () => clearTimeout(timer);
   }, [uploadPopupOpen]);
+
+  // //제출한 데이터 있을 경우 해당 단계 완료 처리
+  useEffect(() => {
+    if (formData) {
+      setStepCompleted(4, true);
+    }
+  }, [formData, setStepCompleted]);
 
   return (
     <form
@@ -359,8 +416,11 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </div>
             <div className="mt-[12px] h-auto px-[31px] pt-[25px] pb-[29px] bg-white-100 rounded-[12px]">
               <div className="flex items-left gap-[11px]">
-                {group.map((partName) => (
-                  <div className="flex-center w-[225px] h-[50px] border rounded-[11px] bg-gray-100 text-callout">
+                {group.map((partName, index) => (
+                  <div
+                    key={`group-${partName.name}-${index}`}
+                    className="flex-center w-[225px] h-[50px] border rounded-[11px] bg-gray-100 text-callout"
+                  >
                     {partName.name}
                   </div>
                 ))}
@@ -416,7 +476,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
               }}
               placeholder="ex) 글자 수를 지키지 않으면 불이익이 있을 수 있습니다. 글자 수를 유의해 주세요!"
               className="w-full h-[42px] p-[11px] rounded-[8px] border border-gray-500 text-subheadline resize-none focus:border-main-100 outline-none"
-              {...register("partQuestions.0.caution")}
+              {...register(
+                `partQuestions.${questions.findIndex((p) => p.partName === "공통")}.caution`
+              )}
             />
 
             <hr className="flex-center my-[42px]" />
@@ -427,14 +489,16 @@ export default function CreateApplicationFormContainer(): ReactElement {
             </p>
             <div className="space-y-4">
               {questions
-                .find((p) => p.partName === "Back")
+                .find((p) => p.partName === "공통")
                 ?.questions.map((question, index) => (
                   <QuestionItem
                     key={question.id}
                     question={question}
-                    partName="Back"
+                    partName="공통"
                     questionIndex={index}
-                    partIndex={0} // 공통 질문은 항상 0번 인덱스
+                    partIndex={questions.findIndex(
+                      (p) => p.partName === "공통"
+                    )}
                     onTypeChange={handleQuestionTypeChange}
                     onDelete={deleteQuestion}
                     onAddOption={handleAddOption}
@@ -450,7 +514,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
             <button
               type="button"
-              onClick={() => addQuestion("Back")}
+              onClick={() => addQuestion("공통")}
               className="flex-center w-full h-[54px] mt-[34px] bg-main-300 border border-main-400 rounded-[8px] text-callout text-main-100 hover:bg-main-100 hover:text-white-100"
             >
               <IdealIcon className="mr-2" />
@@ -471,9 +535,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
             {/* 그룹 선택 탭 */}
             <div className="flex">
-              {group.map((partName) => (
+              {group.map((partName, index) => (
                 <button
-                  key={partName.name}
+                  key={`${partName.name}-${index}`}
                   type="button"
                   onClick={() => handleGroupClick(partName.name)}
                   className={`flex-center mt-3 w-[162px] min-h-[43px] rounded-t-[11px] border border-b-0 text-callout ${

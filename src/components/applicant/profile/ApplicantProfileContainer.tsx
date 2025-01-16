@@ -15,26 +15,25 @@ export default function ApplicantProfileContainer() {
   };
 
   return (
-    <div className="w-full h-full flex-center bg-gray-100">
+    <div className="ml-[34.38px] w-full h-full flex-center bg-gray-100">
       <div className="flex flex-col items-start ">
-        <h1 className="text-title2 mb-4 mt-10">기본 프로필 설정</h1>
-
+        <h1 className="text-title2 font-bold mb-4 mt-10">기본 프로필 설정</h1>
         <section>
-          <div className="w-full ml-1 flex items-center gap-0">
+          <div className="w-full flex items-center gap-0">
             <button
               onClick={() => setMenu("profile")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "profile" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
+              className={`flex-center w-[198px] h-[50px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "profile" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"} `}
             >
               기본 프로필
             </button>
             <button
               onClick={() => setMenu("portfolio")}
-              className={`flex-center w-[162px] h-[43px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "portfolio" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
+              className={`flex-center w-[198px] h-[50px] rounded-t-[11px] border  border-b-0 text-callout ${currentMenu === "portfolio" ? "bg-main-100 text-white-100" : "bg-main-300 text-gray-1100"}`}
             >
               포트폴리오
             </button>
           </div>
-          <div className="w-[1015px] bg-white border rounded-md">
+          <div className="w-[1015px] bg-white  rounded-md">
             {currentMenu === "profile" && <ProfileContainer />}
             {currentMenu === "portfolio" && <PortfolioContainer />}
           </div>

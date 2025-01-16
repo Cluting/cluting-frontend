@@ -149,7 +149,17 @@ export default function PrepareInterviewEvaluationContainer() {
               <div key={groupItem.id} className="flex items-center gap-[15px] ">
                 <p>{groupItem.groupName}</p>
                 <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
-                  175명
+                  {groupItem.groupName == "공통" ? (
+                    <p>20명</p>
+                  ) : groupItem.groupName == "기획" ? (
+                    <p>2명</p>
+                  ) : groupItem.groupName == "디자인" ? (
+                    <p>4명</p>
+                  ) : groupItem.groupName == "개발" ? (
+                    <p>8명</p>
+                  ) : (
+                    "0명"
+                  )}
                 </div>
               </div>
             ))}
