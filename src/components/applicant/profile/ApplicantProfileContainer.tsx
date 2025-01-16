@@ -17,8 +17,7 @@ export default function ApplicantProfileContainer() {
   return (
     <div className="ml-[34.38px] w-full h-full flex-center bg-gray-100">
       <div className="flex flex-col items-start ">
-        <h1 className="text-title2 font-bold mt-7 mb-4">기본 프로필 설정</h1>
-
+        <h1 className="text-title2 font-bold mb-4 mt-10">기본 프로필 설정</h1>
         <section>
           <div className="w-full flex items-center gap-0">
             <button
