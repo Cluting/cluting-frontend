@@ -15,7 +15,7 @@ export default function AnnouncementListContainer() {
 
   return (
     <div className="w-full h-screen bg-gray-100">
-      <div className="ml-[26.38px] mt-7 flex flex-col items-start ">
+      <div className="ml-[34.38px] mt-7 flex flex-col items-start ">
         <h1 className="text-title2 font-bold mb-4">공고 리스트</h1>
 
         <section>
