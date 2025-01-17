@@ -20,6 +20,60 @@ export async function getInterviewEvaluationData({
   }
 }
 
+// GET: 평가 전 지원서 리스트
+export async function getInterviewListBefore(
+  recruitId: number
+): Promise<Applicant[]> {
+  try {
+    const { data } = await Instance.get<Applicant[]>(
+      `/app-list/${recruitId}/interview/before`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 전> 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// GET: 평가 중 지원서 리스트
+export async function getInterviewListIng(
+  recruitId: number
+): Promise<IngApiApplicant[]> {
+  try {
+    const { data } = await Instance.get<IngApiApplicant[]>(
+      `/app-list/${recruitId}/interview/ing`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 중> 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
+// GET: 평가 후 지원서 리스트
+export async function getInterviewListAfter(
+  recruitId: number
+): Promise<IngApiApplicant[]> {
+  try {
+    const { data } = await Instance.get<IngApiApplicant[]>(
+      `/app-list/${recruitId}/interview/after`
+    );
+    return data;
+  } catch (error: any) {
+    console.error(
+      "서류 평가하기 <평가 후> 지원서 리스트 불러오기 실패:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+}
+
 // GET: [평가 완료] 불러오기
 export async function getCompletedEvaluations(recruitId: number) {
   try {

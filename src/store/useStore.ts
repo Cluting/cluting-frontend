@@ -167,8 +167,8 @@ export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
   interviewDuration: 60, // 기본값을 60으로 설정
   interviewStartTime: new Date(),
   interviewEndTime: new Date(),
-  interviewStartDate: new Date(),
-  interviewEndDate: new Date(),
+  interviewStartDate: "",
+  interviewEndDate: "",
   isTimeSet: false,
 
   setInterviewer: (id: number) => set({ interviewer: id }),
@@ -176,8 +176,8 @@ export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
   setInterviewDuration: (time: number) => set({ interviewDuration: time }),
   setInterviewStartTime: (time: Date) => set({ interviewStartTime: time }),
   setInterviewEndTime: (time: Date) => set({ interviewEndTime: time }),
-  setInterviewStartDate: (date: Date) => set({ interviewStartDate: date }),
-  setInterviewEndDate: (date: Date) => set({ interviewEndDate: date }),
+  setInterviewStartDate: (date: string) => set({ interviewStartDate: date }),
+  setInterviewEndDate: (date: string) => set({ interviewEndDate: date }),
 
   applyTimeSettings: () =>
     set((state) => ({

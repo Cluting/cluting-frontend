@@ -1,40 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import WideMemberList from "../../../../_03_document_evaluation/_02/list/WideMemberList";
 import { useQuery } from "@tanstack/react-query";
-import { getInterviewEvaluationData } from "../../../service/Step5";
+import { getInterviewListAfter } from "../../../service/Step5";
 
 interface AfterEvaluationProps {
   filter: string;
   sortType: string;
 }
 
-interface ApiApplicant {
-  stage: string;
-  applicantName: string;
-  applicantPhone: string;
-  groupName: string;
-  evaluationStatus: string;
-}
-
-interface Applicant {
-  id: string;
-  name: string;
-  phone: string;
-  group: string;
-  incomplete: number;
-  all: number;
-  isPass: undefined;
-  evaluators: any[];
-  isDecisionMode: boolean;
-  isDisputed: boolean;
-  evaluationStage: string;
-}
-
 const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const [filteredData, setFilteredData] = useState<Applicant[]>([]);
+  const [filteredData, setFilteredData] = useState<IngApplicant[]>([]);
   //평가 끝내기
   const [evaluationProcess, setEvaluationProcess] = useState(false);
   const handleEvaluationProcessToggle = () => {
@@ -43,42 +21,35 @@ const AfterEvaluation: React.FC<AfterEvaluationProps> = ({
 
   //FIX:
   const recruitId = 1;
-  const { data: applicantsData } = useQuery(
+  const { data: applicantsData } = useQuery<IngApiApplicant[], Error>(
     ["applicantsAfter", recruitId, filter, sortType],
-    () =>
-      getInterviewEvaluationData({
-        recruitId,
-        groupName: filter === "전체" ? undefined : filter,
-        sortOrder: sortType === "지원순" ? "oldest" : "newest"
-      }),
+    () => getInterviewListAfter(recruitId),
     {
       onSuccess: (data) => {
         const transformedData = transformApiResponse(data);
-        setFilteredData(
-          transformedData.filter((item) => item.evaluationStage === "AFTER")
-        );
+        setFilteredData(transformedData);
       }
     }
   );
 
-  const transformApiResponse = (apiData: ApiApplicant[]): Applicant[] => {
-    return apiData.map((item, index) => ({
-      id: index.toString(),
+  const transformApiResponse = (apiData: IngApiApplicant[]): IngApplicant[] => {
+    return apiData.map((item) => ({
+      id: item.applicationId.toString(),
       name: item.applicantName,
       phone: item.applicantPhone,
       group: item.groupName,
-      incomplete: parseInt(item.evaluationStatus.split("/")[0], 10),
-      all: parseInt(item.evaluationStatus.split("/")[1], 10),
+      incomplete: parseInt(item.applicationNumClubUser.split("/")[0], 10),
+      all: parseInt(item.applicationNumClubUser.split("/")[1], 10),
       isPass: undefined,
-      evaluators: [],
+      evaluators: [item.currentEvaluator, ...item.otherEvaluators],
       isDecisionMode: false,
       isDisputed: false,
-      evaluationStage: item.stage
+      evaluationStage: item.evaluationStage
     }));
   };
 
   const filterAndSortData = useCallback(
-    (data: Applicant[]) => {
+    (data: IngApplicant[]) => {
       let filteredData = [...data];
 
       if (filter !== "전체") {

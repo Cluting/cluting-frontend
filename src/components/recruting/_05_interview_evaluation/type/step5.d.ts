@@ -44,3 +44,36 @@ interface InterviewEvaluationContent {
   evaluatorScores: EvaluatorScore[];
   myEvaluation: EvaluatorScore;
 }
+
+//평가 중 응답
+declare interface IngApiApplicant {
+  applicationId: number;
+  evaluationStage: string;
+  applicantName: string;
+  applicantPhone: string;
+  groupName: string;
+  applicationNumClubUser: string;
+  createdAt: string;
+  currentEvaluator: {
+    name: string;
+    stage: string;
+  };
+  otherEvaluators: Array<{
+    name: string;
+    stage: string;
+  }>;
+}
+
+declare interface IngApplicant {
+  id: string;
+  name: string;
+  phone: string;
+  group: string;
+  incomplete: number;
+  all: number;
+  isPass: undefined;
+  evaluators: any[];
+  isDecisionMode: boolean;
+  isDisputed: boolean;
+  evaluationStage: string;
+}
