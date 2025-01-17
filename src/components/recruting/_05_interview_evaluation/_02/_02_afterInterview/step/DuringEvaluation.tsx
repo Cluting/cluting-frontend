@@ -2,29 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { useQuery } from "@tanstack/react-query";
 import FitMemberList from "../../../../_03_document_evaluation/_02/list/FitMemberList";
-import { getInterviewEvaluationData } from "../../../service/Step5";
-
-interface ApiApplicant {
-  stage: string;
-  applicantName: string;
-  applicantPhone: string;
-  groupName: string;
-  evaluationStatus: string;
-}
-
-interface Applicant {
-  id: string;
-  name: string;
-  phone: string;
-  group: string;
-  incomplete: number;
-  all: number;
-  isPass: undefined;
-  evaluators: any[];
-  isDecisionMode: boolean;
-  isDisputed: boolean;
-  evaluationStage: string;
-}
+import { getInterviewListIng } from "../../../service/Step5";
 
 interface DuringEvaluationProps {
   filter: string; // 필터링 기준
@@ -35,52 +13,43 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
   filter,
   sortType
 }) => {
-  const [filteredData, setFilteredData] = useState<Applicant[]>([]);
-  const [filteredData2, setFilteredData2] = useState<Applicant[]>([]);
+  const [filteredData, setFilteredData] = useState<IngApplicant[]>([]);
+  const [filteredData2, setFilteredData2] = useState<IngApplicant[]>([]);
 
   //FIX:
   const recruitId = 1;
   const { data: applicantsData } = useQuery(
     ["applicantsIng", recruitId, filter, sortType],
-    () =>
-      getInterviewEvaluationData({
-        recruitId,
-        groupName: filter === "전체" ? undefined : filter,
-        sortOrder: sortType === "지원순" ? "oldest" : "newest"
-      }),
+    () => getInterviewListIng(recruitId),
     {
       onSuccess: (data) => {
         console.log(data);
         const transformedData = transformApiResponse(data);
-        setFilteredData(
-          transformedData.filter((item) => item.evaluationStage === "EDITABLE")
-        );
-        setFilteredData2(
-          transformedData.filter((item) => item.evaluationStage === "AFTER")
-        );
+        setFilteredData(transformedData);
+        setFilteredData2([]); // AFTER 상태의 데이터가 없으므로 빈 배열로 설정
       }
     }
   );
 
-  const transformApiResponse = (apiData: ApiApplicant[]): Applicant[] => {
-    return apiData.map((item, index) => ({
-      id: index.toString(),
+  const transformApiResponse = (apiData: IngApiApplicant[]): IngApplicant[] => {
+    return apiData.map((item) => ({
+      id: item.applicationId.toString(),
       name: item.applicantName,
       phone: item.applicantPhone,
       group: item.groupName,
-      incomplete: parseInt(item.evaluationStatus.split("/")[0], 10),
-      all: parseInt(item.evaluationStatus.split("/")[1], 10),
+      incomplete: parseInt(item.applicationNumClubUser.split("/")[0], 10),
+      all: parseInt(item.applicationNumClubUser.split("/")[1], 10),
       isPass: undefined,
-      evaluators: [],
+      evaluators: [item.currentEvaluator, ...item.otherEvaluators],
       isDecisionMode: false,
       isDisputed: false,
-      evaluationStage: item.stage
+      evaluationStage: item.evaluationStage
     }));
   };
 
   //FIX: 팀원 평가중 데이터 수정 필요
   const filterAndSortData = useCallback(
-    (data: Applicant[]) => {
+    (data: IngApplicant[]) => {
       let filteredData = [...data];
 
       if (filter !== "전체") {
