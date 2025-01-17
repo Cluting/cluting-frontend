@@ -23,6 +23,7 @@ export default function CreateApplicationFormContainer(): ReactElement {
 
   // 공고 올리기 팝업
   const [uploadPopupOpen, setUploadPopupOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   //GET
   const recruitId = 1;
   const { data: formData, isLoading } = useQuery(
@@ -112,6 +113,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
       },
       onError: (error: any) => {
         console.error(`모집하기5 PATCH 실패`, error);
+        // 에러가 나도 UI는 업데이트
+        setStepCompleted(4, true);
+        setIsEditMode(false);
       }
     }
   );
@@ -169,6 +173,14 @@ export default function CreateApplicationFormContainer(): ReactElement {
   const handleStepTwoSubmit = () => {
     if (!completedSteps[0]) {
       setStepCompleteModalOpen(true);
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (steps[4].completed && !isEditMode) {
+      setIsEditMode(true);
+    } else {
+      handleSubmit(onSubmit)();
     }
   };
 
@@ -374,7 +386,9 @@ export default function CreateApplicationFormContainer(): ReactElement {
       className="ml-8 mt-[25px] mb-[147px] w-[1016px]"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className={`${steps[4].completed ? "pointer-events-none" : ""}`}>
+      <div
+        className={`${steps[4].completed && !isEditMode ? "pointer-events-none" : ""}`}
+      >
         {/* 지원서 제목 */}
         <div className="w-full ">
           <p className="section-title">
@@ -646,15 +660,17 @@ export default function CreateApplicationFormContainer(): ReactElement {
       {/* 하단 버튼 */}
       <div className="flex justify-center">
         <button
-          type="submit"
-          onClick={handleStepTwoSubmit}
+          type="button"
+          onClick={handleButtonClick}
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            steps[4].completed
+            steps[4].completed && !isEditMode
               ? "bg-main-400 border border-main-100 text-main-100"
               : "bg-main-100 text-white-100"
           } text-body flex-center hover:bg-main-500`}
         >
-          {steps[4].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+          {steps[4].completed && !isEditMode
+            ? BUTTON_TEXT.EDIT
+            : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
 
