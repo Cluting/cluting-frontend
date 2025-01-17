@@ -283,20 +283,40 @@ export default function ScheduleAdjustmentContainer() {
       const currentSelections =
         dateSelectionsMap[selectedGroupId]?.[dateKey]?.[time] || [];
 
-      setDateSelectionsMap((prev) => ({
-        ...prev,
-        [`group${selectedGroupId}`]: {
-          ...prev[`group${selectedGroupId}`],
-          [dateKey]: {
-            ...prev[`group${selectedGroupId}`]?.[dateKey],
-            [time]: currentSelections.includes(applicantId)
-              ? currentSelections.filter((id) => id !== applicantId)
-              : currentSelections.length < interviewee
-                ? [...currentSelections, applicantId]
-                : currentSelections
-          }
+      setDateSelectionsMap((prev) => {
+        const prevSelections =
+          prev[`group${selectedGroupId}`]?.[dateKey]?.[time] || [];
+
+        // 이미 선택된 지원자인 경우 제거
+        if (prevSelections.includes(applicantId)) {
+          return {
+            ...prev,
+            [`group${selectedGroupId}`]: {
+              ...prev[`group${selectedGroupId}`],
+              [dateKey]: {
+                ...prev[`group${selectedGroupId}`]?.[dateKey],
+                [time]: prevSelections.filter((id) => id !== applicantId)
+              }
+            }
+          };
         }
-      }));
+
+        // 새로운 지원자를 추가하되, interviewee 수를 초과하지 않도록
+        if (prevSelections.length < interviewee) {
+          return {
+            ...prev,
+            [`group${selectedGroupId}`]: {
+              ...prev[`group${selectedGroupId}`],
+              [dateKey]: {
+                ...prev[`group${selectedGroupId}`]?.[dateKey],
+                [time]: [...prevSelections, applicantId]
+              }
+            }
+          };
+        }
+
+        return prev;
+      });
     },
     [currentDate, dateSelectionsMap, selectedGroupId, interviewee]
   );
