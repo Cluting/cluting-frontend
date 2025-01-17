@@ -150,7 +150,7 @@ export default function PrepareInterviewEvaluationContainer() {
                 <p>{groupItem.groupName}</p>
                 <div className="flex-center w-auto h-[38px] px-[20px] py-[9.5px] rounded-[6px] bg-gray-100 text-[16px] font-medium">
                   {groupItem.groupName == "공통" ? (
-                    <p>20명</p>
+                    <p>12명</p>
                   ) : groupItem.groupName == "기획" ? (
                     <p>2명</p>
                   ) : groupItem.groupName == "디자인" ? (
@@ -179,6 +179,7 @@ export default function PrepareInterviewEvaluationContainer() {
           removeAdmin={removeAdmin}
           handleGroupNameChange={handleGroupNameChange}
           type="면접"
+          step="5"
         />
 
         {/* 면접 질문 개수 설정하기 */}

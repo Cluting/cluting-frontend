@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   UseFormRegister,
@@ -114,6 +114,10 @@ export default function EvaluationCriteria({
     },
     [groups, setValue]
   );
+
+  useEffect(() => {
+    setDetailCriterias({});
+  }, [selectedGroupId]);
 
   return (
     <section className="my-[34px]">
