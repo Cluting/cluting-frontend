@@ -22,7 +22,7 @@ export default function AnnouncementListDetailContainer() {
   }, []);
 
   return (
-    <div className="w-full h-auto bg-gray-100  mb-[200px]">
+    <div className="w-full h-auto bg-gray-100  mb-[500px]">
       <div className="flex flex-col items-start ">
         <header className="mb-[39px] flex-center gap-5 ">
           <Link to="/main">
