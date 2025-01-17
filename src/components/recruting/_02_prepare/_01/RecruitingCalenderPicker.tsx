@@ -96,11 +96,6 @@ export default function RecrutingCalenderPicker({
           [`stage${stageNumber}End`]: selectInfo.endStr
         }
       ]);
-
-      if (title === "면접 기간") {
-        setInterviewStartDate(selectInfo.start);
-        setInterviewEndDate(selectInfo.end);
-      }
     } else if (isDuplicateTitle) {
       alert("같은 제목의 이벤트가 이미 있습니다.");
     }
