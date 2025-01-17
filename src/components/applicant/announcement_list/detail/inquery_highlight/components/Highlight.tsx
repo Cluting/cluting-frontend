@@ -31,7 +31,7 @@ const Highlight: React.FC = () => {
 
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? "100%" : 0,
+      x: direction > 0 ? "80%" : 0,
       opacity: direction > 0 ? 0 : 1
     }),
     center: {
