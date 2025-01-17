@@ -1,5 +1,6 @@
-import { ALL_ADMINS } from "../../../constants/recruting";
+import { useQuery } from "@tanstack/react-query";
 import { AdminPlan } from "../../../type/type";
+import { getClubUser } from "../../club/service/ClubUser";
 
 interface AddAdminDropdownProps {
   onSelect: (admin: AdminPlan) => void; // 운영진 선택시 호출될 함수
@@ -10,10 +11,16 @@ export default function AddAdminDropdown({
   onSelect,
   currentAdmins
 }: AddAdminDropdownProps) {
+  const clubId = 1;
+  const { data: clubUsers } = useQuery<ClubUser[], Error>(
+    ["clubUsers", clubId],
+    () => getClubUser(Number(clubId))
+  );
+
   return (
     <div className="absolute animate-dropdown top-[53.5px] bg-white-100 w-[139px] rounded-[12px] z-50 overflow-y-scroll">
       <ul className="flex-center flex-col h-full p-2 text-body text-gray-1100 ">
-        {ALL_ADMINS.map((admin: AdminPlan) => (
+        {clubUsers?.map((admin) => (
           <li
             key={admin.id}
             onClick={() => onSelect(admin)}

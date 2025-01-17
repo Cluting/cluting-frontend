@@ -143,7 +143,7 @@ export async function getAppListBefore(
 ): Promise<Applicant[]> {
   try {
     const { data } = await Instance.get<Applicant[]>(
-      `/app-list/${recruitId}/before`
+      `/app-list/${recruitId}/document/before`
     );
     return data;
   } catch (error: any) {
@@ -159,7 +159,7 @@ export async function getAppListBefore(
 export async function getAppListIng(recruitId: number): Promise<Applicant[]> {
   try {
     const { data } = await Instance.get<Applicant[]>(
-      `/app-list/${recruitId}/ing`
+      `/app-list/${recruitId}/document/ing`
     );
     return data;
   } catch (error: any) {
@@ -175,7 +175,7 @@ export async function getAppListIng(recruitId: number): Promise<Applicant[]> {
 export async function getAppListAfter(recruitId: number): Promise<Applicant[]> {
   try {
     const { data } = await Instance.get<Applicant[]>(
-      `/app-list/${recruitId}/after`
+      `/app-list/${recruitId}/document/after`
     );
     return data;
   } catch (error: any) {
@@ -193,7 +193,7 @@ export async function getAppListComplete(
 ): Promise<CompletedApplicant[]> {
   try {
     const { data } = await Instance.get<CompletedApplicant[]>(
-      `/app-list/${recruitId}/complete`
+      `/app-list/${recruitId}/document/complete`
     );
     return data;
   } catch (error: any) {

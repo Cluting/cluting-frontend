@@ -14,12 +14,11 @@ export default function ApplicantHomeContainer() {
               내 지원 상황
             </h2>
             <ApplicantStatus />
-            <ApplicantStatus />
           </section>
 
           <section className="mt-[34px]">
-            <h2 className="font-bold text-title2 text-gray-800">
-              지원 캘린더(2)
+            <h2 className="font-bold text-title2 text-gray-800 mb-3">
+              지원 캘린더
             </h2>
             <ApplicantCalendar />
           </section>
