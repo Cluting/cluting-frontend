@@ -78,7 +78,7 @@ export default function UserProfile() {
               <img
                 src={evaluationContent?.applicantInfo?.profile}
                 alt="프로필 예시 사진"
-                className="w-[150px] h-[184px] shrink-0 rounded-lg object-cover"
+                className="w-fit h-fit shrink-0 rounded-lg object-cover"
               />
             ) : (
               <img

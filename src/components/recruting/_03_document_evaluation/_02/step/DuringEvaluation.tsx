@@ -25,7 +25,11 @@ const DuringEvaluation: React.FC<DuringEvaluationProps> = ({
         console.log(data);
         const transformedData = transformApiResponse(data);
         setFilteredData(
-          transformedData.filter((item) => item.evaluationStage === "ING")
+          transformedData.filter(
+            (item) =>
+              item.evaluationStage === "BEFORE" ||
+              item.evaluationStage === "ING"
+          )
         );
         setFilteredData2(
           transformedData.filter((item) => item.evaluationStage === "BEFORE")

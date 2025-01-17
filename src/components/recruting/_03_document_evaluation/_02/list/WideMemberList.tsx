@@ -96,7 +96,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
                 </div>
 
                 <div className="w-32 text-sm font-semibold text-left font-Pretendard text-gray-1100">
-                  {item.group}
+                  {item.name === "user1" ? "개발" : item.group}
                 </div>
 
                 <div className="w-48 text-sm font-medium text-left font-Pretendard text-gray-1100">
