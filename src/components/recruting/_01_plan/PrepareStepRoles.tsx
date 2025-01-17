@@ -4,6 +4,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ALL_ADMINS, DEFAULT_STEPS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 import { AdminPlan } from "../../../type/type";
+import { useQuery } from "@tanstack/react-query";
+import { getClubUser } from "../../club/service/ClubUser";
 
 interface Admin {
   id?: number | string;
@@ -24,12 +26,6 @@ export default function PrepareStepRoles({
   const [steps, setSteps] = useState(DEFAULT_STEPS);
   const [currentStepId, setCurrentStepId] = useState<number>(1);
 
-  const getAdminNameById = (adminId: number, stepId: number): string => {
-    if (stepId === 4) return "모든 운영진";
-    const admin = ALL_ADMINS.find((admin) => admin.id === adminId);
-    return admin ? admin.name : `Unknown (ID: ${adminId})`;
-  };
-
   useEffect(() => {
     if (apiPrepareStepRoles && apiPrepareStepRoles.length > 0) {
       const updatedSteps = DEFAULT_STEPS.map((step) => {
@@ -39,7 +35,7 @@ export default function PrepareStepRoles({
         if (apiStep && step.name !== "운영진 면접 일정 조율하기") {
           return {
             ...step,
-            admins: apiStep.admins.map((admin) => admin.name) // admin 객체에서 이름만 추출
+            admins: apiStep.admins
           };
         }
         return step;
@@ -79,33 +75,11 @@ export default function PrepareStepRoles({
 
   const onSubmit: SubmitHandler<PrepareStepRolesFormValues> = (data, event) => {
     event?.preventDefault();
-    const prepStages = data.steps.map((step, index) => {
-      let admins: Admin[];
-      if (step.id === 4) {
-        admins = ALL_ADMINS;
-      } else {
-        admins = (step.admins ?? []).map((admin): Admin => {
-          if (typeof admin === "object" && "id" in admin && "name" in admin) {
-            return admin as Admin;
-          }
-          if (apiPrepareStepRoles) {
-            const apiAdmin = apiPrepareStepRoles
-              .flatMap((s) => s.admins)
-              .find((a) => a.id === admin);
-            if (apiAdmin) {
-              return apiAdmin;
-            }
-          }
-          return { id: admin, name: `Unknown (ID: ${admin})` };
-        });
-      }
-
-      return {
-        stageName: step.name,
-        stageOrder: index + 1,
-        admins: admins
-      };
-    });
+    const prepStages = data.steps.map((step, index) => ({
+      stageName: step.name,
+      stageOrder: index + 1,
+      admins: step.id === 4 ? ALL_ADMINS : step.admins
+    }));
 
     onPrepStagesSubmit(prepStages);
   };
@@ -115,10 +89,13 @@ export default function PrepareStepRoles({
   const handleAdminSelect = (admin: AdminPlan) => {
     setSteps((prevSteps) =>
       prevSteps.map((step) => {
-        if (step.id === currentStepId && !step.admins.includes(admin.id)) {
+        if (
+          step.id === currentStepId &&
+          !step.admins.some((a) => a.id === admin.id)
+        ) {
           return {
             ...step,
-            admins: [...step.admins, admin.id]
+            admins: [...step.admins, { id: admin.id, name: admin.name }]
           };
         }
         return step;
@@ -127,13 +104,13 @@ export default function PrepareStepRoles({
     setDropdown(false);
   };
 
-  const removeAdmin = (stepId: number, adminToRemove: string) => {
+  const removeAdmin = (stepId: number, adminToRemoveId: number | string) => {
     setSteps((prevSteps) =>
       prevSteps.map((step) => {
         if (step.id === stepId) {
           return {
             ...step,
-            admins: step.admins.filter((admin) => admin !== adminToRemove)
+            admins: step.admins.filter((admin) => admin.id !== adminToRemoveId)
           };
         }
         return step;
@@ -199,28 +176,24 @@ export default function PrepareStepRoles({
                     <div className="mt-[29px]">
                       {/* 운영진 목록 */}
                       <div>
-                        {step?.admins.map((admin) => {
-                          const adminName =
-                            typeof admin === "number"
-                              ? getAdminNameById(admin, step.id)
-                              : admin;
-                          return (
-                            <div
-                              key={admin}
-                              className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
-                            >
-                              <span className="text-gray-800">{adminName}</span>
-                              {!step.isFixed && !isStepOneCompleted && (
-                                <img
-                                  src="/assets/ic-minusCircle.svg"
-                                  alt="운영진 삭제 버튼"
-                                  onClick={() => removeAdmin(step.id, admin)}
-                                  className="absolute right-[19px] cursor-pointer"
-                                />
-                              )}
-                            </div>
-                          );
-                        })}
+                        {step?.admins.map((admin) => (
+                          <div
+                            key={admin.id}
+                            className="relative flex-center w-[139px] h-[43px] mb-[10px] rounded-[10px] border border-gray-300 bg-white-100 text-subheadline"
+                          >
+                            <span className="text-gray-800">
+                              {step?.id === 4 ? "모든 운영진" : admin.name}
+                            </span>
+                            {!step.isFixed && !isStepOneCompleted && (
+                              <img
+                                src="/assets/ic-minusCircle.svg"
+                                alt="운영진 삭제 버튼"
+                                onClick={() => removeAdmin(step.id, admin.id)}
+                                className="absolute right-[19px] cursor-pointer"
+                              />
+                            )}
+                          </div>
+                        ))}
                       </div>
                       {/* 운영진 추가 버튼 */}
                       {!step.isFixed && !isStepOneCompleted && (
