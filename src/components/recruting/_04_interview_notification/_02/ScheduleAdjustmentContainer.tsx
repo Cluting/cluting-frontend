@@ -23,7 +23,15 @@ import { postSchedule, getSchedule } from "./service/ScheduleAdjustment";
 export default function ScheduleAdjustmentContainer() {
   const queryClient = useQueryClient();
   const recruitId = 1;
+  const [isEditMode, setIsEditMode] = useState(false);
 
+  const handleButtonClick = () => {
+    if (steps[1].completed && !isEditMode) {
+      setIsEditMode(true);
+    } else {
+      onSubmit();
+    }
+  };
   //GET
   const { data: clubsData } = useQuery<ScheduleFormData[]>(
     ["mainClubs", recruitId],
@@ -275,20 +283,40 @@ export default function ScheduleAdjustmentContainer() {
       const currentSelections =
         dateSelectionsMap[selectedGroupId]?.[dateKey]?.[time] || [];
 
-      setDateSelectionsMap((prev) => ({
-        ...prev,
-        [`group${selectedGroupId}`]: {
-          ...prev[`group${selectedGroupId}`],
-          [dateKey]: {
-            ...prev[`group${selectedGroupId}`]?.[dateKey],
-            [time]: currentSelections.includes(applicantId)
-              ? currentSelections.filter((id) => id !== applicantId)
-              : currentSelections.length < interviewee
-                ? [...currentSelections, applicantId]
-                : currentSelections
-          }
+      setDateSelectionsMap((prev) => {
+        const prevSelections =
+          prev[`group${selectedGroupId}`]?.[dateKey]?.[time] || [];
+
+        // 이미 선택된 지원자인 경우 제거
+        if (prevSelections.includes(applicantId)) {
+          return {
+            ...prev,
+            [`group${selectedGroupId}`]: {
+              ...prev[`group${selectedGroupId}`],
+              [dateKey]: {
+                ...prev[`group${selectedGroupId}`]?.[dateKey],
+                [time]: prevSelections.filter((id) => id !== applicantId)
+              }
+            }
+          };
         }
-      }));
+
+        // 새로운 지원자를 추가하되, interviewee 수를 초과하지 않도록
+        if (prevSelections.length < interviewee) {
+          return {
+            ...prev,
+            [`group${selectedGroupId}`]: {
+              ...prev[`group${selectedGroupId}`],
+              [dateKey]: {
+                ...prev[`group${selectedGroupId}`]?.[dateKey],
+                [time]: [...prevSelections, applicantId]
+              }
+            }
+          };
+        }
+
+        return prev;
+      });
     },
     [currentDate, dateSelectionsMap, selectedGroupId, interviewee]
   );
@@ -438,7 +466,9 @@ export default function ScheduleAdjustmentContainer() {
 
   return (
     <form onSubmit={onSubmit} className="mt-3">
-      <div className="flex justify-between">
+      <div
+        className={`flex justify-between ${steps[1].completed && !isEditMode ? "pointer-events-none" : ""}`}
+      >
         <div className="flex-center gap-4">
           <DateNavigator
             currentDate={currentDate}
@@ -502,12 +532,14 @@ export default function ScheduleAdjustmentContainer() {
         <button
           type="submit"
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            steps[1].completed
+            steps[1].completed && !isEditMode
               ? "bg-main-400 border border-main-100 text-main-100"
               : "bg-main-100 text-white-100"
           } text-body flex-center hover:bg-main-500`}
         >
-          {steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+          {steps[1].completed && !isEditMode
+            ? BUTTON_TEXT.EDIT
+            : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
     </form>

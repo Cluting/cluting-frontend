@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GroupPassCount from "./GroupPassCount";
 import NumberSpinner from "./NumberSpinner";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
@@ -8,6 +8,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { postPrepare1, getPassIdeal, patchPrepare1 } from "./service/Step1";
 
 export default function SetAcceptanceCountContainer() {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const queryClient = useQueryClient();
+  const { setStepCompleted, steps } = useStepTwoStore();
+
   const recruitId = 1; //todo: 임시로
   //GET
   const { data: passIdeal } = useQuery(
@@ -32,7 +36,6 @@ export default function SetAcceptanceCountContainer() {
       }
     }
   );
-  const queryClient = useQueryClient();
 
   //POST
   const mutation = useMutation(
@@ -43,6 +46,7 @@ export default function SetAcceptanceCountContainer() {
         console.log("모집하기1 POST 성공", data);
         // POST 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
         queryClient.invalidateQueries(["passIdeal", recruitId]);
+        setStepCompleted(0, true);
       },
       onError: (error: any) => {
         console.error(`모집하기1 POST 에실패`, error);
@@ -58,7 +62,9 @@ export default function SetAcceptanceCountContainer() {
       onSuccess: (data) => {
         console.log("모집하기1 PATCH 성공", data);
         // PATCH 성공 후 GET 쿼리 무효화 -> 새로운 데이터 자동 불러오기
-        queryClient.invalidateQueries(["passIdeal", recruitId]);
+        // queryClient.invalidateQueries(["passIdeal", recruitId]);
+        setStepCompleted(0, true);
+        setIsEditMode(false);
       },
       onError: (error: any) => {
         console.error(`모집하기1 PATCH 실패`, error);
@@ -105,6 +111,14 @@ export default function SetAcceptanceCountContainer() {
     groupInfos?.reduce((sum, group) => sum + (group.documentPassCount || 0), 0),
     groupInfos?.reduce((sum, group) => sum + (group.finalPassCount || 0), 0)
   ]);
+
+  const handleButtonClick = () => {
+    if (steps[0].completed && !isEditMode) {
+      setIsEditMode(true);
+    } else {
+      handleSubmit(onSubmit)();
+    }
+  };
 
   const validateForm = {
     required: "필수 입력 사항입니다.",
@@ -156,15 +170,11 @@ export default function SetAcceptanceCountContainer() {
     }
   };
 
-  const { setStepCompleted, steps } = useStepTwoStore();
-
   const onSubmit = async (data: SetAcceptanceCountFormData) => {
     try {
       await trigger();
-      // validation 결과 확인
       if (Object.keys(errors).length > 0) return;
 
-      // 그룹이 있을 때만 합계 검증
       if (data.groupInfos && data.groupInfos.length > 0) {
         const groupTotalDocumentPass = data.groupInfos.reduce(
           (sum, group) => sum + (group.documentPassCount || 0),
@@ -174,25 +184,14 @@ export default function SetAcceptanceCountContainer() {
           (sum, group) => sum + (group.finalPassCount || 0),
           0
         );
-        if (groupTotalDocumentPass !== data.totalDocumentPassCount) {
-          return;
-        }
-        if (groupTotalFinalPass !== data.totalFinalPassCount) {
-          return;
-        }
+        if (groupTotalDocumentPass !== data.totalDocumentPassCount) return;
+        if (groupTotalFinalPass !== data.totalFinalPassCount) return;
       }
 
-      console.log(data);
-
-      const recruitId = 1; //todo: 일단 임시로
-      if (steps[0].completed) {
-        //수정하기 버튼인 경우 -> PATCH 요청
+      if (isEditMode) {
         await patchMutation.mutateAsync({ formData: data, recruitId });
-        setStepCompleted(0, false); // PATCH 성공 후 완료하기
       } else {
-        //완료하기 버튼인 경우 -> POST 요청
         await mutation.mutateAsync({ formData: data, recruitId });
-        setStepCompleted(0, true); // POST 성공 후 수정하기
       }
     } catch (error) {
       console.error("제출 중 에러 발생:", error);
@@ -210,7 +209,9 @@ export default function SetAcceptanceCountContainer() {
       onSubmit={handleSubmit(onSubmit)}
       className="ml-8 w-full mt-[25px] mb-[147px]"
     >
-      <div>
+      <div
+        className={`${steps[0].completed && !isEditMode ? "pointer-events-none" : ""}`}
+      >
         <div className="flex">
           <p className="section-title">
             <span className="mr-[0.25em] text-main-100">*</span>전체 서류 합격
@@ -310,17 +311,22 @@ export default function SetAcceptanceCountContainer() {
 
       <div className="flex justify-center">
         <button
-          type="submit"
+          type="button"
+          onClick={handleButtonClick}
           aria-label={
-            steps[0].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+            steps[0].completed && !isEditMode
+              ? BUTTON_TEXT.EDIT
+              : BUTTON_TEXT.COMPLETE
           }
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            steps[0].completed
+            steps[0].completed && !isEditMode
               ? "bg-main-400 border border-main-100 text-main-100"
               : "bg-main-100 text-white-100"
           }  text-body flex-center hover:bg-main-500`}
         >
-          {steps[0].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+          {steps[0].completed && !isEditMode
+            ? BUTTON_TEXT.EDIT
+            : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
     </form>
