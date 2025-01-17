@@ -14,8 +14,8 @@ export default function ApplicantStatus() {
     <div className="flex w-full h-[116.72px] my-3 bg-gray-100 rounded-[15.18px] border border-gray-200 ">
       <div className="w-[149px] flex flex-col items-center border-r border-gray-200 py-[14px] px-[10px]">
         <img
-          src="/assets/ic-profile.svg"
-          className="w-[42px] h-[42px] rounded-full mb-[5px]"
+          src="/itstime.png"
+          className="w-[48px] h-[48px] rounded-full mb-[5px] border-[6px] border-main-300 "
         />
         <p className="font-semibold font-[14px] text-center text-gray-800">
           IT 서비스 동아리 잇타

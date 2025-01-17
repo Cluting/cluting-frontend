@@ -33,9 +33,16 @@ export default function ApplicantProfileContainer() {
               포트폴리오
             </button>
           </div>
-          <div className="w-[1015px] bg-white  rounded-md">
+          <div className="w-[1015px] rounded-md flex flex-col items-center">
             {currentMenu === "profile" && <ProfileContainer />}
             {currentMenu === "portfolio" && <PortfolioContainer />}
+            <button
+              type="submit"
+              className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] bg-main-100 text-white-100
+         text-body flex-center hover:bg-main-500`}
+            >
+              저장
+            </button>
           </div>
         </section>
       </div>

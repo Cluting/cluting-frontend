@@ -81,12 +81,9 @@ export default function ApplicantCalendar() {
           events={events}
           eventContent={(eventInfo) => (
             <div
-              className="text-xs p-1"
+              className="text-xs h-[15px] text-[7.89px] font-medium rounded-full "
               style={{
-                backgroundColor: eventInfo.event.backgroundColor,
-                color: "#fff",
-                height: "18px",
-                borderRadius: "50px"
+                backgroundColor: eventInfo.event.backgroundColor
               }}
             >
               <b>{eventInfo.event.title}</b>

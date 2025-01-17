@@ -5,13 +5,14 @@ import CommonIdeal from "./CommonIdeal";
 import GroupIdeal from "./GroupIdeal";
 import { useGroupStore } from "../../../../store/useStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { postPrepare2 } from "./service/Step2";
+import { postPrepare2, patchPrepare2 } from "./service/Step2";
 import { getPassIdeal } from "../_01/service/Step1";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function DefineIdealCandidateContainer() {
   const { setStepCompleted, steps } = useStepTwoStore();
   const { group: groups } = useGroupStore();
+  const [isEditMode, setIsEditMode] = useState(false);
 
   //GET
   const recruitId = 1; //todo: 임시로
@@ -24,7 +25,7 @@ export default function DefineIdealCandidateContainer() {
         return {
           partIdeals: [
             {
-              partName: "Back",
+              partName: "공통",
               content: data.groupResponses[0]?.idealContent
                 ? Object.values(data.groupResponses[0].idealContent)
                 : []
@@ -56,6 +57,21 @@ export default function DefineIdealCandidateContainer() {
       onSuccess: (data) => {
         console.log("모집하기2 POST 성공", data);
         setStepCompleted(1, true);
+        setIsEditMode(false);
+        queryClient.invalidateQueries(["ideal", recruitId]);
+      }
+    }
+  );
+
+  //PATCH
+  const patchMutation = useMutation(
+    (data: { formData: IdealForm; recruitId: number }) =>
+      patchPrepare2(data.formData, data.recruitId),
+    {
+      onSuccess: (data) => {
+        console.log("모집하기2 PATCH 성공", data);
+        setStepCompleted(1, true);
+        setIsEditMode(false);
         queryClient.invalidateQueries(["ideal", recruitId]);
       }
     }
@@ -67,31 +83,57 @@ export default function DefineIdealCandidateContainer() {
 
     defaultValues: {
       partIdeals: [
-        { partName: "Back", content: [] },
+        { partName: "공통", content: [] },
         ...groups.map((group) => ({ partName: group.name, content: [] }))
       ]
     }
   });
 
-  const handleSubmit = methods.handleSubmit((data) => {
+  const onSubmit = methods.handleSubmit((data) => {
     if (data.partIdeals.every((part) => part.content.length > 0)) {
-      // 새로운 데이터만 POST하기 위해 기존 데이터 제외
       const newData = {
         partIdeals: data.partIdeals.map((part) => ({
           partName: part.partName,
-          // content 배열에서 마지막 항목(새로 추가된 데이터)만 포함
           content: part.content.slice(-1)
         }))
       };
 
       console.log("제출되는 데이터:", newData);
 
+      // 임시로 API 호출 없이 상태만 변경
+      setStepCompleted(1, true);
+      setIsEditMode(false);
+
+      // API가 준비되면 아래 코드를 다시 활성화
+      /*
+    if (isEditMode) {
+      patchMutation.mutate({
+        formData: newData,
+        recruitId: recruitId
+      });
+    } else {
       mutation.mutate({
         formData: newData,
         recruitId: recruitId
       });
     }
+    */
+    }
   });
+
+  const handleButtonClick = () => {
+    if (steps[1].completed && !isEditMode) {
+      setIsEditMode(true);
+    } else {
+      const data = methods.getValues();
+      if (data.partIdeals.every((part) => part.content.length > 0)) {
+        onSubmit();
+      } else {
+        setStepCompleted(1, true);
+        setIsEditMode(false);
+      }
+    }
+  };
 
   useEffect(() => {
     if (ideal && ideal.partIdeals.some((part) => part.content.length > 0)) {
@@ -101,37 +143,47 @@ export default function DefineIdealCandidateContainer() {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit} className="mb-[147px]">
-        <div className={`${steps[1].completed ? "pointer-events-none" : ""}`}>
+      <form className="mb-[147px]">
+        <div
+          className={`${steps[1].completed && !isEditMode ? "pointer-events-none" : ""}`}
+        >
           <div className="ml-8 w-full mt-[25px]">
             <CommonIdeal />
           </div>
           <div className="ml-8 w-full mt-[25px]">
             <GroupIdeal />
           </div>
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              aria-label={
-                steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
-              }
-              className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-                steps[1].completed
-                  ? "bg-main-400 border border-main-100 text-main-100"
-                  : "bg-main-100 text-white-100"
-              } text-body flex-center hover:bg-main-500`}
-            >
-              {steps[1].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
-            </button>
-          </div>
-          {steps[1].completed && (
-            <div className="fixed animate-dropdown bottom-[16px]">
-              <div className="custom-shadow ml-8 w-[1016px] h-[79px] bg-gray-100 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
-                확정된 내용만을 서류 평가 시에 참고할 수 있습니다.
-              </div>
-            </div>
-          )}
         </div>
+
+        {/* 버튼을 pointer-events-none div 밖으로 이동 */}
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={handleButtonClick}
+            aria-label={
+              steps[1].completed && !isEditMode
+                ? BUTTON_TEXT.EDIT
+                : BUTTON_TEXT.COMPLETE
+            }
+            className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
+              steps[1].completed && !isEditMode
+                ? "bg-main-400 border border-main-100 text-main-100"
+                : "bg-main-100 text-white-100"
+            } text-body flex-center hover:bg-main-500`}
+          >
+            {steps[1].completed && !isEditMode
+              ? BUTTON_TEXT.EDIT
+              : BUTTON_TEXT.COMPLETE}
+          </button>
+        </div>
+
+        {steps[1].completed && (
+          <div className="fixed animate-dropdown bottom-[16px]">
+            <div className="custom-shadow ml-8 w-[1016px] h-[79px] bg-gray-100 border border-main-400 rounded-[11px] pl-[31px] flex items-center text-callout text-gray-800 overflow-hidden">
+              확정된 내용만을 서류 평가 시에 참고할 수 있습니다.
+            </div>
+          </div>
+        )}
       </form>
     </FormProvider>
   );

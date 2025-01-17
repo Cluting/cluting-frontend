@@ -9,6 +9,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getPlanningData, patchPrep, postStepPlan } from "./service/Prep";
 
+interface PrepareStepRolesFormValues {
+  schedule: RecruitSchedule;
+  prepStages: PrepStage[];
+  applicantGroups: string[];
+}
+
 export default function RecruitingPlanContainer() {
   const { completedSteps, completeStep } = useRecruitmentStepStore();
   //수정하기
@@ -36,14 +42,14 @@ export default function RecruitingPlanContainer() {
     setValue("prepStages" as any, prepStages);
   };
 
-  // 계획하기 API
-  //FIX:
+  // 계획하기 불러오기
   const recruitId = 1;
   const { data: apiPlanningData } = useQuery(
     ["planningData", recruitId],
     () => getPlanningData(recruitId),
     {
       onSuccess: (data: RecruitmentPlanningData) => {
+        console.log(data);
         completeStep(0, true);
       }
     }
@@ -73,8 +79,13 @@ export default function RecruitingPlanContainer() {
       planningData
     }: {
       recruitId: number;
-      planningData: PrepareStepPatchFormValues;
-    }) => patchPrep(recruitId, planningData),
+      planningData: PrepareStepRolesFormValues;
+    }) =>
+      patchPrep(recruitId, {
+        schedule: planningData.schedule,
+        prepStages: planningData.prepStages,
+        applicantGroups: planningData.applicantGroups // 'groups' 대신 'applicantGroups' 사용
+      }),
     {
       onSuccess: (data) => {
         console.log("계획하기 단계가 성공적으로 수정되었습니다!");
@@ -94,11 +105,11 @@ export default function RecruitingPlanContainer() {
   useEffect(() => {
     if (apiPlanningData) {
       methods.reset({
-        recruitSchedules: apiPlanningData.schedule, // Remove the array brackets
+        schedule: apiPlanningData.schedule,
         prepStages: apiPlanningData?.prepStages?.map((stage, index) => ({
           stageName: stage.stageName,
           stageOrder: index + 1,
-          clubUserIds: [] // Assuming clubUserIds should be an empty array initially
+          clubUserIds: []
         })),
         applicantGroups: apiPlanningData.groups
       });
@@ -107,16 +118,15 @@ export default function RecruitingPlanContainer() {
 
   const onSubmit = async (data: PrepareStepRolesFormValues) => {
     try {
-      const formattedPatchData: PrepareStepPatchFormValues = {
-        recruitSchedules: [data.recruitSchedules],
+      const formattedPatchData: PrepareStepRolesFormValues = {
+        schedule: data.schedule,
         prepStages: data.prepStages.map((stage) => ({
-          ...stage,
-          clubUserIds: stage.clubUserIds
+          stageName: stage.stageName,
+          stageOrder: stage.stageOrder,
+          admins: stage.admins
         })),
         applicantGroups: data.applicantGroups
       };
-
-      console.log("Submitting data:", isEditMode ? formattedPatchData : data);
 
       if (isEditMode) {
         await patchPlanMutation.mutateAsync({
@@ -126,7 +136,7 @@ export default function RecruitingPlanContainer() {
       } else {
         await stepPlanMutation.mutateAsync({
           recruitId: 1,
-          planningData: data
+          planningData: formattedPatchData
         });
       }
       setIsEditMode(false);
@@ -169,13 +179,13 @@ export default function RecruitingPlanContainer() {
           </div>
           <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
-        {/* {apiPlanningData && (
+        {apiPlanningData && (
           <PrepareStepRoles
-            apiPrepareStepRoles={apiPlanningData.prepStages}
+            apiPrepareStepRoles={apiPlanningData?.prepStages}
             isStepOneCompleted={isStepOneCompleted && !isEditMode}
             onPrepStagesSubmit={handlePrepStagesSubmit}
           />
-        )} */}
+        )}
         <div className=" w-full flex flex-col items-center ml-8">
           <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
