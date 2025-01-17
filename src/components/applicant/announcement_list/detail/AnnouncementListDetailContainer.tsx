@@ -1,8 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import AnnouncementContainer from "./container/AnnouncementContainer";
 import DocumentSubmitContainer from "./container/DocumentSubmitContainer";
-import InqueryContainer from "./container/InqueryContainer";
-import { Link } from "react-router-dom";
+import InqueryContainer from "./inquery_highlight/InqueryContainer";
 import { useEffect } from "react";
 // 공고 클릭 시 상세
 
@@ -22,13 +21,17 @@ export default function AnnouncementListDetailContainer() {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <div className="w-full h-auto bg-gray-100">
+    <div className="w-full h-auto bg-gray-100  mb-[200px]">
       <div className="flex flex-col items-start ">
         <header className="mb-[39px] flex-center gap-5 ">
-          <Link to="/main">
+          <button onClick={handleGoBack}>
             <img src="/assets/ic-back.svg" alt="뒤로가기" />
-          </Link>
+          </button>
           <h1 className="font-semibold text-[24px]">
             대학생 연합 IT 동아리 잇타 7기 신입 회원 모집
           </h1>
@@ -57,11 +60,13 @@ export default function AnnouncementListDetailContainer() {
               문의 하이라이트
             </button>
           </div>
-          <div className="w-[1213px] px-12 py-11 bg-white-100 border rounded-b-xl">
-            {currentMenu === "announcement" && <AnnouncementContainer />}
-            {currentMenu === "documentSubmit" && <DocumentSubmitContainer />}
-            {currentMenu === "inquiry" && <InqueryContainer />}
-          </div>
+          {!(currentMenu === "inquiry") && (
+            <div className="w-[1213px] px-12 py-11 bg-white-100 border rounded-b-xl">
+              {currentMenu === "announcement" && <AnnouncementContainer />}
+              {currentMenu === "documentSubmit" && <DocumentSubmitContainer />}
+            </div>
+          )}
+          {currentMenu === "inquiry" && <InqueryContainer />}
         </section>
       </div>
     </div>

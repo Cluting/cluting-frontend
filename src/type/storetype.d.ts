@@ -55,8 +55,8 @@ declare interface InterviewFormatStore {
   interviewer: number;
   interviewee: number;
   interviewDuration: number;
-  interviewStartDate: Date; // 면접 시작 날짜
-  interviewEndDate: Date; // 면접 종료 날짜
+  interviewStartDate: string; // 면접 시작 날짜
+  interviewEndDate: string; // 면접 종료 날짜
   interviewStartTime: Date; // 면접 시작 시간
   interviewEndTime: Date; // 면접 시작 시간
   isTimeSet: boolean; //시간 설정 완료 여부
@@ -66,8 +66,8 @@ declare interface InterviewFormatStore {
   setInterviewDuration: (time: number) => void;
   setInterviewStartTime: (time: Date) => void;
   setInterviewEndTime: (time: Date) => void;
-  setInterviewStartDate: (date: Date) => void;
-  setInterviewEndDate: (date: Date) => void;
+  setInterviewStartDate: (date: string) => void;
+  setInterviewEndDate: (date: string) => void;
   applyTimeSettings: () => void; // 시간 설정 적용 함수
 }
 

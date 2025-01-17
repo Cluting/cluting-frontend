@@ -1,7 +1,12 @@
+declare interface Admin {
+  id: number;
+  name: string;
+}
+
 declare interface PrepStage {
   stageName: string;
   stageOrder: number;
-  clubUserIds: number[];
+  admins: Admin[];
 }
 
 // 캘린더 이벤트 - 리크루팅 홈, 계획하기
@@ -34,19 +39,13 @@ declare interface RecruitSchedule {
 }
 
 declare interface PrepareStepRolesFormValues {
-  prepStages: PrepStage[];
   recruitSchedules: RecruitSchedule;
-  applicantGroups: string[];
-}
-
-declare interface PrepareStepPatchFormValues {
   prepStages: PrepStage[];
-  recruitSchedules: [RecruitSchedule];
   applicantGroups: string[];
 }
 
 // 계획하기 불러오기
-declare interface PrepareStepRolesFormValues {
+declare interface PrepareStepRolesValues {
   prepStages: PrepStage[];
   recruitSchedules: RecruitSchedule;
   applicantGroups: string[];
@@ -54,10 +53,6 @@ declare interface PrepareStepRolesFormValues {
 
 declare interface RecruitmentPlanningData {
   schedule: RecruitSchedule;
-  prepStages: Array<{
-    stageName: string;
-    adminNames: string[];
-  }>;
+  prepStages: PrepStage[];
   groups: string[];
-  admins: string[];
 }

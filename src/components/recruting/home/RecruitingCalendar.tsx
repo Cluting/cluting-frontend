@@ -107,9 +107,9 @@ export default function RecruitingCalender({
           events={events}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
-          editable={true}
-          selectable={true}
-          selectMirror={true}
+          editable={false}
+          selectable={false}
+          selectMirror={false}
           nowIndicator={true}
           headerToolbar={{
             left: "prev",

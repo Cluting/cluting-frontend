@@ -8,11 +8,12 @@ interface Day {
 }
 
 //날짜 새성 함수
-const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
+const generateDaysArray = (startDate: string, endDate: string): Day[] => {
   const days: Day[] = [];
   const currentDate = new Date(startDate);
+  const end = new Date(endDate);
 
-  while (currentDate <= endDate) {
+  while (currentDate <= end) {
     const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
       currentDate.getDay()
     ];

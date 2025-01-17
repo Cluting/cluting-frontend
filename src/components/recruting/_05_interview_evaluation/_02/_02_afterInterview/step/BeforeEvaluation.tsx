@@ -3,7 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getAppListBefore } from "../../../../_03_document_evaluation/service/Step3";
 import { getMe } from "../../../../../signup/services/User";
 import WideMemberList from "../../../../_03_document_evaluation/_02/list/WideMemberList";
-import { getInterviewEvaluationData } from "../../../service/Step5";
+import {
+  getInterviewEvaluationData,
+  getInterviewListBefore
+} from "../../../service/Step5";
 
 interface BeforeEvaluationProps {
   filter: string;
@@ -46,40 +49,31 @@ const BeforeEvaluation: React.FC<BeforeEvaluationProps> = ({
   //FIX:
   const recruitId = 1;
   const { data: applicantsData, isLoading } = useQuery(
-    ["applicantsBefore", recruitId, filter, sortType],
-    () =>
-      getInterviewEvaluationData({
-        recruitId,
-        groupName: filter === "전체" ? undefined : filter,
-        sortOrder: sortType === "지원순" ? "oldest" : "newest"
-      }),
+    ["applicantsBefore", recruitId],
+    () => getInterviewListBefore(recruitId),
     {
       onSuccess: (data) => {
-        console.log("5-2", data);
+        console.log(data);
         const transformedData = transformApiResponse(data);
         setFilteredData(transformedData);
       }
     }
   );
 
-  // FIX: 평가 전 데이터 필터링 잘 되는지 검토 필요 , API 연결은 완료
-
-  const transformApiResponse = (apiData: ApiApplicant[]): Applicant[] => {
-    return apiData
-      .filter((item) => item.stage === "EDITABLE")
-      .map((item, index) => ({
-        id: index.toString(),
-        name: item.applicantName,
-        phone: item.applicantPhone,
-        group: item.groupName,
-        incomplete: parseInt(item.evaluationStatus.split("/")[0], 10),
-        all: parseInt(item.evaluationStatus.split("/")[1], 10),
-        isPass: undefined,
-        evaluators: [],
-        isDecisionMode: undefined,
-        isDisputed: undefined,
-        evaluationStage: item.stage
-      }));
+  const transformApiResponse = (apiData: any[]): Applicant[] => {
+    return apiData.map((item) => ({
+      id: item.applicationId,
+      name: item.applicantName,
+      phone: item.applicantPhone || "",
+      group: item.groupName,
+      incomplete: parseInt(item.applicationNumClubUser.split("/")[0], 10),
+      all: parseInt(item.applicationNumClubUser.split("/")[1], 10),
+      isPass: undefined,
+      evaluators: [item.currentEvaluator, ...item.otherEvaluators],
+      isDecisionMode: undefined,
+      isDisputed: undefined,
+      evaluationStage: item.evaluationStage
+    }));
   };
 
   const { data: user } = useQuery(["me"], getMe);
