@@ -5,15 +5,16 @@ import { ALL_ADMINS, DEFAULT_STEPS } from "../../../constants/recruting";
 import { useRecruitmentStepStore } from "../../../store/useStore";
 import { AdminPlan } from "../../../type/type";
 
-interface PrepareStepRolesProps {
-  onPrepStagesSubmit: (prepStages: any) => void;
-  apiPrepareStepRoles?: Array<{
-    stageName: string;
-    adminNames: string[];
-  }>;
-  isStepOneCompleted: boolean;
+interface Admin {
+  id?: number | string;
+  name?: string;
 }
 
+interface PrepareStepRolesProps {
+  onPrepStagesSubmit: (prepStages: any) => void;
+  apiPrepareStepRoles?: PrepStage[];
+  isStepOneCompleted: boolean;
+}
 export default function PrepareStepRoles({
   onPrepStagesSubmit,
   apiPrepareStepRoles,
@@ -38,7 +39,7 @@ export default function PrepareStepRoles({
         if (apiStep && step.name !== "운영진 면접 일정 조율하기") {
           return {
             ...step,
-            admins: apiStep.adminNames
+            admins: apiStep.admins.map((admin) => admin.name) // admin 객체에서 이름만 추출
           };
         }
         return step;
@@ -79,22 +80,36 @@ export default function PrepareStepRoles({
   const onSubmit: SubmitHandler<PrepareStepRolesFormValues> = (data, event) => {
     event?.preventDefault();
     const prepStages = data.steps.map((step, index) => {
-      let clubUserIds;
+      let admins: Admin[];
       if (step.id === 4) {
-        clubUserIds = ALL_ADMINS.map((admin) => admin.id);
+        admins = ALL_ADMINS;
       } else {
-        clubUserIds = step.admins;
+        admins = (step.admins ?? []).map((admin): Admin => {
+          if (typeof admin === "object" && "id" in admin && "name" in admin) {
+            return admin as Admin;
+          }
+          if (apiPrepareStepRoles) {
+            const apiAdmin = apiPrepareStepRoles
+              .flatMap((s) => s.admins)
+              .find((a) => a.id === admin);
+            if (apiAdmin) {
+              return apiAdmin;
+            }
+          }
+          return { id: admin, name: `Unknown (ID: ${admin})` };
+        });
       }
 
       return {
         stageName: step.name,
         stageOrder: index + 1,
-        clubUserIds: clubUserIds
+        admins: admins
       };
     });
 
     onPrepStagesSubmit(prepStages);
   };
+
   const handleFormSubmit = handleSubmit(onSubmit);
 
   const handleAdminSelect = (admin: AdminPlan) => {

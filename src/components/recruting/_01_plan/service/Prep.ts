@@ -49,7 +49,7 @@ export async function patchPrep(
 ) {
   try {
     const response = await fetch(
-      `https://210.107.205.122:20025/api/v1/prep?recruitId=${recruitId}`,
+      `${process.env.REACT_APP_BASE_URL}/prep?recruitId=${recruitId}`,
       {
         method: "PATCH",
         headers: {

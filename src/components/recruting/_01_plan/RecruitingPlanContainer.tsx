@@ -36,14 +36,14 @@ export default function RecruitingPlanContainer() {
     setValue("prepStages" as any, prepStages);
   };
 
-  // 계획하기 API
-  //FIX:
+  // 계획하기 불러오기
   const recruitId = 1;
   const { data: apiPlanningData } = useQuery(
     ["planningData", recruitId],
     () => getPlanningData(recruitId),
     {
       onSuccess: (data: RecruitmentPlanningData) => {
+        console.log(data);
         completeStep(0, true);
       }
     }
@@ -94,11 +94,11 @@ export default function RecruitingPlanContainer() {
   useEffect(() => {
     if (apiPlanningData) {
       methods.reset({
-        recruitSchedules: apiPlanningData.schedule, // Remove the array brackets
+        recruitSchedules: apiPlanningData.schedule,
         prepStages: apiPlanningData?.prepStages?.map((stage, index) => ({
           stageName: stage.stageName,
           stageOrder: index + 1,
-          clubUserIds: [] // Assuming clubUserIds should be an empty array initially
+          clubUserIds: []
         })),
         applicantGroups: apiPlanningData.groups
       });
@@ -111,12 +111,17 @@ export default function RecruitingPlanContainer() {
         recruitSchedules: [data.recruitSchedules],
         prepStages: data.prepStages.map((stage) => ({
           ...stage,
-          clubUserIds: stage.clubUserIds
+          clubUserIds: stage.admins.map((admin) => admin.id)
         })),
         applicantGroups: data.applicantGroups
       };
 
-      console.log("Submitting data:", isEditMode ? formattedPatchData : data);
+      console.log(
+        "isEdit:",
+        isEditMode,
+        "Submitting data:",
+        isEditMode ? formattedPatchData : data
+      );
 
       if (isEditMode) {
         await patchPlanMutation.mutateAsync({
@@ -169,13 +174,13 @@ export default function RecruitingPlanContainer() {
           </div>
           <RecrutingCalenderPicker apiSchedule={apiPlanningData?.schedule} />
         </section>
-        {/* {apiPlanningData && (
+        {apiPlanningData && (
           <PrepareStepRoles
-            apiPrepareStepRoles={apiPlanningData.prepStages}
+            apiPrepareStepRoles={apiPlanningData?.prepStages}
             isStepOneCompleted={isStepOneCompleted && !isEditMode}
             onPrepStagesSubmit={handlePrepStagesSubmit}
           />
-        )} */}
+        )}
         <div className=" w-full flex flex-col items-center ml-8">
           <GroupCreate apiGroups={apiPlanningData?.groups} />
           <button
