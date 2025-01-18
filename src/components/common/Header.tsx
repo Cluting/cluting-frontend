@@ -28,9 +28,9 @@ export default function Header() {
       </Link>
       {!isLoginPage && (
         <div className="flex items-center">
-          <button onClick={handleLogout} className="text-white-100">
+          {/* <button onClick={handleLogout} className="text-white-100">
             임시 로그아웃
-          </button>
+          </button> */}
           <img
             src="/assets/ic-search.svg"
             alt="검색"

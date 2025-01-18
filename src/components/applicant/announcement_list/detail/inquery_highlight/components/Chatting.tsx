@@ -36,7 +36,7 @@ export default function Chatting() {
   };
 
   return (
-    <div className="w-full h-full bg-gray-100 relative flex flex-col">
+    <div className="w-full h-full bg-[#FBFBFF] relative flex flex-col">
       <header className="flex-shrink-0 w-full h-[65px] px-5 py-[22px] custom-shadow text-left text-callout text-gray-1000 bg-white-100">
         7기 리크루팅 Q&A 채팅
       </header>

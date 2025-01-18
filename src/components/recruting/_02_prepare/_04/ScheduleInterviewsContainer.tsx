@@ -7,14 +7,16 @@ import AdminsSchedule from "./AdminsSchedule";
 import { useStepTwoStore } from "../../../../store/useStore";
 import { BUTTON_TEXT } from "../../../../constants/recruting";
 import { FormProvider, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { postPrepare4InterviewSetup } from "../service/Step2";
 import { useMutation } from "@tanstack/react-query";
 
 //2-4 운영진 면접 일정 조정 (컨테이너)
 export default function ScheduleInterviewsContainer() {
+  const [isEditable, setIsEditable] = useState(true);
   //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
+  const [isEditMode, setIsEditMode] = useState(false); // 추가
 
   const methods = useForm<InterviewSetup>({
     defaultValues: {
@@ -75,9 +77,21 @@ export default function ScheduleInterviewsContainer() {
     return () => subscription.unsubscribe();
   }, [watch, handleSubmit, onSubmit]);
 
+  const handleButtonClick = () => {
+    if (steps[3].completed && !isEditMode) {
+      setIsEditMode(true);
+      setStepCompleted(3, false); // form 활성화를 위해 completed 상태를 false로
+    } else {
+      setStepCompleted(3, true);
+      setIsEditMode(false);
+    }
+  };
+
   return (
     <div className="mb-[147px]">
-      <div className={`${steps[3].completed ? "pointer-events-none" : ""}`}>
+      <div
+        className={`${steps[3].completed && !isEditMode ? "pointer-events-none" : ""}`}
+      >
         <FormProvider {...methods}>
           <div className="flex items-center mx-8 my-4">
             <h1 className="section-title">
@@ -133,20 +147,20 @@ export default function ScheduleInterviewsContainer() {
       </div>
       <div className="flex justify-center">
         <button
-          type="submit"
-          onClick={() => {
-            setStepCompleted(3, true);
-          }}
+          type="button"
+          onClick={handleButtonClick}
           aria-label={
             steps[3].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
           }
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            steps[3].completed
+            steps[3].completed && !isEditMode
               ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
               : "bg-main-100 text-white-100 " //완료하기
           }  text-body flex-center hover:bg-main-500`}
         >
-          {steps[3].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE}
+          {steps[3].completed && !isEditMode
+            ? BUTTON_TEXT.EDIT
+            : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
     </div>
