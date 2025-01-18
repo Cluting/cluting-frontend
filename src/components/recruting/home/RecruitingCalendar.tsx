@@ -5,6 +5,7 @@ import FullCalendar from "@fullcalendar/react";
 import { Link } from "react-router-dom";
 import { CALENDAR_COLORS, CALENDAR_ITEMS } from "../../../constants/recruting";
 import { useEffect, useState } from "react";
+import { addDays } from "date-fns";
 
 interface RecrutingCalenderProps {
   apiSchedule?: RecruitSchedule;
@@ -17,32 +18,36 @@ export default function RecruitingCalender({
 
   //불러온 일정 캘린더에 표시
   useEffect(() => {
-    const schedule = apiSchedule;
-    if (schedule) {
-      const calendarEvents = Object.entries(schedule)
-        .map(([key, value]) => {
-          if (value && value !== "") {
-            const [, stageNumber, type] =
-              key.match(/stage(\d+)(Start|End)/) || [];
-            const index = parseInt(stageNumber) - 1;
-            const title = CALENDAR_ITEMS[index];
-            const colorIndex = parseInt(stageNumber) - 1;
+    if (apiSchedule) {
+      const events = CALENDAR_ITEMS.map((title, index) => {
+        const stageNumber = index + 1;
+        const start = (apiSchedule as any)[`stage${stageNumber}Start`];
+        const end = (apiSchedule as any)[`stage${stageNumber}End`];
 
-            return {
-              id: key,
-              title: title,
-              start: type === "Start" ? value : undefined,
-              end: type === "End" ? value : undefined,
-              allDay: true,
-              backgroundColor:
-                CALENDAR_COLORS[colorIndex % CALENDAR_COLORS.length]
-            };
-          }
-          return null;
-        })
-        .filter((event) => event !== null);
+        if (start && end) {
+          return {
+            id: `stage${stageNumber}`,
+            title: title,
+            start: start,
+            end: addDays(new Date(end), 1).toISOString().split("T")[0],
+            allDay: true,
+            backgroundColor: CALENDAR_COLORS[index % CALENDAR_COLORS.length],
+            display: "block"
+          };
+        }
+        return null;
+      }).filter((event) => event !== null);
 
-      setEvents(calendarEvents as CalendarEvent[]);
+      setEvents(events as CalendarEvent[]);
+
+      // Update completedTitles based on apiSchedule
+      const completedTitles = CALENDAR_ITEMS.filter((item, index) => {
+        const stageNumber = index + 1;
+        return (
+          (apiSchedule as any)[`stage${stageNumber}Start`] &&
+          (apiSchedule as any)[`stage${stageNumber}End`]
+        );
+      });
     }
   }, [apiSchedule]);
 

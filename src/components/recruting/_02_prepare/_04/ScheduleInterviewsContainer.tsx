@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query";
 
 //2-4 운영진 면접 일정 조정 (컨테이너)
 export default function ScheduleInterviewsContainer() {
+  const [isEditable, setIsEditable] = useState(true);
   //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
   const [isEditMode, setIsEditMode] = useState(false); // 추가
