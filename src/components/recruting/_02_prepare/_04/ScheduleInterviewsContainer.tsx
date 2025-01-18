@@ -16,6 +16,7 @@ export default function ScheduleInterviewsContainer() {
   const [isEditable, setIsEditable] = useState(true);
   //현재 스텝 완료 여부 (전역 상태)
   const { setStepCompleted, steps } = useStepTwoStore();
+  const [isEditMode, setIsEditMode] = useState(false); // 추가
 
   const methods = useForm<InterviewSetup>({
     defaultValues: {
@@ -76,18 +77,21 @@ export default function ScheduleInterviewsContainer() {
     return () => subscription.unsubscribe();
   }, [watch, handleSubmit, onSubmit]);
 
-  const handleCompleteClick = () => {
-    if (isEditable) {
-      setIsEditable(false);
-      setStepCompleted(3, true);
+  const handleButtonClick = () => {
+    if (steps[3].completed && !isEditMode) {
+      setIsEditMode(true);
+      setStepCompleted(3, false); // form 활성화를 위해 completed 상태를 false로
     } else {
-      setIsEditable(true);
-      setStepCompleted(3, false);
+      setStepCompleted(3, true);
+      setIsEditMode(false);
     }
   };
+
   return (
     <div className="mb-[147px]">
-      <div className={`${steps[3].completed ? "pointer-events-none" : ""}`}>
+      <div
+        className={`${steps[3].completed && !isEditMode ? "pointer-events-none" : ""}`}
+      >
         <FormProvider {...methods}>
           <div className="flex items-center mx-8 my-4">
             <h1 className="section-title">
@@ -144,15 +148,19 @@ export default function ScheduleInterviewsContainer() {
       <div className="flex justify-center">
         <button
           type="button"
-          onClick={handleCompleteClick}
-          aria-label={isEditable ? BUTTON_TEXT.COMPLETE : BUTTON_TEXT.EDIT}
+          onClick={handleButtonClick}
+          aria-label={
+            steps[3].completed ? BUTTON_TEXT.EDIT : BUTTON_TEXT.COMPLETE
+          }
           className={`w-[210px] h-[54px] rounded-[11px] mt-[50px] ${
-            !isEditable
-              ? "bg-main-400 border border-main-100 text-main-100 "
-              : "bg-main-100 text-white-100 "
+            steps[3].completed && !isEditMode
+              ? "bg-main-400 border border-main-100 text-main-100 " //수정하기
+              : "bg-main-100 text-white-100 " //완료하기
           }  text-body flex-center hover:bg-main-500`}
         >
-          {isEditable ? BUTTON_TEXT.COMPLETE : BUTTON_TEXT.EDIT}
+          {steps[3].completed && !isEditMode
+            ? BUTTON_TEXT.EDIT
+            : BUTTON_TEXT.COMPLETE}
         </button>
       </div>
     </div>

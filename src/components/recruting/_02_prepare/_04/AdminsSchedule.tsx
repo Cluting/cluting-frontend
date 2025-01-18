@@ -24,7 +24,10 @@ export default function AdminsSchedule() {
 
   // 각 시간대별 선택된 면접관을 관리하는 상태
   const [timeSlotAdmins, setTimeSlotAdmins] = useState<TimeSlotAdmins>({});
-
+  // 시간대별 admin 상태를 관리
+  const [timeSlotAdminsList, setTimeSlotAdminsList] = useState<
+    Record<string, typeof admins>
+  >({});
   //면접 기간
   const {
     interviewStartTime,
@@ -112,20 +115,23 @@ export default function AdminsSchedule() {
   const distributedAdmins = distributeAdmins();
 
   //드래그 앤 드랍 초기 설정
-  const onDragEnd = (result: DropResult) => {
-    //요상한 곳으로 드래그하면 return(초기 상태로)
+  const onDragEnd = (result: DropResult, timeSlot: string) => {
     if (!result?.destination) return;
 
-    console.log(result);
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
 
-    const sourceIndex = result.source.index; //드래그를 해 온 요소
-    const destinationIndex = result.destination.index; //드래그앤드롭한 목적지
+    setTimeSlotAdminsList((prev) => {
+      const currentTimeSlotAdmins = [...(prev[timeSlot] || [])];
+      const pickedAdmin = currentTimeSlotAdmins[sourceIndex];
+      currentTimeSlotAdmins.splice(sourceIndex, 1);
+      currentTimeSlotAdmins.splice(destinationIndex, 0, pickedAdmin);
 
-    const newList = [...admins]; //초기 리스트 상태 복사한 후 저장
-    const pickedAdmins = newList[sourceIndex]; //복사한 리스트에서 sourceIndex부분을 삭제한 뒤 붙여넣기 -> 위치 바뀜
-    newList.splice(sourceIndex, 1);
-    newList.splice(destinationIndex, 0, pickedAdmins);
-    setAdmins(newList);
+      return {
+        ...prev,
+        [timeSlot]: currentTimeSlotAdmins
+      };
+    });
   };
 
   const handleAdminSelect = async (timeSlot: string, admin: string) => {
@@ -200,6 +206,19 @@ export default function AdminsSchedule() {
   useEffect(() => {
     console.log("Current groupList:", groupList); // 디버깅용
   }, [groupList]);
+
+  // 컴포넌트 마운트 시 각 시간대별로 초기 admin 리스트 생성
+  useEffect(() => {
+    const initialTimeSlotAdmins = timeSlots.reduce(
+      (acc, timeSlot) => {
+        acc[timeSlot] = [...admins]; // 각 시간대마다 독립적인 admin 배열 복사
+        return acc;
+      },
+      {} as Record<string, typeof admins>
+    );
+
+    setTimeSlotAdminsList(initialTimeSlotAdmins);
+  }, [timeSlots]); // timeSlots이 변경될 때마다 실행
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -301,10 +320,11 @@ export default function AdminsSchedule() {
                     </div>
 
                     {/* 드래그 가능한 운영진 행 */}
-                    <DragDropContext onDragEnd={onDragEnd}>
+                    <DragDropContext
+                      onDragEnd={(result) => onDragEnd(result, timeSlot)}
+                    >
                       <Droppable
-                        droppableId="01"
-                        key="01"
+                        droppableId={`droppable-${timeSlot}`}
                         direction="horizontal"
                       >
                         {(provided) => (
