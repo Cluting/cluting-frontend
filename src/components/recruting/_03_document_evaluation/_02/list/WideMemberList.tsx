@@ -84,6 +84,13 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
                       </button>
                     )
                   ) : null}
+                  {/* FIX: 임시 처리  */}
+                  {item.evaluationStage === "AFTER" &&
+                    (item.name === "user16" || item.name === "user17") && (
+                      <button className="text-caption3 text-gray-1000 bg-[#BAF3E4] px-3 py-2  rounded-[38px]">
+                        열람 가능
+                      </button>
+                    )}
                 </div>
                 <div className="flex flex-col w-32 text-left">
                   <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">
@@ -96,7 +103,7 @@ const WideMemberList: React.FC<WideMemberListProps> = ({ items }) => {
                 </div>
 
                 <div className="w-32 text-sm font-semibold text-left font-Pretendard text-gray-1100">
-                  {item.group}
+                  {item.name === "user1" ? "개발" : item.group}
                 </div>
 
                 <div className="w-48 text-sm font-medium text-left font-Pretendard text-gray-1100">

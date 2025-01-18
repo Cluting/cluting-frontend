@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AnnouncementContainer from "./container/AnnouncementContainer";
 import DocumentSubmitContainer from "./container/DocumentSubmitContainer";
 import InqueryContainer from "./inquery_highlight/InqueryContainer";
@@ -21,17 +21,13 @@ export default function AnnouncementListDetailContainer() {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
-
   return (
-    <div className="w-full h-auto bg-gray-100  mb-[200px]">
+    <div className="w-full h-auto bg-gray-100  mb-[500px]">
       <div className="flex flex-col items-start ">
         <header className="mb-[39px] flex-center gap-5 ">
-          <button onClick={handleGoBack}>
+          <Link to="/main">
             <img src="/assets/ic-back.svg" alt="뒤로가기" />
-          </button>
+          </Link>
           <h1 className="font-semibold text-[24px]">
             대학생 연합 IT 동아리 잇타 7기 신입 회원 모집
           </h1>
