@@ -63,7 +63,26 @@ export default function ScheduleAdjustmentContainer() {
     }
   );
 
+  const tempInterviewData = {
+    interviewer: 2,
+    interviewee: 3,
+    interviewStartTime: "2024-01-18T09:00:00",
+    interviewEndTime: "2024-01-18T18:00:00",
+    interviewStartDate: "2024-01-18",
+    interviewEndDate: "2024-01-20",
+    isTimeSet: true
+  };
+
   const { group } = useGroupStore();
+  // const {
+  //   interviewer,
+  //   interviewee,
+  //   interviewStartTime,
+  //   interviewEndTime,
+  //   interviewStartDate,
+  //   interviewEndDate,
+  //   isTimeSet
+  // } = useInterviewStore();
   const {
     interviewer,
     interviewee,
@@ -72,15 +91,13 @@ export default function ScheduleAdjustmentContainer() {
     interviewStartDate,
     interviewEndDate,
     isTimeSet
-  } = useInterviewStore();
+  } = tempInterviewData;
   const { steps } = useStepFourStore();
 
   const [selectedGroupId, setSelectedGroupId] = useState<number>(
     group[0]?.index || 0
   );
-  const [currentDate, setCurrentDate] = useState<Date>(
-    new Date(interviewStartDate)
-  );
+  const [currentDate, setCurrentDate] = useState(new Date("2024-01-18"));
   const [dateScheduleMap, setDateScheduleMap] = useState<GroupScheduleMap>({});
   const [dateSelectionsMap, setDateSelectionsMap] =
     useState<GroupSelectionsMap>({});

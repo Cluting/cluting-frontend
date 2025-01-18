@@ -65,7 +65,7 @@ function AdminInvite() {
   //토큰 없을 시 메인 화면으로
   useEffect(() => {
     if (!token) {
-      navigate("/main");
+      navigate("/");
     }
   }, [token, navigate]);
 

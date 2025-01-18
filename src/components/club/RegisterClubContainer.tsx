@@ -44,7 +44,7 @@ export default function RegisterClubContainer() {
     {
       onSuccess: () => {
         console.log("프로필 이미지가 성공적으로 업로드되었습니다.");
-        navigate("/main");
+        navigate("/");
       },
       onError: (error) => {
         console.error("프로필 이미지 업로드 중 오류 발생:", error);

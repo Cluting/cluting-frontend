@@ -33,10 +33,10 @@ export default function App() {
     <div className="App">
       <Header />
       <div className="relative w-full h-full bg-white-100">
-        <div className="relative bg-white-100 h-full w-full pt-[55px]">
+        <div className="relative bg-white-100 h-full w-full pt-[54px]">
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/main" element={<Main />} />
+            <Route path="/" element={<Main />} />
+            <Route path="/service" element={<LandingPage />} />
             <Route
               path="/login"
               element={
