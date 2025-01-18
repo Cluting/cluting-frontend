@@ -25,7 +25,7 @@ export default function AnnouncementListDetailContainer() {
     <div className="w-full h-auto bg-gray-100  mb-[500px]">
       <div className="flex flex-col items-start ">
         <header className="mb-[39px] flex-center gap-5 ">
-          <Link to="/main">
+          <Link to="/">
             <img src="/assets/ic-back.svg" alt="뒤로가기" />
           </Link>
           <h1 className="font-semibold text-[24px]">
