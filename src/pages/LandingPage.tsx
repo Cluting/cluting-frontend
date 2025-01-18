@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
@@ -8,6 +8,7 @@ export default function LandingPage() {
   //   window.scrollTo(0, 0);
   // }, []);
 
+  const [selectAdminView, setSelectAdminView] = useState<boolean>(true);
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -119,35 +120,90 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="relative flex flex-col text-left w-full h-[774px] bg-[#E2DEED] px-[211px]">
-        <div>
-          <div className="text-left pt-[197px] flex flex-col ">
-            <h1 className="text-[45px] font-bold">
-              2025년 꼭 붙고 싶은 동아리가 있다면
-            </h1>
-            <p className="font-regular text-[20.89px] text-[#696575] mt-[30px]">
-              취미, 취업, 창업, 스포츠... 대학생활의 꽃, 동아리 경험을 놓치고
-              싶지 않나요?
-              <br /> 동아리 공고 열람, Q&A, 동아리 합격 정보를 한 눈에 확인하고
-              지원해 보세요! <br /> 이전 기수 동아리 리크루팅 정보와 후기로 지원
-              여부를 결정해 보세요.
-            </p>
-            <Link to="/">
-              <button className="flex-center mt-[30px] text-[#0F9C70] font-bold text-[16.37px] px-[50px] py-[10px] bg-[#D8ECE6] rounded-[44px]">
-                동아리 리스트 구경하기
-                <img
-                  src="/assets/landing/ic-club-list.svg"
-                  className="ml-[4px]"
-                />
-              </button>
-            </Link>
-          </div>
-          <motion.img
-            src="/assets/landing/applicant-card.png"
-            className="absolute w-[984px] bottom-[-20px] right-[140px]"
-            animate={floatAnimation}
+      <section className="relative flex flex-col text-left w-full h-[774px] bg-[#E9E1FD] px-[211px]">
+        <div className="bg-[#E2DEED] w-fit h-[71px] rounded-[46.08px] p-[9px] relative text-[21.68px] left-60 mt-[37px]">
+          <motion.div
+            className="absolute top-[9px] w-[50%] h-[53px] bg-[#784FEF] rounded-[46.08px]"
+            animate={{
+              x: selectAdminView ? 0 : "100%",
+              backgroundColor: selectAdminView ? "#784FEF" : "#1AB786"
+            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           />
+          <button
+            onClick={() => setSelectAdminView(true)}
+            className={`relative z-10 py-[15px] px-[169px] rounded-[46.08px] transition-colors duration-300 ${
+              selectAdminView ? "text-white-100" : "text-[#696575]"
+            }`}
+          >
+            동아리 운영진
+          </button>
+          <button
+            onClick={() => setSelectAdminView(false)}
+            className={`relative z-10 py-[15px] px-[169px] rounded-[46.08px] transition-colors duration-300 ${
+              !selectAdminView ? "text-white-100" : "text-[#696575]"
+            }`}
+          >
+            동아리 지원자
+          </button>
         </div>
+
+        {!selectAdminView ? (
+          <div>
+            <div className="text-left pt-[197px] flex flex-col w-full">
+              <h1 className="text-[45px] font-bold">
+                2025년 꼭 붙고 싶은 동아리가 있다면
+              </h1>
+              <p className="font-regular text-[20.89px] text-[#696575] mt-[30px]">
+                취미, 취업, 창업, 스포츠... 대학생활의 꽃, 동아리 경험을 놓치고
+                싶지 않나요?
+                <br /> 동아리 공고 열람, Q&A, 동아리 합격 정보를 한 눈에
+                확인하고 지원해 보세요! <br /> 이전 기수 동아리 리크루팅 정보와
+                후기로 지원 여부를 결정해 보세요.
+              </p>
+              <Link to="/">
+                <button className="flex-center mt-[30px] text-[#0F9C70] font-bold text-[16.37px] px-[50px] py-[10px] bg-[#D8ECE6] rounded-[44px]">
+                  동아리 리스트 구경하기
+                  <img
+                    src="/assets/landing/ic-club-list.svg"
+                    className="ml-[4px]"
+                  />
+                </button>
+              </Link>
+            </div>
+            <motion.img
+              src="/assets/landing/applicant-card.png"
+              className="absolute w-[984px] bottom-[-20px] right-[140px]"
+              animate={floatAnimation}
+            />
+          </div>
+        ) : (
+          <div>
+            <div className="text-left pt-[197px] flex flex-col w-full">
+              <h1 className="text-[45px] font-bold">
+                이번 동아리 리크루팅, <br />또 어떻게 처리할지 고민이라면
+              </h1>
+              <p className="font-regular text-[20.89px] text-[#696575] mt-[30px]">
+                매년 반복되는 동아리 리크루팅에서 새로운 운영진에 대한 인수인계,
+                <br />
+                처음 해보는 면접 진행... 복잡하고, 비효율적으로 느끼셨나요?
+                <br />
+                <br />
+                동아리 운영진의 시간 단축을 위해 클루팅을 이용해 보세요.
+              </p>
+              <Link to="/">
+                <button className="flex-center mt-[30px] text-[#5C2ADE] font-bold text-[16.37px] px-[50px] py-[10px] bg-[#DFD3FF] rounded-[44px]">
+                  동아리 생성하기
+                </button>
+              </Link>
+            </div>
+            <motion.img
+              src="/assets/landing/section3-admin.png"
+              className="absolute w-[487px] bottom-[-20px] right-[140px]"
+              animate={floatAnimation}
+            />
+          </div>
+        )}
       </section>
 
       <section className="relative flex text-left w-full h-[774px] bg-[#575C73] px-[211px]">
