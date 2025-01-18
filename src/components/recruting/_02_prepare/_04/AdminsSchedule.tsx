@@ -116,20 +116,31 @@ export default function AdminsSchedule() {
 
   //드래그 앤 드랍 초기 설정
   const onDragEnd = (result: DropResult, timeSlot: string) => {
-    if (!result?.destination) return;
-
-    const sourceIndex = result.source.index;
-    const destinationIndex = result.destination.index;
+    const { destination, source } = result;
+    if (!destination) return;
 
     setTimeSlotAdminsList((prev) => {
       const currentTimeSlotAdmins = [...(prev[timeSlot] || [])];
-      const pickedAdmin = currentTimeSlotAdmins[sourceIndex];
-      currentTimeSlotAdmins.splice(sourceIndex, 1);
-      currentTimeSlotAdmins.splice(destinationIndex, 0, pickedAdmin);
+
+      // 드래그된 admin 찾기
+      const draggedAdminId = result.draggableId.split("-")[1]; // timeSlot-id 형식에서 id 추출
+      const draggedAdmin = currentTimeSlotAdmins.find(
+        (admin) => admin.id === draggedAdminId
+      );
+
+      if (!draggedAdmin) return prev;
+
+      // 현재 위치에서 제거
+      const newAdmins = currentTimeSlotAdmins.filter(
+        (admin) => admin.id !== draggedAdminId
+      );
+
+      // 새 위치에 삽입
+      newAdmins.splice(destination.index, 0, draggedAdmin);
 
       return {
         ...prev,
-        [timeSlot]: currentTimeSlotAdmins
+        [timeSlot]: newAdmins
       };
     });
   };
@@ -182,6 +193,12 @@ export default function AdminsSchedule() {
       ? "필수 선택 사항입니다"
       : true;
   };
+  // 전체 인덱스 계산 함수
+  const getAdminGlobalIndex = (timeSlot: string, admin: any) => {
+    return (timeSlotAdminsList[timeSlot] || []).findIndex(
+      (a) => a.id === admin.id
+    );
+  };
 
   //면접 기간 이전, 다음 화살표 클릭 시 이벤트 핸들러
   //FIX: 날짜가 넘어가는 건 되는데 날짜 별로 가능한 면접 시간이 저장되진 않음
@@ -218,7 +235,7 @@ export default function AdminsSchedule() {
     );
 
     setTimeSlotAdminsList(initialTimeSlotAdmins);
-  }, [timeSlots]); // timeSlots이 변경될 때마다 실행
+  }, [timeSlots, admins]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -347,38 +364,49 @@ export default function AdminsSchedule() {
                                   key={groupIndex}
                                   className="flex justify-center gap-2"
                                 >
-                                  {groupAdmins.map((admin, adminIndex) => (
-                                    <Draggable
-                                      key={admin.id}
-                                      draggableId={admin.id}
-                                      index={
-                                        groupIndex * interviewer + adminIndex
-                                      }
-                                    >
-                                      {(provided) => (
-                                        <div
-                                          key={`${timeSlot}-${admin.name}`}
-                                          onClick={() =>
-                                            handleAdminSelect(
-                                              timeSlot,
-                                              admin.name
-                                            )
-                                          }
-                                          ref={provided.innerRef}
-                                          {...provided.dragHandleProps}
-                                          {...provided.draggableProps}
-                                          className={`flex-center text-caption2 w-20 h-7 rounded-md cursor-pointer border transition-colors
-                          ${
-                            isAdminSelectedForTimeSlot(timeSlot, admin.name)
-                              ? "bg-main-100 border-main-100 text-white-100"
-                              : "bg-gray-100 border-gray-200 text-gray-1100 hover:bg-main-300 hover:border-main-400 hover:text-main-100"
-                          }`}
+                                  {timeSlotAdminsList[timeSlot]
+                                    ?.filter((admin) =>
+                                      groupAdmins
+                                        .map((a) => a.id)
+                                        .includes(admin.id)
+                                    )
+                                    .map((admin) => {
+                                      const globalIndex = getAdminGlobalIndex(
+                                        timeSlot,
+                                        admin
+                                      );
+
+                                      return (
+                                        <Draggable
+                                          key={`${timeSlot}-${admin.id}`}
+                                          draggableId={`${timeSlot}-${admin.id}`}
+                                          index={globalIndex}
                                         >
-                                          {admin.name}
-                                        </div>
-                                      )}
-                                    </Draggable>
-                                  ))}
+                                          {(provided) => (
+                                            <div
+                                              key={`${timeSlot}-${admin.name}`}
+                                              onClick={() =>
+                                                handleAdminSelect(
+                                                  timeSlot,
+                                                  admin.name
+                                                )
+                                              }
+                                              ref={provided.innerRef}
+                                              {...provided.dragHandleProps}
+                                              {...provided.draggableProps}
+                                              className={`flex-center text-caption2 w-20 h-7 rounded-md cursor-pointer border transition-colors
+                ${
+                  isAdminSelectedForTimeSlot(timeSlot, admin.name)
+                    ? "bg-main-100 border-main-100 text-white-100"
+                    : "bg-gray-100 border-gray-200 text-gray-1100 hover:bg-main-300 hover:border-main-400 hover:text-main-100"
+                }`}
+                                            >
+                                              {admin.name}
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      );
+                                    })}
                                 </div>
                               )
                             )}
