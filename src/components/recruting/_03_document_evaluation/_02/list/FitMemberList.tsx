@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 interface FitMemberListProps {
   items: Applicant[]; // Applicant 타입의 배열로 변경
   state: string;
+  isDispute?: boolean;
   isEvaluationDone?: boolean;
   onDispute?: (id: string) => void; // 이의제기
   onDecision?: (id: string) => void;
@@ -13,6 +14,7 @@ interface FitMemberListProps {
 const FitMemberList: React.FC<FitMemberListProps> = ({
   items,
   state,
+  isDispute,
   isEvaluationDone,
   onDispute,
   onDecision
@@ -30,6 +32,12 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
     onDecision?.(id);
     setDecisionModeItemId(null);
   };
+
+  const evaluationItem = location.pathname.startsWith(
+    "/recruting/05_interview_evaluation/interview"
+  )
+    ? "interview"
+    : "doc";
 
   return (
     <div className="flex flex-col w-full rounded-[7px] gap-4 max-h-[720px]">
@@ -52,7 +60,14 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
           const groupAccess = item.evaluators?.[0]?.groupAccess === item.group;
           return (
             <>
-              <Link to={`/recruting/evaluation/${item.id}`} key={item.id}>
+              <Link
+                to={
+                  evaluationItem === "doc"
+                    ? `/recruting/evaluation/${item.id}`
+                    : `/recruting/interview_evaluation_record/${item.id}`
+                }
+                key={item.id}
+              >
                 <li
                   key={item.id}
                   className="flex items-center p-4 h-16 border-b-[0.5px] border-[#D6D7DA] gap-2 hover:bg-gray-100"
@@ -65,7 +80,7 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                       />
                     )}
                     {!isEvaluationDone &&
-                    item.evaluators?.[0]?.state === "평가 완료" ? (
+                    item.evaluators?.[0]?.state === "COMPLETE" ? (
                       groupAccess ? (
                         <button className="text-caption3 text-gray-1000  bg-main-300 px-3 py-2  rounded-[38px]">
                           수정 가능
@@ -77,12 +92,11 @@ const FitMemberList: React.FC<FitMemberListProps> = ({
                       )
                     ) : null}
 
-                    {isEvaluationDone &&
-                      item.evaluators?.[0]?.state === "평가 완료" && (
-                        <button className="text-caption2 text-main-100 bg-main-300 px-3 py-[6px] rounded-[7px] border border-main-400">
-                          이의 제기
-                        </button>
-                      )}
+                    {state === "평가 완료" && isEvaluationDone && isDispute && (
+                      <button className="text-caption2 text-main-100 bg-main-300 px-3 py-[6px] rounded-[7px] border border-main-400">
+                        이의 제기
+                      </button>
+                    )}
                   </div>
                   <div className="flex flex-col text-left w-28">
                     <div className="text-[13.856px] font-Pretendard font-semibold text-[#3B3D46] leading-normal">

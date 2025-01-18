@@ -1,27 +1,54 @@
 import { useState } from "react";
 import { useInterviewStore } from "../../../../store/useStore";
 import CustomSelect from "./CustomSelect";
-
-function formatDateWithDay(date: Date | null): string {
-  if (!date) return "";
-
-  const days = ["일", "월", "화", "수", "목", "금", "토"];
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const dayOfWeek = days[date.getDay()];
-
-  return `${month}.${day}(${dayOfWeek})`;
-}
+import { useQuery } from "@tanstack/react-query";
+import { getPlanningData } from "../../_01_plan/service/Prep";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 
 // 3 - 면접 진행 시간대 선택
 export default function TimeSlot() {
   const {
     interviewStartDate,
     interviewEndDate,
+    setInterviewStartDate,
+    setInterviewEndDate,
     setInterviewStartTime,
     setInterviewEndTime,
     applyTimeSettings
   } = useInterviewStore();
+
+  // 계획하기 불러오기
+  const recruitId = 1;
+  const { data: apiPlanningData } = useQuery(
+    ["planningData", recruitId],
+    () => getPlanningData(recruitId),
+    {
+      onSuccess: (data: RecruitmentPlanningData) => {
+        if (data.schedule) {
+          setInterviewStartDate(data?.schedule.stage6Start);
+          setInterviewEndDate(data?.schedule.stage6End);
+        }
+      }
+    }
+  );
+
+  const formatDateRange = (startDate: string, endDate: string): string => {
+    if (!startDate || !endDate) return "기간을 설정해 주세요";
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const formatDate = (date: Date) => {
+      return format(date, "M.d(E)", { locale: ko });
+    };
+
+    return `${formatDate(start)}~${formatDate(end)}`;
+  };
+  const formattedDateRange = formatDateRange(
+    interviewStartDate,
+    interviewEndDate
+  );
 
   const [startTime, setStartTime] = useState(""); // 초기값을 빈 문자열로 설정
   const [endTime, setEndTime] = useState("");
@@ -30,42 +57,69 @@ export default function TimeSlot() {
 
   const handleStartTimeChange = (newStartTime: string) => {
     setStartTime(newStartTime);
-    if (newStartTime >= endTime && endTime !== "") {
+    const startIndex = generateTimeOptions().indexOf(newStartTime);
+    const endIndex = generateTimeOptions().indexOf(endTime);
+    if (startIndex >= endIndex && endTime !== "") {
       setEndTime(newStartTime);
     }
   };
 
   const handleEndTimeChange = (newEndTime: string) => {
-    if (newEndTime <= startTime) {
+    const startIndex = generateTimeOptions().indexOf(startTime);
+    const endIndex = generateTimeOptions().indexOf(newEndTime);
+    if (endIndex <= startIndex && endIndex !== 0) {
       alert("종료 시간은 시작 시간보다 늦어야 합니다.");
       return;
     }
     setEndTime(newEndTime);
   };
 
-  // 시간 옵션 생성 함수
-  const generateTimeOptions = (): string[] => {
-    const options: string[] = [];
-    for (let hour = 7; hour <= 20; hour++) {
-      const time = `${hour < 10 ? `0${hour}` : hour}:00`;
-      options.push(time);
-    }
-    return options;
-  };
-
-  // 적용하기 버튼 클릭 시 호출될 함수
+  // handleApplyTimeSettings 함수 수정
   const handleApplyTimeSettings = () => {
     if (!startTime || !endTime) {
       alert("시작 시간과 종료 시간을 모두 선택해 주세요.");
       return;
     }
 
-    setInterviewStartTime(new Date(`1970-01-01T${startTime}:00`));
-    setInterviewEndTime(new Date(`1970-01-01T${endTime}:00`));
-    applyTimeSettings(); // isTimeSet을 true로 설정
+    const [startHour, startMinute, startAmPm] = startTime.split(/[:\s]/);
+    const [endHour, endMinute, endAmPm] = endTime.split(/[:\s]/);
 
-    // 캡션을 빈 문자열로 설정하여 캡션을 숨김
+    const startDate = new Date(
+      1970,
+      0,
+      1,
+      parseInt(startHour) + (startAmPm === "PM" && startHour !== "12" ? 12 : 0),
+      parseInt(startMinute)
+    );
+    const endDate = new Date(
+      1970,
+      0,
+      1,
+      parseInt(endHour) + (endAmPm === "PM" && endHour !== "12" ? 12 : 0),
+      parseInt(endMinute)
+    );
+
+    setInterviewStartTime(startDate);
+    setInterviewEndTime(endDate);
+    applyTimeSettings();
     setCaption("");
+  };
+
+  // 시간 옵션 생성 함수
+  const generateTimeOptions = (): string[] => {
+    const options: string[] = [];
+    const interval = 60;
+    const totalMinutes = 24 * 60;
+
+    for (let minutes = 0; minutes < totalMinutes; minutes += interval) {
+      const hour = Math.floor(minutes / 60);
+      const minute = minutes % 60;
+      const ampm = hour < 12 ? "AM" : "PM";
+      const hour12 = hour % 12 || 12;
+      const time = `${hour12}:${minute.toString().padStart(2, "0")} ${ampm}`;
+      options.push(time);
+    }
+    return options;
   };
 
   return (
@@ -82,7 +136,7 @@ export default function TimeSlot() {
           </div>
           <div className="text-subheadline">
             {interviewStartDate && interviewEndDate
-              ? `${formatDateWithDay(interviewStartDate)}~${formatDateWithDay(interviewEndDate)}`
+              ? `${formattedDateRange}`
               : "기간을 설정해 주세요"}
           </div>
         </div>

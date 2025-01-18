@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   UseFormRegister,
@@ -27,17 +27,21 @@ export default function EvaluationCriteria({
   watch: UseFormWatch<DocumentReviewForm>;
   errors: any;
 }) {
-  const [newDetailCriteria, setNewDetailCriteria] = useState<string>("");
+  // criteriaId를 key로 사용하는 객체 형태의 상태
+  const [detailCriterias, setDetailCriterias] = useState<{
+    [key: number]: string;
+  }>({});
 
   const addCriteria = useCallback(
     (groupId: number) => {
       const groupIndex = groups.findIndex((g) => g.id === groupId);
       const currentCriteria = groups[groupIndex].criteria;
+      const newCriteriaId = currentCriteria.length + 1;
 
       setValue(`groups.${groupIndex}.criteria`, [
         ...currentCriteria,
         {
-          id: currentCriteria.length + 1,
+          id: newCriteriaId,
           criteria: "",
           detailCriteria: [],
           score: undefined
@@ -55,8 +59,9 @@ export default function EvaluationCriteria({
     ) => {
       if (e.key === "Enter") {
         e.preventDefault();
+        const value = detailCriterias[criteriaId];
 
-        if (newDetailCriteria.trim()) {
+        if (value?.trim()) {
           const groupIndex = groups.findIndex((g) => g.id === groupId);
           const criteriaIndex = groups[groupIndex].criteria.findIndex(
             (c) => c.id === criteriaId
@@ -65,14 +70,18 @@ export default function EvaluationCriteria({
 
           setValue(
             `groups.${groupIndex}.criteria.${criteriaIndex}.detailCriteria`,
-            [...currentCriteria.detailCriteria, newDetailCriteria.trim()]
+            [...currentCriteria.detailCriteria, value.trim()]
           );
 
-          setNewDetailCriteria("");
+          // 해당 criteriaId의 입력값만 초기화
+          setDetailCriterias((prev) => ({
+            ...prev,
+            [criteriaId]: ""
+          }));
         }
       }
     },
-    [groups, setValue, newDetailCriteria]
+    [groups, setValue, detailCriterias]
   );
 
   const deleteCriteria = useCallback(
@@ -106,6 +115,10 @@ export default function EvaluationCriteria({
     [groups, setValue]
   );
 
+  useEffect(() => {
+    setDetailCriterias({});
+  }, [selectedGroupId]);
+
   return (
     <section className="my-[34px]">
       <div className="flex">
@@ -129,7 +142,9 @@ export default function EvaluationCriteria({
                     ? "border-main-100 bg-main-100 text-white-100"
                     : "border-gray-200 text-main-100"
                 }`}
-            onClick={() => setSelectedGroupId(groupItem.id)}
+            onClick={() => {
+              setSelectedGroupId(groupItem.id);
+            }}
           >
             {groupItem.groupName}
           </button>
@@ -338,8 +353,13 @@ export default function EvaluationCriteria({
                       ))}
                     <input
                       type="text"
-                      value={newDetailCriteria}
-                      onChange={(e) => setNewDetailCriteria(e.target.value)}
+                      value={detailCriterias[criterion.id] || ""}
+                      onChange={(e) =>
+                        setDetailCriterias((prev) => ({
+                          ...prev,
+                          [criterion.id]: e.target.value
+                        }))
+                      }
                       onKeyDown={(e) =>
                         handleDetailCriteria(e, group.id, criterion.id)
                       }

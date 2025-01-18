@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EvaluationCard from "./EvaluationCard";
 import AdminEvaluationList from "./AdminEvaluationList";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import { postDocEvaluation } from "../service/Step3";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getDocEvaluationContent, postDocEvaluation } from "../service/Step3";
 import ClubIdealList from "./ClubIdealList";
+import { useParams } from "react-router-dom";
+import { getMe } from "../../../signup/services/User";
 
 export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
   const [showClubIdeal, setShowClubIdeal] = useState(false);
   const [authority, setAuthority] = useState(true); //운영진 권한
+  const [isEditMode, setIsEditMode] = useState(true);
 
   const {
     watch,
@@ -18,10 +21,26 @@ export default function AdminEvaluationWindow() {
     formState: { errors }
   } = useForm<DocEvaluationRequest>({ mode: "onSubmit" });
 
+  const { id } = useParams<{ id: string }>();
   // 동아리 등록
   //FIX: 리크루팅 아이디, 지원자 아이디 하드 코딩
   const recruitId = 1;
-  const applicationId = 1;
+  const applicationId = Number(id);
+
+  const { data: evaluationContent } = useQuery(
+    ["evaluationContent", recruitId, id],
+    () => getDocEvaluationContent(recruitId, parseInt(id!, 10)),
+    {
+      enabled: !!id
+    }
+  );
+
+  console.log(evaluationContent);
+  const evaluatorScores = evaluationContent?.evaluatorScores || [];
+  const groupIdeals = evaluationContent?.groupIdeals || [];
+
+  const { data: user } = useQuery(["me"], getMe, {});
+
   const docEvauationMutation = useMutation(
     (data: DocEvaluationRequest) =>
       postDocEvaluation(recruitId, applicationId, data),
@@ -29,27 +48,43 @@ export default function AdminEvaluationWindow() {
       onSuccess: (data) => {
         console.log(data);
         console.log("서류 평가 전송이 성공적으로 등록되었습니다!");
-      },
-      onError: (error) => {
-        console.error("서류 평가 전송 중 오류 발생:", error);
       }
     }
   );
 
-  // 폼 제출
   const onSubmit = (data: DocEvaluationRequest) => {
     console.log("폼 데이터:", data);
     docEvauationMutation.mutate(data);
+    setIsEditMode(false); // 제출 시도 후 항상 편집 모드를 비활성화
   };
 
   //FIX: 서류 평가 기준 불러와서 EvaluationCard에 넘겨줘야 함
 
   const criteriaEvaluations = watch("criteriaEvaluations") || [];
 
-  const totalScore = criteriaEvaluations.reduce(
-    (sum, criteria) => sum + (criteria.score || 0),
-    0
+  const averageScore = criteriaEvaluations.reduce(
+    (acc, criteria) => {
+      if (criteria.score !== undefined && criteria.score !== null) {
+        acc.sum += criteria.score;
+        acc.count += 1;
+      }
+      return acc;
+    },
+    { sum: 0, count: 0 }
   );
+
+  const finalAverageScore =
+    averageScore.count > 0
+      ? (averageScore.sum / averageScore.count).toFixed(1)
+      : "0.0";
+
+  const handleEditComplete = () => {
+    if (isEditMode) {
+      handleSubmit(onSubmit)();
+    } else {
+      setIsEditMode(true);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +106,9 @@ export default function AdminEvaluationWindow() {
           <p className="text-gray-800 font-semibold text-[15.71px]">
             총점 평균
           </p>
-          <p className="font-bold text-[18px] ml-1">{"89.5점"}</p>
+          <p className="font-bold text-[18px] ml-1">
+            {evaluationContent?.averageScore}
+          </p>
           <p className="text-gray-800 font-semibold text-[15.71px] ml-1">
             /100점
           </p>
@@ -91,10 +128,16 @@ export default function AdminEvaluationWindow() {
         </button>
 
         {showAdminEvaluation && (
-          <AdminEvaluationList onClose={() => setShowAdminEvaluation(false)} />
+          <AdminEvaluationList
+            evaluatorScores={evaluatorScores}
+            onClose={() => setShowAdminEvaluation(false)}
+          />
         )}
         {showClubIdeal && (
-          <ClubIdealList onClose={() => setShowClubIdeal(false)} />
+          <ClubIdealList
+            groupIdeals={groupIdeals}
+            onClose={() => setShowClubIdeal(false)}
+          />
         )}
 
         {authority && (
@@ -102,11 +145,13 @@ export default function AdminEvaluationWindow() {
             <section className="w-full mt-10">
               <div className="flex justify-between">
                 <div className="flex items-center">
-                  <p className="text-title3">{"최예은"}</p>
+                  <p className="text-title3">{user?.name}</p>
                   <p className="text-subheadline text-[#949494] ml-1">평가자</p>
                 </div>
                 <div className="flex-center gap-[3px] bg-gray-100 rounded-[5px] pl-[26px] py-[5px] pr-1">
-                  <p className="text-callout text-gray-1100 ">{totalScore}</p>
+                  <p className="text-callout text-gray-1100 ">
+                    {finalAverageScore}
+                  </p>
                   <p className="text-caption3 text-gray-600">/100점</p>
                 </div>
               </div>
@@ -126,10 +171,15 @@ export default function AdminEvaluationWindow() {
             </section>
 
             <button
-              type="submit"
-              className="button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px]"
+              type="button"
+              onClick={handleEditComplete}
+              className={`button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px] ${
+                isEditMode
+                  ? "bg-main-100"
+                  : "bg-main-400 border border-main-100 text-main-100"
+              }`}
             >
-              평가 완료
+              {isEditMode ? "평가 완료" : "수정하기"}
             </button>
           </>
         )}

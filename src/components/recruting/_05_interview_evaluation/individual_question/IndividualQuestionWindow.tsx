@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Question from "./Question";
+import { ReactComponent as PlusIcon } from "../../../../assets/ic-plus.svg";
 
 export default function IndividualQuestionWindow() {
   const [questions, setQuestions] = useState<
@@ -7,6 +8,7 @@ export default function IndividualQuestionWindow() {
   >([]);
   const [nextId, setNextId] = useState(1); // 다음 ID 값
   const [questionNumber, setQuestionNumber] = useState(2);
+  const [createQuestionComplete, setCreateQuestionComplete] = useState(false);
 
   // 질문 추가
   const handleAddQuestion = () => {
@@ -72,16 +74,22 @@ export default function IndividualQuestionWindow() {
 
       <button
         onClick={handleAddQuestion}
-        className="my-4 button-main-light flex-center px-[100px] py-4 rounded-lg text-callout "
+        className="my-4 button-main-light flex-center px-[100px] py-4 rounded-lg text-callout hover:bg-main-100 hover:text-white-100"
       >
-        <img src="/assets/ic-plus.svg" className="mr-1" /> 개인 질문 추가하기
+        <PlusIcon className="mr-2" />
+        개인 질문 추가하기
       </button>
       <div className="bg-gray-100 rounded-xl py-[25px] px-[29px] text-gray-1300 text-subheadline mb-[34px]">
         개인 질문의 최종 선택은 함께 평가를 진행하는 <br />
         운영진과 논의 후 결정해 주세요
       </div>
-      <button className="button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px]">
-        선택 완료
+      <button
+        onClick={() => {
+          setCreateQuestionComplete(true);
+        }}
+        className={`${createQuestionComplete ? "button-main-light" : " button-main-bg hover:bg-main-500"} py-4 px-[56px] text-body rounded-[11px]`}
+      >
+        {createQuestionComplete ? "수정" : "선택 완료"}
       </button>
     </div>
   );

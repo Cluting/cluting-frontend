@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import AdminProfileDropdown from "./AdminProfileDropdown";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -8,10 +8,12 @@ export default function Header() {
   const [isLoginPage, setIsLoginPage] = useState(false); // 로그인/회원가입 페이지 여부
   const [adminProfile, setAdminProfile] = useState(false); //운영진 프로필 드롭다운
 
-  useEffect(() => {
-    // 상태 변경을 감지해 디버깅하거나 추가 작업 수행
-    console.log("로그인 상태 변경:", isLogin);
-  }, [isLogin]);
+  const { setLogin } = useAuthStore();
+  const handleLogout = () => {
+    setLogin(false);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+  };
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
@@ -32,6 +34,9 @@ export default function Header() {
       </div>
       {!isLoginPage && (
         <div className="flex items-center">
+          {/* <button onClick={handleLogout} className="text-white-100">
+            임시 로그아웃
+          </button> */}
           <img
             src="/assets/ic-search.svg"
             alt="검색"
@@ -46,11 +51,13 @@ export default function Header() {
                     alt="알림"
                     className="w-[24px] h-[24px] mx-4"
                   />
-                  <img
-                    src="/assets/ic-profile.svg"
-                    alt="개인 계정 프로필"
-                    className="w-[35px] h-[35px] mx-3"
-                  />
+                  <Link to="/applicant/home">
+                    <img
+                      src="/assets/applicant-profile.png"
+                      alt="개인 계정 프로필"
+                      className="w-[35px] h-[35px] mx-3 rounded-full"
+                    />
+                  </Link>
                   <button
                     className="relative flex items-center"
                     onClick={() => {
@@ -58,9 +65,9 @@ export default function Header() {
                     }}
                   >
                     <img
-                      src="/assets/ic-profile.svg"
+                      src="/assets/club-profile.png"
                       alt="운영자 계정 프로필"
-                      className="w-[35px] h-[35px] mx-3"
+                      className="w-[35px] h-[35px] mx-3 rounded-full"
                     />
                     <img
                       src="/assets/ic-dropdown.svg"

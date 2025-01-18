@@ -27,8 +27,7 @@ declare interface RecruitmentStore {
 
   // 단계 완료 여부 배열 및 관련 메서드
   completedSteps: boolean[]; // 각 단계의 완료 여부를 저장하는 배열
-  completeStep: (step: number) => void; // 특정 단계를 완료로 설정하는 함수
-  resetStepCompletion: (step: number) => void; // 특정 단계의 완료 여부를 취소하는 함수
+  completeStep: (step: number, isCompleted: boolean) => void; // 특정 단계의 완료 여부를 설정하는 함수
 }
 
 declare interface GroupStore {
@@ -55,18 +54,20 @@ declare interface GroupStore {
 declare interface InterviewFormatStore {
   interviewer: number;
   interviewee: number;
-  interviewStartDate: Date; // 면접 시작 날짜
-  interviewEndDate: Date; // 면접 종료 날짜
+  interviewDuration: number;
+  interviewStartDate: string; // 면접 시작 날짜
+  interviewEndDate: string; // 면접 종료 날짜
   interviewStartTime: Date; // 면접 시작 시간
   interviewEndTime: Date; // 면접 시작 시간
   isTimeSet: boolean; //시간 설정 완료 여부
 
   setInterviewer: (id: number) => void;
   setInterviewee: (id: number) => void;
+  setInterviewDuration: (time: number) => void;
   setInterviewStartTime: (time: Date) => void;
   setInterviewEndTime: (time: Date) => void;
-  setInterviewStartDate: (date: Date) => void;
-  setInterviewEndDate: (date: Date) => void;
+  setInterviewStartDate: (date: string) => void;
+  setInterviewEndDate: (date: string) => void;
   applyTimeSettings: () => void; // 시간 설정 적용 함수
 }
 
@@ -80,4 +81,16 @@ declare interface RecruitmentSessionStore {
 declare interface RecruitmentStartStore {
   isRecruitingStarted: boolean; // 리크루팅 시작 여부
   startRecruiting: () => void; // 리크루팅 시작 메서드
+}
+
+// 클럽 (동아리) 정보
+declare interface ClubInfoStore {
+  clubProfile: string;
+  clubName: string;
+  generation: number;
+  currentStage: string;
+  setClubProfile: (profile: string) => void;
+  setClubName: (name: string) => void;
+  setGeneration: (gen: number) => void;
+  setCurrentStage: (stage: string) => void;
 }

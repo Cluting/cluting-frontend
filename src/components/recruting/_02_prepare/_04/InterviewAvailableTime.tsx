@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useInterviewStore } from "../../../../store/useStore";
 
 // 인터뷰 날짜 타입 정의
@@ -8,11 +8,12 @@ interface Day {
 }
 
 //날짜 새성 함수
-const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
+const generateDaysArray = (startDate: string, endDate: string): Day[] => {
   const days: Day[] = [];
   const currentDate = new Date(startDate);
+  const end = new Date(endDate);
 
-  while (currentDate <= endDate) {
+  while (currentDate <= end) {
     const dayOfWeek = ["일", "월", "화", "수", "목", "금", "토"][
       currentDate.getDay()
     ];
@@ -29,8 +30,10 @@ const generateDaysArray = (startDate: Date, endDate: Date): Day[] => {
 const generateTimeSlots = (start: Date, end: Date): string[] => {
   const times: string[] = [];
   const current = new Date(start);
+  const endTime = new Date(end);
+  endTime.setMinutes(endTime.getMinutes() + 30); // 종료 시간을 30분 연장
 
-  while (current <= end) {
+  while (current <= endTime) {
     const hours = current.getHours();
     const minutes = current.getMinutes();
     const timeString = `${hours % 12 || 12}:${minutes === 0 ? "00" : "30"} ${
@@ -45,7 +48,6 @@ const generateTimeSlots = (start: Date, end: Date): string[] => {
 
   return times;
 };
-
 export default function InterviewAvailableTime() {
   const {
     isTimeSet,
@@ -62,6 +64,11 @@ export default function InterviewAvailableTime() {
     [key: string]: boolean;
   }>({});
   const [isDragging, setIsDragging] = useState(false);
+
+  const [isSelectTime, setIsSelectTime] = useState(false);
+  const handleButtonClick = () => {
+    setIsSelectTime(!isSelectTime);
+  };
 
   const handleMouseDown = (day: string, time: string) => {
     const key = `${day}-${time}`;
@@ -94,11 +101,15 @@ export default function InterviewAvailableTime() {
     setIsDragging(false);
   };
 
+  const hasSelectedSlots = useMemo(() => {
+    return Object.values(selectedSlots).some((value) => value);
+  }, [selectedSlots]);
+
   return (
-    <div className="section-background flex flex-wrap space-y-4 ">
+    <div className="section-background flex items-center flex-wrap space-y-4 ">
       {/* 시간표 렌더링 (표 안) */}
       <section
-        className="overflow-auto scrollbar-hidden w-[963px] h-auto relative border border-gray-300 rounded-[12px] py-[27px] px-4"
+        className="overflow-auto scrollbar-hidden w-[940px] h-auto relative border border-gray-300 rounded-[12px] py-[27px] px-4"
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
@@ -143,9 +154,17 @@ export default function InterviewAvailableTime() {
                     return (
                       <td
                         key={key}
-                        className={`p-2 border cursor-pointer h-[20px]w-[77.85px] min-w-[77.85px] max-w-[77.85px] ${
-                          selectedSlots[key] ? "bg-main-100" : "bg-main-300"
-                        } ${index % 2 === 1 ? "border-b border-gray-700 border-r-0 border-l-0" : "border border-gray-400 "} border border-gray-400 border-r-[1px] border-r-gray-400 `}
+                        className={`
+                          p-2 
+                          cursor-pointer 
+                          h-[20px] w-[77.85px] min-w-[77.85px] max-w-[77.85px] 
+                          ${selectedSlots[key] ? "bg-main-100" : "bg-main-300"}
+                          ${
+                            index % 2 === 1
+                              ? "border-t-0 border-r-0 border-l-0 border-b-[2px] border-gray-700"
+                              : "border-t border-r-0 border-l-0 border-b border-gray-400"
+                          }
+                        `}
                         onMouseDown={() => handleMouseDown(day.date, time)}
                         onMouseEnter={() => handleMouseEnter(day.date, time)}
                       ></td>
@@ -157,6 +176,20 @@ export default function InterviewAvailableTime() {
           </table>
         )}
       </section>
+      <button
+        onClick={handleButtonClick}
+        disabled={!hasSelectedSlots}
+        className={`rounded-lg text-subheadline w-fit py-2 px-6 
+        ${
+          isSelectTime
+            ? "bg-main-300 text-main-100 border border-main-400"
+            : "bg-gray-300 text-white-100 hover:bg-main-100 hover:text-white-100"
+        }
+        ${hasSelectedSlots && !isSelectTime && "bg-main-500 text-white-100"}
+          `}
+      >
+        {isSelectTime ? "수정하기" : "선택 완료"}
+      </button>
     </div>
   );
 }

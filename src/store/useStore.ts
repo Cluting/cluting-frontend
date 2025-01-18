@@ -2,28 +2,23 @@ import { create } from "zustand";
 
 // 리크루팅 전체 단계
 export const useRecruitmentStepStore = create<RecruitmentStore>()((set) => ({
-  currentRecruitmentStep: 0, // 초기 단계
-  completedSteps: [] as boolean[], // 각 단계 완료 여부 배열 (초기에는 모두 false로)
+  currentRecruitmentStep: 0,
+  completedSteps: [] as boolean[],
 
   setCurrentRecruitmentStep: (step: number) =>
-    set({ currentRecruitmentStep: step }), // 단계 변경
+    set({ currentRecruitmentStep: step }),
 
-  // 특정 단계를 완료 상태로 설정하는 메서드
-  completeStep: (step: number) =>
+  // Modified completeStep function
+  completeStep: (step: number, isCompleted: boolean) =>
     set((state) => {
       const updatedCompletedSteps = [...state.completedSteps];
-      updatedCompletedSteps[step] = true;
-      return { completedSteps: updatedCompletedSteps };
-    }),
-
-  // 특정 단계의 완료 여부를 취소하는 메서드
-  resetStepCompletion: (step: number) =>
-    set((state) => {
-      const updatedCompletedSteps = [...state.completedSteps];
-      updatedCompletedSteps[step] = false;
+      updatedCompletedSteps[step] = isCompleted;
       return { completedSteps: updatedCompletedSteps };
     })
+
+  // The resetStepCompletion function can be removed as it's now redundant
 }));
+
 // 리크루팅 모집 준비하기 단계 (2) Top Section
 export const useStepTwoStore = create<Store>()((set) => ({
   currentStep: 0, // 초기 단계
@@ -169,33 +164,26 @@ export const useGroupStore = create<GroupStore>()((set) => ({
 export const useInterviewStore = create<InterviewFormatStore>()((set) => ({
   interviewer: 0,
   interviewee: 0,
+  interviewDuration: 60, // 기본값을 60으로 설정
   interviewStartTime: new Date(),
   interviewEndTime: new Date(),
-  interviewStartDate: new Date(),
-  interviewEndDate: new Date(),
-  isTimeSet: false, // 새로운 boolean 상태 추가
+  interviewStartDate: "",
+  interviewEndDate: "",
+  isTimeSet: false,
 
   setInterviewer: (id: number) => set({ interviewer: id }),
   setInterviewee: (id: number) => set({ interviewee: id }),
+  setInterviewDuration: (time: number) => set({ interviewDuration: time }),
   setInterviewStartTime: (time: Date) => set({ interviewStartTime: time }),
   setInterviewEndTime: (time: Date) => set({ interviewEndTime: time }),
-  setInterviewStartDate: (date: Date) => set({ interviewStartDate: date }),
-  setInterviewEndDate: (date: Date) => set({ interviewEndDate: date }),
+  setInterviewStartDate: (date: string) => set({ interviewStartDate: date }),
+  setInterviewEndDate: (date: string) => set({ interviewEndDate: date }),
 
-  // 새로운 상태 업데이트 함수 추가
   applyTimeSettings: () =>
     set((state) => ({
       isTimeSet: !!state.interviewStartTime && !!state.interviewEndTime
     }))
 }));
-
-// 기수 설정 Store
-export const useRecruitmentSessionStore = create<RecruitmentSessionStore>()(
-  (set) => ({
-    sessionNumber: 0, // 현재 기수
-    setSessionNumber: (session: number) => set({ sessionNumber: session }) // 기수 설정
-  })
-);
 
 //리크루팅 시작 여부 Store
 export const useRecruitmentStartStore = create<RecruitmentStartStore>(
@@ -204,3 +192,15 @@ export const useRecruitmentStartStore = create<RecruitmentStartStore>(
     startRecruiting: () => set({ isRecruitingStarted: true }) // 시작 상태로 변경
   })
 );
+
+// 동아리 정보 Store -> 사이드메뉴 연결용
+export const useClubInfoStore = create<ClubInfoStore>((set) => ({
+  clubProfile: "", // 동아리 프로필
+  clubName: "",
+  generation: 0,
+  currentStage: "",
+  setClubProfile: (profile) => set({ clubProfile: profile }),
+  setClubName: (name) => set({ clubName: name }),
+  setGeneration: (gen) => set({ generation: gen }),
+  setCurrentStage: (stage) => set({ currentStage: stage })
+}));

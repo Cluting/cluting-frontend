@@ -16,6 +16,15 @@ export const PATH = [
   "/recruting/06_final_selection"
 ];
 
+export const START_PATH = [
+  "/recruting/01_plan",
+  "/recruting/02_prepare",
+  "/recruting/03_document_evaluation",
+  "/recruting/04_interview_notification",
+  "/recruting/05_interview_evaluation",
+  "/recruting/06_final_selection"
+];
+
 export const STEP2_ITEMS = [
   "합격 인원 설정하기",
   "인재상 구축하기",
@@ -126,6 +135,52 @@ export const ALL_ADMINS_WITH_ID = [
   { id: 7, name: "이은재" }
 ];
 
+// 면접관 일정 설정 임시 데이터
+export const ADMINS_SCHEDULE = [
+  {
+    name: "최예은",
+    id: 1,
+    availableTimes: ["09:00-10:00", "10:00-11:00", "11:00-12:00"],
+    part: "기획"
+  },
+  {
+    name: "박시현",
+    id: 2,
+    availableTimes: ["10:00-11:00", "11:00-12:00", "13:00-14:00"],
+    part: "개발"
+  },
+  {
+    name: "김동현",
+    id: 3,
+    availableTimes: ["09:00-10:00", "13:00-14:00", "14:00-15:00"],
+    part: "디자인"
+  },
+  {
+    name: "윤다인",
+    id: 4,
+    availableTimes: ["11:00-12:00", "13:00-14:00", "15:00-16:00"],
+    part: "기획"
+  },
+  {
+    name: "곽서연",
+    id: 5,
+    availableTimes: ["09:00-10:00", "10:00-11:00", "14:00-15:00"],
+    part: "개발"
+  },
+  {
+    name: "양성원",
+    id: 6,
+    availableTimes: ["10:00-11:00", "11:00-12:00", "15:00-16:00"],
+    part: "디자인"
+  },
+  {
+    name: "이은재",
+    id: 7,
+    availableTimes: ["09:00-10:00", "12:00-13:00", "14:00-15:00"],
+    part: "기획"
+  }
+];
+
 export const DEFAULT_STEPS: Step[] = [
   { id: 1, name: "합격 인원 설정하기", completed: false, admins: [] },
   { id: 2, name: "인재상 구축하기", completed: false, admins: [] },
@@ -161,3 +216,14 @@ export const CALENDAR_COLORS = [
 ];
 export const CHARTS_COLORS = ["#3E0CC4", "#5E2BE8", "#9572F5", "#CAC8FF"];
 export const RADIAN = Math.PI / 180;
+
+export const ENTIRE_STAGE = [
+  "PLAN",
+  "PREP",
+  "DOC",
+  "DOC_PASS",
+  "EVAL",
+  "FINAL_PASS"
+];
+
+export const DEFAULT_CLUB_IMAGE = "/assets/home/main/defaultClub.svg";

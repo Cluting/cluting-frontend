@@ -1,5 +1,9 @@
+import DetailAnnounce from "./DetailAnnounce";
+
 export default function AnnouncementContainer() {
   return (
-    <div className="w-full h-[500px] flex-center bg-white-100">공고 보기</div>
+    <div className="w-full p-6 bg-white rounded-lg">
+      <DetailAnnounce />
+    </div>
   );
 }

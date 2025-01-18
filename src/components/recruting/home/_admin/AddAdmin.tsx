@@ -12,19 +12,14 @@ export default function AddAdmin({ isDropdown }: AddAdminProps) {
   const params = useParams();
   const clubId = params.clubId && parseInt(params.clubId, 10);
 
-  const {
-    data: clubUsers,
-    isLoading,
-    error
-  } = useQuery<ClubUser[], Error>(["clubUsers", clubId], () =>
-    getClubUser(Number(clubId))
+  const { data: clubUsers } = useQuery<ClubUser[], Error>(
+    ["clubUsers", clubId],
+    () => getClubUser(Number(clubId))
   );
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <ul
-      className={` ${isDropdown ? "animate-dropdown absolute right-0 top-10 bg-white-100 h-auto custom-shadow z-50" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px] z-50`}
+      className={` ${isDropdown ? "animate-dropdown absolute right-0 top-10 bg-white-100 h-auto custom-shadow z-50" : "bg-gray-100 h-[340.88px]"} w-[300px]  px-[17px] py-[18px]  rounded-[12px] z-50 overflow-y-scroll`}
     >
       {clubUsers &&
         clubUsers.map((user) => (

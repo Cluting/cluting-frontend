@@ -3,10 +3,7 @@
 import { useForm } from "react-hook-form";
 import { ModalPortal } from "../../../common/ModalPortal";
 import { ERROR_MESSAGES } from "../../../../constants/recruting";
-import {
-  useRecruitmentSessionStore,
-  useRecruitmentStartStore
-} from "../../../../store/useStore";
+import { useClubInfoStore } from "../../../../store/useStore";
 import { useMutation } from "@tanstack/react-query";
 import { startClubRecruiting } from "../../../club/service/Club";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,8 +27,7 @@ export default function RecrutingStartModal({
   const clubId = params.clubId ? parseInt(params.clubId, 10) : undefined;
   const selectedInterviewType = watch("isInterview");
   console.log(selectedInterviewType);
-  const { setSessionNumber } = useRecruitmentSessionStore();
-  const { startRecruiting } = useRecruitmentStartStore();
+  const { clubName } = useClubInfoStore();
 
   const { mutate } = useMutation(
     (data: { clubId: number; clubData: RecrutingStartFormValue }) =>
@@ -39,8 +35,6 @@ export default function RecrutingStartModal({
     {
       onSuccess: (data) => {
         console.log("리크루팅이 성공적으로 시작되었습니다!");
-        setSessionNumber(data.generation); // 동아리 기수 Store에 반영
-        startRecruiting(); //리크루팅 프로세스 시작 여부 Store에 반영
         window.scrollTo(0, 0);
         onClose(); // 폼 제출 후 모달 닫기
         navigate("/recruting/01_plan");
@@ -64,7 +58,7 @@ export default function RecrutingStartModal({
       <div className="modal-style">
         <div className="modal-animation relative m-[30px] flex flex-col items-center bg-white-100 w-[545px] h-auto rounded-[12px]">
           <h1 className="text-title3 mt-[28px] mb-[19px]">
-            '잇타' 리크루팅 시작하기
+            '{clubName}' 리크루팅 시작하기
           </h1>
 
           <img

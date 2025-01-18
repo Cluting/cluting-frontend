@@ -1,16 +1,16 @@
+const portfolios = [
+  {
+    id: 1,
+    portfolio: "비핸스",
+    link: "https://www.figma.com/design/gk0WAmsaKt8gFqEfbF1Hpe/%EC%9E%87%ED%83%80_%EA%B0%81%EC%96%91%EA%B0%81%EC%84%B1_%ED%81%B4%EB%A3%A8%ED%8C%85?node-id=733-8392&t=xVKyOiYS2HCzIuX1-1"
+  },
+  {
+    id: 2,
+    portfolio: "노션",
+    link: "https://www.figma.com/design/gk0WAmsaKt8gFqEfbF1Hpe/%EC%9E%87%ED%83%80_%EA%B0%81%EC%96%91%EA%B0%81%EC%84%B1_%ED%81%B4%EB%A3%A8%ED%8C%85?node-id=733-8392&t=xVKyOiYS2HCzIuX1-1"
+  }
+];
 export default function MyPortfolioContainer() {
-  const portfolios = [
-    {
-      id: 1,
-      portfolio: "비핸스",
-      link: "https://www.figma.com/design/gk0WAmsaKt8gFqEfbF1Hpe/%EC%9E%87%ED%83%80_%EA%B0%81%EC%96%91%EA%B0%81%EC%84%B1_%ED%81%B4%EB%A3%A8%ED%8C%85?node-id=733-8392&t=xVKyOiYS2HCzIuX1-1"
-    },
-    {
-      id: 2,
-      portfolio: "노션",
-      link: "https://www.figma.com/design/gk0WAmsaKt8gFqEfbF1Hpe/%EC%9E%87%ED%83%80_%EA%B0%81%EC%96%91%EA%B0%81%EC%84%B1_%ED%81%B4%EB%A3%A8%ED%8C%85?node-id=733-8392&t=xVKyOiYS2HCzIuX1-1"
-    }
-  ];
   return (
     <div className="px-[60px] py-14 w-full bg-white-100 flex-center rounded rounded-tr-[12px] rounded-bl-[12px] rounded-br-[12px]">
       <div className="w-full border border-gray-200 rounded-lg divide-y divide-gray-200">

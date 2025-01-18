@@ -10,13 +10,19 @@ export default function AlignDropdown({ onSelectAlign }: alignDropdownProps) {
           onClick={() => onSelectAlign("지원순")}
           className="small-dropdown-list"
         >
-          <p className="text-center text-gray-800 font-medium">지원순</p>
+          <p className="text-center text-gray-800 font-medium">가나다순</p>
         </li>
         <li
           onClick={() => onSelectAlign("최신순")}
           className="small-dropdown-list"
         >
           <p className="text-center text-gray-800 font-medium">최신순</p>
+        </li>
+        <li
+          onClick={() => onSelectAlign("오래된순")}
+          className="small-dropdown-list"
+        >
+          <p className="text-center text-gray-800 font-medium">오래된순</p>
         </li>
       </ul>
     </div>

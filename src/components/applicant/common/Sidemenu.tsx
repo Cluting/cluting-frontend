@@ -2,8 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getMe } from "../../signup/services/User";
+import { useAuthStore } from "../../../store/useAuthStore";
 
-export default function Sidemenu() {
+interface SidemenuProps {
+  forceClose?: boolean;
+}
+
+export default function Sidemenu({ forceClose = false }: SidemenuProps) {
   const { data: user } = useQuery(["me"], getMe, {
     onError: (error) => {
       console.error("유저 본인 정보 조회 실패:", error);
@@ -17,9 +22,13 @@ export default function Sidemenu() {
     if (window.innerWidth <= 1200) {
       setSidemenuClose(true);
     } else {
-      setSidemenuClose(false);
+      setSidemenuClose(forceClose);
     }
   };
+
+  useEffect(() => {
+    setSidemenuClose(forceClose);
+  }, [forceClose]);
 
   useEffect(() => {
     handleResize();
@@ -27,7 +36,14 @@ export default function Sidemenu() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [forceClose]);
+
+  const { setLogin } = useAuthStore();
+  const handleLogout = () => {
+    setLogin(false);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+  };
 
   return (
     <div
@@ -59,7 +75,7 @@ export default function Sidemenu() {
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <Link to={"/recruting/home"}>
+        <Link to={"/applicant/home"}>
           <button className="flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] pl-3">
             <img
               src="/assets/ic-sidemenu-home.svg"
@@ -98,7 +114,7 @@ export default function Sidemenu() {
         </Link>
 
         <Link
-          to={"/applicant/announcement/:menu"}
+          to={"/applicant/announcement/inProgress"}
           className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 group"
         >
           <img
@@ -114,7 +130,7 @@ export default function Sidemenu() {
         </Link>
 
         <Link
-          to={"/applicant/applications/:menu"}
+          to={"/applicant/applications/pass"}
           className="h-[46px] flex items-center my-[10px] rounded-lg hover:bg-gray-100 hover:text-gray-900 group"
         >
           <img
@@ -128,6 +144,14 @@ export default function Sidemenu() {
           {!sidemenuClose && <p>나의 지원 기록</p>}
         </Link>
       </section>
+      {!sidemenuClose && (
+        <button
+          onClick={handleLogout}
+          className="w-full bottom-[20px] text-caption3 py-[10px] px-[86px] mr-3 bg-gray-100 rounded-lg  text-gray-800 hover:bg-gray-300"
+        >
+          로그아웃
+        </button>
+      )}
     </div>
   );
 }

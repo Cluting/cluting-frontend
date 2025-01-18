@@ -3,22 +3,22 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   PATH,
+  START_PATH,
   STEP2_ITEMS,
   STEP3_ITEMS,
   STEP4_ITEMS,
   STEP5_ITEMS,
   STEP6_ITEMS
 } from "../../../constants/recruting";
-import { useRecruitmentSessionStore } from "../../../store/useStore";
+import { useClubInfoStore } from "../../../store/useStore";
 import { useAuthStore } from "../../../store/useAuthStore";
+import { useQuery } from "@tanstack/react-query";
+import { getRecruitingHome } from "../service/recruiting";
 
 export default function Sidemenu() {
   // 현재 경로 가져오기
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
-
-  //기수 불러오기
-  const { sessionNumber } = useRecruitmentSessionStore();
 
   const [sidemenuClose, setSidemenuClose] = useState(false);
   const [sidemenuEvaluationVersion, setEvaluationVersion] = useState(false); //평가 페이지일 경우
@@ -72,7 +72,7 @@ export default function Sidemenu() {
     if (
       location.pathname === "/recruting/evaluation" ||
       location.pathname === `/recruting/evaluation/${id}` ||
-      location.pathname === "/recruting/individual_question" ||
+      location.pathname.startsWith("/recruting/individual_question") ||
       location.pathname.startsWith("/recruting/answer_record") ||
       location.pathname.startsWith("/recruting/interview_evaluation_record")
     ) {
@@ -92,6 +92,31 @@ export default function Sidemenu() {
     localStorage.removeItem("refresh_token");
   };
 
+  // 리크루팅 홈 데이터 조회
+  const params = useParams();
+  const clubId = 1;
+  const recruitId = 1;
+
+  const [clubProfile, setClubProfile] = useState();
+  const [clubName, setClubName] = useState("-");
+  const [generation, setGeneration] = useState("-");
+
+  const { data: recruitingHomeData } = useQuery(
+    ["recruitingHome", recruitId, clubId],
+    () => getRecruitingHome(recruitId, clubId),
+    {
+      onSuccess: (data) => {
+        if (data?.recruitInfo) {
+          const { clubProfile, clubName, generation } = data.recruitInfo;
+          setGeneration(generation);
+          setClubName(clubName);
+          setClubProfile(clubProfile);
+        }
+        // TODO: TopSection에 현재 진행중인 단계 보이도록 데이터 전달
+      }
+    }
+  );
+
   return (
     <div
       className={` ${sidemenuEvaluationVersion ? "absolute top-[54px] left-0 rounded-br-xl" : "relative rounded-[28px]"}  bg-white-100 custom-shadow ${
@@ -106,23 +131,24 @@ export default function Sidemenu() {
         } rounded-[14px] transition-all`}
       >
         <img
-          src="/assets/ic-profile.svg"
+          src={clubProfile ? clubProfile : "/assets/ic-profile.svg"}
           alt="동아리 프로필"
           onClick={() => setSidemenuClose(!sidemenuClose)}
-          className="w-[50px] h-[50px] "
+          className="w-[50px] h-[50px] rounded-full "
         />
         {!sidemenuClose && (
           <div className="text-left ml-4">
-            <p className="text-body">잇타</p>
+            <p className="text-body">{clubName}</p>
             <p className="text-gray-900 text-caption1 mt-[5px]">
-              {sessionNumber ? sessionNumber : "-"} (리크루팅 준비)
+              {generation ? `${generation}기` : "-"}
             </p>
           </div>
         )}
       </section>
 
       <section className="text-gray-600 text-left text-callout mt-[19px]">
-        <Link to={"/recruting/home/1"}>
+        {/* FIX: 하드코딩 주소 변경 */}
+        <Link to={"/recruting/home/1/1"}>
           <button
             className={`flex items-center h-[46px] hover:bg-gray-100 w-full rounded-[8px] ${
               sidemenuClose ? "pl-0" : "pl-3"
@@ -158,7 +184,7 @@ export default function Sidemenu() {
           리크루팅 단계
         </p>
         {[...Array(6)].map((_, index) => {
-          const isActive = location.pathname === PATH[index];
+          const isActive = location.pathname.startsWith(START_PATH[index]);
           return (
             <div key={index} onClick={() => handleDropdownClick(index)}>
               <div
@@ -233,7 +259,7 @@ export default function Sidemenu() {
         {!sidemenuClose && (
           <button
             onClick={handleLogout}
-            className="text-caption3 text-gray-600 py-[10px] px-[86px] ml-3 bg-gray-100 rounded-lg mt-3 text-gray-800 hover:bg-gray-300"
+            className="text-caption3 py-[10px] px-[86px] ml-3 bg-gray-100 rounded-lg mt-3 text-gray-800 hover:bg-gray-300"
           >
             로그아웃
           </button>
