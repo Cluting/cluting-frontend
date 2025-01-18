@@ -227,7 +227,7 @@ export default function LandingPage() {
         </div>
         <motion.img
           src="/assets/landing/process-bubble.png"
-          className="absolute w-[217px] bottom-[250px] right-[700px]"
+          className="absolute w-[217px] bottom-[250px] right-[400px]"
           animate={floatAnimation}
         />
         <img
@@ -300,7 +300,7 @@ export default function LandingPage() {
         </div>
         <img
           src="/assets/landingImg2.svg"
-          className="absolute bottom-0 right-[350px] w-[800px]"
+          className="absolute bottom-0 right-[50px] w-[800px]"
         />
       </section>
 
@@ -317,7 +317,7 @@ export default function LandingPage() {
       <div className="flex-center w-full h-[619px] bg-[#13B482]">
         <img src="/assets/이용과정.svg" className="w-[480px]" />
         <div className="items-end">
-          <div className="mb-[63px] text-white-100 text-[17px] text-left font-thin">
+          <div className="mb-[33px] text-white-100 text-[17px] text-left font-thin">
             <p>
               동아리 모집 공고를 구경하고, 지원하고 싶은 동아리의 공고 세부
               사항을 확인하세요.
