@@ -13,7 +13,6 @@ import {
 import StepCompleteModal from "../../../common/StepCompleteModal";
 import { BUTTON_TEXT } from "../../../../../constants/recruting";
 import DecisionPassFailModal from "../common/DecisionPassFailModal";
-import { on } from "events";
 
 interface Applicant {
   id: string;
@@ -29,6 +28,22 @@ interface Applicant {
   createdAt: string;
   applicationNumClubUser: string;
 }
+
+// 임시 데이터 추가
+const tempUser: Applicant = {
+  id: "88",
+  name: "user88",
+  phone: "010-8888-8888",
+  group: "기획",
+  incomplete: 0,
+  all: 0,
+  isPass: true,
+  evaluators: undefined,
+  isDecisionMode: false,
+  isDisputed: false,
+  createdAt: "2025-01-18T10:00:00Z",
+  applicationNumClubUser: "TEMP88"
+};
 
 const transformApiResponse = (
   apiData: CompletedApplicant[] | undefined
@@ -80,18 +95,16 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
   );
 
   const { data: user } = useQuery(["me"], getMe);
-
   useEffect(() => {
     if (user && completedApplicants) {
       const transformedApplicants = transformApiResponse(completedApplicants);
-      setMembers(transformedApplicants);
+      const allMembers = [...transformedApplicants, tempUser];
+      setMembers(allMembers);
 
-      // 합격자와 불합격자 분리
       const filteredAccepted =
-        transformedApplicants.filter((item) => item.isPass === true) ?? [];
-
+        allMembers.filter((item) => item.isPass === true) ?? [];
       const filteredRejected =
-        transformedApplicants.filter((item) => item.isPass === false) ?? [];
+        allMembers.filter((item) => item.isPass === false) ?? [];
 
       const sortData = (data: Applicant[]) =>
         sortType === "가나다순"
@@ -111,7 +124,6 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
       );
     }
   }, [filter, sortType, completedApplicants, user]);
-
   const handleDispute = (id: string) => {
     setMembers((prevMembers) =>
       prevMembers?.map((member) =>
@@ -170,7 +182,7 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
       });
 
       setMembers((prevMembers) =>
-        prevMembers?.map((member) =>
+        prevMembers.map((member) =>
           member.id === selectedMemberId
             ? {
                 ...member,
@@ -180,6 +192,30 @@ const CompletedEvaluation: React.FC<CompletedEvaluationProps> = ({
             : member
         )
       );
+
+      // 합격/불합격 리스트 업데이트
+      const updatedMember = members.find(
+        (member) => member.id === selectedMemberId
+      );
+      if (updatedMember) {
+        if (isPass) {
+          setFilteredData((prev) => [
+            ...prev,
+            { ...updatedMember, isPass: true }
+          ]);
+          setFilteredData2((prev) =>
+            prev.filter((item) => item.id !== selectedMemberId)
+          );
+        } else {
+          setFilteredData2((prev) => [
+            ...prev,
+            { ...updatedMember, isPass: false }
+          ]);
+          setFilteredData((prev) =>
+            prev.filter((item) => item.id !== selectedMemberId)
+          );
+        }
+      }
     }
     setShowDecisionModal(false);
     setSelectedMemberId(null);
