@@ -27,7 +27,7 @@ export async function createTodo(content: string) {
 
 // PATCH: 투두 완료 상태 변경
 export async function updateTodoStatus(todoId: number) {
-  const url = `${process.env.REACT_APP_BASE_URL}/todo/status/${todoId}`;
+  const url = `https://210.107.205.122:20025/api/v1/todo/status/${todoId}`;
   const headers = {
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -58,7 +58,7 @@ export async function updateTodoStatus(todoId: number) {
 
 // DELETE: 투두 삭제
 export async function deleteTodo(todoId: number) {
-  const url = `${process.env.REACT_APP_BASE_URL}/todo/${todoId}`;
+  const url = `https://210.107.205.122:20025/api/v1/todo/${todoId}`;
   const headers = {
     accept: "*/*",
     Authorization: `Bearer ${localStorage.getItem("access_token")}`

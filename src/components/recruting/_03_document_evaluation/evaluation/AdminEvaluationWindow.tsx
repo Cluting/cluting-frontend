@@ -12,6 +12,7 @@ export default function AdminEvaluationWindow() {
   const [showAdminEvaluation, setShowAdminEvaluation] = useState(false);
   const [showClubIdeal, setShowClubIdeal] = useState(false);
   const [authority, setAuthority] = useState(true); //운영진 권한
+  const [isEditMode, setIsEditMode] = useState(true);
 
   const {
     watch,
@@ -54,6 +55,7 @@ export default function AdminEvaluationWindow() {
   const onSubmit = (data: DocEvaluationRequest) => {
     console.log("폼 데이터:", data);
     docEvauationMutation.mutate(data);
+    setIsEditMode(false); // 제출 시도 후 항상 편집 모드를 비활성화
   };
 
   //FIX: 서류 평가 기준 불러와서 EvaluationCard에 넘겨줘야 함
@@ -75,6 +77,14 @@ export default function AdminEvaluationWindow() {
     averageScore.count > 0
       ? (averageScore.sum / averageScore.count).toFixed(1)
       : "0.0";
+
+  const handleEditComplete = () => {
+    if (isEditMode) {
+      handleSubmit(onSubmit)();
+    } else {
+      setIsEditMode(true);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -161,10 +171,15 @@ export default function AdminEvaluationWindow() {
             </section>
 
             <button
-              type="submit"
-              className="button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px]"
+              type="button"
+              onClick={handleEditComplete}
+              className={`button-main-bg hover:bg-main-500 py-4 px-[56px] text-body rounded-[11px] ${
+                isEditMode
+                  ? "bg-main-100"
+                  : "bg-main-400 border border-main-100 text-main-100"
+              }`}
             >
-              평가 완료
+              {isEditMode ? "평가 완료" : "수정하기"}
             </button>
           </>
         )}
