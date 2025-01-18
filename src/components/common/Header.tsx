@@ -17,15 +17,21 @@ export default function Header() {
 
   return (
     <nav className="fixed z-[999] w-full h-[54px] bg-gray-900 px-[30px] flex justify-between items-center">
-      <Link to="/main">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2">
+        <Link to="/">
           <img
             src="/assets/logo/ic-logo.svg"
             alt="로고 아이콘"
             className="w-[72px] h-[21px] "
           />
-        </div>
-      </Link>
+        </Link>
+
+        <Link to="/service">
+          <div className="text-subheadline text-white-100 ml-6 hover:text-gray-300">
+            서비스 소개
+          </div>
+        </Link>
+      </div>
       {!isLoginPage && (
         <div className="flex items-center">
           {/* <button onClick={handleLogout} className="text-white-100">
